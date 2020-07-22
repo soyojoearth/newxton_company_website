@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.companywebsite.dao.NxtSettingDao">
+
+    <resultMap id="BaseResultMap" type="com.newxton.companywebsite.entity.NxtSetting">
+        <!--@Table nxt_setting-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="settingKey" column="setting_key" jdbcType="VARCHAR"/>
+        <result property="settingValue" column="setting_value" jdbcType="VARCHAR"/>
+        <result property="settingName" column="setting_name" jdbcType="VARCHAR"/>
+        <result property="datelineUpdated" column="dateline_updated" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, setting_key, setting_value, setting_name, dateline_updated
+        from newxton_companywebsite.nxt_setting
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, setting_key, setting_value, setting_name, dateline_updated
+        from newxton_companywebsite.nxt_setting
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, setting_key, setting_value, setting_name, dateline_updated
+        from newxton_companywebsite.nxt_setting
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="settingKey != null and settingKey != ''">
+                and setting_key = #{settingKey}
+            </if>
+            <if test="settingValue != null and settingValue != ''">
+                and setting_value = #{settingValue}
+            </if>
+            <if test="settingName != null and settingName != ''">
+                and setting_name = #{settingName}
+            </if>
+            <if test="datelineUpdated != null">
+                and dateline_updated = #{datelineUpdated}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into newxton_companywebsite.nxt_setting(setting_key, setting_value, setting_name, dateline_updated)
+        values (#{settingKey}, #{settingValue}, #{settingName}, #{datelineUpdated})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update newxton_companywebsite.nxt_setting
+        <set>
+            <if test="settingKey != null and settingKey != ''">
+                setting_key = #{settingKey},
+            </if>
+            <if test="settingValue != null and settingValue != ''">
+                setting_value = #{settingValue},
+            </if>
+            <if test="settingName != null and settingName != ''">
+                setting_name = #{settingName},
+            </if>
+            <if test="datelineUpdated != null">
+                dateline_updated = #{datelineUpdated},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from newxton_companywebsite.nxt_setting where id = #{id}
+    </delete>
+
+</mapper>

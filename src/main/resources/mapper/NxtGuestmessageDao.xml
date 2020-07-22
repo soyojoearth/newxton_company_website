@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.companywebsite.dao.NxtGuestmessageDao">
+
+    <resultMap id="BaseResultMap" type="com.newxton.companywebsite.entity.NxtGuestmessage">
+        <!--@Table nxt_guestmessage-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="guestCompany" column="guest_company" jdbcType="VARCHAR"/>
+        <result property="guestName" column="guest_name" jdbcType="VARCHAR"/>
+        <result property="guestPhone" column="guest_phone" jdbcType="VARCHAR"/>
+        <result property="guestEmail" column="guest_email" jdbcType="VARCHAR"/>
+        <result property="messageContent" column="message_content" jdbcType="VARCHAR"/>
+        <result property="messageDateline" column="message_dateline" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, guest_company, guest_name, guest_phone, guest_email, message_content, message_dateline
+        from newxton_companywebsite.nxt_guestmessage
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, guest_company, guest_name, guest_phone, guest_email, message_content, message_dateline
+        from newxton_companywebsite.nxt_guestmessage
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, guest_company, guest_name, guest_phone, guest_email, message_content, message_dateline
+        from newxton_companywebsite.nxt_guestmessage
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="guestCompany != null and guestCompany != ''">
+                and guest_company = #{guestCompany}
+            </if>
+            <if test="guestName != null and guestName != ''">
+                and guest_name = #{guestName}
+            </if>
+            <if test="guestPhone != null and guestPhone != ''">
+                and guest_phone = #{guestPhone}
+            </if>
+            <if test="guestEmail != null and guestEmail != ''">
+                and guest_email = #{guestEmail}
+            </if>
+            <if test="messageContent != null and messageContent != ''">
+                and message_content = #{messageContent}
+            </if>
+            <if test="messageDateline != null">
+                and message_dateline = #{messageDateline}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into newxton_companywebsite.nxt_guestmessage(guest_company, guest_name, guest_phone, guest_email, message_content, message_dateline)
+        values (#{guestCompany}, #{guestName}, #{guestPhone}, #{guestEmail}, #{messageContent}, #{messageDateline})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update newxton_companywebsite.nxt_guestmessage
+        <set>
+            <if test="guestCompany != null and guestCompany != ''">
+                guest_company = #{guestCompany},
+            </if>
+            <if test="guestName != null and guestName != ''">
+                guest_name = #{guestName},
+            </if>
+            <if test="guestPhone != null and guestPhone != ''">
+                guest_phone = #{guestPhone},
+            </if>
+            <if test="guestEmail != null and guestEmail != ''">
+                guest_email = #{guestEmail},
+            </if>
+            <if test="messageContent != null and messageContent != ''">
+                message_content = #{messageContent},
+            </if>
+            <if test="messageDateline != null">
+                message_dateline = #{messageDateline},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from newxton_companywebsite.nxt_guestmessage where id = #{id}
+    </delete>
+
+</mapper>

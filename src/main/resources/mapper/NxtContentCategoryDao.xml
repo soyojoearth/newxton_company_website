@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.companywebsite.dao.NxtContentCategoryDao">
+
+    <resultMap id="BaseResultMap" type="com.newxton.companywebsite.entity.NxtContentCategory">
+        <!--@Table nxt_content_category-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="categoryName" column="category_name" jdbcType="VARCHAR"/>
+        <result property="categoryPid" column="category_pid" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, category_name, category_pid
+        from newxton_companywebsite.nxt_content_category
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, category_name, category_pid
+        from newxton_companywebsite.nxt_content_category
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, category_name, category_pid
+        from newxton_companywebsite.nxt_content_category
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="categoryName != null and categoryName != ''">
+                and category_name = #{categoryName}
+            </if>
+            <if test="categoryPid != null">
+                and category_pid = #{categoryPid}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into newxton_companywebsite.nxt_content_category(category_name, category_pid)
+        values (#{categoryName}, #{categoryPid})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update newxton_companywebsite.nxt_content_category
+        <set>
+            <if test="categoryName != null and categoryName != ''">
+                category_name = #{categoryName},
+            </if>
+            <if test="categoryPid != null">
+                category_pid = #{categoryPid},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from newxton_companywebsite.nxt_content_category where id = #{id}
+    </delete>
+
+</mapper>
