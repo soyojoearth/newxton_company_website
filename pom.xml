@@ -47,6 +47,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.68</version>
+        </dependency>
+
         <!--阿里巴巴连接池-->
 <!--        <dependency>-->
 <!--            <groupId>com.alibaba</groupId>-->

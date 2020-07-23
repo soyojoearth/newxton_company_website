@@ -1,10 +1,18 @@
 package com.newxton.companywebsite.interceptor;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.newxton.companywebsite.entity.NxtUser;
+import com.newxton.companywebsite.service.NxtUserService;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author soyojo.earth@gmail.com
@@ -14,8 +22,46 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class NxtAdminInterceptor extends HandlerInterceptorAdapter {
 
+    @Resource
+    private NxtUserService nxtUserService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        Map<String,Object> errorResult = new HashMap<>();
+        errorResult.put("status",403);
+        errorResult.put("message","未登录");
+
+
+        String user_id = request.getHeader("user_id");
+
+        String token = request.getHeader("token");
+
+        if (user_id == null || token == null){
+            sendJsonMessage(response,errorResult);
+            return false;
+        }
+
+        if (token.length() == 0 || user_id.length() == 0){
+            //校验不通过
+            sendJsonMessage(response,errorResult);
+            return false;
+        }
+
+        NxtUser user = nxtUserService.queryById(Long.valueOf(user_id));
+
+        if (user == null){
+            //校验不通过
+            sendJsonMessage(response,errorResult);
+            return false;
+        }
+        else {
+            if (!user.getToken().equals(token)){
+                //校验不通过
+                sendJsonMessage(response,errorResult);
+                return false;
+            }
+        }
 
         return super.preHandle(request, response, handler);
     }
@@ -30,6 +76,23 @@ public class NxtAdminInterceptor extends HandlerInterceptorAdapter {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 
         super.afterCompletion(request, response, handler, ex);
+    }
+
+
+
+    /**
+     * 将某个对象转换成json格式并发送到客户端
+     * @param response
+     * @param obj
+     * @throws Exception
+     */
+    public void sendJsonMessage(HttpServletResponse response, Object obj) throws Exception {
+        response.setContentType("application/json; charset=utf-8");
+        PrintWriter writer = response.getWriter();
+        writer.print(JSONObject.toJSONString(obj, SerializerFeature.WriteMapNullValue,
+                SerializerFeature.WriteDateUseDateFormat));
+        writer.close();
+        response.flushBuffer();
     }
 
 }

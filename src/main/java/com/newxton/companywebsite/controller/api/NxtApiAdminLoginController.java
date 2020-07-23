@@ -64,11 +64,9 @@ public class NxtApiAdminLoginController {
         String newToken = getRandomString(32);
         newToken = DigestUtils.md5Hex(newToken).toLowerCase();
 
-        //更新token单个字段
-        NxtUser userOfnewToken = new NxtUser();
-        userOfnewToken.setId(user.getId());
-        userOfnewToken.setToken(newToken);
-        nxtUserService.update(userOfnewToken);
+        //更新token
+        user.setToken(newToken);
+        nxtUserService.update(user);
 
         result.put("token",newToken);
 
