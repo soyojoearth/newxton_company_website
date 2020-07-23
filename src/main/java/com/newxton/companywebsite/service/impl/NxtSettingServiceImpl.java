@@ -20,6 +20,16 @@ public class NxtSettingServiceImpl implements NxtSettingService {
     private NxtSettingDao nxtSettingDao;
 
     /**
+     * 通过key查询单条数据
+     *
+     * @param settingKey 字符串唯一key
+     * @return 实例对象
+     */
+    public NxtSetting queryBySettingKey(String settingKey){
+        return this.nxtSettingDao.queryBySettingKey(settingKey);
+    }
+
+    /**
      * 通过ID查询单条数据
      *
      * @param id 主键

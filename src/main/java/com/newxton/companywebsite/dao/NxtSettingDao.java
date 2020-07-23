@@ -13,6 +13,14 @@ import java.util.List;
 public interface NxtSettingDao {
 
     /**
+     * 通过key查询单条数据
+     *
+     * @param settingKey 字符串唯一key
+     * @return 实例对象
+     */
+    NxtSetting queryBySettingKey(String settingKey);
+
+    /**
      * 通过ID查询单条数据
      *
      * @param id 主键

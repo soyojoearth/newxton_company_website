@@ -12,6 +12,14 @@
     </resultMap>
 
     <!--查询单个-->
+    <select id="queryBySettingKey" resultMap="BaseResultMap">
+        select
+          id, setting_key, setting_value, setting_name, dateline_updated
+        from newxton_companywebsite.nxt_setting
+        where setting_key = #{settingKey} limit 1
+    </select>
+
+    <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
           id, setting_key, setting_value, setting_name, dateline_updated
