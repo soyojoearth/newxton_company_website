@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * @author soyojo.earth@gmail.com
@@ -17,30 +16,28 @@ import java.util.Random;
  * @github https://github.com/soyojoearth/newxton_company_website
  */
 @RestController
-public class NxtApiAdminBlockUserController {
-
-
+public class NxtApiAdminResetUserTypeController {
     @Resource
     private NxtUserService nxtUserService;
 
-    @RequestMapping(value = "/api/admin/block_user", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/admin/reset_user_type", method = RequestMethod.POST)
     public Map<String, Object> index(
             @RequestHeader("user_id") Long adminUserId,
-            @RequestParam(value = "block_user_id", required = false) Long blockUserId,
-            @RequestParam(value = "is_block", required = false) Long isBlock
-                                     ) {
+            @RequestParam(value = "reset_user_id", required = false) Long resetUserId,
+            @RequestParam(value = "reset_user_type", required = false) Integer resetUserType
+    ) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
 
-        if (blockUserId == null || isBlock == null){
+        if (resetUserId == null || resetUserType == null){
             result.put("status",52);
             result.put("message","参数错误");
             return result;
         }
 
-        NxtUser user = nxtUserService.queryById(blockUserId);
+        NxtUser user = nxtUserService.queryById(resetUserId);
 
         if (user == null){
             result.put("status",44);
@@ -55,17 +52,17 @@ public class NxtApiAdminBlockUserController {
             return result;
         }
 
-        String newToken = getRandomString(32);
-        newToken = DigestUtils.md5Hex(newToken).toLowerCase();
-
-        if (isBlock.equals(1L)) {
-            //拉黑，并且踢下线
-            user.setStatus(-1);
-            user.setToken(newToken);
+        if (resetUserType.equals(1)) {
+            //设为超级管理员
+            user.setType(1);
         }
-        if (isBlock.equals(0L))  {
-            //解除拉黑
-            user.setStatus(0);
+        if (resetUserType.equals(2))  {
+            //设为小编
+            user.setType(2);
+        }
+        if (resetUserType.equals(0))  {
+            //设为只读访客
+            user.setType(0);
         }
 
         //更新
@@ -74,21 +71,4 @@ public class NxtApiAdminBlockUserController {
         return result;
 
     }
-
-    /**
-     * 获取随机字符串
-     * @param length
-     * @return
-     */
-    public String getRandomString(int length){
-        String str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_";
-        Random random=new Random();
-        StringBuffer buffet=new StringBuffer();
-        for(int i=0;i<length;i++){
-            int number=random.nextInt(str.length()-1);
-            buffet.append(str.charAt(number));
-        }
-        return buffet.toString();
-    }
-
 }
