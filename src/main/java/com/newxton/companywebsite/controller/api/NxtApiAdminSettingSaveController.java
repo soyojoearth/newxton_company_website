@@ -47,6 +47,7 @@ public class NxtApiAdminSettingSaveController {
         }
 
         setting.setSettingValue(settingValue);
+        setting.setDatelineUpdated(System.currentTimeMillis());
 
         nxtSettingService.update(setting);
 

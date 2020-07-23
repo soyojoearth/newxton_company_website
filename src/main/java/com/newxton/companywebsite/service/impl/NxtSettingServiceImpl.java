@@ -12,7 +12,7 @@ import java.util.List;
  * (NxtSetting)表服务实现类
  *
  * @author makejava
- * @since 2020-07-23 09:25:30
+ * @since 2020-07-23 19:30:08
  */
 @Service("nxtSettingService")
 public class NxtSettingServiceImpl implements NxtSettingService {
@@ -50,6 +50,15 @@ public class NxtSettingServiceImpl implements NxtSettingService {
     @Override
     public List<NxtSetting> queryAllByLimit(int offset, int limit) {
         return this.nxtSettingDao.queryAllByLimit(offset, limit);
+    }
+
+    /**
+     * 通过实体作为筛选条件查询
+     *
+     * @return 对象列表
+     */
+    public List<NxtSetting> queryAll(NxtSetting setting) {
+        return this.nxtSettingDao.queryAll(setting);
     }
 
     /**

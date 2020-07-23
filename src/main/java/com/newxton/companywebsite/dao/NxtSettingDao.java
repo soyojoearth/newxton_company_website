@@ -8,7 +8,7 @@ import java.util.List;
  * (NxtSetting)表数据库访问层
  *
  * @author makejava
- * @since 2020-07-23 09:25:30
+ * @since 2020-07-23 19:30:08
  */
 public interface NxtSettingDao {
 

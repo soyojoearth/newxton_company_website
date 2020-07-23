@@ -7,7 +7,7 @@ import java.util.List;
  * (NxtSetting)表服务接口
  *
  * @author makejava
- * @since 2020-07-23 09:25:30
+ * @since 2020-07-23 19:30:08
  */
 public interface NxtSettingService {
 
@@ -35,6 +35,14 @@ public interface NxtSettingService {
      * @return 对象列表
      */
     List<NxtSetting> queryAllByLimit(int offset, int limit);
+
+    /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtSetting 实例对象
+     * @return 对象列表
+     */
+    List<NxtSetting> queryAll(NxtSetting nxtSetting);
 
     /**
      * 新增数据

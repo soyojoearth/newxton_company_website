@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtSetting)实体类
  *
  * @author makejava
- * @since 2020-07-23 09:25:30
+ * @since 2020-07-23 19:30:08
  */
 public class NxtSetting implements Serializable {
-    private static final long serialVersionUID = 289815025441298515L;
+    private static final long serialVersionUID = -15725629083862033L;
     
     private Long id;
     
@@ -18,6 +18,8 @@ public class NxtSetting implements Serializable {
     private String settingValue;
     
     private String settingName;
+    
+    private String displayType;
     
     private Long datelineUpdated;
 
@@ -52,6 +54,14 @@ public class NxtSetting implements Serializable {
 
     public void setSettingName(String settingName) {
         this.settingName = settingName;
+    }
+
+    public String getDisplayType() {
+        return displayType;
+    }
+
+    public void setDisplayType(String displayType) {
+        this.displayType = displayType;
     }
 
     public Long getDatelineUpdated() {

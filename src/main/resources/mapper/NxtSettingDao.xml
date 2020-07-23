@@ -8,13 +8,14 @@
         <result property="settingKey" column="setting_key" jdbcType="VARCHAR"/>
         <result property="settingValue" column="setting_value" jdbcType="VARCHAR"/>
         <result property="settingName" column="setting_name" jdbcType="VARCHAR"/>
+        <result property="displayType" column="display_type" jdbcType="VARCHAR"/>
         <result property="datelineUpdated" column="dateline_updated" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryBySettingKey" resultMap="BaseResultMap">
         select
-          id, setting_key, setting_value, setting_name, dateline_updated
+          id, setting_key, setting_value, setting_name, display_type, dateline_updated
         from newxton_companywebsite.nxt_setting
         where setting_key = #{settingKey} limit 1
     </select>
@@ -22,7 +23,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, setting_key, setting_value, setting_name, dateline_updated
+          id, setting_key, setting_value, setting_name, display_type, dateline_updated
         from newxton_companywebsite.nxt_setting
         where id = #{id}
     </select>
@@ -30,7 +31,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, setting_key, setting_value, setting_name, dateline_updated
+          id, setting_key, setting_value, setting_name, display_type, dateline_updated
         from newxton_companywebsite.nxt_setting
         limit #{offset}, #{limit}
     </select>
@@ -38,7 +39,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, setting_key, setting_value, setting_name, dateline_updated
+          id, setting_key, setting_value, setting_name, display_type, dateline_updated
         from newxton_companywebsite.nxt_setting
         <where>
             <if test="id != null">
@@ -53,6 +54,9 @@
             <if test="settingName != null and settingName != ''">
                 and setting_name = #{settingName}
             </if>
+            <if test="displayType != null and displayType != ''">
+                and display_type = #{displayType}
+            </if>
             <if test="datelineUpdated != null">
                 and dateline_updated = #{datelineUpdated}
             </if>
@@ -61,8 +65,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into newxton_companywebsite.nxt_setting(setting_key, setting_value, setting_name, dateline_updated)
-        values (#{settingKey}, #{settingValue}, #{settingName}, #{datelineUpdated})
+        insert into newxton_companywebsite.nxt_setting(setting_key, setting_value, setting_name, display_type, dateline_updated)
+        values (#{settingKey}, #{settingValue}, #{settingName}, #{displayType}, #{datelineUpdated})
     </insert>
 
     <!--通过主键修改数据-->
@@ -77,6 +81,9 @@
             </if>
             <if test="settingName != null and settingName != ''">
                 setting_name = #{settingName},
+            </if>
+            <if test="displayType != null and displayType != ''">
+                display_type = #{displayType},
             </if>
             <if test="datelineUpdated != null">
                 dateline_updated = #{datelineUpdated},
