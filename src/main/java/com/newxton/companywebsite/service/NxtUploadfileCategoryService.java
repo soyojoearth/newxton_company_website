@@ -29,6 +29,14 @@ public interface NxtUploadfileCategoryService {
     List<NxtUploadfileCategory> queryAllByLimit(int offset, int limit);
 
     /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtUploadfileCategory 实例对象
+     * @return 对象列表
+     */
+    List<NxtUploadfileCategory> queryAll(NxtUploadfileCategory nxtUploadfileCategory);
+
+    /**
      * 新增数据
      *
      * @param nxtUploadfileCategory 实例对象

@@ -43,6 +43,16 @@ public class NxtUploadfileCategoryServiceImpl implements NxtUploadfileCategorySe
     }
 
     /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtUploadfileCategory 实例对象
+     * @return 对象列表
+     */
+    public List<NxtUploadfileCategory> queryAll(NxtUploadfileCategory nxtUploadfileCategory){
+        return this.nxtUploadfileCategoryDao.queryAll(nxtUploadfileCategory);
+    }
+
+    /**
      * 新增数据
      *
      * @param nxtUploadfileCategory 实例对象
