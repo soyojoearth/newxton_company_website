@@ -23,13 +23,19 @@ public class NxtApiAdminResetUserPwdController {
     private NxtUserService nxtUserService;
 
     @RequestMapping(value = "/api/admin/reset_user_pwd", method = RequestMethod.POST)
-    public Map<String, Object> index(@RequestParam("reset_user_id") Long resetUserId,
-                                     @RequestParam(value="reset_user_pwd", required=false) String resetUserPwd
+    public Map<String, Object> index(@RequestParam(value = "reset_user_id", required=false) Long resetUserId,
+                                     @RequestParam(value = "reset_user_pwd", required=false) String resetUserPwd
     ) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
+
+        if (resetUserId == null){
+            result.put("status",52);
+            result.put("message","参数错误");
+            return result;
+        }
 
         NxtUser user = nxtUserService.queryById(resetUserId);
 

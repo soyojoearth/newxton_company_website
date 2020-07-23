@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -21,61 +20,50 @@ import java.util.Random;
  * @github https://github.com/soyojoearth/newxton_company_website
  */
 @RestController
-public class NxtApiAdminLoginController {
+public class NxtApiAdminBlockUserController {
+
 
     @Resource
     private NxtUserService nxtUserService;
 
+    @RequestMapping(value = "/api/admin/block_user", method = RequestMethod.POST)
+    public Map<String, Object> index(@RequestParam(value = "block_user_id", required = false) Long blockUserId,
+                                     @RequestParam(value = "is_block", required = false) Long isBlock
+                                     ) {
 
-    @RequestMapping(value = "/api/admin/login", method = RequestMethod.POST)
-    public Map<String,Object> index(@RequestParam(value="username", required=false) String username,
-                                    @RequestParam(value="password", required=false) String password
-                                    ) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", 0);
+        result.put("message", "");
 
-        Map<String,Object> result = new HashMap<>();
-        result.put("status",0);
-        result.put("message","");
-
-
-        if (username == null || password == null){
+        if (blockUserId == null || isBlock == null){
             result.put("status",52);
             result.put("message","参数错误");
             return result;
         }
 
-        username = username.trim();
+        NxtUser user = nxtUserService.queryById(blockUserId);
 
-        NxtUser user = nxtUserService.queryByUsername(username);
         if (user == null){
             result.put("status",44);
             result.put("message","用户不存在");
             return result;
         }
 
-        String salt = user.getSalt();
-        String pwdSalt = password+salt;
-        password = DigestUtils.md5Hex(pwdSalt).toLowerCase();
-
-        if (user.getPassword() == null || !user.getPassword().equals(password)){
-            result.put("status",42);
-            result.put("message","密码错误");
-            return result;
-        }
-
-        if (user.getStatus().equals(-1)){
-            result.put("status",-1);
-            result.put("message","禁止登录");
-            return result;
-        }
-
         String newToken = getRandomString(32);
         newToken = DigestUtils.md5Hex(newToken).toLowerCase();
 
-        //更新token
-        user.setToken(newToken);
-        nxtUserService.update(user);
+        if (isBlock.equals(1L)) {
+            //拉黑，并且踢下线
+            user.setStatus(-1);
+            user.setToken(newToken);
+        }
+        if (isBlock.equals(0L))  {
+            //解除拉黑
+            user.setStatus(0);
+        }
 
-        result.put("token",newToken);
+        //更新
+        nxtUserService.update(user);
 
         return result;
 
