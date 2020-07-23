@@ -13,6 +13,14 @@
         <result property="type" column="type" jdbcType="INTEGER"/>
     </resultMap>
 
+    <!--通过username查询单个-->
+    <select id="queryByUsername" resultMap="BaseResultMap">
+        select
+          id, username, password, salt, token, status, type
+        from newxton_companywebsite.nxt_user
+        where username = #{username} limit 1
+    </select>
+
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select

@@ -12,12 +12,22 @@ import java.util.List;
  * (NxtUser)表服务实现类
  *
  * @author makejava
- * @since 2020-07-22 15:23:15
+ * @since 2020-07-23 09:25:55
  */
 @Service("nxtUserService")
 public class NxtUserServiceImpl implements NxtUserService {
     @Resource
     private NxtUserDao nxtUserDao;
+
+    /**
+     * 通过username查询单条数据
+     *
+     * @param username 用户名
+     * @return 实例对象
+     */
+    public NxtUser queryByUsername(String username){
+        return this.nxtUserDao.queryByUsername(username);
+    }
 
     /**
      * 通过ID查询单条数据

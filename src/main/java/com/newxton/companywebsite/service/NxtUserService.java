@@ -7,9 +7,17 @@ import java.util.List;
  * (NxtUser)表服务接口
  *
  * @author makejava
- * @since 2020-07-22 15:23:14
+ * @since 2020-07-23 09:25:55
  */
 public interface NxtUserService {
+
+    /**
+     * 通过username查询
+     *
+     * @param username 用户名
+     * @return 实例对象
+     */
+    NxtUser queryByUsername(String username);
 
     /**
      * 通过ID查询单条数据

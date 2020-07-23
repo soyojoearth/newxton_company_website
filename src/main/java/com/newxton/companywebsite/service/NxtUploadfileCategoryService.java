@@ -7,7 +7,7 @@ import java.util.List;
  * (NxtUploadfileCategory)表服务接口
  *
  * @author makejava
- * @since 2020-07-22 15:23:31
+ * @since 2020-07-23 09:25:47
  */
 public interface NxtUploadfileCategoryService {
 

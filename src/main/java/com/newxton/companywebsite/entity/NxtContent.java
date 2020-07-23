@@ -6,18 +6,18 @@ import java.io.Serializable;
  * (NxtContent)实体类
  *
  * @author makejava
- * @since 2020-07-22 15:24:23
+ * @since 2020-07-23 09:24:12
  */
 public class NxtContent implements Serializable {
-    private static final long serialVersionUID = 787591561971152003L;
+    private static final long serialVersionUID = 767880652293491476L;
     
     private Long id;
     
     private Integer contentType;
     
-    private String pageKey;
+    private String webKey;
     
-    private String pageTitle;
+    private String webTitle;
     
     private Long categoryId;
     
@@ -50,20 +50,20 @@ public class NxtContent implements Serializable {
         this.contentType = contentType;
     }
 
-    public String getPageKey() {
-        return pageKey;
+    public String getWebKey() {
+        return webKey;
     }
 
-    public void setPageKey(String pageKey) {
-        this.pageKey = pageKey;
+    public void setWebKey(String webKey) {
+        this.webKey = webKey;
     }
 
-    public String getPageTitle() {
-        return pageTitle;
+    public String getWebTitle() {
+        return webTitle;
     }
 
-    public void setPageTitle(String pageTitle) {
-        this.pageTitle = pageTitle;
+    public void setWebTitle(String webTitle) {
+        this.webTitle = webTitle;
     }
 
     public Long getCategoryId() {

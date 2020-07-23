@@ -7,7 +7,7 @@ import java.util.List;
  * (NxtSetting)表服务接口
  *
  * @author makejava
- * @since 2020-07-22 15:23:53
+ * @since 2020-07-23 09:25:30
  */
 public interface NxtSettingService {
 

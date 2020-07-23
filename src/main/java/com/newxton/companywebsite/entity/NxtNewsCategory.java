@@ -3,13 +3,13 @@ package com.newxton.companywebsite.entity;
 import java.io.Serializable;
 
 /**
- * (NxtContentCategory)实体类
+ * (NxtNewsCategory)实体类
  *
  * @author makejava
- * @since 2020-07-22 15:24:14
+ * @since 2020-07-23 09:25:13
  */
-public class NxtContentCategory implements Serializable {
-    private static final long serialVersionUID = -65859599285996789L;
+public class NxtNewsCategory implements Serializable {
+    private static final long serialVersionUID = -39894514990635166L;
     
     private Long id;
     

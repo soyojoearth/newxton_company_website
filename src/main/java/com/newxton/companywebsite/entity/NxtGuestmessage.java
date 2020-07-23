@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtGuestmessage)实体类
  *
  * @author makejava
- * @since 2020-07-22 15:24:06
+ * @since 2020-07-23 09:24:31
  */
 public class NxtGuestmessage implements Serializable {
-    private static final long serialVersionUID = -35713873290650456L;
+    private static final long serialVersionUID = -40051767999543023L;
     
     private Long id;
     

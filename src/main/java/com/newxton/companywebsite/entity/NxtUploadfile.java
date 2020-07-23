@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtUploadfile)实体类
  *
  * @author makejava
- * @since 2020-07-22 15:23:46
+ * @since 2020-07-23 09:25:37
  */
 public class NxtUploadfile implements Serializable {
-    private static final long serialVersionUID = -29669339640837893L;
+    private static final long serialVersionUID = 628106893689284749L;
     
     private Long id;
     
@@ -30,6 +30,10 @@ public class NxtUploadfile implements Serializable {
     private Long filesize;
     
     private Long datelineUpdate;
+    
+    private String netdiskUrl;
+    
+    private String netdiskPwd;
 
 
     public Long getId() {
@@ -110,6 +114,22 @@ public class NxtUploadfile implements Serializable {
 
     public void setDatelineUpdate(Long datelineUpdate) {
         this.datelineUpdate = datelineUpdate;
+    }
+
+    public String getNetdiskUrl() {
+        return netdiskUrl;
+    }
+
+    public void setNetdiskUrl(String netdiskUrl) {
+        this.netdiskUrl = netdiskUrl;
+    }
+
+    public String getNetdiskPwd() {
+        return netdiskPwd;
+    }
+
+    public void setNetdiskPwd(String netdiskPwd) {
+        this.netdiskPwd = netdiskPwd;
     }
 
 }

@@ -14,12 +14,14 @@
         <result property="urlpath" column="urlpath" jdbcType="VARCHAR"/>
         <result property="filesize" column="filesize" jdbcType="INTEGER"/>
         <result property="datelineUpdate" column="dateline_update" jdbcType="INTEGER"/>
+        <result property="netdiskUrl" column="netdisk_url" jdbcType="VARCHAR"/>
+        <result property="netdiskPwd" column="netdisk_pwd" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update
+          id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd
         from newxton_companywebsite.nxt_uploadfile
         where id = #{id}
     </select>
@@ -27,7 +29,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update
+          id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd
         from newxton_companywebsite.nxt_uploadfile
         limit #{offset}, #{limit}
     </select>
@@ -35,7 +37,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update
+          id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd
         from newxton_companywebsite.nxt_uploadfile
         <where>
             <if test="id != null">
@@ -68,13 +70,19 @@
             <if test="datelineUpdate != null">
                 and dateline_update = #{datelineUpdate}
             </if>
+            <if test="netdiskUrl != null and netdiskUrl != ''">
+                and netdisk_url = #{netdiskUrl}
+            </if>
+            <if test="netdiskPwd != null and netdiskPwd != ''">
+                and netdisk_pwd = #{netdiskPwd}
+            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into newxton_companywebsite.nxt_uploadfile(file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update)
-        values (#{fileLocation}, #{categoryId}, #{fileExt}, #{filenameSource}, #{filenameSaved}, #{filepath}, #{urlpath}, #{filesize}, #{datelineUpdate})
+        insert into newxton_companywebsite.nxt_uploadfile(file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd)
+        values (#{fileLocation}, #{categoryId}, #{fileExt}, #{filenameSource}, #{filenameSaved}, #{filepath}, #{urlpath}, #{filesize}, #{datelineUpdate}, #{netdiskUrl}, #{netdiskPwd})
     </insert>
 
     <!--通过主键修改数据-->
@@ -107,6 +115,12 @@
             </if>
             <if test="datelineUpdate != null">
                 dateline_update = #{datelineUpdate},
+            </if>
+            <if test="netdiskUrl != null and netdiskUrl != ''">
+                netdisk_url = #{netdiskUrl},
+            </if>
+            <if test="netdiskPwd != null and netdiskPwd != ''">
+                netdisk_pwd = #{netdiskPwd},
             </if>
         </set>
         where id = #{id}

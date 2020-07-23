@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtUploadfileCategory)实体类
  *
  * @author makejava
- * @since 2020-07-22 15:23:31
+ * @since 2020-07-23 09:25:47
  */
 public class NxtUploadfileCategory implements Serializable {
-    private static final long serialVersionUID = -29088063605844432L;
+    private static final long serialVersionUID = 765594253824063653L;
     
     private Long id;
     

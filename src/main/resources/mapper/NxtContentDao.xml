@@ -6,8 +6,8 @@
         <!--@Table nxt_content-->
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="contentType" column="content_type" jdbcType="INTEGER"/>
-        <result property="pageKey" column="page_key" jdbcType="VARCHAR"/>
-        <result property="pageTitle" column="page_title" jdbcType="VARCHAR"/>
+        <result property="webKey" column="web_key" jdbcType="VARCHAR"/>
+        <result property="webTitle" column="web_title" jdbcType="VARCHAR"/>
         <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
         <result property="contentTitle" column="content_title" jdbcType="VARCHAR"/>
         <result property="contentDetail" column="content_detail" jdbcType="VARCHAR"/>
@@ -20,7 +20,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, content_type, page_key, page_title, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
+          id, content_type, web_key, web_title, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
         from newxton_companywebsite.nxt_content
         where id = #{id}
     </select>
@@ -28,7 +28,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, content_type, page_key, page_title, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
+          id, content_type, web_key, web_title, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
         from newxton_companywebsite.nxt_content
         limit #{offset}, #{limit}
     </select>
@@ -36,7 +36,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, content_type, page_key, page_title, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
+          id, content_type, web_key, web_title, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
         from newxton_companywebsite.nxt_content
         <where>
             <if test="id != null">
@@ -45,11 +45,11 @@
             <if test="contentType != null">
                 and content_type = #{contentType}
             </if>
-            <if test="pageKey != null and pageKey != ''">
-                and page_key = #{pageKey}
+            <if test="webKey != null and webKey != ''">
+                and web_key = #{webKey}
             </if>
-            <if test="pageTitle != null and pageTitle != ''">
-                and page_title = #{pageTitle}
+            <if test="webTitle != null and webTitle != ''">
+                and web_title = #{webTitle}
             </if>
             <if test="categoryId != null">
                 and category_id = #{categoryId}
@@ -77,8 +77,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into newxton_companywebsite.nxt_content(content_type, page_key, page_title, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id)
-        values (#{contentType}, #{pageKey}, #{pageTitle}, #{categoryId}, #{contentTitle}, #{contentDetail}, #{datelineUpdate}, #{datelineCreate}, #{isRecommend}, #{sortId})
+        insert into newxton_companywebsite.nxt_content(content_type, web_key, web_title, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id)
+        values (#{contentType}, #{webKey}, #{webTitle}, #{categoryId}, #{contentTitle}, #{contentDetail}, #{datelineUpdate}, #{datelineCreate}, #{isRecommend}, #{sortId})
     </insert>
 
     <!--通过主键修改数据-->
@@ -88,11 +88,11 @@
             <if test="contentType != null">
                 content_type = #{contentType},
             </if>
-            <if test="pageKey != null and pageKey != ''">
-                page_key = #{pageKey},
+            <if test="webKey != null and webKey != ''">
+                web_key = #{webKey},
             </if>
-            <if test="pageTitle != null and pageTitle != ''">
-                page_title = #{pageTitle},
+            <if test="webTitle != null and webTitle != ''">
+                web_title = #{webTitle},
             </if>
             <if test="categoryId != null">
                 category_id = #{categoryId},
