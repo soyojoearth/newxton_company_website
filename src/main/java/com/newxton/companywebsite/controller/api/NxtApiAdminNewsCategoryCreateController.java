@@ -1,7 +1,7 @@
 package com.newxton.companywebsite.controller.api;
 
-import com.newxton.companywebsite.entity.NxtUploadfileCategory;
-import com.newxton.companywebsite.service.NxtUploadfileCategoryService;
+import com.newxton.companywebsite.entity.NxtNewsCategory;
+import com.newxton.companywebsite.service.NxtNewsCategoryService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,12 +18,12 @@ import java.util.Map;
  * @github https://github.com/soyojoearth/newxton_company_website
  */
 @RestController
-public class NxtApiAdminUploadfileCategoryCreateController {
+public class NxtApiAdminNewsCategoryCreateController {
 
     @Resource
-    private NxtUploadfileCategoryService nxtUploadfileCategoryService;
+    private NxtNewsCategoryService nxtNewsCategoryService;
 
-    @RequestMapping(value = "/api/admin/uploadfile_category/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/admin/news_category/create", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "category_name", required=false) String categoryName,
                                      @RequestParam(value = "category_pid", required=false) Long categoryPid
     ) {
@@ -43,7 +43,7 @@ public class NxtApiAdminUploadfileCategoryCreateController {
         }
 
         if (categoryPid > 0){
-            NxtUploadfileCategory parentCategory = nxtUploadfileCategoryService.queryById(categoryPid);
+            NxtNewsCategory parentCategory = nxtNewsCategoryService.queryById(categoryPid);
             if (parentCategory == null){
                 result.put("status", 47);
                 result.put("message", "没有对应的上级分类");
@@ -51,12 +51,12 @@ public class NxtApiAdminUploadfileCategoryCreateController {
             }
         }
 
-        NxtUploadfileCategory newCategory = new NxtUploadfileCategory();
+        NxtNewsCategory newCategory = new NxtNewsCategory();
         newCategory.setCategoryName(categoryName.trim());
         newCategory.setCategoryPid(categoryPid);
 
         //增加
-        NxtUploadfileCategory categoryCreated = nxtUploadfileCategoryService.insert(newCategory);
+        NxtNewsCategory categoryCreated = nxtNewsCategoryService.insert(newCategory);
 
         if (categoryCreated.getId() == null){
             result.put("status", 50);
