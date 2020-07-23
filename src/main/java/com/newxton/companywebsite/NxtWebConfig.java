@@ -6,6 +6,7 @@ import com.newxton.companywebsite.interceptor.NxtAdminWritePermissionInterceptor
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -33,11 +34,21 @@ public class NxtWebConfig implements WebMvcConfigurer {
     }
 
     @Override
+    public void configurePathMatch(PathMatchConfigurer configurer) {
+        //尾部斜杠
+        configurer.setUseTrailingSlashMatch(false);/*严格分辨尾部斜杠：有斜杠和没斜杠不属于同一路径*/
+    }
+
+    @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-
         /*管理后台需要已登录才能操作的api*/
-        registry.addInterceptor(getAdminInterceptor()).addPathPatterns("/api/admin/*").excludePathPatterns("/api/admin/login");
+        registry.addInterceptor(getAdminInterceptor())
+                .addPathPatterns("/api/admin/*")
+                .addPathPatterns("/api/admin/*/*")
+                .addPathPatterns("/api/admin/*/*/*")
+                .excludePathPatterns("/api/admin/login");
+        /*以上这个Interceptor一定要放在最前面，因为下面的几个Intercepter不再检查登录状态*/
 
         /*需要超级管理员权限的api*/
         registry.addInterceptor(getAdminSupperPermissionInterceptor())
