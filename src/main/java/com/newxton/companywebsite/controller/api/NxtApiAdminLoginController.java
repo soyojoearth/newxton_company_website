@@ -53,7 +53,8 @@ public class NxtApiAdminLoginController {
         }
 
         String salt = user.getSalt();
-        password = DigestUtils.md5Hex(password+salt).toLowerCase();
+        String pwdSalt = password+salt;
+        password = DigestUtils.md5Hex(pwdSalt).toLowerCase();
 
         if (user.getPassword() == null || !user.getPassword().equals(password)){
             result.put("status",42);
