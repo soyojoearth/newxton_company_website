@@ -1,6 +1,8 @@
 package com.newxton.companywebsite;
 
 import com.newxton.companywebsite.interceptor.NxtAdminInterceptor;
+import com.newxton.companywebsite.interceptor.NxtAdminSupperPermissionInterceptor;
+import com.newxton.companywebsite.interceptor.NxtAdminWritePermissionInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -16,17 +18,56 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class NxtWebConfig implements WebMvcConfigurer {
 
     @Bean
-    public NxtAdminInterceptor permissionInterceptorAdminInterceptor() {
+    public NxtAdminInterceptor getAdminInterceptor() {
         return new NxtAdminInterceptor();
+    }
+
+    @Bean
+    public NxtAdminSupperPermissionInterceptor getAdminSupperPermissionInterceptor() {
+        return new NxtAdminSupperPermissionInterceptor();
+    }
+
+    @Bean
+    public NxtAdminWritePermissionInterceptor getAdminWritePermissionInterceptor() {
+        return new NxtAdminWritePermissionInterceptor();
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
 
-        /*后台管理Api的token权限检查*/
-        registry.addInterceptor(permissionInterceptorAdminInterceptor()).addPathPatterns("/api/admin/*").excludePathPatterns("/api/admin/login");
+        /*管理后台需要已登录才能操作的api*/
+        registry.addInterceptor(getAdminInterceptor()).addPathPatterns("/api/admin/*").excludePathPatterns("/api/admin/login");
 
+        /*需要超级管理员权限的api*/
+        registry.addInterceptor(getAdminSupperPermissionInterceptor())
+                .addPathPatterns("/api/admin/reset_user_pwd")
+                .addPathPatterns("/api/admin/block_user")
+                .addPathPatterns("/api/admin/reset_user_type")
+                .addPathPatterns("/api/admin/create_user")
+                .addPathPatterns("/api/admin/setting_save")
+        ;
+
+        /*只需要编辑管理权限的api*/
+        registry.addInterceptor(getAdminWritePermissionInterceptor())
+                .addPathPatterns("/api/admin/user_list")
+                .addPathPatterns("/api/admin/uploadfile_category/create")
+                .addPathPatterns("/api/admin/news_category/create")
+                .addPathPatterns("/api/admin/uploadfile_category/delete")
+                .addPathPatterns("/api/admin/news_category/delete")
+                .addPathPatterns("/api/admin/news/create")
+                .addPathPatterns("/api/admin/news/update")
+                .addPathPatterns("/api/admin/news/delete")
+                .addPathPatterns("/api/admin/news/recommend")
+                .addPathPatterns("/api/admin/news/order_swap")
+                .addPathPatterns("/api/admin/web_content/update")
+                .addPathPatterns("/api/admin/filemanage/update")
+                .addPathPatterns("/api/admin/filemanage/delete")
+                .addPathPatterns("/api/admin/guestmessage/delete")
+        ;
+
+        /*仅需要只读管理权限的api*/
+        //剩下的api就只读了
 
     }
 

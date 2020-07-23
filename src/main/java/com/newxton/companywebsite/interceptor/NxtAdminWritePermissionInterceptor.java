@@ -16,11 +16,11 @@ import java.util.Map;
 
 /**
  * @author soyojo.earth@gmail.com
- * @time 2020/7/21
+ * @time 2020/7/23
  * @address Shenzhen, China
  * @github https://github.com/soyojoearth/newxton_company_website
  */
-public class NxtAdminInterceptor extends HandlerInterceptorAdapter {
+public class NxtAdminWritePermissionInterceptor extends HandlerInterceptorAdapter {
 
     @Resource
     private NxtUserService nxtUserService;
@@ -29,45 +29,18 @@ public class NxtAdminInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         Map<String,Object> errorResult = new HashMap<>();
-        errorResult.put("status",41);
-        errorResult.put("message","未登录");
-
+        errorResult.put("status",43);
+        errorResult.put("message","权限不够:需要有编辑权限");
 
         String user_id = request.getHeader("user_id");
-
-        String token = request.getHeader("token");
-
-        if (user_id == null || token == null){
-            sendJsonMessage(response,errorResult);
-            return false;
-        }
-
-        if (token.length() == 0 || user_id.length() == 0){
-            //校验不通过
-            sendJsonMessage(response,errorResult);
-            return false;
-        }
-
         NxtUser user = nxtUserService.queryById(Long.valueOf(user_id));
 
-        if (user == null){
-            //校验不通过
+        /*NxtAdminInterceptor已经检查过登录状态了，这里就不再重复检查*/
+
+        if (!user.getType().equals(1) && !user.getType().equals(2)){
+            //检查不通过
             sendJsonMessage(response,errorResult);
             return false;
-        }
-        else {
-            if (!user.getToken().equals(token)){
-                //校验不通过
-                sendJsonMessage(response,errorResult);
-                return false;
-            }
-            if (user.getStatus().equals(-1)){
-                //校验不通过
-                errorResult.put("status",-1);
-                errorResult.put("message","已被禁止");
-                sendJsonMessage(response,errorResult);
-                return false;
-            }
         }
 
         return super.preHandle(request, response, handler);
