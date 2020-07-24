@@ -3,6 +3,7 @@ package com.newxton.companywebsite.service.impl;
 import com.newxton.companywebsite.entity.NxtContent;
 import com.newxton.companywebsite.dao.NxtContentDao;
 import com.newxton.companywebsite.service.NxtContentService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -40,6 +41,17 @@ public class NxtContentServiceImpl implements NxtContentService {
     @Override
     public List<NxtContent> queryAllByLimit(int offset, int limit) {
         return this.nxtContentDao.queryAllByLimit(offset, limit);
+    }
+
+    /**
+     * 通过筛选条件查询指定行数据
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    public List<NxtContent> selectAllByLimit(@Param("offset") int offset, @Param("limit") int limit,
+                                             @Param("contentType") Integer contentType, @Param("categoryId") Long categoryId){
+        return this.nxtContentDao.selectAllByLimit(offset, limit, contentType, categoryId);
     }
 
     /**

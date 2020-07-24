@@ -1,6 +1,8 @@
 package com.newxton.companywebsite.service;
 
 import com.newxton.companywebsite.entity.NxtContent;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -27,6 +29,15 @@ public interface NxtContentService {
      * @return 对象列表
      */
     List<NxtContent> queryAllByLimit(int offset, int limit);
+
+    /**
+     * 通过筛选条件查询指定行数据
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    List<NxtContent> selectAllByLimit(@Param("offset") int offset, @Param("limit") int limit,
+                                      @Param("contentType") Integer contentType, @Param("categoryId") Long categoryId);
 
     /**
      * 通过实体作为筛选条件查询Count

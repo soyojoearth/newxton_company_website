@@ -33,6 +33,23 @@
         limit #{offset}, #{limit}
     </select>
 
+    <!--通过实体作为筛选条件查询指定行数据-->
+    <select id="selectAllByLimit" resultMap="BaseResultMap">
+        select
+          id, content_type, web_key, web_title, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
+        from newxton_companywebsite.nxt_content
+        <where>
+            <if test="contentType != null">
+                and content_type = #{contentType}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+        </where>
+        order by sort_id desc
+        limit #{offset}, #{limit}
+    </select>
+
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
