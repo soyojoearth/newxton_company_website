@@ -60,7 +60,7 @@ public class NxtApiAdminNewsListController {
             item.put("datelineUpdateReadable",sdf.format(new Date(content.getDatelineUpdate())));
             item.put("datelineCreate",content.getDatelineCreate());
             item.put("datelineCreateReadable",sdf.format(new Date(content.getDatelineCreate())));
-            item.put("isRecommend",content.getDatelineCreate());
+            item.put("isRecommend",content.getIsRecommend());
             listResult.add(item);
         }
         result.put("list",listResult);
