@@ -1,4 +1,4 @@
-package com.newxton.companywebsite.controller.api;
+package com.newxton.companywebsite.controller.api.admin;
 
 import com.newxton.companywebsite.entity.NxtUser;
 import com.newxton.companywebsite.service.NxtUserService;
@@ -17,28 +17,43 @@ import java.util.Random;
  * @github https://github.com/soyojoearth/newxton_company_website
  */
 @RestController
-public class NxtApiAdminLogoutController {
+public class NxtApiAdminResetUserPwdController {
 
     @Resource
     private NxtUserService nxtUserService;
 
-
-    @RequestMapping(value = "/api/admin/logout", method = RequestMethod.POST)
-    public Map<String, Object> index(@RequestHeader("user_id") Long user_id) {
+    @RequestMapping(value = "/api/admin/reset_user_pwd", method = RequestMethod.POST)
+    public Map<String, Object> index(@RequestParam(value = "reset_user_id", required=false) Long resetUserId,
+                                     @RequestParam(value = "reset_user_pwd", required=false) String resetUserPwd
+    ) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
 
-        //注销就是让旧token失效
+        if (resetUserId == null){
+            result.put("status",52);
+            result.put("message","参数错误");
+            return result;
+        }
 
-        NxtUser user = nxtUserService.queryById(user_id);
+        NxtUser user = nxtUserService.queryById(resetUserId);
 
-        String newToken = getRandomString(32);
-        newToken = DigestUtils.md5Hex(newToken).toLowerCase();
+        if (user == null){
+            result.put("status",44);
+            result.put("message","用户不存在");
+            return result;
+        }
 
-        //更新token
-        user.setToken(newToken);
+        //和salt一起改
+        String saltNew = getRandomString(32);
+        String pwdSaltNew = resetUserPwd+saltNew;
+        resetUserPwd = DigestUtils.md5Hex(pwdSaltNew).toLowerCase();
+
+        user.setSalt(saltNew);
+        user.setPassword(resetUserPwd);
+
+        //更新
         nxtUserService.update(user);
 
         return result;

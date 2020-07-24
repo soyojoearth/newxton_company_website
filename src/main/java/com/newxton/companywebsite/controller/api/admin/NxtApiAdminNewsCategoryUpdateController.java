@@ -1,4 +1,4 @@
-package com.newxton.companywebsite.controller.api;
+package com.newxton.companywebsite.controller.api.admin;
 
 import com.newxton.companywebsite.entity.NxtNewsCategory;
 import com.newxton.companywebsite.service.NxtNewsCategoryService;

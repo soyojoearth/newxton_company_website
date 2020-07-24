@@ -1,4 +1,4 @@
-package com.newxton.companywebsite.controller.api;
+package com.newxton.companywebsite.controller.api.admin;
 
 import com.newxton.companywebsite.entity.NxtContent;
 import com.newxton.companywebsite.service.NxtContentService;
@@ -18,15 +18,13 @@ import java.util.Map;
  * @github https://github.com/soyojoearth/newxton_company_website
  */
 @RestController
-public class NxtApiAdminNewsRecommendController {
+public class NxtApiAdminNewsDeleteController {
 
     @Resource
     private NxtContentService nxtContentService;
 
-    @RequestMapping(value = "/api/admin/news/recommend", method = RequestMethod.POST)
-    public Map<String, Object> index(@RequestParam(value = "id", required=false) Long id,
-                                     @RequestParam(value = "recommend", required=false) Integer recommend
-                                     ) {
+    @RequestMapping(value = "/api/admin/news/delete", method = RequestMethod.POST)
+    public Map<String, Object> index(@RequestParam(value = "id", required=false) Long id) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
@@ -38,7 +36,7 @@ public class NxtApiAdminNewsRecommendController {
             return result;
         }
 
-        /*先查询*/
+        /*先查询，再删除*/
         NxtContent content = nxtContentService.queryById(id);
         if (content == null || !content.getContentType().equals(0)){
             result.put("status", 49);
@@ -46,14 +44,7 @@ public class NxtApiAdminNewsRecommendController {
             return result;
         }
 
-        if (recommend != null && !recommend.equals(0)) {
-            content.setIsRecommend(1);//推荐
-        }
-        else {
-            content.setIsRecommend(0);//撤销推荐
-        }
-
-        nxtContentService.update(content);
+        nxtContentService.deleteById(content.getId());
 
         return result;
 

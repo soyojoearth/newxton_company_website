@@ -1,4 +1,4 @@
-package com.newxton.companywebsite.controller.api;
+package com.newxton.companywebsite.controller.api.admin;
 
 import com.newxton.companywebsite.entity.NxtUser;
 import com.newxton.companywebsite.service.NxtUserService;
@@ -17,41 +17,40 @@ import java.util.Random;
  * @github https://github.com/soyojoearth/newxton_company_website
  */
 @RestController
-public class NxtApiAdminResetUserPwdController {
+public class NxtApiAdminResetPwdController {
 
     @Resource
     private NxtUserService nxtUserService;
 
-    @RequestMapping(value = "/api/admin/reset_user_pwd", method = RequestMethod.POST)
-    public Map<String, Object> index(@RequestParam(value = "reset_user_id", required=false) Long resetUserId,
-                                     @RequestParam(value = "reset_user_pwd", required=false) String resetUserPwd
+    @RequestMapping(value = "/api/admin/reset_pwd", method = RequestMethod.POST)
+    public Map<String, Object> index(@RequestHeader("user_id") Long user_id,
+                                     @RequestParam(value="password_old", required=false) String passwordOld,
+                                     @RequestParam(value="password_new", required=false) String passwordNew
     ) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
 
-        if (resetUserId == null){
-            result.put("status",52);
-            result.put("message","参数错误");
-            return result;
-        }
+        NxtUser user = nxtUserService.queryById(user_id);
 
-        NxtUser user = nxtUserService.queryById(resetUserId);
+        String salt = user.getSalt();
+        String pwdSalt = passwordOld+salt;
+        passwordOld = DigestUtils.md5Hex(pwdSalt).toLowerCase();
 
-        if (user == null){
-            result.put("status",44);
-            result.put("message","用户不存在");
+        if (user.getPassword() == null || !user.getPassword().equals(passwordOld)){
+            result.put("status",42);
+            result.put("message","密码错误");
             return result;
         }
 
         //和salt一起改
         String saltNew = getRandomString(32);
-        String pwdSaltNew = resetUserPwd+saltNew;
-        resetUserPwd = DigestUtils.md5Hex(pwdSaltNew).toLowerCase();
+        String pwdSaltNew = passwordNew+saltNew;
+        passwordNew = DigestUtils.md5Hex(pwdSaltNew).toLowerCase();
 
         user.setSalt(saltNew);
-        user.setPassword(resetUserPwd);
+        user.setPassword(passwordNew);
 
         //更新
         nxtUserService.update(user);

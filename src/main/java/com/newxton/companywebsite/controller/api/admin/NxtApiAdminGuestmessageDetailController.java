@@ -1,7 +1,7 @@
-package com.newxton.companywebsite.controller.api;
+package com.newxton.companywebsite.controller.api.admin;
 
-import com.newxton.companywebsite.entity.NxtContent;
-import com.newxton.companywebsite.service.NxtContentService;
+import com.newxton.companywebsite.entity.NxtGuestmessage;
+import com.newxton.companywebsite.service.NxtGuestmessageService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,12 +20,12 @@ import java.util.Map;
  * @github https://github.com/soyojoearth/newxton_company_website
  */
 @RestController
-public class NxtApiAdminNewsDetailController {
+public class NxtApiAdminGuestmessageDetailController {
 
     @Resource
-    private NxtContentService nxtContentService;
+    private NxtGuestmessageService nxtGuestmessageService;
 
-    @RequestMapping(value = "/api/admin/news/detail", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/admin/guestmessage/detail", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "id", required=false) Long id) {
 
         Map<String, Object> result = new HashMap<>();
@@ -38,8 +38,8 @@ public class NxtApiAdminNewsDetailController {
             return result;
         }
 
-        NxtContent content = nxtContentService.queryById(id);
-        if (content == null || !content.getContentType().equals(0)){
+        NxtGuestmessage nxtGuestmessage = nxtGuestmessageService.queryById(id);
+        if (nxtGuestmessage == null){
             result.put("status", 49);
             result.put("message", "对应的内容不存在");
             return result;
@@ -48,15 +48,14 @@ public class NxtApiAdminNewsDetailController {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         Map<String, Object> item = new HashMap<>();
-        item.put("id",content.getId());
-        item.put("categoryId",content.getCategoryId());
-        item.put("contentTitle",content.getContentTitle());
-        item.put("contentDetail",content.getContentDetail());
-        item.put("datelineUpdate",content.getDatelineUpdate());
-        item.put("datelineUpdateReadable",sdf.format(new Date(content.getDatelineUpdate())));
-        item.put("datelineCreate",content.getDatelineCreate());
-        item.put("datelineCreateReadable",sdf.format(new Date(content.getDatelineCreate())));
-        item.put("isRecommend",content.getDatelineCreate());
+        item.put("id",nxtGuestmessage.getId());
+        item.put("guestCompany",nxtGuestmessage.getGuestCompany());
+        item.put("guestName",nxtGuestmessage.getGuestName());
+        item.put("guestPhone",nxtGuestmessage.getGuestPhone());
+        item.put("guestEmail",nxtGuestmessage.getGuestEmail());
+        item.put("messageContent",nxtGuestmessage.getMessageContent());
+        item.put("messageDateline",nxtGuestmessage.getMessageDateline());
+        item.put("messageDatelineReadable",sdf.format(new Date(nxtGuestmessage.getMessageDateline())));
 
         result.put("detail",item);
 

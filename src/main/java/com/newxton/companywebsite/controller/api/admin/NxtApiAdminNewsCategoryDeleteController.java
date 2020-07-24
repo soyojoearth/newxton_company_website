@@ -1,9 +1,11 @@
-package com.newxton.companywebsite.controller.api;
+package com.newxton.companywebsite.controller.api.admin;
 
 import com.newxton.companywebsite.entity.NxtContent;
+import com.newxton.companywebsite.entity.NxtNewsCategory;
 import com.newxton.companywebsite.entity.NxtUploadfile;
 import com.newxton.companywebsite.entity.NxtUploadfileCategory;
 import com.newxton.companywebsite.service.NxtContentService;
+import com.newxton.companywebsite.service.NxtNewsCategoryService;
 import com.newxton.companywebsite.service.NxtUploadfileCategoryService;
 import com.newxton.companywebsite.service.NxtUploadfileService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,15 +25,15 @@ import java.util.Map;
  * @github https://github.com/soyojoearth/newxton_company_website
  */
 @RestController
-public class NxtApiAdminUploadfileCategoryDeleteController {
+public class NxtApiAdminNewsCategoryDeleteController {
 
     @Resource
-    private NxtUploadfileCategoryService nxtUploadfileCategoryService;
+    private NxtNewsCategoryService nxtNewsCategoryService;
 
     @Resource
-    private NxtUploadfileService nxtUploadfileService;
+    private NxtContentService nxtContentService;
 
-    @RequestMapping(value = "/api/admin/uploadfile_category/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/admin/news_category/delete", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "id", required=false) Long id) {
 
         Map<String, Object> result = new HashMap<>();
@@ -44,7 +46,7 @@ public class NxtApiAdminUploadfileCategoryDeleteController {
             return result;
         }
 
-        NxtUploadfileCategory category = nxtUploadfileCategoryService.queryById(id);
+        NxtNewsCategory category = nxtNewsCategoryService.queryById(id);
 
         if (category == null){
             result.put("status", 48);
@@ -53,9 +55,9 @@ public class NxtApiAdminUploadfileCategoryDeleteController {
         }
 
         /*检查有没有子类*/
-        NxtUploadfileCategory categoryCondition = new NxtUploadfileCategory();
+        NxtNewsCategory categoryCondition = new NxtNewsCategory();
         categoryCondition.setCategoryPid(category.getId());
-        List<NxtUploadfileCategory> list = nxtUploadfileCategoryService.queryAll(categoryCondition);
+        List<NxtNewsCategory> list = nxtNewsCategoryService.queryAll(categoryCondition);
         if (list.size()>0){
             result.put("status", 56);
             result.put("message", "类别下还有子类，请先删除子类");
@@ -63,9 +65,10 @@ public class NxtApiAdminUploadfileCategoryDeleteController {
         }
 
         /*检查该类别下面有没有内容*/
-        NxtUploadfile nxtUploadfile = new NxtUploadfile();
-        nxtUploadfile.setCategoryId(category.getId());
-        Long count = nxtUploadfileService.queryCount(nxtUploadfile);
+        NxtContent nxtContent = new NxtContent();
+        nxtContent.setCategoryId(category.getId());
+        nxtContent.setContentType(0);//仅资讯类型
+        Long count = nxtContentService.queryCount(nxtContent);
         if (count > 0){
             result.put("status", 55);
             result.put("message", "类别下还有东西，请先转移掉");
@@ -73,7 +76,7 @@ public class NxtApiAdminUploadfileCategoryDeleteController {
         }
 
         /*删除*/
-        nxtUploadfileCategoryService.deleteById(category.getId());
+        nxtNewsCategoryService.deleteById(category.getId());
 
         return result;
 
