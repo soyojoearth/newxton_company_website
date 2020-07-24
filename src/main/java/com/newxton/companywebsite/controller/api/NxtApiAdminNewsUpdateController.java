@@ -20,7 +20,7 @@ import java.util.Map;
  * @github https://github.com/soyojoearth/newxton_company_website
  */
 @RestController
-public class NxtApiAdminNewsCreateController {
+public class NxtApiAdminNewsUpdateController {
 
     @Resource
     private NxtContentService nxtContentService;
@@ -28,8 +28,10 @@ public class NxtApiAdminNewsCreateController {
     @Resource
     private NxtNewsCategoryService nxtNewsCategoryService;
 
-    @RequestMapping(value = "/api/admin/news/create", method = RequestMethod.POST)
-    public Map<String, Object> index(@RequestParam(value = "category_id", required=false) Long categoryId,
+    @RequestMapping(value = "/api/admin/news/update", method = RequestMethod.POST)
+    public Map<String, Object> index(
+                                    @RequestParam(value = "id", required=false) Long id,
+                                    @RequestParam(value = "category_id", required=false) Long categoryId,
                                      @RequestParam(value = "content_title", required=false) String contentTitle,
                                      @RequestParam(value = "content_detail", required=false) String contentDetail,
                                      @RequestParam(value = "is_recommend", required=false) Integer isRecommend
@@ -39,7 +41,7 @@ public class NxtApiAdminNewsCreateController {
         result.put("status", 0);
         result.put("message", "");
 
-        if (contentTitle == null || contentDetail == null) {
+        if (id == null || contentTitle == null || contentDetail == null) {
             result.put("status", 52);
             result.put("message", "参数错误");
             return result;
@@ -68,27 +70,21 @@ public class NxtApiAdminNewsCreateController {
             }
         }
 
-        /*添加内容*/
-        NxtContent content = new NxtContent();
-        content.setContentType(0);//0:资讯 1:web页
-        content.setCategoryId(categoryId);
-        content.setContentTitle(contentTitle);
-        content.setContentDetail(contentDetail);
-        content.setDatelineCreate(System.currentTimeMillis());
-        content.setDatelineUpdate(content.getDatelineCreate());
-        content.setIsRecommend(isRecommend);
-
-        NxtContent contentCreated = nxtContentService.insert(content);
-
-        if (contentCreated.getId() == null){
-            result.put("status", 50);
-            result.put("message", "系统错误");
+        /*更新内容*/
+        NxtContent content = nxtContentService.queryById(id);
+        if (content == null){
+            result.put("status", 49);
+            result.put("message", "对应的资讯不存在");
             return result;
         }
 
-        /*给sort设置一个默认值*/
-        contentCreated.setSortId(contentCreated.getId());
-        nxtContentService.update(contentCreated);
+        content.setCategoryId(categoryId);
+        content.setContentTitle(contentTitle);
+        content.setContentDetail(contentDetail);
+        content.setDatelineUpdate(System.currentTimeMillis());
+        content.setIsRecommend(isRecommend);
+
+        NxtContent contentCreated = nxtContentService.update(content);
 
         return result;
 
