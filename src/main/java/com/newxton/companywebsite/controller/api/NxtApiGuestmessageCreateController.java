@@ -1,7 +1,6 @@
 package com.newxton.companywebsite.controller.api;
 
 import com.newxton.companywebsite.entity.NxtGuestmessage;
-import com.newxton.companywebsite.service.NxtContentService;
 import com.newxton.companywebsite.service.NxtGuestmessageService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
