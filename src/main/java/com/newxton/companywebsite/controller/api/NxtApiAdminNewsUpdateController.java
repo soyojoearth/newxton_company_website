@@ -72,7 +72,7 @@ public class NxtApiAdminNewsUpdateController {
 
         /*更新内容*/
         NxtContent content = nxtContentService.queryById(id);
-        if (content == null){
+        if (content == null || !content.getContentType().equals(0)){
             result.put("status", 49);
             result.put("message", "对应的资讯不存在");
             return result;
@@ -84,7 +84,7 @@ public class NxtApiAdminNewsUpdateController {
         content.setDatelineUpdate(System.currentTimeMillis());
         content.setIsRecommend(isRecommend);
 
-        NxtContent contentCreated = nxtContentService.update(content);
+        nxtContentService.update(content);
 
         return result;
 
