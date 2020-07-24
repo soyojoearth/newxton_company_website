@@ -29,6 +29,14 @@
         limit #{offset}, #{limit}
     </select>
 
+    <!--查询指定行数据-->
+    <select id="queryDescAllByLimit" resultMap="BaseResultMap">
+        select
+          id, guest_company, guest_name, guest_phone, guest_email, message_content, message_dateline
+        from newxton_companywebsite.nxt_guestmessage order by id desc
+        limit #{offset}, #{limit}
+    </select>
+
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select

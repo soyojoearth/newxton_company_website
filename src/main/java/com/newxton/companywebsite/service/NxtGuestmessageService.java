@@ -1,6 +1,8 @@
 package com.newxton.companywebsite.service;
 
 import com.newxton.companywebsite.entity.NxtGuestmessage;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -27,6 +29,15 @@ public interface NxtGuestmessageService {
      * @return 对象列表
      */
     List<NxtGuestmessage> queryAllByLimit(int offset, int limit);
+
+    /**
+     * 查询指定行数据
+     *
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    List<NxtGuestmessage> queryDescAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
 
     /**
      * 新增数据
