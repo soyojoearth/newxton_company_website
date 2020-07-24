@@ -75,6 +75,50 @@
         </where>
     </select>
 
+
+    <!--通过实体作为筛选条件查询Count-->
+    <select id="queryCount" resultType="Long">
+        select
+        count(*)
+        from newxton_companywebsite.nxt_content
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="contentType != null">
+                and content_type = #{contentType}
+            </if>
+            <if test="webKey != null and webKey != ''">
+                and web_key = #{webKey}
+            </if>
+            <if test="webTitle != null and webTitle != ''">
+                and web_title = #{webTitle}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="contentTitle != null and contentTitle != ''">
+                and content_title = #{contentTitle}
+            </if>
+            <if test="contentDetail != null and contentDetail != ''">
+                and content_detail = #{contentDetail}
+            </if>
+            <if test="datelineUpdate != null">
+                and dateline_update = #{datelineUpdate}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="isRecommend != null">
+                and is_recommend = #{isRecommend}
+            </if>
+            <if test="sortId != null">
+                and sort_id = #{sortId}
+            </if>
+        </where>
+    </select>
+
+
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into newxton_companywebsite.nxt_content(content_type, web_key, web_title, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id)

@@ -43,6 +43,16 @@ public class NxtContentServiceImpl implements NxtContentService {
     }
 
     /**
+     * 通过实体作为筛选条件查询Count
+     *
+     * @param nxtContent 实例对象
+     * @return 对象列表
+     */
+    public Long queryCount(NxtContent nxtContent){
+        return this.nxtContentDao.queryCount(nxtContent);
+    }
+
+    /**
      * 新增数据
      *
      * @param nxtContent 实例对象

@@ -43,6 +43,16 @@ public class NxtUploadfileServiceImpl implements NxtUploadfileService {
     }
 
     /**
+     * 通过实体作为筛选条件查询Count
+     *
+     * @param nxtUploadfile 实例对象
+     * @return 对象列表
+     */
+    public Long queryCount(NxtUploadfile nxtUploadfile){
+        return this.nxtUploadfileDao.queryCount(nxtUploadfile);
+    }
+
+    /**
      * 新增数据
      *
      * @param nxtUploadfile 实例对象

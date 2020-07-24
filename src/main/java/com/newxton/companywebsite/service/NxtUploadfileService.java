@@ -29,6 +29,14 @@ public interface NxtUploadfileService {
     List<NxtUploadfile> queryAllByLimit(int offset, int limit);
 
     /**
+     * 通过实体作为筛选条件查询Count
+     *
+     * @param nxtUploadfile 实例对象
+     * @return 对象列表
+     */
+    Long queryCount(NxtUploadfile nxtUploadfile);
+
+    /**
      * 新增数据
      *
      * @param nxtUploadfile 实例对象

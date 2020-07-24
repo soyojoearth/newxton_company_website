@@ -1,5 +1,6 @@
 package com.newxton.companywebsite.dao;
 
+import com.newxton.companywebsite.entity.NxtContent;
 import com.newxton.companywebsite.entity.NxtUploadfile;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
@@ -37,6 +38,14 @@ public interface NxtUploadfileDao {
      * @return 对象列表
      */
     List<NxtUploadfile> queryAll(NxtUploadfile nxtUploadfile);
+
+    /**
+     * 通过实体作为筛选条件查询Count
+     *
+     * @param nxtUploadfile 实例对象
+     * @return 对象列表
+     */
+    Long queryCount(NxtUploadfile nxtUploadfile);
 
     /**
      * 新增数据

@@ -79,6 +79,52 @@
         </where>
     </select>
 
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryCount" resultType="Long">
+        select
+        count(*)
+        from newxton_companywebsite.nxt_uploadfile
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="fileLocation != null">
+                and file_location = #{fileLocation}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="fileExt != null and fileExt != ''">
+                and file_ext = #{fileExt}
+            </if>
+            <if test="filenameSource != null and filenameSource != ''">
+                and filename_source = #{filenameSource}
+            </if>
+            <if test="filenameSaved != null and filenameSaved != ''">
+                and filename_saved = #{filenameSaved}
+            </if>
+            <if test="filepath != null and filepath != ''">
+                and filepath = #{filepath}
+            </if>
+            <if test="urlpath != null and urlpath != ''">
+                and urlpath = #{urlpath}
+            </if>
+            <if test="filesize != null">
+                and filesize = #{filesize}
+            </if>
+            <if test="datelineUpdate != null">
+                and dateline_update = #{datelineUpdate}
+            </if>
+            <if test="netdiskUrl != null and netdiskUrl != ''">
+                and netdisk_url = #{netdiskUrl}
+            </if>
+            <if test="netdiskPwd != null and netdiskPwd != ''">
+                and netdisk_pwd = #{netdiskPwd}
+            </if>
+        </where>
+    </select>
+
+
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into newxton_companywebsite.nxt_uploadfile(file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd)
