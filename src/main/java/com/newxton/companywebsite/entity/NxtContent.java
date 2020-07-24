@@ -31,7 +31,7 @@ public class NxtContent implements Serializable {
     
     private Integer isRecommend;
     
-    private Integer sortId;
+    private Long sortId;
 
 
     public Long getId() {
@@ -114,11 +114,11 @@ public class NxtContent implements Serializable {
         this.isRecommend = isRecommend;
     }
 
-    public Integer getSortId() {
+    public Long getSortId() {
         return sortId;
     }
 
-    public void setSortId(Integer sortId) {
+    public void setSortId(Long sortId) {
         this.sortId = sortId;
     }
 
