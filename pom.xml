@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.newxton</groupId>
     <artifactId>companywebsite</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>release</version>
     <name>companywebsite</name>
     <description>NewxtonOpenSourecCompanyWebsite</description>
 

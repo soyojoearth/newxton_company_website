@@ -76,6 +76,7 @@ public class NxtApiAdminLoginController {
         nxtUserService.update(user);
 
         result.put("token",newToken);
+        result.put("user_id",user.getId());
 
         return result;
 
