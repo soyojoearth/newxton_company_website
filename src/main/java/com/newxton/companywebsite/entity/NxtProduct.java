@@ -25,6 +25,7 @@ public class NxtProduct implements Serializable {
     
     private Integer isRecommend;
 
+    private Long sortId;
 
     public Long getId() {
         return id;
@@ -82,4 +83,11 @@ public class NxtProduct implements Serializable {
         this.isRecommend = isRecommend;
     }
 
+    public Long getSortId() {
+        return sortId;
+    }
+
+    public void setSortId(Long sortId) {
+        this.sortId = sortId;
+    }
 }

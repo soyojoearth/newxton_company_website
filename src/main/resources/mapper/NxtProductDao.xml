@@ -11,12 +11,14 @@
         <result property="datelineCreate" column="dateline_create" jdbcType="INTEGER"/>
         <result property="datelineUpdated" column="dateline_updated" jdbcType="INTEGER"/>
         <result property="isRecommend" column="is_recommend" jdbcType="INTEGER"/>
+        <result property="sortId" column="sort_id" jdbcType="INTEGER"/>
+
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, category_id, product_name, product_description, dateline_create, dateline_updated, is_recommend
+          id, category_id, product_name, product_description, dateline_create, dateline_updated, is_recommend, sort_id
         from newxton_companywebsite.nxt_product
         where id = #{id}
     </select>
@@ -24,7 +26,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, category_id, product_name, product_description, dateline_create, dateline_updated, is_recommend
+          id, category_id, product_name, product_description, dateline_create, dateline_updated, is_recommend, sort_id
         from newxton_companywebsite.nxt_product
         limit #{offset}, #{limit}
     </select>
@@ -32,7 +34,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, category_id, product_name, product_description, dateline_create, dateline_updated, is_recommend
+          id, category_id, product_name, product_description, dateline_create, dateline_updated, is_recommend, sort_id
         from newxton_companywebsite.nxt_product
         <where>
             <if test="id != null">
@@ -55,6 +57,9 @@
             </if>
             <if test="isRecommend != null">
                 and is_recommend = #{isRecommend}
+            </if>
+            <if test="sortId != null">
+                sort_id = #{sortId},
             </if>
         </where>
     </select>
@@ -87,13 +92,16 @@
             <if test="isRecommend != null">
                 and is_recommend = #{isRecommend}
             </if>
+            <if test="sortId != null">
+                sort_id = #{sortId},
+            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into newxton_companywebsite.nxt_product(category_id, product_name, product_description, dateline_create, dateline_updated, is_recommend)
-        values (#{categoryId}, #{productName}, #{productDescription}, #{datelineCreate}, #{datelineUpdated}, #{isRecommend})
+        insert into newxton_companywebsite.nxt_product(category_id, product_name, product_description, dateline_create, dateline_updated, is_recommend, sort_id)
+        values (#{categoryId}, #{productName}, #{productDescription}, #{datelineCreate}, #{datelineUpdated}, #{isRecommend}, #{sortId})
     </insert>
 
     <!--通过主键修改数据-->
@@ -117,6 +125,9 @@
             </if>
             <if test="isRecommend != null">
                 is_recommend = #{isRecommend},
+            </if>
+            <if test="sortId != null">
+                sort_id = #{sortId},
             </if>
         </set>
         where id = #{id}
