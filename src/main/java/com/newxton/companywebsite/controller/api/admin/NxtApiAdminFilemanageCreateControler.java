@@ -14,6 +14,7 @@ import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,14 +35,17 @@ import java.util.Random;
 @RestController
 public class NxtApiAdminFilemanageCreateControler {
 
-    /*
-    * 这里是七牛云的配置，这里仅是测试key，开发完毕就失效（你现在看到的就可能是失效了的）。
-    * 请你配置自己的七牛参数。
-    * */
-    private String qiniuDomain = "http://qdyrmq5wy.bkt.clouddn.com";
-    private String qiniuAccessKey = "Kmw6SlJPssvX_aq2udKJpkZYBCnHVym2kNa8OxOF";
-    private String qiniuSecretKey = "dIegE9Lfi2bKp6pLMUugar5_E1uSKvh1TZli_wbu";
-    private String qiniuBucket = "company-website-test";
+    @Value("${newxton.config.qiniuDomain}")
+    private String qiniuDomain;
+
+    @Value("${newxton.config.qiniuAccessKey}")
+    private String qiniuAccessKey;
+
+    @Value("${newxton.config.qiniuSecretKey}")
+    private String qiniuSecretKey;
+
+    @Value("${newxton.config.qiniuBucket}")
+    private String qiniuBucket;
 
     @Resource
     private NxtUploadfileService nxtUploadfileService;
