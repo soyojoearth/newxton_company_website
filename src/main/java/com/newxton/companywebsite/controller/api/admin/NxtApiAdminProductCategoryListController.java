@@ -1,7 +1,7 @@
 package com.newxton.companywebsite.controller.api.admin;
 
-import com.newxton.companywebsite.entity.NxtUploadfileCategory;
-import com.newxton.companywebsite.service.NxtUploadfileCategoryService;
+import com.newxton.companywebsite.entity.NxtProductCategory;
+import com.newxton.companywebsite.service.NxtProductCategoryService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,19 +19,19 @@ import java.util.Map;
  * @github https://github.com/soyojoearth/newxton_company_website
  */
 @RestController
-public class NxtApiAdminUploadfileCategoryListController {
+public class NxtApiAdminProductCategoryListController {
 
     @Resource
-    private NxtUploadfileCategoryService nxtUploadfileCategoryService;
+    private NxtProductCategoryService nxtProductCategoryService;
 
-    @RequestMapping(value = "/api/admin/uploadfile_category/list", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/admin/product_category/list", method = RequestMethod.POST)
     public Map<String, Object> index() {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
 
-        List<NxtUploadfileCategory> list = nxtUploadfileCategoryService.queryAll(new NxtUploadfileCategory());
+        List<NxtProductCategory> list = nxtProductCategoryService.queryAll(new NxtProductCategory());
 
         List<Map<String,Object>> listResult = new ArrayList<>();
 
@@ -39,7 +39,7 @@ public class NxtApiAdminUploadfileCategoryListController {
 
         for (int i = 0; i < list.size(); i++) {
 
-            NxtUploadfileCategory category = list.get(i);
+            NxtProductCategory category = list.get(i);
 
             if (category.getCategoryPid().equals(0L)){
                 Map<String, Object> item = new HashMap<>();
@@ -80,12 +80,12 @@ public class NxtApiAdminUploadfileCategoryListController {
      * @param list
      * @return
      */
-    private List<Map<String,Object>> findSubCategory(NxtUploadfileCategory categoryParent,List<NxtUploadfileCategory> list){
+    private List<Map<String,Object>> findSubCategory(NxtProductCategory categoryParent,List<NxtProductCategory> list){
 
         List<Map<String,Object>> listResult = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i++) {
-            NxtUploadfileCategory category = list.get(i);
+            NxtProductCategory category = list.get(i);
             if (category.getCategoryPid().equals(categoryParent.getId())){
 
                 Map<String, Object> item = new HashMap<>();
@@ -115,7 +115,7 @@ public class NxtApiAdminUploadfileCategoryListController {
     private void addSubCategoryListToSimpleList(List<Map<String,Object>> subCategoryList, List<Map<String,Object>> listSimpleResult,String preStr){
         for (int i = 0; i < subCategoryList.size(); i++) {
             Map<String, Object> item = subCategoryList.get(i);
-            NxtUploadfileCategory category = (NxtUploadfileCategory)item.get("category");
+            NxtProductCategory category = (NxtProductCategory)item.get("category");
             List<Map<String,Object>> sub_category_list = (List<Map<String,Object>>)item.get("sub_category_list");
 
             Map<String, Object> simpleItem = new HashMap<>();

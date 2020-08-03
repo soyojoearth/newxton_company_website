@@ -37,6 +37,9 @@ public class NxtApiAdminNewsCategoryListController {
 
         List<Map<String,Object>> listResult = new ArrayList<>();
 
+        List<Map<String,Object>> listSimpleResult = new ArrayList<>();
+
+
         for (int i = 0; i < list.size(); i++) {
 
             NxtNewsCategory category = list.get(i);
@@ -45,13 +48,30 @@ public class NxtApiAdminNewsCategoryListController {
                 Map<String, Object> item = new HashMap<>();
                 item.put("category",category);
                 //搜寻下级
-                item.put("sub_category_list",findSubCategory(category,list));
+                List<Map<String,Object>> subCategoryList = findSubCategory(category,list);
+                item.put("sub_category_list",subCategoryList);
                 listResult.add(item);
+
+                //前端简化显示listSimpleResult
+                Map<String, Object> simpleItem = new HashMap<>();
+                simpleItem.put("category_name",category.getCategoryName());
+                simpleItem.put("category_name_display",category.getCategoryName());
+                simpleItem.put("category_id",category.getId());
+                simpleItem.put("category_pid",category.getCategoryPid());
+
+                listSimpleResult.add(simpleItem);
+
+                if (subCategoryList.size() > 0){
+                    this.addSubCategoryListToSimpleList(subCategoryList,listSimpleResult,"--");
+                }
+
             }
 
         }
 
         result.put("list",listResult);
+
+        result.put("list_simple",listSimpleResult);
 
         return result;
 
@@ -83,5 +103,38 @@ public class NxtApiAdminNewsCategoryListController {
         return listResult;
 
     }
+
+
+    /**
+     * 照顾前端开发工程师，增加这样的显示
+     * 分类
+     * --分类
+     * ----分类
+     * 分类
+     * --分类
+     * @param subCategoryList
+     * @param listSimpleResult
+     * @param preStr
+     */
+    private void addSubCategoryListToSimpleList(List<Map<String,Object>> subCategoryList, List<Map<String,Object>> listSimpleResult,String preStr){
+        for (int i = 0; i < subCategoryList.size(); i++) {
+            Map<String, Object> item = subCategoryList.get(i);
+            NxtNewsCategory category = (NxtNewsCategory)item.get("category");
+            List<Map<String,Object>> sub_category_list = (List<Map<String,Object>>)item.get("sub_category_list");
+
+            Map<String, Object> simpleItem = new HashMap<>();
+            simpleItem.put("category_name",category.getCategoryName());
+            simpleItem.put("category_name_display",preStr+category.getCategoryName());
+            simpleItem.put("category_id",category.getId());
+            simpleItem.put("category_pid",category.getCategoryPid());
+
+            listSimpleResult.add(simpleItem);
+
+            if (sub_category_list.size()>0){
+                this.addSubCategoryListToSimpleList(sub_category_list,listSimpleResult,preStr + "--");
+            }
+        }
+    }
+
 
 }
