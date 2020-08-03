@@ -52,21 +52,24 @@ public class NxtApiAdminResetUserTypeController {
             return result;
         }
 
+        NxtUser userPrepare = new NxtUser();
+        userPrepare.setId(user.getId());
+
         if (resetUserType.equals(1)) {
             //设为超级管理员
-            user.setType(1);
+            userPrepare.setType(1);
         }
         if (resetUserType.equals(2))  {
             //设为小编
-            user.setType(2);
+            userPrepare.setType(2);
         }
         if (resetUserType.equals(0))  {
             //设为只读访客
-            user.setType(0);
+            userPrepare.setType(0);
         }
 
         //更新
-        nxtUserService.update(user);
+        nxtUserService.update(userPrepare);
 
         return result;
 

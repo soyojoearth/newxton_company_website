@@ -45,16 +45,19 @@ public class NxtApiAdminResetUserPwdController {
             return result;
         }
 
+        NxtUser userPrepare = new NxtUser();
+        userPrepare.setId(user.getId());
+
         //和salt一起改
         String saltNew = getRandomString(32);
         String pwdSaltNew = resetUserPwd+saltNew;
         resetUserPwd = DigestUtils.md5Hex(pwdSaltNew).toLowerCase();
 
-        user.setSalt(saltNew);
-        user.setPassword(resetUserPwd);
+        userPrepare.setSalt(saltNew);
+        userPrepare.setPassword(resetUserPwd);
 
         //更新
-        nxtUserService.update(user);
+        nxtUserService.update(userPrepare);
 
         return result;
 

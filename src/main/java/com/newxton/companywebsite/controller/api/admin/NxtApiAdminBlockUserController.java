@@ -55,21 +55,24 @@ public class NxtApiAdminBlockUserController {
             return result;
         }
 
+        NxtUser userPrepare = new NxtUser();
+        userPrepare.setId(user.getId());
+
         String newToken = getRandomString(32);
         newToken = DigestUtils.md5Hex(newToken).toLowerCase();
 
         if (isBlock.equals(1L)) {
             //拉黑，并且踢下线
-            user.setStatus(-1);
-            user.setToken(newToken);
+            userPrepare.setStatus(-1);
+            userPrepare.setToken(newToken);
         }
         if (isBlock.equals(0L))  {
             //解除拉黑
-            user.setStatus(0);
+            userPrepare.setStatus(0);
         }
 
         //更新
-        nxtUserService.update(user);
+        nxtUserService.update(userPrepare);
 
         return result;
 
