@@ -4,6 +4,8 @@ import com.newxton.companywebsite.entity.NxtContent;
 import com.newxton.companywebsite.entity.NxtProduct;
 import com.newxton.companywebsite.service.NxtContentService;
 import com.newxton.companywebsite.service.NxtProductService;
+import com.qiniu.util.Auth;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +25,15 @@ import java.util.Map;
  */
 @RestController
 public class NxtApiAdminProductDetailController {
+
+    @Value("${newxton.config.qiniuAccessKey}")
+    private String qiniuAccessKey;
+
+    @Value("${newxton.config.qiniuSecretKey}")
+    private String qiniuSecretKey;
+
+    @Value("${newxton.config.qiniuBucket}")
+    private String qiniuBucket;
 
     @Resource
     private NxtProductService nxtProductService;
@@ -61,6 +72,12 @@ public class NxtApiAdminProductDetailController {
         item.put("isRecommend",content.getDatelineCreate());
 
         result.put("detail",item);
+
+        /*获取七牛图片上传token*/
+        Auth auth = Auth.create(qiniuAccessKey, qiniuSecretKey);
+        String qiniuToken = auth.uploadToken(qiniuBucket);
+
+        result.put("qiniuToken",qiniuToken);
 
         return result;
 
