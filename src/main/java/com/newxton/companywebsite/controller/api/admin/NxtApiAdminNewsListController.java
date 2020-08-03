@@ -1,8 +1,10 @@
 package com.newxton.companywebsite.controller.api.admin;
 
 import com.newxton.companywebsite.entity.NxtContent;
+import com.newxton.companywebsite.entity.NxtNewsCategory;
 import com.newxton.companywebsite.entity.NxtUser;
 import com.newxton.companywebsite.service.NxtContentService;
+import com.newxton.companywebsite.service.NxtNewsCategoryService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +26,9 @@ public class NxtApiAdminNewsListController {
     @Resource
     private NxtContentService nxtContentService;
 
+    @Resource
+    private NxtNewsCategoryService nxtNewsCategoryService;
+
     @RequestMapping(value = "/api/admin/news/list", method = RequestMethod.POST)
     public Map<String, Object> index(
             @RequestParam(value = "category_id", required = false) Long categoryId,
@@ -38,6 +43,13 @@ public class NxtApiAdminNewsListController {
             result.put("status", 52);
             result.put("message", "参数错误");
             return result;
+        }
+
+        /*先取出所有分类做备用*/
+        List<NxtNewsCategory> categoryList = nxtNewsCategoryService.queryAll(new NxtNewsCategory());
+        Map<Long,String> categoryNameMap = new HashMap<>();
+        for (NxtNewsCategory category: categoryList) {
+            categoryNameMap.put(category.getId(),category.getCategoryName());
         }
 
         int limit = 20;
@@ -55,6 +67,12 @@ public class NxtApiAdminNewsListController {
             Map<String, Object> item = new HashMap<>();
             item.put("id",content.getId());
             item.put("categoryId",content.getCategoryId());
+            if (categoryNameMap.containsKey(content.getCategoryId())){
+                item.put("categoryName",categoryNameMap.get(content.getCategoryId()));
+            }
+            else {
+                item.put("categoryName","---");
+            }
             item.put("contentTitle",content.getContentTitle());
             item.put("datelineUpdate",content.getDatelineUpdate());
             item.put("datelineUpdateReadable",sdf.format(new Date(content.getDatelineUpdate())));
