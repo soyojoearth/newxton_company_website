@@ -43,6 +43,16 @@ public class NxtProductPictureServiceImpl implements NxtProductPictureService {
     }
 
     /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtProductPicture 实例对象
+     * @return 对象列表
+     */
+    public List<NxtProductPicture> queryAll(NxtProductPicture nxtProductPicture){
+        return this.nxtProductPictureDao.queryAll(nxtProductPicture);
+    }
+
+    /**
      * 新增数据
      *
      * @param nxtProductPicture 实例对象
