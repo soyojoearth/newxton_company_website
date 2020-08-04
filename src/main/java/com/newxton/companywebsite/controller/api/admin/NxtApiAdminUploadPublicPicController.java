@@ -1,8 +1,6 @@
 package com.newxton.companywebsite.controller.api.admin;
 
-
 import com.google.gson.Gson;
-import com.newxton.companywebsite.entity.NxtNewsCategory;
 import com.newxton.companywebsite.entity.NxtUploadfile;
 import com.newxton.companywebsite.entity.NxtUploadfileCategory;
 import com.newxton.companywebsite.service.NxtUploadfileCategoryService;
@@ -19,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.*;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,12 +26,12 @@ import java.util.Random;
 
 /**
  * @author soyojo.earth@gmail.com
- * @time 2020/7/24
+ * @time 2020/8/3
  * @address Shenzhen, China
  * @github https://github.com/soyojoearth/newxton_company_website
  */
 @RestController
-public class NxtApiAdminFilemanageCreateControler {
+public class NxtApiAdminUploadPublicPicController {
 
     @Value("${newxton.config.qiniuDomain}")
     private String qiniuDomain;
@@ -50,36 +48,15 @@ public class NxtApiAdminFilemanageCreateControler {
     @Resource
     private NxtUploadfileService nxtUploadfileService;
 
-    @Resource
-    private NxtUploadfileCategoryService nxtUploadfileCategoryService;
-
-    @RequestMapping(value = "/api/admin/filemanage/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/admin/upload/public_pic", method = RequestMethod.POST)
     public Map<String, Object> index(
             @RequestHeader("Content-Length") Long contentLength,
-            @RequestParam(value = "category_id", required=false) Long categoryId,
-            @RequestParam(value = "netdisk_url", required=false) String netdiskUrl,
-            @RequestParam(value = "netdisk_pwd", required=false) String netdiskPwd,
             @RequestParam(value = "file",required = false) MultipartFile file
     ) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
-
-
-        if (categoryId == null){
-            categoryId = 0L;
-        }
-
-        /*检查分类*/
-        if (categoryId > 0) {
-            NxtUploadfileCategory category = nxtUploadfileCategoryService.queryById(categoryId);
-            if (category == null) {
-                result.put("status", 48);
-                result.put("message", "该类别不存在");
-                return result;
-            }
-        }
 
         /*通常方式：上传文件*/
         if (file != null && !file.isEmpty()){
@@ -109,7 +86,7 @@ public class NxtApiAdminFilemanageCreateControler {
             NxtUploadfile nxtUploadfile = new NxtUploadfile();
 
             nxtUploadfile.setFileLocation(1);//七牛云
-            nxtUploadfile.setCategoryId(categoryId);
+            nxtUploadfile.setCategoryId(0L);
             nxtUploadfile.setDatelineUpdate(System.currentTimeMillis());
             nxtUploadfile.setFilenameSaved(uploadResultFilename);
             nxtUploadfile.setFilenameSource(originalFilename);
@@ -131,29 +108,7 @@ public class NxtApiAdminFilemanageCreateControler {
             result.put("id",nxtUploadfile.getId());
 
         }
-        else if (netdiskUrl != null && netdiskPwd != null){
 
-            /*大文件方式：存网盘*/
-
-            NxtUploadfile nxtUploadfile = new NxtUploadfile();
-
-            nxtUploadfile.setFileLocation(0);//网盘
-            nxtUploadfile.setCategoryId(categoryId);
-            nxtUploadfile.setNetdiskUrl(netdiskUrl);
-            nxtUploadfile.setNetdiskPwd(netdiskPwd);
-
-            //增加记录
-            NxtUploadfile userCreated = nxtUploadfileService.insert(nxtUploadfile);
-            if (userCreated.getId() == null){
-                result.put("status", 50);
-                result.put("message", "系统错误");
-                return result;
-            }
-
-            result.put("url",netdiskUrl);
-            result.put("id",nxtUploadfile.getId());
-
-        }
 
         return result;
 

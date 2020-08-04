@@ -74,7 +74,7 @@
                 and category_id = #{categoryId}
             </if>
         </where>
-        order by sort_id desc
+        order by is_recommend desc, sort_id desc
         limit #{offset}, #{limit}
     </select>
 
