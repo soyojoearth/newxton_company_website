@@ -1,8 +1,7 @@
 package com.newxton.companywebsite.controller.api.admin;
 
-import com.newxton.companywebsite.entity.NxtContent;
-import com.newxton.companywebsite.entity.NxtNewsCategory;
-import com.newxton.companywebsite.service.NxtContentService;
+import com.newxton.companywebsite.entity.NxtWebPage;
+import com.newxton.companywebsite.service.NxtWebPageService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +21,7 @@ import java.util.Map;
 public class NxtApiAdminWebContentUpdateController {
 
     @Resource
-    private NxtContentService nxtContentService;
+    private NxtWebPageService nxtWebPageService;
 
     @RequestMapping(value = "/api/admin/web_content/update", method = RequestMethod.POST)
     public Map<String, Object> index(
@@ -47,19 +46,19 @@ public class NxtApiAdminWebContentUpdateController {
         webTitle = webTitle.trim();
 
         /*更新内容*/
-        NxtContent content = nxtContentService.queryById(id);
-        if (content == null || !content.getContentType().equals(1)){
+        NxtWebPage nxtWebPage = nxtWebPageService.queryById(id);
+        if (nxtWebPage == null){
             result.put("status", 49);
             result.put("message", "对应的内容不存在");
             return result;
         }
 
-        content.setContentTitle(contentTitle);
-        content.setContentDetail(contentDetail);
-        content.setDatelineUpdate(System.currentTimeMillis());
-        content.setWebTitle(webTitle);
+        nxtWebPage.setContentTitle(contentTitle);
+        nxtWebPage.setContentDetail(contentDetail);
+        nxtWebPage.setDatelineUpdate(System.currentTimeMillis());
+        nxtWebPage.setWebTitle(webTitle);
 
-        nxtContentService.update(content);
+        nxtWebPageService.update(nxtWebPage);
 
         return result;
 

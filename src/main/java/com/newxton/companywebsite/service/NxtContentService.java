@@ -37,7 +37,7 @@ public interface NxtContentService {
      * @return 对象列表
      */
     List<NxtContent> selectAllByLimit(@Param("offset") int offset, @Param("limit") int limit,
-                                      @Param("contentType") Integer contentType, @Param("categoryId") Long categoryId);
+                                      @Param("categoryId") Long categoryId);
 
     /**
      * 通过实体作为筛选条件查询

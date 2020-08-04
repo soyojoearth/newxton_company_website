@@ -70,7 +70,6 @@ public class NxtApiAdminNewsCreateController {
 
         /*添加内容*/
         NxtContent content = new NxtContent();
-        content.setContentType(0);//0:资讯 1:web页
         content.setCategoryId(categoryId);
         content.setContentTitle(contentTitle);
         content.setContentDetail(contentDetail);

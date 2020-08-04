@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.companywebsite.dao.NxtWebPageDao">
+
+    <resultMap id="BaseResultMap" type="com.newxton.companywebsite.entity.NxtWebPage">
+        <!--@Table nxt_web_page-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="webKey" column="web_key" jdbcType="VARCHAR"/>
+        <result property="webTitle" column="web_title" jdbcType="VARCHAR"/>
+        <result property="contentTitle" column="content_title" jdbcType="VARCHAR"/>
+        <result property="contentDetail" column="content_detail" jdbcType="VARCHAR"/>
+        <result property="seoKeyword" column="seo_keyword" jdbcType="VARCHAR"/>
+        <result property="datelineUpdate" column="dateline_update" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, web_key, web_title, content_title, content_detail, seo_keyword, dateline_update
+        from newxton_companywebsite.nxt_web_page
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, web_key, web_title, content_title, content_detail, seo_keyword, dateline_update
+        from newxton_companywebsite.nxt_web_page
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, web_key, web_title, content_title, content_detail, seo_keyword, dateline_update
+        from newxton_companywebsite.nxt_web_page
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="webKey != null and webKey != ''">
+                and web_key = #{webKey}
+            </if>
+            <if test="webTitle != null and webTitle != ''">
+                and web_title = #{webTitle}
+            </if>
+            <if test="contentTitle != null and contentTitle != ''">
+                and content_title = #{contentTitle}
+            </if>
+            <if test="contentDetail != null and contentDetail != ''">
+                and content_detail = #{contentDetail}
+            </if>
+            <if test="seoKeyword != null and seoKeyword != ''">
+                and seo_keyword = #{seoKeyword}
+            </if>
+            <if test="datelineUpdate != null">
+                and dateline_update = #{datelineUpdate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into newxton_companywebsite.nxt_web_page(web_key, web_title, content_title, content_detail, seo_keyword, dateline_update)
+        values (#{webKey}, #{webTitle}, #{contentTitle}, #{contentDetail}, #{seoKeyword}, #{datelineUpdate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update newxton_companywebsite.nxt_web_page
+        <set>
+            <if test="webKey != null and webKey != ''">
+                web_key = #{webKey},
+            </if>
+            <if test="webTitle != null and webTitle != ''">
+                web_title = #{webTitle},
+            </if>
+            <if test="contentTitle != null and contentTitle != ''">
+                content_title = #{contentTitle},
+            </if>
+            <if test="contentDetail != null and contentDetail != ''">
+                content_detail = #{contentDetail},
+            </if>
+            <if test="seoKeyword != null and seoKeyword != ''">
+                seo_keyword = #{seoKeyword},
+            </if>
+            <if test="datelineUpdate != null">
+                dateline_update = #{datelineUpdate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from newxton_companywebsite.nxt_web_page where id = #{id}
+    </delete>
+
+</mapper>

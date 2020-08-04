@@ -1,9 +1,7 @@
 package com.newxton.companywebsite.controller.api.admin;
 
-import com.newxton.companywebsite.entity.NxtContent;
-import com.newxton.companywebsite.service.NxtContentService;
-import com.qiniu.util.Auth;
-import org.springframework.beans.factory.annotation.Value;
+import com.newxton.companywebsite.entity.NxtWebPage;
+import com.newxton.companywebsite.service.NxtWebPageService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,17 +22,8 @@ import java.util.Map;
 @RestController
 public class NxtApiAdminWebContentDetailController {
 
-    @Value("${newxton.config.qiniuAccessKey}")
-    private String qiniuAccessKey;
-
-    @Value("${newxton.config.qiniuSecretKey}")
-    private String qiniuSecretKey;
-
-    @Value("${newxton.config.qiniuBucket}")
-    private String qiniuBucket;
-
     @Resource
-    private NxtContentService nxtContentService;
+    private NxtWebPageService nxtWebPageService;
 
     @RequestMapping(value = "/api/admin/web_content/detail", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "id", required=false) Long id) {
@@ -49,8 +38,8 @@ public class NxtApiAdminWebContentDetailController {
             return result;
         }
 
-        NxtContent content = nxtContentService.queryById(id);
-        if (content == null || !content.getContentType().equals(1)){
+        NxtWebPage nxtWebPage = nxtWebPageService.queryById(id);
+        if (nxtWebPage == null){
             result.put("status", 49);
             result.put("message", "对应的内容不存在");
             return result;
@@ -59,20 +48,20 @@ public class NxtApiAdminWebContentDetailController {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         Map<String, Object> item = new HashMap<>();
-        item.put("id",content.getId());
-        item.put("webTitle",content.getWebTitle());
-        item.put("contentTitle",content.getContentTitle());
-        item.put("contentDetail",content.getContentDetail());
-        item.put("datelineUpdate",content.getDatelineUpdate());
-        item.put("datelineUpdateReadable",sdf.format(new Date(content.getDatelineUpdate())));
+        item.put("id",nxtWebPage.getId());
+        item.put("webTitle",nxtWebPage.getWebTitle());
+        item.put("contentTitle",nxtWebPage.getContentTitle());
+        item.put("contentDetail",nxtWebPage.getContentDetail());
+        item.put("datelineUpdate",nxtWebPage.getDatelineUpdate());
+        item.put("datelineUpdateReadable",sdf.format(new Date(nxtWebPage.getDatelineUpdate())));
 
         result.put("detail",item);
 
-        /*获取七牛图片上传token*/
-        Auth auth = Auth.create(qiniuAccessKey, qiniuSecretKey);
-        String qiniuToken = auth.uploadToken(qiniuBucket);
-
-        result.put("qiniuToken",qiniuToken);
+//        /*获取七牛图片上传token*/
+//        Auth auth = Auth.create(qiniuAccessKey, qiniuSecretKey);
+//        String qiniuToken = auth.uploadToken(qiniuBucket);
+//
+//        result.put("qiniuToken",qiniuToken);
 
         return result;
 

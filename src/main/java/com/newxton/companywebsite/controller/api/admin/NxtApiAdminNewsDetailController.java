@@ -50,7 +50,7 @@ public class NxtApiAdminNewsDetailController {
         }
 
         NxtContent content = nxtContentService.queryById(id);
-        if (content == null || !content.getContentType().equals(0)){
+        if (content == null){
             result.put("status", 49);
             result.put("message", "对应的内容不存在");
             return result;

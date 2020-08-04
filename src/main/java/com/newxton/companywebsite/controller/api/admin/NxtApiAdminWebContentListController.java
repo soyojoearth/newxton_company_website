@@ -1,7 +1,8 @@
 package com.newxton.companywebsite.controller.api.admin;
 
 import com.newxton.companywebsite.entity.NxtContent;
-import com.newxton.companywebsite.service.NxtContentService;
+import com.newxton.companywebsite.entity.NxtWebPage;
+import com.newxton.companywebsite.service.NxtWebPageService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,7 @@ import java.util.*;
 public class NxtApiAdminWebContentListController {
 
     @Resource
-    private NxtContentService nxtContentService;
+    private NxtWebPageService nxtWebPageService;
 
     @RequestMapping(value = "/api/admin/web_content/list", method = RequestMethod.POST)
     public Map<String, Object> index() {
@@ -29,13 +30,12 @@ public class NxtApiAdminWebContentListController {
         result.put("status", 0);
         result.put("message", "");
 
-        NxtContent contentCondition = new NxtContent();
-        contentCondition.setContentType(1);
-        List<NxtContent> list = nxtContentService.queryAll(contentCondition);
+        NxtWebPage contentCondition = new NxtWebPage();
+        List<NxtWebPage> list = nxtWebPageService.queryAll(contentCondition);
         List<Map<String,Object>> listResult = new ArrayList<>();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (int i = 0; i < list.size(); i++) {
-            NxtContent content = list.get(i);
+            NxtWebPage content = list.get(i);
             Map<String, Object> item = new HashMap<>();
             item.put("id",content.getId());
             item.put("webTitle",content.getWebTitle());

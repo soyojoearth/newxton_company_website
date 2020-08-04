@@ -59,7 +59,7 @@ public class NxtApiAdminNewsListController {
             offset = limit * (pageNumber-1);
         }
 
-        List<NxtContent> list = nxtContentService.selectAllByLimit(offset,limit,0,categoryId);
+        List<NxtContent> list = nxtContentService.selectAllByLimit(offset,limit,categoryId);
         List<Map<String,Object>> listResult = new ArrayList<>();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (int i = 0; i < list.size(); i++) {

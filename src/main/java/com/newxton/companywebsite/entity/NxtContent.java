@@ -12,13 +12,7 @@ public class NxtContent implements Serializable {
     private static final long serialVersionUID = 767880652293491476L;
     
     private Long id;
-    
-    private Integer contentType;
-    
-    private String webKey;
-    
-    private String webTitle;
-    
+
     private Long categoryId;
     
     private String contentTitle;
@@ -40,30 +34,6 @@ public class NxtContent implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(Integer contentType) {
-        this.contentType = contentType;
-    }
-
-    public String getWebKey() {
-        return webKey;
-    }
-
-    public void setWebKey(String webKey) {
-        this.webKey = webKey;
-    }
-
-    public String getWebTitle() {
-        return webTitle;
-    }
-
-    public void setWebTitle(String webTitle) {
-        this.webTitle = webTitle;
     }
 
     public Long getCategoryId() {

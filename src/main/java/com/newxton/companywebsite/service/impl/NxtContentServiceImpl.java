@@ -50,8 +50,8 @@ public class NxtContentServiceImpl implements NxtContentService {
      * @return 对象列表
      */
     public List<NxtContent> selectAllByLimit(@Param("offset") int offset, @Param("limit") int limit,
-                                             @Param("contentType") Integer contentType, @Param("categoryId") Long categoryId){
-        return this.nxtContentDao.selectAllByLimit(offset, limit, contentType, categoryId);
+                                             @Param("categoryId") Long categoryId){
+        return this.nxtContentDao.selectAllByLimit(offset, limit, categoryId);
     }
 
     /**

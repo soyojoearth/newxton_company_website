@@ -2,12 +2,8 @@ package com.newxton.companywebsite.controller.api.admin;
 
 import com.newxton.companywebsite.entity.NxtContent;
 import com.newxton.companywebsite.entity.NxtNewsCategory;
-import com.newxton.companywebsite.entity.NxtUploadfile;
-import com.newxton.companywebsite.entity.NxtUploadfileCategory;
 import com.newxton.companywebsite.service.NxtContentService;
 import com.newxton.companywebsite.service.NxtNewsCategoryService;
-import com.newxton.companywebsite.service.NxtUploadfileCategoryService;
-import com.newxton.companywebsite.service.NxtUploadfileService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,7 +63,6 @@ public class NxtApiAdminNewsCategoryDeleteController {
         /*检查该类别下面有没有内容*/
         NxtContent nxtContent = new NxtContent();
         nxtContent.setCategoryId(category.getId());
-        nxtContent.setContentType(0);//仅资讯类型
         Long count = nxtContentService.queryCount(nxtContent);
         if (count > 0){
             result.put("status", 55);

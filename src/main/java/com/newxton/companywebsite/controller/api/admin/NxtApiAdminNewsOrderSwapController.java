@@ -40,13 +40,13 @@ public class NxtApiAdminNewsOrderSwapController {
 
         /*先查询*/
         NxtContent contentA = nxtContentService.queryById(newsIdA);
-        if (contentA == null || !contentA.getContentType().equals(0)){
+        if (contentA == null){
             result.put("status", 49);
             result.put("message", "对应的A不存在");
             return result;
         }
         NxtContent contentB = nxtContentService.queryById(newsIdB);
-        if (contentB == null || !contentB.getContentType().equals(0)){
+        if (contentB == null){
             result.put("status", 49);
             result.put("message", "对应的B不存在");
             return result;
