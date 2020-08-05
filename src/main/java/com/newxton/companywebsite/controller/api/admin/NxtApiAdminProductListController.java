@@ -1,8 +1,10 @@
 package com.newxton.companywebsite.controller.api.admin;
 
 import com.newxton.companywebsite.entity.NxtProduct;
+import com.newxton.companywebsite.entity.NxtProductCategory;
 import com.newxton.companywebsite.entity.NxtProductPicture;
 import com.newxton.companywebsite.entity.NxtUploadfile;
+import com.newxton.companywebsite.service.NxtProductCategoryService;
 import com.newxton.companywebsite.service.NxtProductPictureService;
 import com.newxton.companywebsite.service.NxtProductService;
 import com.newxton.companywebsite.service.NxtUploadfileService;
@@ -28,6 +30,9 @@ public class NxtApiAdminProductListController {
     private NxtProductService nxtProductService;
 
     @Resource
+    private NxtProductCategoryService nxtProductCategoryService;
+
+    @Resource
     private NxtProductPictureService nxtProductPictureService;
 
     @Resource
@@ -49,6 +54,13 @@ public class NxtApiAdminProductListController {
             return result;
         }
 
+        /*先取出所有分类做备用*/
+        List<NxtProductCategory> categoryList = nxtProductCategoryService.queryAll(new NxtProductCategory());
+        Map<Long,String> categoryNameMap = new HashMap<>();
+        for (NxtProductCategory category: categoryList) {
+            categoryNameMap.put(category.getId(),category.getCategoryName());
+        }
+
         int limit = 20;
         int offset = 0;
 
@@ -64,6 +76,12 @@ public class NxtApiAdminProductListController {
             Map<String, Object> item = new HashMap<>();
             item.put("id",content.getId());
             item.put("categoryId",content.getCategoryId());
+            if (categoryNameMap.containsKey(content.getCategoryId())){
+                item.put("categoryName",categoryNameMap.get(content.getCategoryId()));
+            }
+            else {
+                item.put("categoryName","---");
+            }
             item.put("pic_url","");
             item.put("productName",content.getProductName());
             item.put("datelineUpdated",content.getDatelineUpdated());

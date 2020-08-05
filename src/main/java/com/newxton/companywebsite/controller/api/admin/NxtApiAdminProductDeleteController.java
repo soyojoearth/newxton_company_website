@@ -1,6 +1,8 @@
 package com.newxton.companywebsite.controller.api.admin;
 
+import com.newxton.companywebsite.entity.NxtContent;
 import com.newxton.companywebsite.entity.NxtProduct;
+import com.newxton.companywebsite.service.NxtContentService;
 import com.newxton.companywebsite.service.NxtProductService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -8,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,12 +20,12 @@ import java.util.Map;
  * @github https://github.com/soyojoearth/newxton_company_website
  */
 @RestController
-public class NxtApiAdminProductDetailController {
+public class NxtApiAdminProductDeleteController {
 
     @Resource
     private NxtProductService nxtProductService;
 
-    @RequestMapping(value = "/api/admin/product/detail", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/admin/product/delete", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "id", required=false) Long id) {
 
         Map<String, Object> result = new HashMap<>();
@@ -38,27 +38,15 @@ public class NxtApiAdminProductDetailController {
             return result;
         }
 
-        NxtProduct content = nxtProductService.queryById(id);
-        if (content == null){
+        /*先查询，再删除*/
+        NxtProduct product = nxtProductService.queryById(id);
+        if (product == null){
             result.put("status", 49);
-            result.put("message", "对应的内容不存在");
+            result.put("message", "对应的产品不存在");
             return result;
         }
 
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        Map<String, Object> item = new HashMap<>();
-        item.put("id",content.getId());
-        item.put("categoryId",content.getCategoryId());
-        item.put("productName",content.getProductName());
-        item.put("productDescription",content.getProductDescription());
-        item.put("datelineUpdated",content.getDatelineUpdated());
-        item.put("datelineUpdatedReadable",sdf.format(new Date(content.getDatelineUpdated())));
-        item.put("datelineCreate",content.getDatelineCreate());
-        item.put("datelineCreateReadable",sdf.format(new Date(content.getDatelineCreate())));
-        item.put("isRecommend",content.getDatelineCreate());
-
-        result.put("detail",item);
+        nxtProductService.deleteById(product.getId());
 
         return result;
 

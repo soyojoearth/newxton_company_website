@@ -56,7 +56,7 @@ public class NxtApiAdminProductPictureListController {
             NxtUploadfile nxtUploadfile = nxtUploadfileService.queryById(productPicture.getUploadfileId());
             if (nxtUploadfile != null) {
                 Map<String,Object> item = new HashMap<>();
-                item.put("id",productPicture.getId());
+                item.put("id",productPicture.getUploadfileId());
                 item.put("url", nxtUploadfile.getUrlpath());
                 listResult.add(item);
             }
