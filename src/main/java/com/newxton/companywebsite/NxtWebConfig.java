@@ -61,20 +61,11 @@ public class NxtWebConfig implements WebMvcConfigurer {
 
         /*只需要编辑管理权限的api*/
         registry.addInterceptor(getAdminWritePermissionInterceptor())
-                .addPathPatterns("/api/admin/user_list")
-                .addPathPatterns("/api/admin/uploadfile_category/create")
-                .addPathPatterns("/api/admin/news_category/create")
-                .addPathPatterns("/api/admin/uploadfile_category/delete")
-                .addPathPatterns("/api/admin/news_category/delete")
-                .addPathPatterns("/api/admin/news/create")
-                .addPathPatterns("/api/admin/news/update")
-                .addPathPatterns("/api/admin/news/delete")
-                .addPathPatterns("/api/admin/news/recommend")
-                .addPathPatterns("/api/admin/news/order_swap")
-                .addPathPatterns("/api/admin/web_content/update")
-                .addPathPatterns("/api/admin/filemanage/update")
-                .addPathPatterns("/api/admin/filemanage/delete")
-                .addPathPatterns("/api/admin/guestmessage/delete")
+                .addPathPatterns("/api/admin/*/create")
+                .addPathPatterns("/api/admin/*/update")
+                .addPathPatterns("/api/admin/*/delete")
+                .addPathPatterns("/api/admin/*/recommend")
+                .addPathPatterns("/api/admin/*/order_swap")
         ;
 
         /*仅需要只读管理权限的api*/
