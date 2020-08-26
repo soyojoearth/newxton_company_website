@@ -6,6 +6,7 @@ import com.newxton.companywebsite.entity.NxtUploadfile;
 import com.newxton.companywebsite.service.NxtProductPictureService;
 import com.newxton.companywebsite.service.NxtProductService;
 import com.newxton.companywebsite.service.NxtUploadfileService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,9 @@ import java.util.*;
  */
 @RestController
 public class NxtApiAdminProductPictureListController {
+
+    @Value("${newxton.config.qiniuDomain}")
+    private String qiniuDomain;
 
     @Resource
     private NxtProductPictureService nxtProductPictureService;
@@ -57,7 +61,7 @@ public class NxtApiAdminProductPictureListController {
             if (nxtUploadfile != null) {
                 Map<String,Object> item = new HashMap<>();
                 item.put("id",productPicture.getUploadfileId());
-                item.put("url", nxtUploadfile.getUrlpath());
+                item.put("url", this.qiniuDomain + nxtUploadfile.getUrlpath());
                 listResult.add(item);
             }
         }

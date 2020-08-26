@@ -4,6 +4,7 @@ import com.newxton.companywebsite.entity.NxtContent;
 import com.newxton.companywebsite.entity.NxtNewsCategory;
 import com.newxton.companywebsite.service.NxtContentService;
 import com.newxton.companywebsite.service.NxtNewsCategoryService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,9 @@ import java.util.Map;
  */
 @RestController
 public class NxtApiAdminNewsUpdateController {
+
+    @Value("${newxton.config.qiniuDomain}")
+    private String qiniuDomain;
 
     @Resource
     private NxtContentService nxtContentService;
@@ -80,7 +84,7 @@ public class NxtApiAdminNewsUpdateController {
 
         content.setCategoryId(categoryId);
         content.setContentTitle(contentTitle);
-        content.setContentDetail(contentDetail);
+        content.setContentDetail(contentDetail.replace(this.qiniuDomain,"http://newxton-image-domain"));
         content.setDatelineUpdate(System.currentTimeMillis());
         content.setIsRecommend(isRecommend);
 

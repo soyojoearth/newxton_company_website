@@ -81,7 +81,7 @@ public class NxtApiAdminUploadPublicPicController {
             }
 
             String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
-            String url = this.qiniuDomain + "/" + uploadResultFilename;
+            String url = "/" + uploadResultFilename;
 
             NxtUploadfile nxtUploadfile = new NxtUploadfile();
 
@@ -104,7 +104,7 @@ public class NxtApiAdminUploadPublicPicController {
                 return result;
             }
 
-            result.put("url",url);
+            result.put("url",this.qiniuDomain+url);
             result.put("id",nxtUploadfile.getId());
 
         }

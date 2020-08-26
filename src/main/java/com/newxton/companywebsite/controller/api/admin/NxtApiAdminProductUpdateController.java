@@ -10,6 +10,7 @@ import com.newxton.companywebsite.service.NxtProductCategoryService;
 import com.newxton.companywebsite.service.NxtProductPictureService;
 import com.newxton.companywebsite.service.NxtProductService;
 import com.newxton.companywebsite.service.NxtUploadfileService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +29,9 @@ import java.util.Map;
  */
 @RestController
 public class NxtApiAdminProductUpdateController {
+
+    @Value("${newxton.config.qiniuDomain}")
+    private String qiniuDomain;
 
     @Resource
     private NxtProductService nxtProductService;
@@ -95,7 +99,7 @@ public class NxtApiAdminProductUpdateController {
         /*更新内容*/
         product.setCategoryId(categoryId);
         product.setProductName(productName);
-        product.setProductDescription(productDescription);
+        product.setProductDescription(productDescription.replace(this.qiniuDomain,"http://newxton-image-domain"));
         product.setDatelineCreate(System.currentTimeMillis());
         product.setDatelineUpdated(product.getDatelineCreate());
         product.setIsRecommend(isRecommend);

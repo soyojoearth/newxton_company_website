@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.newxton.companywebsite.entity.*;
 import com.newxton.companywebsite.service.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,9 @@ import java.util.Map;
  */
 @RestController
 public class NxtApiAdminProductCreateController {
+
+    @Value("${newxton.config.qiniuDomain}")
+    private String qiniuDomain;
 
     @Resource
     private NxtProductService nxtProductService;
@@ -80,7 +84,7 @@ public class NxtApiAdminProductCreateController {
         NxtProduct content = new NxtProduct();
         content.setCategoryId(categoryId);
         content.setProductName(productName);
-        content.setProductDescription(productDescription);
+        content.setProductDescription(productDescription.replace(this.qiniuDomain,"http://newxton-image-domain"));
         content.setDatelineCreate(System.currentTimeMillis());
         content.setDatelineUpdated(content.getDatelineCreate());
         content.setIsRecommend(isRecommend);

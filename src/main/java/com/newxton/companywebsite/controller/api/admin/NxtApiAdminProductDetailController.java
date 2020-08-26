@@ -2,6 +2,7 @@ package com.newxton.companywebsite.controller.api.admin;
 
 import com.newxton.companywebsite.entity.NxtProduct;
 import com.newxton.companywebsite.service.NxtProductService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,9 @@ import java.util.Map;
  */
 @RestController
 public class NxtApiAdminProductDetailController {
+
+    @Value("${newxton.config.qiniuDomain}")
+    private String qiniuDomain;
 
     @Resource
     private NxtProductService nxtProductService;
@@ -51,7 +55,7 @@ public class NxtApiAdminProductDetailController {
         item.put("id",content.getId());
         item.put("categoryId",content.getCategoryId());
         item.put("productName",content.getProductName());
-        item.put("productDescription",content.getProductDescription());
+        item.put("productDescription",content.getProductDescription().replace("http://newxton-image-domain",this.qiniuDomain));
         item.put("datelineUpdated",content.getDatelineUpdated());
         item.put("datelineUpdatedReadable",sdf.format(new Date(content.getDatelineUpdated())));
         item.put("datelineCreate",content.getDatelineCreate());
