@@ -16,6 +16,14 @@ public class NxtProduct implements Serializable {
     private Long categoryId;
     
     private String productName;
+
+    private String productSubtitle;
+
+    private Long price;
+
+    private Integer priceNegotiation;
+
+    private String priceRemark;
     
     private String productDescription;
     
@@ -49,6 +57,38 @@ public class NxtProduct implements Serializable {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public String getProductSubtitle() {
+        return productSubtitle;
+    }
+
+    public void setProductSubtitle(String productSubtitle) {
+        this.productSubtitle = productSubtitle;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public Integer getPriceNegotiation() {
+        return priceNegotiation;
+    }
+
+    public void setPriceNegotiation(Integer priceNegotiation) {
+        this.priceNegotiation = priceNegotiation;
+    }
+
+    public String getPriceRemark() {
+        return priceRemark;
+    }
+
+    public void setPriceRemark(String priceRemark) {
+        this.priceRemark = priceRemark;
     }
 
     public String getProductDescription() {
