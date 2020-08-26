@@ -43,6 +43,16 @@ public class NxtProductSkuServiceImpl implements NxtProductSkuService {
     }
 
     /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtProductSku 实例对象
+     * @return 对象列表
+     */
+    public List<NxtProductSku> queryAll(NxtProductSku nxtProductSku){
+        return this.nxtProductSkuDao.queryAll(nxtProductSku);
+    }
+
+    /**
      * 新增数据
      *
      * @param nxtProductSku 实例对象

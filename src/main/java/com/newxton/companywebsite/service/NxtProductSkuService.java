@@ -29,6 +29,14 @@ public interface NxtProductSkuService {
     List<NxtProductSku> queryAllByLimit(int offset, int limit);
 
     /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtProductSku 实例对象
+     * @return 对象列表
+     */
+    List<NxtProductSku> queryAll(NxtProductSku nxtProductSku);
+
+    /**
      * 新增数据
      *
      * @param nxtProductSku 实例对象

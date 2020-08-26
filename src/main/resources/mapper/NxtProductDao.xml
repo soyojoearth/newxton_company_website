@@ -157,16 +157,16 @@
                 product_name = #{productName},
             </if>
             <if test="productSubtitle != null and productSubtitle != ''">
-                product_subtitle = #{productSubtitle}
+                product_subtitle = #{productSubtitle},
             </if>
             <if test="price != null">
-                price = #{price}
+                price = #{price},
             </if>
             <if test="priceNegotiation != null">
-                price_negotiation = #{priceNegotiation}
+                price_negotiation = #{priceNegotiation},
             </if>
             <if test="priceRemark != null and priceRemark != ''">
-                price_remark = #{priceRemark}
+                price_remark = #{priceRemark},
             </if>
             <if test="productDescription != null and productDescription != ''">
                 product_description = #{productDescription},

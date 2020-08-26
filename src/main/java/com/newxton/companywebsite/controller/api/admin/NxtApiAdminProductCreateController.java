@@ -39,12 +39,23 @@ public class NxtApiAdminProductCreateController {
     @Resource
     private NxtProductPictureService nxtProductPictureService;
 
+    @Resource
+    private NxtProductSkuService nxtProductSkuService;
+
+    @Resource
+    private NxtProductSkuValueService nxtProductSkuValueService;
+
     @RequestMapping(value = "/api/admin/product/create", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "category_id", required=false) Long categoryId,
                                      @RequestParam(value = "product_name", required=false) String productName,
                                      @RequestParam(value = "product_description", required=false) String productDescription,
                                      @RequestParam(value = "product_picture_list", required=false) String productPictureList,
-                                     @RequestParam(value = "is_recommend", required=false) Integer isRecommend
+                                     @RequestParam(value = "is_recommend", required=false) Integer isRecommend,
+                                     @RequestParam(value = "product_sku", required=false) String productSku,
+                                     @RequestParam(value = "price", required=false) Long price,
+                                     @RequestParam(value = "price_negotiation", required=false) Integer priceNegotiation,
+                                     @RequestParam(value = "price_remark", required=false) String priceRemark,
+                                     @RequestParam(value = "product_subtitle", required=false) String productSubtitle
     ) {
 
         Map<String, Object> result = new HashMap<>();
@@ -89,6 +100,19 @@ public class NxtApiAdminProductCreateController {
         content.setDatelineUpdated(content.getDatelineCreate());
         content.setIsRecommend(isRecommend);
 
+        if (price != null){
+            content.setPrice(price);
+        }
+        if (priceNegotiation != null){
+            content.setPriceNegotiation(priceNegotiation);
+        }
+        if (priceRemark != null){
+            content.setPriceRemark(priceRemark);
+        }
+        if (productSubtitle != null){
+            content.setProductSubtitle(productSubtitle);
+        }
+
         NxtProduct contentCreated = nxtProductService.insert(content);
 
         if (contentCreated.getId() != null){
@@ -126,6 +150,29 @@ public class NxtApiAdminProductCreateController {
         /*给sort设置一个默认值*/
         contentCreated.setSortId(contentCreated.getId());
         nxtProductService.update(contentCreated);
+
+
+        //更新产品属性
+        if(productSku != null && !productSku.trim().isEmpty()){
+            //插入接收到的属性
+            Gson gson = new Gson();
+            List<Map<String,Object>> productSkuList = gson.fromJson(productSku,new TypeToken<List<Map<String,Object>>>(){}.getType());
+            for (Map<String, Object> skuItem :
+                    productSkuList) {
+                NxtProductSku nxtProductSku = new NxtProductSku();
+                nxtProductSku.setProductId(content.getId());
+                nxtProductSku.setSkuName(skuItem.get("name").toString());
+                NxtProductSku nxtProductSkuCreated = nxtProductSkuService.insert(nxtProductSku);
+                List<String> skuValueList = (List<String>)skuItem.get("sku");
+                for (String skuValue :
+                        skuValueList) {
+                    NxtProductSkuValue nxtProductSkuValue = new NxtProductSkuValue();
+                    nxtProductSkuValue.setSkuId(nxtProductSkuCreated.getId());
+                    nxtProductSkuValue.setSkuValue(skuValue);
+                    nxtProductSkuValueService.insert(nxtProductSkuValue);
+                }
+            }
+        }
 
         return result;
 

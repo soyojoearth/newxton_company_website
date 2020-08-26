@@ -2,14 +2,8 @@ package com.newxton.companywebsite.controller.api.admin;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.newxton.companywebsite.entity.NxtProduct;
-import com.newxton.companywebsite.entity.NxtProductCategory;
-import com.newxton.companywebsite.entity.NxtProductPicture;
-import com.newxton.companywebsite.entity.NxtUploadfile;
-import com.newxton.companywebsite.service.NxtProductCategoryService;
-import com.newxton.companywebsite.service.NxtProductPictureService;
-import com.newxton.companywebsite.service.NxtProductService;
-import com.newxton.companywebsite.service.NxtUploadfileService;
+import com.newxton.companywebsite.entity.*;
+import com.newxton.companywebsite.service.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,6 +39,12 @@ public class NxtApiAdminProductUpdateController {
     @Resource
     private NxtProductPictureService nxtProductPictureService;
 
+    @Resource
+    private NxtProductSkuService nxtProductSkuService;
+
+    @Resource
+    private NxtProductSkuValueService nxtProductSkuValueService;
+
     @RequestMapping(value = "/api/admin/product/update", method = RequestMethod.POST)
     public Map<String, Object> index(
                                     @RequestParam(value = "id", required=false) Long id,
@@ -52,7 +52,12 @@ public class NxtApiAdminProductUpdateController {
                                      @RequestParam(value = "product_name", required=false) String productName,
                                      @RequestParam(value = "product_description", required=false) String productDescription,
                                      @RequestParam(value = "product_picture_list", required=false) String productPictureList,
-                                     @RequestParam(value = "is_recommend", required=false) Integer isRecommend
+                                     @RequestParam(value = "is_recommend", required=false) Integer isRecommend,
+                                    @RequestParam(value = "product_sku", required=false) String productSku,
+                                    @RequestParam(value = "price", required=false) Long price,
+                                    @RequestParam(value = "price_negotiation", required=false) Integer priceNegotiation,
+                                    @RequestParam(value = "price_remark", required=false) String priceRemark,
+                                    @RequestParam(value = "product_subtitle", required=false) String productSubtitle
     ) {
 
         Map<String, Object> result = new HashMap<>();
@@ -104,6 +109,19 @@ public class NxtApiAdminProductUpdateController {
         product.setDatelineUpdated(product.getDatelineCreate());
         product.setIsRecommend(isRecommend);
 
+        if (price != null){
+            product.setPrice(price);
+        }
+        if (priceNegotiation != null){
+            product.setPriceNegotiation(priceNegotiation);
+        }
+        if (priceRemark != null){
+            product.setPriceRemark(priceRemark);
+        }
+        if (productSubtitle != null){
+            product.setProductSubtitle(productSubtitle);
+        }
+
         nxtProductService.update(product);
 
         //更新产品图片id（先删除全部，再重新插入）
@@ -137,6 +155,47 @@ public class NxtApiAdminProductUpdateController {
                             nxtProductPictureService.update(nxtProductPictureCreated);
                         }
                     }
+                }
+            }
+        }
+
+
+
+        //更新产品属性
+        if(productSku != null && !productSku.trim().isEmpty()){
+
+            //先清除原先的属性
+            NxtProductSku nxtProductSkuCondition = new NxtProductSku();
+            nxtProductSkuCondition.setProductId(product.getId());
+            List<NxtProductSku> dbSkuList = nxtProductSkuService.queryAll(nxtProductSkuCondition);
+            for (NxtProductSku skuItem :
+                    dbSkuList) {
+                NxtProductSkuValue nxtProductSkuValueCondition = new NxtProductSkuValue();
+                nxtProductSkuValueCondition.setSkuId(skuItem.getId());
+                List<NxtProductSkuValue> dbSkuVauleList = nxtProductSkuValueService.queryAll(nxtProductSkuValueCondition);
+                for (NxtProductSkuValue skuValueItem :
+                        dbSkuVauleList) {
+                    nxtProductSkuValueService.deleteById(skuValueItem.getId());
+                }
+                nxtProductSkuService.deleteById(skuItem.getId());
+            }
+
+            //再插入接收到的属性
+            Gson gson = new Gson();
+            List<Map<String,Object>> productSkuList = gson.fromJson(productSku,new TypeToken<List<Map<String,Object>>>(){}.getType());
+            for (Map<String, Object> skuItem :
+                    productSkuList) {
+                NxtProductSku nxtProductSku = new NxtProductSku();
+                nxtProductSku.setProductId(product.getId());
+                nxtProductSku.setSkuName(skuItem.get("name").toString());
+                NxtProductSku nxtProductSkuCreated = nxtProductSkuService.insert(nxtProductSku);
+                List<String> skuValueList = (List<String>)skuItem.get("sku");
+                for (String skuValue :
+                        skuValueList) {
+                    NxtProductSkuValue nxtProductSkuValue = new NxtProductSkuValue();
+                    nxtProductSkuValue.setSkuId(nxtProductSkuCreated.getId());
+                    nxtProductSkuValue.setSkuValue(skuValue);
+                    nxtProductSkuValueService.insert(nxtProductSkuValue);
                 }
             }
         }
