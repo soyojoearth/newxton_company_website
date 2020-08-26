@@ -8,7 +8,7 @@ import java.util.List;
  * (NxtBanner)表数据库访问层
  *
  * @author makejava
- * @since 2020-08-26 09:15:28
+ * @since 2020-08-26 16:48:10
  */
 public interface NxtBannerDao {
 

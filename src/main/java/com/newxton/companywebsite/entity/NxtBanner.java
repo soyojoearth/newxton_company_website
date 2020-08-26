@@ -6,14 +6,14 @@ import java.io.Serializable;
  * (NxtBanner)实体类
  *
  * @author makejava
- * @since 2020-08-26 09:15:28
+ * @since 2020-08-26 16:48:06
  */
 public class NxtBanner implements Serializable {
-    private static final long serialVersionUID = 673646185635307163L;
+    private static final long serialVersionUID = 828387650090459002L;
     
     private Long id;
     
-    private Long categoryId;
+    private String locationName;
     
     private Long uploadfileId;
     
@@ -30,12 +30,12 @@ public class NxtBanner implements Serializable {
         this.id = id;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public String getLocationName() {
+        return locationName;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
     }
 
     public Long getUploadfileId() {

@@ -5,7 +5,7 @@
     <resultMap id="BaseResultMap" type="com.newxton.companywebsite.entity.NxtBanner">
         <!--@Table nxt_banner-->
         <result property="id" column="id" jdbcType="INTEGER"/>
-        <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
+        <result property="locationName" column="location_name" jdbcType="VARCHAR"/>
         <result property="uploadfileId" column="uploadfile_id" jdbcType="INTEGER"/>
         <result property="urlpath" column="urlpath" jdbcType="VARCHAR"/>
         <result property="clickUrl" column="click_url" jdbcType="VARCHAR"/>
@@ -14,7 +14,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, category_id, uploadfile_id, urlpath, click_url
+          id, location_name, uploadfile_id, urlpath, click_url
         from newxton_companywebsite.nxt_banner
         where id = #{id}
     </select>
@@ -22,7 +22,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, category_id, uploadfile_id, urlpath, click_url
+          id, location_name, uploadfile_id, urlpath, click_url
         from newxton_companywebsite.nxt_banner
         limit #{offset}, #{limit}
     </select>
@@ -30,14 +30,14 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, category_id, uploadfile_id, urlpath, click_url
+          id, location_name, uploadfile_id, urlpath, click_url
         from newxton_companywebsite.nxt_banner
         <where>
             <if test="id != null">
                 and id = #{id}
             </if>
-            <if test="categoryId != null">
-                and category_id = #{categoryId}
+            <if test="locationName != null and locationName != ''">
+                and location_name = #{locationName}
             </if>
             <if test="uploadfileId != null">
                 and uploadfile_id = #{uploadfileId}
@@ -53,16 +53,16 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into newxton_companywebsite.nxt_banner(category_id, uploadfile_id, urlpath, click_url)
-        values (#{categoryId}, #{uploadfileId}, #{urlpath}, #{clickUrl})
+        insert into newxton_companywebsite.nxt_banner(location_name, uploadfile_id, urlpath, click_url)
+        values (#{locationName}, #{uploadfileId}, #{urlpath}, #{clickUrl})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
         update newxton_companywebsite.nxt_banner
         <set>
-            <if test="categoryId != null">
-                category_id = #{categoryId},
+            <if test="locationName != null and locationName != ''">
+                location_name = #{locationName},
             </if>
             <if test="uploadfileId != null">
                 uploadfile_id = #{uploadfileId},

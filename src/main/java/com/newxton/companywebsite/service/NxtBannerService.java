@@ -7,7 +7,7 @@ import java.util.List;
  * (NxtBanner)表服务接口
  *
  * @author makejava
- * @since 2020-08-26 09:15:28
+ * @since 2020-08-26 16:48:12
  */
 public interface NxtBannerService {
 
@@ -27,6 +27,14 @@ public interface NxtBannerService {
      * @return 对象列表
      */
     List<NxtBanner> queryAllByLimit(int offset, int limit);
+
+    /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtBanner 实例对象
+     * @return 对象列表
+     */
+    List<NxtBanner> queryAll(NxtBanner nxtBanner);
 
     /**
      * 新增数据

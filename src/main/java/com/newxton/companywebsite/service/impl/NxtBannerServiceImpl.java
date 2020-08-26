@@ -12,7 +12,7 @@ import java.util.List;
  * (NxtBanner)表服务实现类
  *
  * @author makejava
- * @since 2020-08-26 09:15:28
+ * @since 2020-08-26 16:48:16
  */
 @Service("nxtBannerService")
 public class NxtBannerServiceImpl implements NxtBannerService {
@@ -40,6 +40,16 @@ public class NxtBannerServiceImpl implements NxtBannerService {
     @Override
     public List<NxtBanner> queryAllByLimit(int offset, int limit) {
         return this.nxtBannerDao.queryAllByLimit(offset, limit);
+    }
+
+    /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtBanner 实例对象
+     * @return 对象列表
+     */
+    public List<NxtBanner> queryAll(NxtBanner nxtBanner){
+        return this.nxtBannerDao.queryAll(nxtBanner);
     }
 
     /**
