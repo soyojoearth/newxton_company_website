@@ -52,7 +52,7 @@ public class NxtApiAdminProductCreateController {
                                      @RequestParam(value = "product_picture_list", required=false) String productPictureList,
                                      @RequestParam(value = "is_recommend", required=false) Integer isRecommend,
                                      @RequestParam(value = "product_sku", required=false) String productSku,
-                                     @RequestParam(value = "price", required=false) Long price,
+                                     @RequestParam(value = "price", required=false) Float price,
                                      @RequestParam(value = "price_negotiation", required=false) Integer priceNegotiation,
                                      @RequestParam(value = "price_remark", required=false) String priceRemark,
                                      @RequestParam(value = "product_subtitle", required=false) String productSubtitle
@@ -101,7 +101,8 @@ public class NxtApiAdminProductCreateController {
         content.setIsRecommend(isRecommend);
 
         if (price != null){
-            content.setPrice(price);
+            Long priceLong = (long)(price * 100);
+            content.setPrice(priceLong);
         }
         if (priceNegotiation != null){
             content.setPriceNegotiation(priceNegotiation);

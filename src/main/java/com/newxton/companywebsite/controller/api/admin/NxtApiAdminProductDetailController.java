@@ -64,7 +64,12 @@ public class NxtApiAdminProductDetailController {
         item.put("categoryId",content.getCategoryId());
         item.put("productName",content.getProductName());
         item.put("productSubtitle",content.getProductSubtitle());
-        item.put("price",content.getPrice()/100F);
+        if (content.getPrice() != null) {
+            item.put("price", content.getPrice() / 100F);
+        }
+        else {
+            item.put("price", null);
+        }
         item.put("priceNegotiation",content.getPriceNegotiation());
         item.put("priceRemark",content.getPriceRemark());
         item.put("productSubtitle",content.getProductSubtitle());
