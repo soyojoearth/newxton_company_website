@@ -2,11 +2,9 @@ package com.newxton.companywebsite.controller.api.admin;
 
 import com.newxton.companywebsite.entity.NxtBanner;
 import com.newxton.companywebsite.service.NxtBannerService;
-import com.newxton.companywebsite.service.NxtUploadfileService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;

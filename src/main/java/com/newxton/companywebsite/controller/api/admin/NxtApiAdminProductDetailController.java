@@ -1,7 +1,11 @@
 package com.newxton.companywebsite.controller.api.admin;
 
 import com.newxton.companywebsite.entity.NxtProduct;
+import com.newxton.companywebsite.entity.NxtProductSku;
+import com.newxton.companywebsite.entity.NxtProductSkuValue;
 import com.newxton.companywebsite.service.NxtProductService;
+import com.newxton.companywebsite.service.NxtProductSkuService;
+import com.newxton.companywebsite.service.NxtProductSkuValueService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author soyojo.earth@gmail.com
@@ -28,6 +30,12 @@ public class NxtApiAdminProductDetailController {
 
     @Resource
     private NxtProductService nxtProductService;
+
+    @Resource
+    private NxtProductSkuService nxtProductSkuService;
+
+    @Resource
+    private NxtProductSkuValueService nxtProductSkuValueService;
 
     @RequestMapping(value = "/api/admin/product/detail", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "id", required=false) Long id) {
@@ -55,6 +63,11 @@ public class NxtApiAdminProductDetailController {
         item.put("id",content.getId());
         item.put("categoryId",content.getCategoryId());
         item.put("productName",content.getProductName());
+        item.put("productSubtitle",content.getProductSubtitle());
+        item.put("price",content.getPrice()/100F);
+        item.put("priceNegotiation",content.getPriceNegotiation());
+        item.put("priceRemark",content.getPriceRemark());
+        item.put("productSubtitle",content.getProductSubtitle());
         item.put("productDescription",content.getProductDescription().replace("http://newxton-image-domain",this.qiniuDomain));
         item.put("datelineUpdated",content.getDatelineUpdated());
         item.put("datelineUpdatedReadable",sdf.format(new Date(content.getDatelineUpdated())));
@@ -63,6 +76,31 @@ public class NxtApiAdminProductDetailController {
         item.put("isRecommend",content.getDatelineCreate());
 
         result.put("detail",item);
+
+        NxtProductSku nxtProductSkuCondition = new NxtProductSku();
+        nxtProductSkuCondition.setProductId(content.getId());
+
+        List<NxtProductSku> listSku = nxtProductSkuService.queryAll(nxtProductSkuCondition);
+
+        List<Map<String,Object>> resultSkuList = new ArrayList<>();
+        for (NxtProductSku productSku :
+                listSku) {
+            Map<String,Object> itemSkuMap = new HashMap<>();
+            itemSkuMap.put("name",productSku.getSkuName());
+            List<String> itemSkuValueList = new ArrayList<>();
+            Long skuId = productSku.getId();
+            NxtProductSkuValue nxtProductSkuValueCondition = new NxtProductSkuValue();
+            nxtProductSkuValueCondition.setSkuId(skuId);
+            List<NxtProductSkuValue> listSkuValue = nxtProductSkuValueService.queryAll(nxtProductSkuValueCondition);
+            for (NxtProductSkuValue productSkuValue :
+                    listSkuValue) {
+                itemSkuValueList.add(productSkuValue.getSkuValue());
+            }
+            itemSkuMap.put("sku",itemSkuValueList);
+            resultSkuList.add(itemSkuMap);
+        }
+
+        item.put("product_sku",resultSkuList);
 
         return result;
 
