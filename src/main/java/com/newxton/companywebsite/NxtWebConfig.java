@@ -47,7 +47,8 @@ public class NxtWebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/api/admin/*")
                 .addPathPatterns("/api/admin/*/*")
                 .addPathPatterns("/api/admin/*/*/*")
-                .excludePathPatterns("/api/admin/login");
+                .excludePathPatterns("/api/admin/login")
+                .excludePathPatterns("/api/admin/logout");
         /*以上这个Interceptor一定要放在最前面，因为下面的几个Intercepter不再检查登录状态*/
 
         /*需要超级管理员权限的api*/

@@ -24,16 +24,29 @@ public class NxtApiAdminLogoutController {
 
 
     @RequestMapping(value = "/api/admin/logout", method = RequestMethod.POST)
-    public Map<String, Object> index(@RequestHeader("user_id") Long user_id) {
+    public Map<String, Object> index(@RequestHeader("user_id") Long user_id, @RequestHeader("token") String token) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
 
-        //注销就是让旧token失效
-
         NxtUser user = nxtUserService.queryById(user_id);
 
+        if (user == null){
+            //未登录状态，直接提示注销成功
+            result.put("status", 0);
+            result.put("message", "");
+            return result;
+        }
+
+        if (!user.getToken().equals(token)){
+            //未登录状态，直接提示注销成功
+            result.put("status", 0);
+            result.put("message", "");
+            return result;
+        }
+
+        //已登录状态，注销时有权重置token（让旧token失效）
         String newToken = getRandomString(32);
         newToken = DigestUtils.md5Hex(newToken).toLowerCase();
 
