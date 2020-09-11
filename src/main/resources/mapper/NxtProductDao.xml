@@ -35,6 +35,24 @@
         limit #{offset}, #{limit}
     </select>
 
+
+    <!--根据关键字搜索-->
+    <select id="searchAllByLimit" resultMap="BaseResultMap">
+        select
+        id, category_id, product_name, product_subtitle, price, price_negotiation, price_remark, product_description, dateline_create, dateline_updated, is_recommend, sort_id
+        from newxton_proj_zhibroad.nxt_product
+        where product_name like #{keyword}
+        order by is_recommend desc, sort_id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="searchAllCount" resultType="Long">
+        select
+        count(*)
+        from newxton_proj_zhibroad.nxt_product
+        where product_name like #{keyword}
+    </select>
+
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
@@ -191,5 +209,97 @@
     <delete id="deleteById">
         delete from newxton_companywebsite.nxt_product where id = #{id}
     </delete>
+
+    <!--通过实体作为筛选条件查询（且字符串字段作为搜索关键词）-->
+    <select id="searchQueryAllByMap" parameterType="map" resultMap="BaseResultMap">
+        select
+        id, category_id, product_name, product_subtitle, price, price_negotiation, price_remark, product_description, dateline_create, dateline_updated, is_recommend, sort_id
+        from newxton_companywebsite.nxt_product
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="productName != null and productName != ''">
+                and product_name like #{productName}
+            </if>
+            <if test="productSubtitle != null and productSubtitle != ''">
+                and product_subtitle like #{productSubtitle}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="priceNegotiation != null">
+                and price_negotiation = #{priceNegotiation}
+            </if>
+            <if test="priceRemark != null and priceRemark != ''">
+                and price_remark like #{priceRemark}
+            </if>
+            <if test="productDescription != null and productDescription != ''">
+                and product_description = #{productDescription}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="datelineUpdated != null">
+                and dateline_updated = #{datelineUpdated}
+            </if>
+            <if test="isRecommend != null">
+                and is_recommend = #{isRecommend}
+            </if>
+            <if test="sortId != null">
+                sort_id = #{sortId},
+            </if>
+        </where>
+        order by is_recommend desc, sort_id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--统计：通过实体作为筛选条件查询（且字符串字段作为搜索关键词）-->
+    <select id="countSearchQueryAllByMap" parameterType="map" resultType="Long">
+        select
+        count(*)
+        from newxton_companywebsite.nxt_product
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="productName != null and productName != ''">
+                and product_name like #{productName}
+            </if>
+            <if test="productSubtitle != null and productSubtitle != ''">
+                and product_subtitle like #{productSubtitle}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="priceNegotiation != null">
+                and price_negotiation = #{priceNegotiation}
+            </if>
+            <if test="priceRemark != null and priceRemark != ''">
+                and price_remark like #{priceRemark}
+            </if>
+            <if test="productDescription != null and productDescription != ''">
+                and product_description = #{productDescription}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="datelineUpdated != null">
+                and dateline_updated = #{datelineUpdated}
+            </if>
+            <if test="isRecommend != null">
+                and is_recommend = #{isRecommend}
+            </if>
+            <if test="sortId != null">
+                sort_id = #{sortId},
+            </if>
+        </where>
+    </select>
 
 </mapper>

@@ -32,7 +32,9 @@ public class NxtApiAdminNewsListController {
     @RequestMapping(value = "/api/admin/news/list", method = RequestMethod.POST)
     public Map<String, Object> index(
             @RequestParam(value = "category_id", required = false) Long categoryId,
-            @RequestParam(value = "page_number", required = false) Integer pageNumber
+            @RequestParam(value = "page_number", required = false) Integer pageNumber,
+            @RequestParam(value = "is_recommend", required = false) Integer isRecommend,
+            @RequestParam(value = "search_keyword", required = false) String searchKeyword
     ) {
 
         Map<String, Object> result = new HashMap<>();
@@ -52,14 +54,30 @@ public class NxtApiAdminNewsListController {
             categoryNameMap.put(category.getId(),category.getCategoryName());
         }
 
-        int limit = 20;
+        int limit = 2;
         int offset = 0;
 
         if (pageNumber > 1){
             offset = limit * (pageNumber-1);
         }
 
-        List<NxtContent> list = nxtContentService.selectAllByLimit(offset,limit,categoryId);
+        Map<String,Object> mapCondition = new HashMap<>();
+
+        if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
+            mapCondition.put("contentTitle","%"+searchKeyword.trim()+"%");
+        }
+        if (isRecommend != null){
+            mapCondition.put("isRecommend",isRecommend);
+        }
+        if (categoryId != null){
+            mapCondition.put("categoryId",categoryId);
+        }
+
+        mapCondition.put("offset",offset);
+        mapCondition.put("limit",limit);
+
+        List<NxtContent> list = nxtContentService.searchQueryAllByMap(mapCondition);
+
         List<Map<String,Object>> listResult = new ArrayList<>();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (int i = 0; i < list.size(); i++) {
@@ -82,6 +100,10 @@ public class NxtApiAdminNewsListController {
             listResult.add(item);
         }
         result.put("list",listResult);
+
+        Long totalCount = nxtContentService.countSearchQueryAllByMap(mapCondition);
+        Long pageCount =  (long)Math.ceil((float)totalCount / (float)limit);
+        result.put("page_count",pageCount);
 
         return result;
 

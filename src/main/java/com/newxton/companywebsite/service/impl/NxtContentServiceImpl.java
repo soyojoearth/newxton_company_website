@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * (NxtContent)表服务实现类
@@ -72,6 +73,26 @@ public class NxtContentServiceImpl implements NxtContentService {
      */
     public Long queryCount(NxtContent nxtContent){
         return this.nxtContentDao.queryCount(nxtContent);
+    }
+
+    /**
+     * 通过实体作为筛选条件查询，且关键词搜索，且分页
+     *
+     * @param map 万能map
+     * @return 对象列表
+     */
+    public List<NxtContent> searchQueryAllByMap(Map<String,Object> map){
+        return this.nxtContentDao.searchQueryAllByMap(map);
+    }
+
+    /**
+     * 通过实体作为筛选条件查询，且关键词搜索 （统计总数）
+     *
+     * @param map 万能map
+     * @return Long
+     */
+    public Long countSearchQueryAllByMap(Map<String,Object> map){
+        return this.nxtContentDao.countSearchQueryAllByMap(map);
     }
 
     /**

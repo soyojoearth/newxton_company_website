@@ -152,4 +152,72 @@
         delete from newxton_companywebsite.nxt_content where id = #{id}
     </delete>
 
+    <!--通过实体作为筛选条件查询（且字符串字段作为搜索关键词）-->
+    <select id="searchQueryAllByMap" parameterType="map" resultMap="BaseResultMap">
+        select
+        id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
+        from newxton_companywebsite.nxt_content
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="contentTitle != null and contentTitle != ''">
+                and content_title like #{contentTitle}
+            </if>
+            <if test="contentDetail != null and contentDetail != ''">
+                and content_detail = #{contentDetail}
+            </if>
+            <if test="datelineUpdate != null">
+                and dateline_update = #{datelineUpdate}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="isRecommend != null">
+                and is_recommend = #{isRecommend}
+            </if>
+            <if test="sortId != null">
+                and sort_id = #{sortId}
+            </if>
+        </where>
+        order by is_recommend desc, sort_id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--统计：通过实体作为筛选条件查询（且字符串字段作为搜索关键词）-->
+    <select id="countSearchQueryAllByMap" parameterType="map" resultType="Long">
+        select
+        count(*)
+        from newxton_companywebsite.nxt_content
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="contentTitle != null and contentTitle != ''">
+                and content_title like #{contentTitle}
+            </if>
+            <if test="contentDetail != null and contentDetail != ''">
+                and content_detail = #{contentDetail}
+            </if>
+            <if test="datelineUpdate != null">
+                and dateline_update = #{datelineUpdate}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="isRecommend != null">
+                and is_recommend = #{isRecommend}
+            </if>
+            <if test="sortId != null">
+                and sort_id = #{sortId}
+            </if>
+        </where>
+    </select>
+
 </mapper>

@@ -4,6 +4,7 @@ import com.newxton.companywebsite.entity.NxtContent;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * (NxtContent)表服务接口
@@ -54,6 +55,22 @@ public interface NxtContentService {
      * @return 对象列表
      */
     Long queryCount(NxtContent nxtContent);
+
+    /**
+     * 通过实体作为筛选条件查询，且关键词搜索，且分页
+     *
+     * @param map 万能map
+     * @return 对象列表
+     */
+    List<NxtContent> searchQueryAllByMap(Map<String,Object> map);
+
+    /**
+     * 通过实体作为筛选条件查询，且关键词搜索 （统计总数）
+     *
+     * @param map 万能map
+     * @return Long
+     */
+    Long countSearchQueryAllByMap(Map<String,Object> map);
 
     /**
      * 新增数据
