@@ -3,6 +3,7 @@ package com.newxton.companywebsite.service.impl;
 import com.newxton.companywebsite.entity.NxtProductCategory;
 import com.newxton.companywebsite.dao.NxtProductCategoryDao;
 import com.newxton.companywebsite.service.NxtProductCategoryService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,6 +29,16 @@ public class NxtProductCategoryServiceImpl implements NxtProductCategoryService 
     @Override
     public NxtProductCategory queryById(Long id) {
         return this.nxtProductCategoryDao.queryById(id);
+    }
+
+    /**
+     * 通过Name查询单条数据
+     *
+     * @param categoryName 名称
+     * @return 实例对象
+     */
+    public NxtProductCategory queryByName(@Param("categoryName") String categoryName){
+        return this.nxtProductCategoryDao.queryByName(categoryName);
     }
 
     /**

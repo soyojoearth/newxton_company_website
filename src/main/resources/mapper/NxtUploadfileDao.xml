@@ -34,6 +34,17 @@
         limit #{offset}, #{limit}
     </select>
 
+    <select id="selectByIdSet" resultMap="BaseResultMap">
+        SELECT
+        id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd
+        from newxton_companywebsite.nxt_uploadfile
+        WHERE id IN
+        <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        limit #{offset}, #{limit}
+    </select>
+
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select

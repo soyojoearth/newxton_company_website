@@ -1,6 +1,7 @@
 package com.newxton.companywebsite.service;
 
 import com.newxton.companywebsite.entity.NxtProductCategory;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,6 +20,14 @@ public interface NxtProductCategoryService {
      * @return 实例对象
      */
     NxtProductCategory queryById(Long id);
+
+    /**
+     * 通过Name查询单条数据
+     *
+     * @param categoryName 名称
+     * @return 实例对象
+     */
+    NxtProductCategory queryByName(@Param("categoryName") String categoryName);
 
     /**
      * 查询多条数据

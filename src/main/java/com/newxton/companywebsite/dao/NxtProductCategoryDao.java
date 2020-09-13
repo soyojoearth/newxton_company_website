@@ -21,6 +21,14 @@ public interface NxtProductCategoryDao {
     NxtProductCategory queryById(Long id);
 
     /**
+     * 通过Name查询单条数据
+     *
+     * @param categoryName 名称
+     * @return 实例对象
+     */
+    NxtProductCategory queryByName(@Param("categoryName") String categoryName);
+
+    /**
      * 查询指定行数据
      *
      * @param offset 查询起始位置

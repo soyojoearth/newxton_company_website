@@ -63,7 +63,7 @@ public class NxtApiAdminProductListController {
             categoryNameMap.put(category.getId(),category.getCategoryName());
         }
 
-        int limit = 2;
+        int limit = 20;
         int offset = 0;
 
         if (pageNumber > 1){

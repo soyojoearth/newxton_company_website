@@ -56,6 +56,44 @@ public class NxtProductServiceImpl implements NxtProductService {
     }
 
     /**
+     * 查询指定多个类型数据
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    public List<NxtProduct> selectByCategoryIdSet(@Param("offset") int offset, @Param("limit") int limit,
+                                           @Param("categoryIdList") List<Long> categoryIdList){
+        return this.nxtProductDao.selectByCategoryIdSet(offset, limit, categoryIdList);
+    }
+
+    /**
+     * 通过搜索关键字查询数据
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    public List<NxtProduct> searchAllByLimit(@Param("offset") int offset, @Param("limit") int limit,
+                                             @Param("keyword") String keyword){
+        return this.nxtProductDao.searchAllByLimit(offset, limit, keyword);
+    }
+
+    /**
+     * 通过分类id列表作为筛选条件查询Count
+     * @return 对象列表
+     */
+    public Long countByCategoryIdSet(@Param("categoryIdList") List<Long> categoryIdList){
+        return this.nxtProductDao.countByCategoryIdSet(categoryIdList);
+    }
+
+    /**
+     * 通过搜索关键字查询Count
+     * @return 对象列表
+     */
+    public Long searchAllCount(@Param("keyword") String keyword){
+        return this.nxtProductDao.searchAllCount(keyword);
+    }
+
+    /**
      * 通过实体作为筛选条件查询Count
      *
      * @param nxtProduct 实例对象

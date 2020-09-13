@@ -3,6 +3,7 @@ package com.newxton.companywebsite.service.impl;
 import com.newxton.companywebsite.entity.NxtUploadfile;
 import com.newxton.companywebsite.dao.NxtUploadfileDao;
 import com.newxton.companywebsite.service.NxtUploadfileService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -40,6 +41,17 @@ public class NxtUploadfileServiceImpl implements NxtUploadfileService {
     @Override
     public List<NxtUploadfile> queryAllByLimit(int offset, int limit) {
         return this.nxtUploadfileDao.queryAllByLimit(offset, limit);
+    }
+
+    /**
+     * 查询指定多个类型数据
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    public List<NxtUploadfile> selectByIdSet(@Param("offset") int offset, @Param("limit") int limit,
+                                                     @Param("idList") List<Long> idList){
+        return this.nxtUploadfileDao.selectByIdSet(offset, limit, idList);
     }
 
     /**

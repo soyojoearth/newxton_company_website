@@ -26,6 +26,17 @@
         limit #{offset}, #{limit}
     </select>
 
+    <select id="selectByProductIdSet" resultMap="BaseResultMap">
+        SELECT
+        id, product_id, uploadfile_id, sort_id
+        from newxton_companywebsite.nxt_product_picture
+        WHERE product_id IN
+        <foreach collection="productIdList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        limit #{offset}, #{limit}
+    </select>
+
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select

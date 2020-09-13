@@ -30,6 +30,14 @@ public interface NxtUploadfileDao {
      */
     List<NxtUploadfile> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
 
+    /**
+     * 查询指定多个类型数据
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    List<NxtUploadfile> selectByIdSet(@Param("offset") int offset, @Param("limit") int limit,
+                                                  @Param("idList") List<Long> idList);
 
     /**
      * 通过实体作为筛选条件查询

@@ -1,4 +1,4 @@
-package com.newxton.companywebsite.controller.api;
+package com.newxton.companywebsite.controller.api.front;
 
 import com.newxton.companywebsite.entity.NxtUser;
 import com.newxton.companywebsite.service.NxtUserService;

@@ -3,6 +3,7 @@ package com.newxton.companywebsite.service.impl;
 import com.newxton.companywebsite.entity.NxtProductPicture;
 import com.newxton.companywebsite.dao.NxtProductPictureDao;
 import com.newxton.companywebsite.service.NxtProductPictureService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -40,6 +41,17 @@ public class NxtProductPictureServiceImpl implements NxtProductPictureService {
     @Override
     public List<NxtProductPicture> queryAllByLimit(int offset, int limit) {
         return this.nxtProductPictureDao.queryAllByLimit(offset, limit);
+    }
+
+    /**
+     * 查询指定多个类型数据
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    public List<NxtProductPicture> selectByProductIdSet(@Param("offset") int offset, @Param("limit") int limit,
+                                                  @Param("productIdList") List<Long> productIdList){
+        return this.nxtProductPictureDao.selectByProductIdSet(offset, limit, productIdList);
     }
 
     /**

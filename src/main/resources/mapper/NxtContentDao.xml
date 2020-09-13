@@ -14,6 +14,8 @@
         <result property="sortId" column="sort_id" jdbcType="INTEGER"/>
     </resultMap>
 
+
+
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
@@ -40,6 +42,18 @@
                 and category_id = #{categoryId}
             </if>
         </where>
+        order by is_recommend desc, sort_id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="selectByCategoryIdSet" resultMap="BaseResultMap">
+        SELECT
+        id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
+        from newxton_companywebsite.nxt_content
+        WHERE category_id IN
+        <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
         order by is_recommend desc, sort_id desc
         limit #{offset}, #{limit}
     </select>

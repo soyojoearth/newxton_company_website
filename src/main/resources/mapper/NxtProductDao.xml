@@ -36,21 +36,26 @@
     </select>
 
 
-    <!--根据关键字搜索-->
-    <select id="searchAllByLimit" resultMap="BaseResultMap">
-        select
+    <select id="selectByCategoryIdSet" resultMap="BaseResultMap">
+        SELECT
         id, category_id, product_name, product_subtitle, price, price_negotiation, price_remark, product_description, dateline_create, dateline_updated, is_recommend, sort_id
-        from newxton_proj_zhibroad.nxt_product
-        where product_name like #{keyword}
+        from newxton_companywebsite.nxt_product
+        WHERE category_id IN
+        <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
         order by is_recommend desc, sort_id desc
         limit #{offset}, #{limit}
     </select>
 
-    <select id="searchAllCount" resultType="Long">
-        select
+    <select id="countByCategoryIdSet" resultType="Long">
+        SELECT
         count(*)
-        from newxton_proj_zhibroad.nxt_product
-        where product_name like #{keyword}
+        from newxton_companywebsite.nxt_product
+        WHERE category_id IN
+        <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
     </select>
 
     <!--通过实体作为筛选条件查询-->
@@ -110,6 +115,24 @@
         </where>
         order by is_recommend desc, sort_id desc
         limit #{offset}, #{limit}
+    </select>
+
+
+    <!--根据关键字搜索-->
+    <select id="searchAllByLimit" resultMap="BaseResultMap">
+        select
+        id, category_id, product_name, product_subtitle, price, price_negotiation, price_remark, product_description, dateline_create, dateline_updated, is_recommend, sort_id
+        from newxton_companywebsite.nxt_product
+        where product_name like #{keyword}
+        order by is_recommend desc, sort_id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="searchAllCount" resultType="Long">
+        select
+        count(*)
+        from newxton_companywebsite.nxt_product
+        where product_name like #{keyword}
     </select>
 
 
@@ -209,6 +232,7 @@
     <delete id="deleteById">
         delete from newxton_companywebsite.nxt_product where id = #{id}
     </delete>
+
 
     <!--通过实体作为筛选条件查询（且字符串字段作为搜索关键词）-->
     <select id="searchQueryAllByMap" parameterType="map" resultMap="BaseResultMap">

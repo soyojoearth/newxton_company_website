@@ -54,7 +54,7 @@ public class NxtApiAdminNewsListController {
             categoryNameMap.put(category.getId(),category.getCategoryName());
         }
 
-        int limit = 2;
+        int limit = 20;
         int offset = 0;
 
         if (pageNumber > 1){
@@ -78,6 +78,7 @@ public class NxtApiAdminNewsListController {
 
         List<NxtContent> list = nxtContentService.searchQueryAllByMap(mapCondition);
 
+//        List<NxtContent> list = nxtContentService.selectAllByLimit(offset,limit,categoryId);
         List<Map<String,Object>> listResult = new ArrayList<>();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (int i = 0; i < list.size(); i++) {

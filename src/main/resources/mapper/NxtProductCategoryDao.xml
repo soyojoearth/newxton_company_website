@@ -17,6 +17,14 @@
         where id = #{id}
     </select>
 
+    <!--查询单个-->
+    <select id="queryByName" resultMap="BaseResultMap">
+        select
+          id, category_name, category_pid
+        from newxton_companywebsite.nxt_product_category
+        where category_name = #{categoryName}
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
