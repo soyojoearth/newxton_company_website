@@ -17,7 +17,7 @@
     <select id="queryById" resultMap="BaseResultMap">
         select
           id, guest_company, guest_name, guest_phone, guest_email, message_content, message_dateline
-        from newxton_companywebsite.nxt_guestmessage
+        from nxt_guestmessage
         where id = #{id}
     </select>
 
@@ -25,7 +25,7 @@
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
           id, guest_company, guest_name, guest_phone, guest_email, message_content, message_dateline
-        from newxton_companywebsite.nxt_guestmessage
+        from nxt_guestmessage
         limit #{offset}, #{limit}
     </select>
 
@@ -33,7 +33,7 @@
     <select id="queryDescAllByLimit" resultMap="BaseResultMap">
         select
           id, guest_company, guest_name, guest_phone, guest_email, message_content, message_dateline
-        from newxton_companywebsite.nxt_guestmessage order by id desc
+        from nxt_guestmessage order by id desc
         limit #{offset}, #{limit}
     </select>
 
@@ -41,7 +41,7 @@
     <select id="queryAll" resultMap="BaseResultMap">
         select
           id, guest_company, guest_name, guest_phone, guest_email, message_content, message_dateline
-        from newxton_companywebsite.nxt_guestmessage
+        from nxt_guestmessage
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -69,13 +69,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into newxton_companywebsite.nxt_guestmessage(guest_company, guest_name, guest_phone, guest_email, message_content, message_dateline)
+        insert into nxt_guestmessage(guest_company, guest_name, guest_phone, guest_email, message_content, message_dateline)
         values (#{guestCompany}, #{guestName}, #{guestPhone}, #{guestEmail}, #{messageContent}, #{messageDateline})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update newxton_companywebsite.nxt_guestmessage
+        update nxt_guestmessage
         <set>
             <if test="guestCompany != null and guestCompany != ''">
                 guest_company = #{guestCompany},
@@ -101,7 +101,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from newxton_companywebsite.nxt_guestmessage where id = #{id}
+        delete from nxt_guestmessage where id = #{id}
     </delete>
 
 </mapper>

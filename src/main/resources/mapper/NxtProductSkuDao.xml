@@ -13,7 +13,7 @@
     <select id="queryById" resultMap="BaseResultMap">
         select
           id, product_id, sku_name
-        from newxton_companywebsite.nxt_product_sku
+        from nxt_product_sku
         where id = #{id}
     </select>
 
@@ -21,7 +21,7 @@
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
           id, product_id, sku_name
-        from newxton_companywebsite.nxt_product_sku
+        from nxt_product_sku
         limit #{offset}, #{limit}
     </select>
 
@@ -29,7 +29,7 @@
     <select id="queryAll" resultMap="BaseResultMap">
         select
           id, product_id, sku_name
-        from newxton_companywebsite.nxt_product_sku
+        from nxt_product_sku
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -45,13 +45,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into newxton_companywebsite.nxt_product_sku(product_id, sku_name)
+        insert into nxt_product_sku(product_id, sku_name)
         values (#{productId}, #{skuName})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update newxton_companywebsite.nxt_product_sku
+        update nxt_product_sku
         <set>
             <if test="productId != null">
                 product_id = #{productId},
@@ -65,7 +65,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from newxton_companywebsite.nxt_product_sku where id = #{id}
+        delete from nxt_product_sku where id = #{id}
     </delete>
 
 </mapper>

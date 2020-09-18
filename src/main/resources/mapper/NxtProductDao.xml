@@ -23,7 +23,7 @@
     <select id="queryById" resultMap="BaseResultMap">
         select
           id, category_id, product_name, product_subtitle, price, price_negotiation, price_remark,product_description, dateline_create, dateline_updated, is_recommend, sort_id
-        from newxton_companywebsite.nxt_product
+        from nxt_product
         where id = #{id}
     </select>
 
@@ -31,7 +31,7 @@
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
           id, category_id, product_name, product_subtitle, price, price_negotiation, price_remark, product_description, dateline_create, dateline_updated, is_recommend, sort_id
-        from newxton_companywebsite.nxt_product
+        from nxt_product
         limit #{offset}, #{limit}
     </select>
 
@@ -39,7 +39,7 @@
     <select id="selectByCategoryIdSet" resultMap="BaseResultMap">
         SELECT
         id, category_id, product_name, product_subtitle, price, price_negotiation, price_remark, product_description, dateline_create, dateline_updated, is_recommend, sort_id
-        from newxton_companywebsite.nxt_product
+        from nxt_product
         WHERE category_id IN
         <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
@@ -51,7 +51,7 @@
     <select id="countByCategoryIdSet" resultType="Long">
         SELECT
         count(*)
-        from newxton_companywebsite.nxt_product
+        from nxt_product
         WHERE category_id IN
         <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
@@ -62,7 +62,7 @@
     <select id="queryAll" resultMap="BaseResultMap">
         select
           id, category_id, product_name, product_subtitle, price, price_negotiation, price_remark, product_description, dateline_create, dateline_updated, is_recommend, sort_id
-        from newxton_companywebsite.nxt_product
+        from nxt_product
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -107,7 +107,7 @@
     <select id="selectAllByLimit" resultMap="BaseResultMap">
         select
         id, category_id, product_name, product_subtitle, price, price_negotiation, price_remark, product_description, dateline_create, dateline_updated, is_recommend, sort_id
-        from newxton_companywebsite.nxt_product
+        from nxt_product
         <where>
             <if test="categoryId != null">
                 and category_id = #{categoryId}
@@ -122,7 +122,7 @@
     <select id="searchAllByLimit" resultMap="BaseResultMap">
         select
         id, category_id, product_name, product_subtitle, price, price_negotiation, price_remark, product_description, dateline_create, dateline_updated, is_recommend, sort_id
-        from newxton_companywebsite.nxt_product
+        from nxt_product
         where product_name like #{keyword}
         order by is_recommend desc, sort_id desc
         limit #{offset}, #{limit}
@@ -131,7 +131,7 @@
     <select id="searchAllCount" resultType="Long">
         select
         count(*)
-        from newxton_companywebsite.nxt_product
+        from nxt_product
         where product_name like #{keyword}
     </select>
 
@@ -140,7 +140,7 @@
     <select id="queryCount" resultType="Long">
         select
         count(*)
-        from newxton_companywebsite.nxt_product
+        from nxt_product
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -183,13 +183,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into newxton_companywebsite.nxt_product(category_id, product_name, product_subtitle, price, price_negotiation, price_remark, product_description, dateline_create, dateline_updated, is_recommend, sort_id)
+        insert into nxt_product(category_id, product_name, product_subtitle, price, price_negotiation, price_remark, product_description, dateline_create, dateline_updated, is_recommend, sort_id)
         values (#{categoryId}, #{productName}, #{productSubtitle}, #{price}, #{priceNegotiation}, #{priceRemark}, #{productDescription}, #{datelineCreate}, #{datelineUpdated}, #{isRecommend}, #{sortId})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update newxton_companywebsite.nxt_product
+        update nxt_product
         <set>
             <if test="categoryId != null">
                 category_id = #{categoryId},
@@ -230,7 +230,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from newxton_companywebsite.nxt_product where id = #{id}
+        delete from nxt_product where id = #{id}
     </delete>
 
 
@@ -238,7 +238,7 @@
     <select id="searchQueryAllByMap" parameterType="map" resultMap="BaseResultMap">
         select
         id, category_id, product_name, product_subtitle, price, price_negotiation, price_remark, product_description, dateline_create, dateline_updated, is_recommend, sort_id
-        from newxton_companywebsite.nxt_product
+        from nxt_product
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -285,7 +285,7 @@
     <select id="countSearchQueryAllByMap" parameterType="map" resultType="Long">
         select
         count(*)
-        from newxton_companywebsite.nxt_product
+        from nxt_product
         <where>
             <if test="id != null">
                 and id = #{id}

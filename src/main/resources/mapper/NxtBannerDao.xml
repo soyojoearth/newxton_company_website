@@ -15,7 +15,7 @@
     <select id="queryById" resultMap="BaseResultMap">
         select
           id, location_name, uploadfile_id, urlpath, click_url
-        from newxton_companywebsite.nxt_banner
+        from nxt_banner
         where id = #{id}
     </select>
 
@@ -23,7 +23,7 @@
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
           id, location_name, uploadfile_id, urlpath, click_url
-        from newxton_companywebsite.nxt_banner
+        from nxt_banner
         limit #{offset}, #{limit}
     </select>
 
@@ -31,7 +31,7 @@
     <select id="queryAll" resultMap="BaseResultMap">
         select
           id, location_name, uploadfile_id, urlpath, click_url
-        from newxton_companywebsite.nxt_banner
+        from nxt_banner
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -53,13 +53,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into newxton_companywebsite.nxt_banner(location_name, uploadfile_id, urlpath, click_url)
+        insert into nxt_banner(location_name, uploadfile_id, urlpath, click_url)
         values (#{locationName}, #{uploadfileId}, #{urlpath}, #{clickUrl})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update newxton_companywebsite.nxt_banner
+        update nxt_banner
         <set>
             <if test="locationName != null and locationName != ''">
                 location_name = #{locationName},
@@ -79,7 +79,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from newxton_companywebsite.nxt_banner where id = #{id}
+        delete from nxt_banner where id = #{id}
     </delete>
 
 </mapper>

@@ -1,10 +1,9 @@
-package com.newxton.companywebsite.controller.api.admin;
+package com.newxton.companywebsite.controller.api.front;
 
 import com.newxton.companywebsite.entity.NxtWebPage;
 import com.newxton.companywebsite.service.NxtWebPageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,12 +15,12 @@ import java.util.Map;
 
 /**
  * @author soyojo.earth@gmail.com
- * @time 2020/7/24
+ * @time 2020/9/14
  * @address Shenzhen, China
  * @github https://github.com/soyojoearth/newxton_company_website
  */
 @RestController
-public class NxtApiAdminWebContentDetailController {
+public class NxtApiWebPageDetailController {
 
     @Value("${newxton.config.qiniuDomain}")
     private String qiniuDomain;
@@ -29,8 +28,8 @@ public class NxtApiAdminWebContentDetailController {
     @Resource
     private NxtWebPageService nxtWebPageService;
 
-    @RequestMapping(value = "/api/admin/web_content/detail", method = RequestMethod.POST)
-    public Map<String, Object> index(@RequestParam(value = "id", required=false) Long id) {
+    @RequestMapping("/api/web_content/detail")
+    public  Map<String, Object> index(@RequestParam(value = "id",required = true) Long id) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
@@ -59,13 +58,7 @@ public class NxtApiAdminWebContentDetailController {
         item.put("datelineUpdate",nxtWebPage.getDatelineUpdate());
         item.put("datelineUpdateReadable",sdf.format(new Date(nxtWebPage.getDatelineUpdate())));
 
-        result.put("detail",item);
-
-//        /*获取七牛图片上传token*/
-//        Auth auth = Auth.create(qiniuAccessKey, qiniuSecretKey);
-//        String qiniuToken = auth.uploadToken(qiniuBucket);
-//
-//        result.put("qiniuToken",qiniuToken);
+        result.put("data",item);
 
         return result;
 

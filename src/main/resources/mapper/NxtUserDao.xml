@@ -17,7 +17,7 @@
     <select id="queryByUsername" resultMap="BaseResultMap">
         select
           id, username, password, salt, token, status, type
-        from newxton_companywebsite.nxt_user
+        from nxt_user
         where username = #{username} limit 1
     </select>
 
@@ -25,7 +25,7 @@
     <select id="queryById" resultMap="BaseResultMap">
         select
           id, username, password, salt, token, status, type
-        from newxton_companywebsite.nxt_user
+        from nxt_user
         where id = #{id}
     </select>
 
@@ -33,7 +33,7 @@
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
           id, username, password, salt, token, status, type
-        from newxton_companywebsite.nxt_user
+        from nxt_user
         limit #{offset}, #{limit}
     </select>
 
@@ -41,7 +41,7 @@
     <select id="queryAll" resultMap="BaseResultMap">
         select
           id, username, password, salt, token, status, type
-        from newxton_companywebsite.nxt_user
+        from nxt_user
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -69,13 +69,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into newxton_companywebsite.nxt_user(username, password, salt, token, status, type)
+        insert into nxt_user(username, password, salt, token, status, type)
         values (#{username}, #{password}, #{salt}, #{token}, #{status}, #{type})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update newxton_companywebsite.nxt_user
+        update nxt_user
         <set>
             <if test="username != null and username != ''">
                 username = #{username},
@@ -101,7 +101,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from newxton_companywebsite.nxt_user where id = #{id}
+        delete from nxt_user where id = #{id}
     </delete>
 
 </mapper>

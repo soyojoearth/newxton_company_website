@@ -13,7 +13,7 @@
     <select id="queryById" resultMap="BaseResultMap">
         select
           id, category_name, category_pid
-        from newxton_companywebsite.nxt_product_category
+        from nxt_product_category
         where id = #{id}
     </select>
 
@@ -21,7 +21,7 @@
     <select id="queryByName" resultMap="BaseResultMap">
         select
           id, category_name, category_pid
-        from newxton_companywebsite.nxt_product_category
+        from nxt_product_category
         where category_name = #{categoryName}
     </select>
 
@@ -29,7 +29,7 @@
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
           id, category_name, category_pid
-        from newxton_companywebsite.nxt_product_category
+        from nxt_product_category
         limit #{offset}, #{limit}
     </select>
 
@@ -37,7 +37,7 @@
     <select id="queryAll" resultMap="BaseResultMap">
         select
           id, category_name, category_pid
-        from newxton_companywebsite.nxt_product_category
+        from nxt_product_category
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -53,13 +53,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into newxton_companywebsite.nxt_product_category(category_name, category_pid)
+        insert into nxt_product_category(category_name, category_pid)
         values (#{categoryName}, #{categoryPid})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update newxton_companywebsite.nxt_product_category
+        update nxt_product_category
         <set>
             <if test="categoryName != null and categoryName != ''">
                 category_name = #{categoryName},
@@ -73,7 +73,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from newxton_companywebsite.nxt_product_category where id = #{id}
+        delete from nxt_product_category where id = #{id}
     </delete>
 
 </mapper>

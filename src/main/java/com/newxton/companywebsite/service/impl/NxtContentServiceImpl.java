@@ -67,6 +67,14 @@ public class NxtContentServiceImpl implements NxtContentService {
     }
 
     /**
+     * 查询指定多个类型数据(统计)
+     * @return 总数
+     */
+    public Long countSelectByCategoryIdSet(@Param("categoryIdList") List<Long> categoryIdList){
+        return this.nxtContentDao.countSelectByCategoryIdSet(categoryIdList);
+    }
+
+    /**
      * 通过实体作为筛选条件查询
      *
      * @param nxtContent 实例对象

@@ -14,7 +14,7 @@
     <select id="queryById" resultMap="BaseResultMap">
         select
           id, product_id, uploadfile_id, sort_id
-        from newxton_companywebsite.nxt_product_picture
+        from nxt_product_picture
         where id = #{id}
     </select>
 
@@ -22,14 +22,14 @@
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
           id, product_id, uploadfile_id, sort_id
-        from newxton_companywebsite.nxt_product_picture
+        from nxt_product_picture
         limit #{offset}, #{limit}
     </select>
 
     <select id="selectByProductIdSet" resultMap="BaseResultMap">
         SELECT
         id, product_id, uploadfile_id, sort_id
-        from newxton_companywebsite.nxt_product_picture
+        from nxt_product_picture
         WHERE product_id IN
         <foreach collection="productIdList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
@@ -41,7 +41,7 @@
     <select id="queryAll" resultMap="BaseResultMap">
         select
           id, product_id, uploadfile_id, sort_id
-        from newxton_companywebsite.nxt_product_picture
+        from nxt_product_picture
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -60,13 +60,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into newxton_companywebsite.nxt_product_picture(product_id, uploadfile_id, sort_id)
+        insert into nxt_product_picture(product_id, uploadfile_id, sort_id)
         values (#{productId}, #{uploadfileId}, #{sortId})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update newxton_companywebsite.nxt_product_picture
+        update nxt_product_picture
         <set>
             <if test="productId != null">
                 product_id = #{productId},
@@ -83,7 +83,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from newxton_companywebsite.nxt_product_picture where id = #{id}
+        delete from nxt_product_picture where id = #{id}
     </delete>
 
 </mapper>

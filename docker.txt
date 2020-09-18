@@ -1,1 +1,13 @@
-docker build --tag newxton_companywebsite_test:*.*.* .
+创建镜像
+
+docker build --tag newxton_companywebsite_api:0.0.1 .
+
+
+
+强制清空所有docker 容器
+
+docker rm -f $(docker ps -aq)
+
+强制清空所有docker 镜像
+
+docker rmi -f $(docker images -q)

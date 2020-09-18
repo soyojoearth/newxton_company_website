@@ -50,6 +50,12 @@ public interface NxtContentService {
                                            @Param("categoryIdList") List<Long> categoryIdList);
 
     /**
+     * 查询指定多个类型数据
+     * @return 总数
+     */
+    Long countSelectByCategoryIdSet(@Param("categoryIdList") List<Long> categoryIdList);
+
+    /**
      * 通过实体作为筛选条件查询
      *
      * @param nxtContent 实例对象

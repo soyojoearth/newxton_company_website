@@ -17,7 +17,7 @@
     <select id="queryById" resultMap="BaseResultMap">
         select
           id, web_key, web_title, content_title, content_detail, seo_keyword, dateline_update
-        from newxton_companywebsite.nxt_web_page
+        from nxt_web_page
         where id = #{id}
     </select>
 
@@ -25,7 +25,7 @@
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
           id, web_key, web_title, content_title, content_detail, seo_keyword, dateline_update
-        from newxton_companywebsite.nxt_web_page
+        from nxt_web_page
         limit #{offset}, #{limit}
     </select>
 
@@ -33,7 +33,7 @@
     <select id="queryAll" resultMap="BaseResultMap">
         select
           id, web_key, web_title, content_title, content_detail, seo_keyword, dateline_update
-        from newxton_companywebsite.nxt_web_page
+        from nxt_web_page
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -61,13 +61,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into newxton_companywebsite.nxt_web_page(web_key, web_title, content_title, content_detail, seo_keyword, dateline_update)
+        insert into nxt_web_page(web_key, web_title, content_title, content_detail, seo_keyword, dateline_update)
         values (#{webKey}, #{webTitle}, #{contentTitle}, #{contentDetail}, #{seoKeyword}, #{datelineUpdate})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update newxton_companywebsite.nxt_web_page
+        update nxt_web_page
         <set>
             <if test="webKey != null and webKey != ''">
                 web_key = #{webKey},
@@ -93,7 +93,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from newxton_companywebsite.nxt_web_page where id = #{id}
+        delete from nxt_web_page where id = #{id}
     </delete>
 
 </mapper>

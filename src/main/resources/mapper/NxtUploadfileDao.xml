@@ -22,7 +22,7 @@
     <select id="queryById" resultMap="BaseResultMap">
         select
           id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd
-        from newxton_companywebsite.nxt_uploadfile
+        from nxt_uploadfile
         where id = #{id}
     </select>
 
@@ -30,14 +30,14 @@
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
           id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd
-        from newxton_companywebsite.nxt_uploadfile
+        from nxt_uploadfile
         limit #{offset}, #{limit}
     </select>
 
     <select id="selectByIdSet" resultMap="BaseResultMap">
         SELECT
         id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd
-        from newxton_companywebsite.nxt_uploadfile
+        from nxt_uploadfile
         WHERE id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
@@ -49,7 +49,7 @@
     <select id="queryAll" resultMap="BaseResultMap">
         select
           id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd
-        from newxton_companywebsite.nxt_uploadfile
+        from nxt_uploadfile
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -94,7 +94,7 @@
     <select id="queryCount" resultType="Long">
         select
         count(*)
-        from newxton_companywebsite.nxt_uploadfile
+        from nxt_uploadfile
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -138,13 +138,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into newxton_companywebsite.nxt_uploadfile(file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd)
+        insert into nxt_uploadfile(file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd)
         values (#{fileLocation}, #{categoryId}, #{fileExt}, #{filenameSource}, #{filenameSaved}, #{filepath}, #{urlpath}, #{filesize}, #{datelineUpdate}, #{netdiskUrl}, #{netdiskPwd})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update newxton_companywebsite.nxt_uploadfile
+        update nxt_uploadfile
         <set>
             <if test="fileLocation != null">
                 file_location = #{fileLocation},
@@ -185,7 +185,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from newxton_companywebsite.nxt_uploadfile where id = #{id}
+        delete from nxt_uploadfile where id = #{id}
     </delete>
 
 </mapper>

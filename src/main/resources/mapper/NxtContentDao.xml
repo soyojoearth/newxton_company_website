@@ -20,7 +20,7 @@
     <select id="queryById" resultMap="BaseResultMap">
         select
           id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
-        from newxton_companywebsite.nxt_content
+        from nxt_content
         where id = #{id}
     </select>
 
@@ -28,7 +28,7 @@
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
           id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
-        from newxton_companywebsite.nxt_content
+        from nxt_content
         limit #{offset}, #{limit}
     </select>
 
@@ -36,7 +36,7 @@
     <select id="selectAllByLimit" resultMap="BaseResultMap">
         select
           id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
-        from newxton_companywebsite.nxt_content
+        from nxt_content
         <where>
             <if test="categoryId != null">
                 and category_id = #{categoryId}
@@ -49,7 +49,7 @@
     <select id="selectByCategoryIdSet" resultMap="BaseResultMap">
         SELECT
         id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
-        from newxton_companywebsite.nxt_content
+        from nxt_content
         WHERE category_id IN
         <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
@@ -58,11 +58,21 @@
         limit #{offset}, #{limit}
     </select>
 
+    <select id="countSelectByCategoryIdSet" resultType="Long">
+        SELECT
+        count(*)
+        from nxt_content
+        WHERE category_id IN
+        <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
           id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
-        from newxton_companywebsite.nxt_content
+        from nxt_content
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -96,7 +106,7 @@
     <select id="queryCount" resultType="Long">
         select
         count(*)
-        from newxton_companywebsite.nxt_content
+        from nxt_content
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -128,13 +138,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into newxton_companywebsite.nxt_content(category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id)
+        insert into nxt_content(category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id)
         values (#{categoryId}, #{contentTitle}, #{contentDetail}, #{datelineUpdate}, #{datelineCreate}, #{isRecommend}, #{sortId})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update newxton_companywebsite.nxt_content
+        update nxt_content
         <set>
             <if test="categoryId != null">
                 category_id = #{categoryId},
@@ -163,14 +173,14 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from newxton_companywebsite.nxt_content where id = #{id}
+        delete from nxt_content where id = #{id}
     </delete>
 
     <!--通过实体作为筛选条件查询（且字符串字段作为搜索关键词）-->
     <select id="searchQueryAllByMap" parameterType="map" resultMap="BaseResultMap">
         select
         id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
-        from newxton_companywebsite.nxt_content
+        from nxt_content
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -205,7 +215,7 @@
     <select id="countSearchQueryAllByMap" parameterType="map" resultType="Long">
         select
         count(*)
-        from newxton_companywebsite.nxt_content
+        from nxt_content
         <where>
             <if test="id != null">
                 and id = #{id}
