@@ -13,7 +13,7 @@ services:
     image: newxton_companywebsite_api:0.0.1
     ports:
       - target: 8081
-        #published: 8081
+        published: 8081
         protocol: tcp
         mode: host
     restart: always
