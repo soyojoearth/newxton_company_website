@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.newxton.companywebsite.dao.NxtUserDao">
+<mapper namespace="com.newxton.supercompanyapi.dao.NxtUserDao">
 
-    <resultMap id="BaseResultMap" type="com.newxton.companywebsite.entity.NxtUser">
+    <resultMap id="BaseResultMap" type="com.newxton.supercompanyapi.entity.NxtUser">
         <!--@Table nxt_user-->
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="username" column="username" jdbcType="VARCHAR"/>

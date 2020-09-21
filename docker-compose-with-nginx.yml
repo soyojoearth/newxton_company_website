@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   autoheal:
-    container_name: autoheal_newxton_companywebsite_api
+    container_name: autoheal_newxton_super_company_api
     restart: always
     image: willfarrell/autoheal
     environment:
@@ -9,16 +9,16 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
   springboot:
-    container_name: container_newxton_companywebsite_api
-    image: newxton_companywebsite_api:0.0.1
+    container_name: springboot_newxton_super_company_api
+    image: newxton_super_company_api:0.0.1
     ports:
-      - target: 8081
+      - target: 8080
         published: 8081
         protocol: tcp
         mode: host
     restart: always
   nginx:
-    container_name: nginx_newxton_companywebsite_api
+    container_name: nginx_newxton_super_company_api
     image: nginx
     ports:
       - target: 80

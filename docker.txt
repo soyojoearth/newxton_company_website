@@ -1,6 +1,6 @@
 创建镜像
 
-docker build --tag newxton_companywebsite_api:0.0.1 .
+docker build --tag newxton_super_company_api:0.0.1 .
 
 
 
