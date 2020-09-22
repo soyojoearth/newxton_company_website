@@ -1,6 +1,6 @@
 创建镜像
 
-docker build --tag newxton_super_company_api:0.0.1 .
+docker build --tag newxton_super_company_api:0.0.2 .
 
 
 
@@ -11,3 +11,6 @@ docker rm -f $(docker ps -aq)
 强制清空所有docker 镜像
 
 docker rmi -f $(docker images -q)
+
+
+
