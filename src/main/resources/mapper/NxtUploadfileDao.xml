@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.newxton.supercompanyapi.dao.NxtUploadfileDao">
+<mapper namespace="com.newxton.nxtframework.dao.NxtUploadfileDao">
 
-    <resultMap id="BaseResultMap" type="com.newxton.supercompanyapi.entity.NxtUploadfile">
+    <resultMap id="BaseResultMap" type="com.newxton.nxtframework.entity.NxtUploadfile">
         <!--@Table nxt_uploadfile-->
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="fileLocation" column="file_location" jdbcType="INTEGER"/>
