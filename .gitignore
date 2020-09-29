@@ -3,6 +3,7 @@ application-development.properties
 HELP.md
 mysql/
 target/
+2020/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
