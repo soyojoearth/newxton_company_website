@@ -1,5 +1,7 @@
 .DS_Store
+application-development.properties
 HELP.md
+mysql/
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

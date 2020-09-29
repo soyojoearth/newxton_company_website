@@ -1,8 +1,8 @@
 package com.newxton.nxtframework.controller.api.admin;
 
+import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
 import com.newxton.nxtframework.entity.NxtBanner;
 import com.newxton.nxtframework.service.NxtBannerService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,10 +20,7 @@ import java.util.Map;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiAdminBannerListController {
-
-    @Value("${newxton.config.qiniuDomain}")
-    private String qiniuDomain;
+public class NxtApiAdminBannerListController extends NxtBaseUploadImageController {
 
     @Resource
     private NxtBannerService nxtBannerService;
@@ -51,7 +48,7 @@ public class NxtApiAdminBannerListController {
             List itemList = (List)jsonData.get(locationName);
             Map<String,Object> itemMap = new HashMap<>();
             itemMap.put("banner_picture_id",nxtBanner.getUploadfileId());
-            itemMap.put("banner_picture_url", this.qiniuDomain + nxtBanner.getUrlpath());
+            itemMap.put("banner_picture_url", this.convertImagePathToDomainImagePath(nxtBanner.getUrlpath()));
             itemMap.put("banner_href_url",nxtBanner.getClickUrl());
 
             itemList.add(itemMap);

@@ -1,8 +1,8 @@
 package com.newxton.nxtframework.controller.api.front;
 
+import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
 import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.service.*;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,13 +20,7 @@ import java.util.regex.Pattern;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiProductDetailController {
-
-    @Value("${newxton.config.qiniuDomain}")
-    private String qiniuDomain;
-
-    @Resource
-    private NxtSettingService nxtSettingService;
+public class NxtApiProductDetailController extends NxtBaseUploadImageController {
 
     @Resource
     private NxtProductCategoryService nxtProductCategoryService;
@@ -112,7 +106,7 @@ public class NxtApiProductDetailController {
         item.put("priceNegotiation",nxtProduct.getPriceNegotiation());
         item.put("priceRemark",nxtProduct.getPriceRemark().trim());
         item.put("productSubtitle",nxtProduct.getProductSubtitle());
-        item.put("productDescription",description.replace("http://newxton-image-domain",this.qiniuDomain));
+        item.put("productDescription",this.checkHtmlAndReplaceImageUrlForDisplay(description));
         item.put("datelineUpdated",nxtProduct.getDatelineUpdated());
         item.put("datelineUpdatedReadable",sdf.format(new Date(nxtProduct.getDatelineUpdated())));
         item.put("datelineCreate",nxtProduct.getDatelineCreate());
@@ -204,7 +198,7 @@ public class NxtApiProductDetailController {
             for (NxtUploadfile uploadFile :
                     listUploadFile) {
                 Map<String,Object> item = new HashMap<>();
-                item.put("picUrl",this.qiniuDomain + uploadFile.getUrlpath());
+                item.put("picUrl",this.convertImagePathToDomainImagePath(uploadFile.getUrlpath()));
                 resultList.add(item);
             }
         }

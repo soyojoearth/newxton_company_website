@@ -1,14 +1,13 @@
 package com.newxton.nxtframework.controller.api.front;
 
+import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
 import com.newxton.nxtframework.entity.NxtContent;
 import com.newxton.nxtframework.entity.NxtNewsCategory;
 import com.newxton.nxtframework.service.NxtContentService;
 import com.newxton.nxtframework.service.NxtNewsCategoryService;
-import com.newxton.nxtframework.service.NxtSettingService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,14 +23,7 @@ import java.util.*;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiNormalNewsListController {
-
-
-    @Value("${newxton.config.qiniuDomain}")
-    private String qiniuDomain;
-
-    @Resource
-    private NxtSettingService nxtSettingService;
+public class NxtApiNormalNewsListController extends NxtBaseUploadImageController {
 
     @Resource
     private NxtContentService nxtContentService;
@@ -130,7 +122,7 @@ public class NxtApiNormalNewsListController {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 
         //新闻类别列表
-        List<NxtContent> contentList = this.nxtContentService.selectByCategoryIdSet(offset,limit*3,categoryIdList);
+        List<NxtContent> contentList = this.nxtContentService.selectByCategoryIdSet(offset,limit,categoryIdList);
         List<Map<String,Object>> newsList = new ArrayList<>();
         for (int i = 0; i < contentList.size(); i++) {
             NxtContent content = contentList.get(i);
@@ -139,27 +131,28 @@ public class NxtApiNormalNewsListController {
             Element elementImg = doc.select("img").last();
             Element firstP = doc.selectFirst("p");
             if (elementImg != null && firstP != null) {
-                firstPictureUrl = elementImg.attr("src").replace("http://newxton-image-domain", this.qiniuDomain);
+                firstPictureUrl = elementImg.attr("src");
+                firstPictureUrl = this.checkHtmlAndReplaceImageUrlForDisplay(firstPictureUrl);
+
+            }
+            else {
+                firstPictureUrl = this.checkHtmlAndReplaceImageUrlForDisplay("/public_pic/image_empty.png");
             }
 
-            if (!firstPictureUrl.isEmpty()) {
-                Map<String, Object> item = new HashMap<>();
-                item.put("id", content.getId());
-                item.put("title", content.getContentTitle());
-                item.put("text", firstP.text());
-                item.put("picUrl", firstPictureUrl);
-                item.put("time",sdf.format(new Date(content.getDatelineCreate())));
-                if (mapCategoryIdToName.containsKey(content.getCategoryId())){
-                    item.put("categoryName", mapCategoryIdToName.get(content.getCategoryId()));
-                }
-                else {
-                    item.put("categoryName", "---");
-                }
-                newsList.add(item);
+            Map<String, Object> item = new HashMap<>();
+            item.put("id", content.getId());
+            item.put("title", content.getContentTitle());
+            item.put("text", firstP.text());
+            item.put("picUrl", firstPictureUrl);
+            item.put("time",sdf.format(new Date(content.getDatelineCreate())));
+            if (mapCategoryIdToName.containsKey(content.getCategoryId())){
+                item.put("categoryName", mapCategoryIdToName.get(content.getCategoryId()));
             }
-            if (newsList.size() == limit){
-                break;
+            else {
+                item.put("categoryName", "---");
             }
+            newsList.add(item);
+
         }
 
         return newsList;

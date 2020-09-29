@@ -1,12 +1,12 @@
 package com.newxton.nxtframework.controller.api.admin;
 
+import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
 import com.newxton.nxtframework.entity.NxtProduct;
 import com.newxton.nxtframework.entity.NxtProductSku;
 import com.newxton.nxtframework.entity.NxtProductSkuValue;
 import com.newxton.nxtframework.service.NxtProductService;
 import com.newxton.nxtframework.service.NxtProductSkuService;
 import com.newxton.nxtframework.service.NxtProductSkuValueService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,10 +23,7 @@ import java.util.*;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiAdminProductDetailController {
-
-    @Value("${newxton.config.qiniuDomain}")
-    private String qiniuDomain;
+public class NxtApiAdminProductDetailController extends NxtBaseUploadImageController {
 
     @Resource
     private NxtProductService nxtProductService;
@@ -73,7 +70,7 @@ public class NxtApiAdminProductDetailController {
         item.put("priceNegotiation",content.getPriceNegotiation());
         item.put("priceRemark",content.getPriceRemark());
         item.put("productSubtitle",content.getProductSubtitle());
-        item.put("productDescription",content.getProductDescription().replace("http://newxton-image-domain",this.qiniuDomain));
+        item.put("productDescription",this.checkHtmlAndReplaceImageUrlForDisplay(content.getProductDescription()));
         item.put("datelineUpdated",content.getDatelineUpdated());
         item.put("datelineUpdatedReadable",sdf.format(new Date(content.getDatelineUpdated())));
         item.put("datelineCreate",content.getDatelineCreate());

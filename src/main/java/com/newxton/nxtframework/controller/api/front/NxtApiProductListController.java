@@ -1,5 +1,6 @@
 package com.newxton.nxtframework.controller.api.front;
 
+import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
 import com.newxton.nxtframework.entity.NxtProduct;
 import com.newxton.nxtframework.entity.NxtProductCategory;
 import com.newxton.nxtframework.entity.NxtProductPicture;
@@ -8,7 +9,6 @@ import com.newxton.nxtframework.service.NxtProductCategoryService;
 import com.newxton.nxtframework.service.NxtProductPictureService;
 import com.newxton.nxtframework.service.NxtProductService;
 import com.newxton.nxtframework.service.NxtUploadfileService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,10 +26,7 @@ import java.util.Map;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiProductListController {
-
-    @Value("${newxton.config.qiniuDomain}")
-    private String qiniuDomain;
+public class NxtApiProductListController extends NxtBaseUploadImageController {
 
     @Resource
     private NxtProductCategoryService nxtProductCategoryService;
@@ -233,7 +230,7 @@ public class NxtApiProductListController {
             item.put("productName",product.getProductName());
             item.put("productSubtitle",product.getProductSubtitle());
             if (mapProductFirstPicture.containsKey(product.getId())){
-                item.put("picUrl",this.qiniuDomain + mapProductFirstPicture.get(product.getId()));
+                item.put("picUrl",this.convertImagePathToDomainImagePath(mapProductFirstPicture.get(product.getId())));
             }
             else {
                 item.put("picUrl","");

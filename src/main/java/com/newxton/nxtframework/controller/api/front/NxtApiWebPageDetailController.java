@@ -1,8 +1,8 @@
 package com.newxton.nxtframework.controller.api.front;
 
+import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
 import com.newxton.nxtframework.entity.NxtWebPage;
 import com.newxton.nxtframework.service.NxtWebPageService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,10 +20,7 @@ import java.util.Map;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiWebPageDetailController {
-
-    @Value("${newxton.config.qiniuDomain}")
-    private String qiniuDomain;
+public class NxtApiWebPageDetailController extends NxtBaseUploadImageController {
 
     @Resource
     private NxtWebPageService nxtWebPageService;
@@ -54,7 +51,7 @@ public class NxtApiWebPageDetailController {
         item.put("id",nxtWebPage.getId());
         item.put("webTitle",nxtWebPage.getWebTitle());
         item.put("contentTitle",nxtWebPage.getContentTitle());
-        item.put("contentDetail",nxtWebPage.getContentDetail().replace("http://newxton-image-domain",this.qiniuDomain));
+        item.put("contentDetail",this.checkHtmlAndReplaceImageUrlForDisplay(nxtWebPage.getContentDetail()));
         item.put("datelineUpdate",nxtWebPage.getDatelineUpdate());
         item.put("datelineUpdateReadable",sdf.format(new Date(nxtWebPage.getDatelineUpdate())));
 
