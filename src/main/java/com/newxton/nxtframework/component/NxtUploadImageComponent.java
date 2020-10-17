@@ -1,4 +1,4 @@
-package com.newxton.nxtframework.controller.component;
+package com.newxton.nxtframework.component;
 
 import com.google.gson.Gson;
 import com.newxton.nxtframework.entity.NxtUploadfile;

@@ -1,6 +1,6 @@
 package com.newxton.nxtframework.controller.api.front;
 
-import com.newxton.nxtframework.controller.component.NxtUploadImageComponent;
+import com.newxton.nxtframework.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtProduct;
 import com.newxton.nxtframework.entity.NxtProductCategory;
 import com.newxton.nxtframework.entity.NxtProductPicture;

@@ -1,6 +1,6 @@
 package com.newxton.nxtframework.controller.api.front;
 
-import com.newxton.nxtframework.controller.component.NxtUploadImageComponent;
+import com.newxton.nxtframework.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.service.*;
 import org.springframework.web.bind.annotation.RequestMapping;

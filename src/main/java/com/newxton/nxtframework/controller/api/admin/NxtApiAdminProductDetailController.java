@@ -1,6 +1,6 @@
 package com.newxton.nxtframework.controller.api.admin;
 
-import com.newxton.nxtframework.controller.component.NxtUploadImageComponent;
+import com.newxton.nxtframework.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtProduct;
 import com.newxton.nxtframework.entity.NxtProductSku;
 import com.newxton.nxtframework.entity.NxtProductSkuValue;
