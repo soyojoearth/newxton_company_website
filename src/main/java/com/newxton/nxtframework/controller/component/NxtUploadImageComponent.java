@@ -1,4 +1,4 @@
-package com.newxton.nxtframework.controller.base;
+package com.newxton.nxtframework.controller.component;
 
 import com.google.gson.Gson;
 import com.newxton.nxtframework.entity.NxtUploadfile;
@@ -12,7 +12,7 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import com.qiniu.util.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -31,8 +31,8 @@ import java.util.regex.Pattern;
  * @time 2020/8/11
  * @address Shenzhen, China
  */
-@RestController
-public class NxtBaseUploadImageController {
+@Component
+public class NxtUploadImageComponent {
 
     @Value("${newxton.config.oss.type}")
     private String ossType;
@@ -60,7 +60,7 @@ public class NxtBaseUploadImageController {
      * @param contentHTML
      * @return
      */
-    protected String checkHtmlAndSavePic(String contentHTML){
+    public String checkHtmlAndSavePic(String contentHTML){
 
         Matcher m = Pattern.compile("<img.*?src=\"(http.*?)\"").matcher(contentHTML);
         while (m.find()) {
@@ -147,7 +147,7 @@ public class NxtBaseUploadImageController {
      * @param contentHTML
      * @return
      */
-    protected String checkHtmlAndReplaceImageUrlForDisplay(String contentHTML){
+    public String checkHtmlAndReplaceImageUrlForDisplay(String contentHTML){
         contentHTML = contentHTML.replace("http://newxton-image-domain",this.ossQniuDomain);
         return contentHTML;
     }
@@ -157,7 +157,7 @@ public class NxtBaseUploadImageController {
      * @param contentHTML
      * @return
      */
-    protected String checkHtmlAndReplaceImageUrlForSave(String contentHTML){
+    public String checkHtmlAndReplaceImageUrlForSave(String contentHTML){
         contentHTML = contentHTML.replace(this.ossQniuDomain,"http://newxton-image-domain");
         return contentHTML;
     }
@@ -167,7 +167,7 @@ public class NxtBaseUploadImageController {
      * @param imagePath
      * @return
      */
-    protected String convertImagePathToDomainImagePath(String imagePath){
+    public String convertImagePathToDomainImagePath(String imagePath){
         if (imagePath.contains("/public_pic")){
             return imagePath;
         }
@@ -182,7 +182,7 @@ public class NxtBaseUploadImageController {
      * @param multipartFile
      * @return
      */
-    protected Map<String, Object> saveUploadImage(MultipartFile multipartFile){
+    public Map<String, Object> saveUploadImage(MultipartFile multipartFile){
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
@@ -257,7 +257,7 @@ public class NxtBaseUploadImageController {
      * @param multipartFile
      * @return
      */
-    protected String saveUploadFileLocal(MultipartFile multipartFile) throws IOException{
+    public String saveUploadFileLocal(MultipartFile multipartFile) throws IOException{
         if (multipartFile != null && !multipartFile.isEmpty()) {
             String originalFilename = multipartFile.getOriginalFilename();
             String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
@@ -273,7 +273,7 @@ public class NxtBaseUploadImageController {
      * @param fileExt
      * @return
      */
-    protected String saveUploadFileLocal(byte[] uploadBytes, String fileExt){
+    public String saveUploadFileLocal(byte[] uploadBytes, String fileExt){
         // 保存图片
         String suffix = fileExt.toLowerCase();
         String savePath = new SimpleDateFormat("/yyyy/MM/dd").format(new Date(System.currentTimeMillis()));
@@ -326,7 +326,7 @@ public class NxtBaseUploadImageController {
      * @param multipartFile
      * @return
      */
-    protected String uploadFileToQiniuYun(MultipartFile multipartFile) throws IOException{
+    public String uploadFileToQiniuYun(MultipartFile multipartFile) throws IOException{
         /*通常方式：上传文件*/
         if (multipartFile != null && !multipartFile.isEmpty()) {
             String originalFilename = null;
@@ -345,7 +345,7 @@ public class NxtBaseUploadImageController {
      * @param fileExt
      * @return
      */
-    protected String uploadFileToQiniuYun(byte[] uploadBytes, String fileExt){
+    public String uploadFileToQiniuYun(byte[] uploadBytes, String fileExt){
 
         Configuration cfg = new Configuration(Region.autoRegion());
         UploadManager uploadManager = new UploadManager(cfg);

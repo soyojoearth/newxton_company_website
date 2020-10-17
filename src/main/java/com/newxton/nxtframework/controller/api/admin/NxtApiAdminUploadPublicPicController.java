@@ -1,9 +1,10 @@
 package com.newxton.nxtframework.controller.api.admin;
 
-import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
+import com.newxton.nxtframework.controller.component.NxtUploadImageComponent;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +15,10 @@ import java.util.Map;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiAdminUploadPublicPicController extends NxtBaseUploadImageController {
+public class NxtApiAdminUploadPublicPicController {
+
+    @Resource
+    private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping(value = "/api/admin/upload/public_pic", method = RequestMethod.POST)
     public Map<String, Object> index(
@@ -26,7 +30,7 @@ public class NxtApiAdminUploadPublicPicController extends NxtBaseUploadImageCont
         result.put("status", 0);
         result.put("message", "");
 
-        result = this.saveUploadImage(file);
+        result = nxtUploadImageComponent.saveUploadImage(file);
 
         return result;
 

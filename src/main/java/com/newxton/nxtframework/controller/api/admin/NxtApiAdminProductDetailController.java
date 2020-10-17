@@ -1,6 +1,6 @@
 package com.newxton.nxtframework.controller.api.admin;
 
-import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
+import com.newxton.nxtframework.controller.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtProduct;
 import com.newxton.nxtframework.entity.NxtProductSku;
 import com.newxton.nxtframework.entity.NxtProductSkuValue;
@@ -23,7 +23,7 @@ import java.util.*;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiAdminProductDetailController extends NxtBaseUploadImageController {
+public class NxtApiAdminProductDetailController {
 
     @Resource
     private NxtProductService nxtProductService;
@@ -33,6 +33,9 @@ public class NxtApiAdminProductDetailController extends NxtBaseUploadImageContro
 
     @Resource
     private NxtProductSkuValueService nxtProductSkuValueService;
+
+    @Resource
+    private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping(value = "/api/admin/product/detail", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "id", required=false) Long id) {
@@ -70,7 +73,7 @@ public class NxtApiAdminProductDetailController extends NxtBaseUploadImageContro
         item.put("priceNegotiation",content.getPriceNegotiation());
         item.put("priceRemark",content.getPriceRemark());
         item.put("productSubtitle",content.getProductSubtitle());
-        item.put("productDescription",this.checkHtmlAndReplaceImageUrlForDisplay(content.getProductDescription()));
+        item.put("productDescription",nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForDisplay(content.getProductDescription()));
         item.put("datelineUpdated",content.getDatelineUpdated());
         item.put("datelineUpdatedReadable",sdf.format(new Date(content.getDatelineUpdated())));
         item.put("datelineCreate",content.getDatelineCreate());

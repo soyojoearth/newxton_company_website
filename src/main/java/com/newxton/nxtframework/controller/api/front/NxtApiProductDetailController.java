@@ -1,6 +1,6 @@
 package com.newxton.nxtframework.controller.api.front;
 
-import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
+import com.newxton.nxtframework.controller.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.service.*;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiProductDetailController extends NxtBaseUploadImageController {
+public class NxtApiProductDetailController  {
 
     @Resource
     private NxtProductCategoryService nxtProductCategoryService;
@@ -39,6 +39,9 @@ public class NxtApiProductDetailController extends NxtBaseUploadImageController 
 
     @Resource
     private NxtUploadfileService nxtUploadfileService;
+
+    @Resource
+    private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/product_detail")
     public Map<String,Object> index(
@@ -106,7 +109,7 @@ public class NxtApiProductDetailController extends NxtBaseUploadImageController 
         item.put("priceNegotiation",nxtProduct.getPriceNegotiation());
         item.put("priceRemark",nxtProduct.getPriceRemark().trim());
         item.put("productSubtitle",nxtProduct.getProductSubtitle());
-        item.put("productDescription",this.checkHtmlAndReplaceImageUrlForDisplay(description));
+        item.put("productDescription",nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForDisplay(description));
         item.put("datelineUpdated",nxtProduct.getDatelineUpdated());
         item.put("datelineUpdatedReadable",sdf.format(new Date(nxtProduct.getDatelineUpdated())));
         item.put("datelineCreate",nxtProduct.getDatelineCreate());
@@ -198,7 +201,7 @@ public class NxtApiProductDetailController extends NxtBaseUploadImageController 
             for (NxtUploadfile uploadFile :
                     listUploadFile) {
                 Map<String,Object> item = new HashMap<>();
-                item.put("picUrl",this.convertImagePathToDomainImagePath(uploadFile.getUrlpath()));
+                item.put("picUrl",nxtUploadImageComponent.convertImagePathToDomainImagePath(uploadFile.getUrlpath()));
                 resultList.add(item);
             }
         }

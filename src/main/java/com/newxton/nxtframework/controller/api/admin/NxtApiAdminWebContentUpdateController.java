@@ -1,6 +1,6 @@
 package com.newxton.nxtframework.controller.api.admin;
 
-import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
+import com.newxton.nxtframework.controller.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtWebPage;
 import com.newxton.nxtframework.service.NxtWebPageService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +19,13 @@ import java.util.Map;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiAdminWebContentUpdateController extends NxtBaseUploadImageController {
+public class NxtApiAdminWebContentUpdateController {
 
     @Resource
     private NxtWebPageService nxtWebPageService;
+
+    @Resource
+    private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping(value = "/api/admin/web_content/update", method = RequestMethod.POST)
     public Map<String, Object> index(
@@ -55,10 +58,10 @@ public class NxtApiAdminWebContentUpdateController extends NxtBaseUploadImageCon
         }
 
         //把第三方图片抓取过来，存放到自己这里
-        contentDetail = this.checkHtmlAndSavePic(contentDetail);
+        contentDetail = nxtUploadImageComponent.checkHtmlAndSavePic(contentDetail);
 
         nxtWebPage.setContentTitle(contentTitle);
-        nxtWebPage.setContentDetail(this.checkHtmlAndReplaceImageUrlForSave(contentDetail));
+        nxtWebPage.setContentDetail(nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForSave(contentDetail));
         nxtWebPage.setDatelineUpdate(System.currentTimeMillis());
         nxtWebPage.setWebTitle(webTitle);
 

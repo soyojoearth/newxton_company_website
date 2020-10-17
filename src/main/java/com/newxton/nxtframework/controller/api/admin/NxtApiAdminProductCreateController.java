@@ -2,7 +2,7 @@ package com.newxton.nxtframework.controller.api.admin;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
+import com.newxton.nxtframework.controller.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.service.*;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,7 @@ import java.util.*;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiAdminProductCreateController extends NxtBaseUploadImageController {
+public class NxtApiAdminProductCreateController {
 
     @Resource
     private NxtUploadfileService nxtUploadfileService;
@@ -39,6 +39,9 @@ public class NxtApiAdminProductCreateController extends NxtBaseUploadImageContro
 
     @Resource
     private NxtProductSkuValueService nxtProductSkuValueService;
+
+    @Resource
+    private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping(value = "/api/admin/product/create", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "category_id", required=false) Long categoryId,
@@ -87,13 +90,13 @@ public class NxtApiAdminProductCreateController extends NxtBaseUploadImageContro
         }
 
         //把第三方图片抓取过来，存放到自己这里
-        productDescription = this.checkHtmlAndSavePic(productDescription);
+        productDescription = nxtUploadImageComponent.checkHtmlAndSavePic(productDescription);
 
         /*添加内容*/
         NxtProduct content = new NxtProduct();
         content.setCategoryId(categoryId);
         content.setProductName(productName);
-        content.setProductDescription(this.checkHtmlAndReplaceImageUrlForSave(productDescription));
+        content.setProductDescription(nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForSave(productDescription));
         content.setDatelineCreate(System.currentTimeMillis());
         content.setDatelineUpdated(content.getDatelineCreate());
         content.setIsRecommend(isRecommend);

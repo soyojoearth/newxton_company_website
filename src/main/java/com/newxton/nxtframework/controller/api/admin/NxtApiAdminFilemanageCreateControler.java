@@ -1,7 +1,7 @@
 package com.newxton.nxtframework.controller.api.admin;
 
 
-import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
+import com.newxton.nxtframework.controller.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtUploadfile;
 import com.newxton.nxtframework.entity.NxtUploadfileCategory;
 import com.newxton.nxtframework.service.NxtUploadfileCategoryService;
@@ -20,13 +20,16 @@ import java.util.Map;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiAdminFilemanageCreateControler extends NxtBaseUploadImageController {
+public class NxtApiAdminFilemanageCreateControler {
 
     @Resource
     private NxtUploadfileService nxtUploadfileService;
 
     @Resource
     private NxtUploadfileCategoryService nxtUploadfileCategoryService;
+
+    @Resource
+    private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping(value = "/api/admin/filemanage/create", method = RequestMethod.POST)
     public Map<String, Object> index(
@@ -58,7 +61,7 @@ public class NxtApiAdminFilemanageCreateControler extends NxtBaseUploadImageCont
 
         /*通常方式：上传文件*/
         if (file != null && !file.isEmpty()){
-            result = this.saveUploadImage(file);
+            result = nxtUploadImageComponent.saveUploadImage(file);
         }
         else if (netdiskUrl != null && netdiskPwd != null){
 

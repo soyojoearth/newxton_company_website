@@ -1,9 +1,8 @@
 package com.newxton.nxtframework.controller.api.front;
 
-import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
+import com.newxton.nxtframework.controller.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtBanner;
 import com.newxton.nxtframework.service.NxtBannerService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,10 +20,13 @@ import java.util.Map;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiBannerListController extends NxtBaseUploadImageController {
+public class NxtApiBannerListController {
 
     @Resource
     private NxtBannerService nxtBannerService;
+
+    @Resource
+    private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/banner_list")
     public Map<String,Object> index(@RequestParam("location_name") String locationName) {
@@ -43,7 +45,7 @@ public class NxtApiBannerListController extends NxtBaseUploadImageController {
         for (NxtBanner banner :
                 bannerList) {
             Map<String, Object> item = new HashMap<>();
-            item.put("urlpath",this.convertImagePathToDomainImagePath(banner.getUrlpath()));
+            item.put("urlpath",nxtUploadImageComponent.convertImagePathToDomainImagePath(banner.getUrlpath()));
             item.put("clickUrl",banner.getClickUrl());
             resultList.add(item);
         }

@@ -1,6 +1,6 @@
 package com.newxton.nxtframework.controller.api.admin;
 
-import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
+import com.newxton.nxtframework.controller.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtProductPicture;
 import com.newxton.nxtframework.entity.NxtUploadfile;
 import com.newxton.nxtframework.service.NxtProductPictureService;
@@ -23,13 +23,16 @@ import java.util.Map;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiAdminProductPictureListController extends NxtBaseUploadImageController {
+public class NxtApiAdminProductPictureListController {
 
     @Resource
     private NxtProductPictureService nxtProductPictureService;
 
     @Resource
     private NxtUploadfileService nxtUploadfileService;
+
+    @Resource
+    private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping(value = "/api/admin/product/picture_list", method = RequestMethod.POST)
     public Map<String, Object> index(
@@ -58,7 +61,7 @@ public class NxtApiAdminProductPictureListController extends NxtBaseUploadImageC
             if (nxtUploadfile != null) {
                 Map<String,Object> item = new HashMap<>();
                 item.put("id",productPicture.getUploadfileId());
-                item.put("url", this.convertImagePathToDomainImagePath(nxtUploadfile.getUrlpath()));
+                item.put("url", nxtUploadImageComponent.convertImagePathToDomainImagePath(nxtUploadfile.getUrlpath()));
                 listResult.add(item);
             }
         }

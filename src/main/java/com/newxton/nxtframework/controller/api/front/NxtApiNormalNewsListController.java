@@ -1,6 +1,6 @@
 package com.newxton.nxtframework.controller.api.front;
 
-import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
+import com.newxton.nxtframework.controller.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtContent;
 import com.newxton.nxtframework.entity.NxtNewsCategory;
 import com.newxton.nxtframework.service.NxtContentService;
@@ -23,13 +23,16 @@ import java.util.*;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiNormalNewsListController extends NxtBaseUploadImageController {
+public class NxtApiNormalNewsListController {
 
     @Resource
     private NxtContentService nxtContentService;
 
     @Resource
     private NxtNewsCategoryService nxtNewsCategoryService;
+
+    @Resource
+    private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/normal_news_list")
     public Map<String,Object> index(
@@ -132,11 +135,11 @@ public class NxtApiNormalNewsListController extends NxtBaseUploadImageController
             Element firstP = doc.selectFirst("p");
             if (elementImg != null && firstP != null) {
                 firstPictureUrl = elementImg.attr("src");
-                firstPictureUrl = this.checkHtmlAndReplaceImageUrlForDisplay(firstPictureUrl);
+                firstPictureUrl = nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForDisplay(firstPictureUrl);
 
             }
             else {
-                firstPictureUrl = this.checkHtmlAndReplaceImageUrlForDisplay("/public_pic/image_empty.png");
+                firstPictureUrl = nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForDisplay("/public_pic/image_empty.png");
             }
 
             Map<String, Object> item = new HashMap<>();

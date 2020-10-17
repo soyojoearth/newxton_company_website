@@ -1,6 +1,6 @@
 package com.newxton.nxtframework.controller.api.front;
 
-import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
+import com.newxton.nxtframework.controller.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtProduct;
 import com.newxton.nxtframework.entity.NxtProductCategory;
 import com.newxton.nxtframework.entity.NxtProductPicture;
@@ -26,7 +26,7 @@ import java.util.Map;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiProductListController extends NxtBaseUploadImageController {
+public class NxtApiProductListController {
 
     @Resource
     private NxtProductCategoryService nxtProductCategoryService;
@@ -39,6 +39,9 @@ public class NxtApiProductListController extends NxtBaseUploadImageController {
 
     @Resource
     private NxtUploadfileService nxtUploadfileService;
+
+    @Resource
+    private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/product_list")
     public Map<String,Object> index(
@@ -230,7 +233,7 @@ public class NxtApiProductListController extends NxtBaseUploadImageController {
             item.put("productName",product.getProductName());
             item.put("productSubtitle",product.getProductSubtitle());
             if (mapProductFirstPicture.containsKey(product.getId())){
-                item.put("picUrl",this.convertImagePathToDomainImagePath(mapProductFirstPicture.get(product.getId())));
+                item.put("picUrl",nxtUploadImageComponent.convertImagePathToDomainImagePath(mapProductFirstPicture.get(product.getId())));
             }
             else {
                 item.put("picUrl","");

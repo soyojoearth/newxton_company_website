@@ -2,7 +2,7 @@ package com.newxton.nxtframework.controller.api.admin;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
+import com.newxton.nxtframework.controller.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.service.*;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +21,7 @@ import java.util.*;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiAdminProductUpdateController extends NxtBaseUploadImageController {
+public class NxtApiAdminProductUpdateController {
 
     @Resource
     private NxtUploadfileService nxtUploadfileService;
@@ -40,6 +40,9 @@ public class NxtApiAdminProductUpdateController extends NxtBaseUploadImageContro
 
     @Resource
     private NxtProductSkuValueService nxtProductSkuValueService;
+
+    @Resource
+    private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping(value = "/api/admin/product/update", method = RequestMethod.POST)
     public Map<String, Object> index(
@@ -112,12 +115,12 @@ public class NxtApiAdminProductUpdateController extends NxtBaseUploadImageContro
         }
 
         //把第三方图片抓取过来，存放到自己这里
-        productDescription = this.checkHtmlAndSavePic(productDescription);
+        productDescription = nxtUploadImageComponent.checkHtmlAndSavePic(productDescription);
 
         /*更新内容*/
         product.setCategoryId(categoryId);
         product.setProductName(productName);
-        product.setProductDescription(this.checkHtmlAndReplaceImageUrlForSave(productDescription));
+        product.setProductDescription(nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForSave(productDescription));
         product.setDatelineCreate(System.currentTimeMillis());
         product.setDatelineUpdated(product.getDatelineCreate());
         product.setIsRecommend(isRecommend);

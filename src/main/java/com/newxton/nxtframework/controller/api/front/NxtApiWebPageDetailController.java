@@ -1,6 +1,6 @@
 package com.newxton.nxtframework.controller.api.front;
 
-import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
+import com.newxton.nxtframework.controller.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtWebPage;
 import com.newxton.nxtframework.service.NxtWebPageService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +20,13 @@ import java.util.Map;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiWebPageDetailController extends NxtBaseUploadImageController {
+public class NxtApiWebPageDetailController {
 
     @Resource
     private NxtWebPageService nxtWebPageService;
+
+    @Resource
+    private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/web_content/detail")
     public  Map<String, Object> index(@RequestParam(value = "id",required = true) Long id) {
@@ -51,7 +54,7 @@ public class NxtApiWebPageDetailController extends NxtBaseUploadImageController 
         item.put("id",nxtWebPage.getId());
         item.put("webTitle",nxtWebPage.getWebTitle());
         item.put("contentTitle",nxtWebPage.getContentTitle());
-        item.put("contentDetail",this.checkHtmlAndReplaceImageUrlForDisplay(nxtWebPage.getContentDetail()));
+        item.put("contentDetail",nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForDisplay(nxtWebPage.getContentDetail()));
         item.put("datelineUpdate",nxtWebPage.getDatelineUpdate());
         item.put("datelineUpdateReadable",sdf.format(new Date(nxtWebPage.getDatelineUpdate())));
 

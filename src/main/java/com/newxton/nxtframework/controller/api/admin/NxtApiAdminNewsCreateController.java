@@ -1,6 +1,6 @@
 package com.newxton.nxtframework.controller.api.admin;
 
-import com.newxton.nxtframework.controller.base.NxtBaseUploadImageController;
+import com.newxton.nxtframework.controller.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtContent;
 import com.newxton.nxtframework.entity.NxtNewsCategory;
 import com.newxton.nxtframework.service.NxtContentService;
@@ -21,13 +21,16 @@ import java.util.Map;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiAdminNewsCreateController extends NxtBaseUploadImageController {
+public class NxtApiAdminNewsCreateController {
 
     @Resource
     private NxtContentService nxtContentService;
 
     @Resource
     private NxtNewsCategoryService nxtNewsCategoryService;
+
+    @Resource
+    private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping(value = "/api/admin/news/create", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "category_id", required=false) Long categoryId,
@@ -70,13 +73,13 @@ public class NxtApiAdminNewsCreateController extends NxtBaseUploadImageControlle
         }
 
         //把第三方图片抓取过来，存放到自己这里
-        contentDetail = this.checkHtmlAndSavePic(contentDetail);
+        contentDetail = nxtUploadImageComponent.checkHtmlAndSavePic(contentDetail);
 
         /*添加内容*/
         NxtContent content = new NxtContent();
         content.setCategoryId(categoryId);
         content.setContentTitle(contentTitle);
-        content.setContentDetail(this.checkHtmlAndReplaceImageUrlForSave(contentDetail));
+        content.setContentDetail(nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForSave(contentDetail));
         content.setDatelineCreate(System.currentTimeMillis());
         content.setDatelineUpdate(content.getDatelineCreate());
         content.setIsRecommend(isRecommend);
