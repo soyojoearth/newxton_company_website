@@ -34,6 +34,15 @@
         limit #{offset}, #{limit}
     </select>
 
+    <!--查询指定行数据 按 location 类型-->
+    <select id="queryAllByLimitAndLocation" resultMap="BaseResultMap">
+        select
+          id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd
+        from nxt_uploadfile
+        where file_location = #{location}
+        limit #{offset}, #{limit}
+    </select>
+
     <select id="selectByIdSet" resultMap="BaseResultMap">
         SELECT
         id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd

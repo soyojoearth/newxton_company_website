@@ -44,6 +44,17 @@ public class NxtUploadfileServiceImpl implements NxtUploadfileService {
     }
 
     /**
+     * 查询多条数据
+     *
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    public List<NxtUploadfile> queryAllByLimitAndLocation(int offset, int limit, int location){
+        return this.nxtUploadfileDao.queryAllByLimitAndLocation(offset, limit, location);
+    }
+
+    /**
      * 查询指定多个类型数据
      * @param offset 查询起始位置
      * @param limit 查询条数

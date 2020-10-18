@@ -369,8 +369,11 @@ public class NxtUploadImageComponent {
             DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
 //            System.out.println(putRet.key);
 //            System.out.println(putRet.hash);
-            if (key != null){
-                key = "/"+key;
+            if (putRet.key != null){
+                key = "/"+putRet.key;
+            }
+            else {
+                key = null;
             }
             return key;
         } catch (QiniuException ex) {

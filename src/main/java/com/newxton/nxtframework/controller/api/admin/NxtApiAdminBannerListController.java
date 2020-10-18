@@ -2,7 +2,9 @@ package com.newxton.nxtframework.controller.api.admin;
 
 import com.newxton.nxtframework.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtBanner;
+import com.newxton.nxtframework.entity.NxtUploadfile;
 import com.newxton.nxtframework.service.NxtBannerService;
+import com.newxton.nxtframework.service.NxtUploadfileService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +28,9 @@ public class NxtApiAdminBannerListController {
     private NxtBannerService nxtBannerService;
 
     @Resource
+    private NxtUploadfileService nxtUploadfileService;
+
+    @Resource
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping(value = "/api/admin/banner/list", method = RequestMethod.POST)
@@ -40,6 +45,20 @@ public class NxtApiAdminBannerListController {
         Map<String,Object> jsonData = new HashMap<>();
         List<String> locationList = new ArrayList<>();
 
+        List<Long> picFileIdList = new ArrayList<>();
+
+        for (NxtBanner nxtBanner : list) {
+            picFileIdList.add(nxtBanner.getUploadfileId());
+        }
+
+        //查询图片url
+        List<NxtUploadfile> nxtUploadfileList = nxtUploadfileService.selectByIdSet(0,picFileIdList.size(),picFileIdList);
+        Map<Long,Object> fileIdMapUrlPath = new HashMap<>();
+        for (NxtUploadfile nxtUploadfile : nxtUploadfileList) {
+            fileIdMapUrlPath.put(nxtUploadfile.getId(),nxtUploadfile.getUrlpath());
+        }
+
+
         for (NxtBanner nxtBanner :
                 list) {
             String locationName = nxtBanner.getLocationName();
@@ -48,13 +67,20 @@ public class NxtApiAdminBannerListController {
                 jsonData.put(locationName,itemList);
                 locationList.add(locationName);
             }
-            List itemList = (List)jsonData.get(locationName);
-            Map<String,Object> itemMap = new HashMap<>();
-            itemMap.put("banner_picture_id",nxtBanner.getUploadfileId());
-            itemMap.put("banner_picture_url", nxtUploadImageComponent.convertImagePathToDomainImagePath(nxtBanner.getUrlpath()));
-            itemMap.put("banner_href_url",nxtBanner.getClickUrl());
 
-            itemList.add(itemMap);
+            if (fileIdMapUrlPath.containsKey(nxtBanner.getUploadfileId())) {
+                List itemList = (List)jsonData.get(locationName);
+
+                Map<String,Object> itemMap = new HashMap<>();
+                itemMap.put("banner_picture_id",nxtBanner.getUploadfileId());
+                String urlPath = fileIdMapUrlPath.get(nxtBanner.getUploadfileId()).toString();
+                itemMap.put("banner_picture_url", nxtUploadImageComponent.convertImagePathToDomainImagePath(urlPath));
+                itemMap.put("banner_href_url", nxtBanner.getClickUrl());
+
+                picFileIdList.add(nxtBanner.getUploadfileId());
+
+                itemList.add(itemMap);
+            }
 
         }
 

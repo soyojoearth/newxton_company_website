@@ -7,14 +7,13 @@
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="locationName" column="location_name" jdbcType="VARCHAR"/>
         <result property="uploadfileId" column="uploadfile_id" jdbcType="INTEGER"/>
-        <result property="urlpath" column="urlpath" jdbcType="VARCHAR"/>
         <result property="clickUrl" column="click_url" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, location_name, uploadfile_id, urlpath, click_url
+          id, location_name, uploadfile_id, click_url
         from nxt_banner
         where id = #{id}
     </select>
@@ -22,7 +21,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, location_name, uploadfile_id, urlpath, click_url
+          id, location_name, uploadfile_id, click_url
         from nxt_banner
         limit #{offset}, #{limit}
     </select>
@@ -30,7 +29,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, location_name, uploadfile_id, urlpath, click_url
+          id, location_name, uploadfile_id, click_url
         from nxt_banner
         <where>
             <if test="id != null">
@@ -42,9 +41,6 @@
             <if test="uploadfileId != null">
                 and uploadfile_id = #{uploadfileId}
             </if>
-            <if test="urlpath != null and urlpath != ''">
-                and urlpath = #{urlpath}
-            </if>
             <if test="clickUrl != null and clickUrl != ''">
                 and click_url = #{clickUrl}
             </if>
@@ -53,8 +49,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_banner(location_name, uploadfile_id, urlpath, click_url)
-        values (#{locationName}, #{uploadfileId}, #{urlpath}, #{clickUrl})
+        insert into nxt_banner(location_name, uploadfile_id, click_url)
+        values (#{locationName}, #{uploadfileId}, #{clickUrl})
     </insert>
 
     <!--通过主键修改数据-->
@@ -66,9 +62,6 @@
             </if>
             <if test="uploadfileId != null">
                 uploadfile_id = #{uploadfileId},
-            </if>
-            <if test="urlpath != null and urlpath != ''">
-                urlpath = #{urlpath},
             </if>
             <if test="clickUrl != null and clickUrl != ''">
                 click_url = #{clickUrl},

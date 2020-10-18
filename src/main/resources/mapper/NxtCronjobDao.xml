@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtCronjobDao">
+
+    <resultMap id="BaseResultMap" type="com.newxton.nxtframework.entity.NxtCronjob">
+        <!--@Table nxt_cronjob-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="jobName" column="job_name" jdbcType="VARCHAR"/>
+        <result property="jobKey" column="job_key" jdbcType="VARCHAR"/>
+        <result property="jobStatus" column="job_status" jdbcType="INTEGER"/>
+        <result property="jobStatusDescription" column="job_status_description" jdbcType="VARCHAR"/>
+        <result property="jobStatusDateline" column="job_status_dateline" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, job_name, job_key, job_status, job_status_description, job_status_dateline
+        from nxt_cronjob
+        where id = #{id}
+    </select>
+
+    <!--查询单个-->
+    <select id="queryByKey" resultMap="BaseResultMap">
+        select
+          id, job_name, job_key, job_status, job_status_description, job_status_dateline
+        from nxt_cronjob
+        where job_key = #{key}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, job_name, job_key, job_status, job_status_description, job_status_dateline
+        from nxt_cronjob
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, job_name, job_key, job_status, job_status_description, job_status_dateline
+        from nxt_cronjob
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="jobName != null and jobName != ''">
+                and job_name = #{jobName}
+            </if>
+            <if test="jobKey != null and jobKey != ''">
+                and job_key = #{jobKey}
+            </if>
+            <if test="jobStatus != null">
+                and job_status = #{jobStatus}
+            </if>
+            <if test="jobStatusDescription != null and jobStatusDescription != ''">
+                and job_status_description = #{jobStatusDescription}
+            </if>
+            <if test="jobStatusDateline != null">
+                and job_status_dateline = #{jobStatusDateline}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_cronjob(job_name, job_key, job_status, job_status_description, job_status_dateline)
+        values (#{jobName}, #{jobKey}, #{jobStatus}, #{jobStatusDescription}, #{jobStatusDateline})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxt_cronjob
+        <set>
+            <if test="jobName != null and jobName != ''">
+                job_name = #{jobName},
+            </if>
+            <if test="jobKey != null and jobKey != ''">
+                job_key = #{jobKey},
+            </if>
+            <if test="jobStatus != null">
+                job_status = #{jobStatus},
+            </if>
+            <if test="jobStatusDescription != null and jobStatusDescription != ''">
+                job_status_description = #{jobStatusDescription},
+            </if>
+            <if test="jobStatusDateline != null">
+                job_status_dateline = #{jobStatusDateline},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxt_cronjob where id = #{id}
+    </delete>
+
+</mapper>

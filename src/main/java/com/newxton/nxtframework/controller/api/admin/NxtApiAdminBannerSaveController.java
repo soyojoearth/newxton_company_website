@@ -80,7 +80,6 @@ public class NxtApiAdminBannerSaveController {
                     nxtBanner.setLocationName(locationName);
                     nxtBanner.setUploadfileId(uploadFileId);
                     nxtBanner.setClickUrl(clickUrl);
-                    nxtBanner.setUrlpath(nxtUploadfileQuery.getUrlpath());
                     nxtBannerService.insert(nxtBanner);
                 }
             }

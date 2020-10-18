@@ -16,9 +16,7 @@ public class NxtBanner implements Serializable {
     private String locationName;
     
     private Long uploadfileId;
-    
-    private String urlpath;
-    
+
     private String clickUrl;
 
 
@@ -44,14 +42,6 @@ public class NxtBanner implements Serializable {
 
     public void setUploadfileId(Long uploadfileId) {
         this.uploadfileId = uploadfileId;
-    }
-
-    public String getUrlpath() {
-        return urlpath;
-    }
-
-    public void setUrlpath(String urlpath) {
-        this.urlpath = urlpath;
     }
 
     public String getClickUrl() {
