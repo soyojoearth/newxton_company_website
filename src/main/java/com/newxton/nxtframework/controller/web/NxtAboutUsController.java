@@ -1,16 +1,21 @@
 package com.newxton.nxtframework.controller.web;
 
+import com.newxton.nxtframework.component.NxtRequestSelfApiComponent;
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 @Controller
-public class NxtAboutUsController extends NxtBaseWebController {
+public class NxtAboutUsController {
+
+    @Resource
+    NxtRequestSelfApiComponent nxtRequestSelfApiComponent;
 
     @RequestMapping("/about")
     public ModelAndView index(Device device, ModelAndView model) throws InterruptedException {
@@ -33,7 +38,7 @@ public class NxtAboutUsController extends NxtBaseWebController {
 
                     try {
 
-                        Map<String, Object> json = requestApiFromPostReturnMapData("/api/about_us", null, null);
+                        Map<String, Object> json = nxtRequestSelfApiComponent.postFormAndReturnMap("/api/about_us", null, null);
 
                         Map<String, Object> data = new HashMap<>();
                         if (json.containsKey("data")) {

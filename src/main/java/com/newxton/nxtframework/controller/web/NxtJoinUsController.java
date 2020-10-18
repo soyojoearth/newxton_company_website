@@ -1,9 +1,11 @@
 package com.newxton.nxtframework.controller.web;
 
+import com.newxton.nxtframework.component.NxtRequestSelfApiComponent;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +16,10 @@ import java.util.Map;
  * @copyright NxtFramework
  */
 @Controller
-public class NxtJoinUsController extends NxtBaseWebController {
+public class NxtJoinUsController {
+
+    @Resource
+    NxtRequestSelfApiComponent nxtRequestSelfApiComponent;
 
     @RequestMapping("/join_us")
     public ModelAndView index(ModelAndView model) throws  InterruptedException {
@@ -29,7 +34,7 @@ public class NxtJoinUsController extends NxtBaseWebController {
                 try {
                     Map<String,Object> params = new HashMap<>();
                     params.put("id",3L);
-                    Map<String,Object> webContentData = requestApiFromPostReturnMapData("/api/web_content/detail",params,null);
+                    Map<String,Object> webContentData = nxtRequestSelfApiComponent.postFormAndReturnMap("/api/web_content/detail",params,null);
                     model.addObject("detail",webContentData.get("data"));
                 }
                 catch (Exception e){

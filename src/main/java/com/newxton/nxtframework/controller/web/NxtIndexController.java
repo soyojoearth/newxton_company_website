@@ -1,18 +1,23 @@
 package com.newxton.nxtframework.controller.web;
 
+import com.newxton.nxtframework.component.NxtRequestSelfApiComponent;
 import com.newxton.nxtframework.entity.NxtBanner;
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
-public class NxtIndexController extends NxtBaseWebController {
+public class NxtIndexController {
+
+    @Resource
+    NxtRequestSelfApiComponent nxtRequestSelfApiComponent;
 
     @RequestMapping("/")
     public ModelAndView index(Device device, ModelAndView model) throws IOException, InterruptedException {
@@ -39,7 +44,7 @@ public class NxtIndexController extends NxtBaseWebController {
                     try {
                         Map<String, Object> paramsBannerList = new HashMap<>();
                         paramsBannerList.put("location_name", "首页");
-                        Map<String, Object> bannerList_JSON = requestApiFromPostReturnMapData("/api/banner_list", paramsBannerList, null);
+                        Map<String, Object> bannerList_JSON = nxtRequestSelfApiComponent.postFormAndReturnMap("/api/banner_list", paramsBannerList, null);
                         List<NxtBanner> bannerList = (List<NxtBanner>) bannerList_JSON.get("data");
                         model.addObject("bannerList", bannerList);
                     } catch (Exception e) {
@@ -59,7 +64,7 @@ public class NxtIndexController extends NxtBaseWebController {
                         Map<String, Object> paramsNewsList1 = new HashMap<>();
                         paramsNewsList1.put("root_category_id", 1L);
                         paramsNewsList1.put("limit", 4);
-                        Map<String, Object> paramsNewsList1_JSON = requestApiFromPostReturnMapData("/api/normal_news_list", paramsNewsList1, null);
+                        Map<String, Object> paramsNewsList1_JSON = nxtRequestSelfApiComponent.postFormAndReturnMap("/api/normal_news_list", paramsNewsList1, null);
                         List<Map<String, Object>> newsList1 = (List<Map<String, Object>>) paramsNewsList1_JSON.get("data");
                         model.addObject("newsList1", newsList1);
                     } catch (Exception e) {
@@ -79,7 +84,7 @@ public class NxtIndexController extends NxtBaseWebController {
                         Map<String, Object> paramsNewsList2 = new HashMap<>();
                         paramsNewsList2.put("root_category_id", 2L);
                         paramsNewsList2.put("limit", 4);
-                        Map<String, Object> paramsNewsList2_JSON = requestApiFromPostReturnMapData("/api/normal_news_list", paramsNewsList2, null);
+                        Map<String, Object> paramsNewsList2_JSON = nxtRequestSelfApiComponent.postFormAndReturnMap("/api/normal_news_list", paramsNewsList2, null);
                         List<Map<String, Object>> newsList2 = (List<Map<String, Object>>) paramsNewsList2_JSON.get("data");
                         model.addObject("newsList2", newsList2);
                     } catch (Exception e) {
