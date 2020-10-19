@@ -3,6 +3,7 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.dao.NxtSettingDao;
 import com.newxton.nxtframework.entity.NxtSetting;
 import com.newxton.nxtframework.service.NxtSettingService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,6 +28,14 @@ public class NxtSettingServiceImpl implements NxtSettingService {
      */
     public NxtSetting queryBySettingKey(String settingKey){
         return this.nxtSettingDao.queryBySettingKey(settingKey);
+    }
+
+    /**
+     * 查询指定多个类型数据
+     * @return 对象列表
+     */
+    public List<NxtSetting> selectByKeySet(@Param("keyList") List<String> keyList){
+        return this.nxtSettingDao.selectByKeySet(keyList);
     }
 
     /**

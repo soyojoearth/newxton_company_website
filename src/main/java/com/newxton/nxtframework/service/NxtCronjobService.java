@@ -20,12 +20,20 @@ public interface NxtCronjobService {
     NxtCronjob queryById(Long id);
 
     /**
-     * 通过ID查询单条数据
+     * 通过Key查询单条数据
      *
      * @param key 唯一标识符
      * @return 实例对象
      */
     NxtCronjob queryByKey(String key);
+
+    /**
+     * 通过Key查询单条数据(带悲观锁)
+     *
+     * @param key 唯一标识符
+     * @return 实例对象
+     */
+    NxtCronjob queryByKeyForUpdate(String key);
 
     /**
      * 查询多条数据

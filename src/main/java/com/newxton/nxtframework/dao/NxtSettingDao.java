@@ -22,6 +22,12 @@ public interface NxtSettingDao {
     NxtSetting queryBySettingKey(String settingKey);
 
     /**
+     * 查询指定多个类型数据
+     * @return 对象列表
+     */
+    List<NxtSetting> selectByKeySet(@Param("keyList") List<String> keyList);
+
+    /**
      * 通过ID查询单条数据
      *
      * @param id 主键

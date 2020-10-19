@@ -12,6 +12,16 @@
         <result property="datelineUpdated" column="dateline_updated" jdbcType="INTEGER"/>
     </resultMap>
 
+    <select id="selectByKeySet" resultMap="BaseResultMap">
+        SELECT
+        id, setting_key, setting_value, setting_name, display_type, dateline_updated
+        from nxt_setting
+        WHERE id IN
+        <foreach collection="keyList" item="key" index="index" open="(" close=")" separator=",">
+            #{key}
+        </foreach>
+    </select>
+
     <!--查询单个-->
     <select id="queryBySettingKey" resultMap="BaseResultMap">
         select
@@ -27,6 +37,8 @@
         from nxt_setting
         where id = #{id}
     </select>
+
+
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">

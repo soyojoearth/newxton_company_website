@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -28,22 +30,26 @@ public class ScheduledTasksMoveImage {
     @Resource
     private NxtImageTransferComponent nxtImageTransferComponent;
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Scheduled(fixedDelay = 5000)
     public void moveQiniuImageToLocal() {
 
+        // 由于实例并不一定只部署成单机一份，也可能由k8s集群部署好几个实例
+        // 那么如果希望只让一个实例执行任务，就锁上这一行，执行完才由事务自动解锁
+
         //检查是否有图片搬运任务
-        NxtCronjob nxtCronjob = nxtCronjobService.queryByKey("moveQiniuImageToLocal");
-        if (nxtCronjob == null){
+        NxtCronjob nxtCronjob = nxtCronjobService.queryByKeyForUpdate("moveQiniuImageToLocal");
+        if (nxtCronjob == null || nxtCronjob.getJobStatus() == null){
             return;
         }
-        if (nxtCronjob.getJobStatus() != null && nxtCronjob.getJobStatus() < 1){
-            return;//任务没打开
+        if (!nxtCronjob.getJobStatus().equals(1)){
+            return;//0:off(任务未开启) 1:on(任务等待执行)
         }
 
-        logger.info("moveQiniuImageToLocal Start:");
+        logger.info("moveQiniuImageToLocal Start");
 
         //一次移动100张
-        int limit = 100;
+        int limit = 1;
         int count = nxtImageTransferComponent.moveQiniuImageToLocal(0,limit);
         nxtCronjob.setJobStatusDateline(System.currentTimeMillis());
 
@@ -53,6 +59,7 @@ public class ScheduledTasksMoveImage {
             nxtCronjob.setJobStatusDescription("任务结束");
         }
         else {
+            nxtCronjob.setJobStatus(1);//改回1，下一轮再抢坑
             nxtCronjob.setJobStatusDescription("移动了"+count+"张");
         }
 
@@ -62,21 +69,26 @@ public class ScheduledTasksMoveImage {
 
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Scheduled(fixedDelay = 5000)
     public void moveLocalImageToQiniu() {
 
+        // 由于实例并不一定只部署成单机一份，也可能由k8s集群部署好几个实例
+        // 那么如果希望只让一个实例执行任务，就锁上这一行，执行完才由事务自动解锁
+
         //检查是否有图片搬运任务
-        NxtCronjob nxtCronjob = nxtCronjobService.queryByKey("moveLocalImageToQiniu");
-        if (nxtCronjob == null){
+        NxtCronjob nxtCronjob = nxtCronjobService.queryByKeyForUpdate("moveLocalImageToQiniu");
+        if (nxtCronjob == null || nxtCronjob.getJobStatus() == null){
             return;
         }
-        if (nxtCronjob.getJobStatus() != null && nxtCronjob.getJobStatus() < 1){
-            return;//任务没打开
+        if (!nxtCronjob.getJobStatus().equals(1)){
+            return;//0:off(任务未开启) 1:on(任务等待执行)
         }
+
         logger.info("moveLocalImageToQiniu Start");
 
         //一次移动100张
-        int limit = 100;
+        int limit = 1;
         int count = nxtImageTransferComponent.moveLocalImageToQiniu(0,limit);
         nxtCronjob.setJobStatusDateline(System.currentTimeMillis());
         if (count == 0){

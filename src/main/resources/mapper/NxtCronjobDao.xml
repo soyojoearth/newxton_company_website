@@ -20,12 +20,20 @@
         where id = #{id}
     </select>
 
-    <!--查询单个-->
+    <!--查询单个，按key-->
     <select id="queryByKey" resultMap="BaseResultMap">
         select
           id, job_name, job_key, job_status, job_status_description, job_status_dateline
         from nxt_cronjob
         where job_key = #{key}
+    </select>
+
+    <!--查询单个，按key，悲观锁-->
+    <select id="queryByKeyForUpdate" resultMap="BaseResultMap">
+        select
+          id, job_name, job_key, job_status, job_status_description, job_status_dateline
+        from nxt_cronjob
+        where job_key = #{key} for update
     </select>
 
     <!--查询指定行数据-->
