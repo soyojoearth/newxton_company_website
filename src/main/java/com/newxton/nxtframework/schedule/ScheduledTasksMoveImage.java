@@ -48,8 +48,8 @@ public class ScheduledTasksMoveImage {
 
         logger.info("moveQiniuImageToLocal Start");
 
-        //一次移动100张
-        int limit = 1;
+        //一次移动limit张
+        int limit = 20;
         int count = nxtImageTransferComponent.moveQiniuImageToLocal(0,limit);
         nxtCronjob.setJobStatusDateline(System.currentTimeMillis());
 
@@ -87,8 +87,8 @@ public class ScheduledTasksMoveImage {
 
         logger.info("moveLocalImageToQiniu Start");
 
-        //一次移动100张
-        int limit = 1;
+        //一次移动limit张
+        int limit = 20;
         int count = nxtImageTransferComponent.moveLocalImageToQiniu(0,limit);
         nxtCronjob.setJobStatusDateline(System.currentTimeMillis());
         if (count == 0){

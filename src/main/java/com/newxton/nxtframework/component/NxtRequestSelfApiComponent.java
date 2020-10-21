@@ -10,6 +10,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +29,8 @@ import java.util.Map;
  */
 @Component
 public class NxtRequestSelfApiComponent {
+
+    private Logger logger = LoggerFactory.getLogger(NxtRequestSelfApiComponent.class);
 
     @Value("${newxton.config.apiURL}")
     private String apiURL;

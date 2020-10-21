@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtAclActionDao">
+
+    <resultMap id="BaseResultMap" type="com.newxton.nxtframework.entity.NxtAclAction">
+        <!--@Table nxt_acl_action-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="actionClass" column="action_class" jdbcType="VARCHAR"/>
+        <result property="actionName" column="action_name" jdbcType="VARCHAR"/>
+        <result property="actionRemark" column="action_remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, action_class, action_name, action_remark
+        from nxt_acl_action
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, action_class, action_name, action_remark
+        from nxt_acl_action
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, action_class, action_name, action_remark
+        from nxt_acl_action
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="actionClass != null and actionClass != ''">
+                and action_class = #{actionClass}
+            </if>
+            <if test="actionName != null and actionName != ''">
+                and action_name = #{actionName}
+            </if>
+            <if test="actionRemark != null and actionRemark != ''">
+                and action_remark = #{actionRemark}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_acl_action(action_class, action_name, action_remark)
+        values (#{actionClass}, #{actionName}, #{actionRemark})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxt_acl_action
+        <set>
+            <if test="actionClass != null and actionClass != ''">
+                action_class = #{actionClass},
+            </if>
+            <if test="actionName != null and actionName != ''">
+                action_name = #{actionName},
+            </if>
+            <if test="actionRemark != null and actionRemark != ''">
+                action_remark = #{actionRemark},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxt_acl_action where id = #{id}
+    </delete>
+
+</mapper>
