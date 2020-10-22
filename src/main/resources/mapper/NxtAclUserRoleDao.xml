@@ -17,6 +17,14 @@
         where id = #{id}
     </select>
 
+    <!--查询单个-->
+    <select id="queryByUserId" resultMap="BaseResultMap">
+        select
+          id, user_id, role_id
+        from nxt_acl_user_role
+        where user_id = #{userId}
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select

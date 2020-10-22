@@ -21,6 +21,14 @@ public interface NxtAclUserRoleService {
     NxtAclUserRole queryById(Long id);
 
     /**
+     * 通过userId查询单条数据
+     *
+     * @param userId
+     * @return 实例对象
+     */
+    NxtAclUserRole queryByUserId(Long userId);
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置

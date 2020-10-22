@@ -10,13 +10,12 @@
         <result property="salt" column="salt" jdbcType="VARCHAR"/>
         <result property="token" column="token" jdbcType="VARCHAR"/>
         <result property="status" column="status" jdbcType="INTEGER"/>
-        <result property="type" column="type" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--通过username查询单个-->
     <select id="queryByUsername" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, status, type
+          id, username, password, salt, token, status
         from nxt_user
         where username = #{username} limit 1
     </select>
@@ -24,7 +23,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, status, type
+          id, username, password, salt, token, status
         from nxt_user
         where id = #{id}
     </select>
@@ -32,7 +31,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, status, type
+          id, username, password, salt, token, status
         from nxt_user
         limit #{offset}, #{limit}
     </select>
@@ -40,7 +39,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, status, type
+          id, username, password, salt, token, status
         from nxt_user
         <where>
             <if test="id != null">
@@ -61,16 +60,13 @@
             <if test="status != null">
                 and status = #{status}
             </if>
-            <if test="type != null">
-                and type = #{type}
-            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_user(username, password, salt, token, status, type)
-        values (#{username}, #{password}, #{salt}, #{token}, #{status}, #{type})
+        insert into nxt_user(username, password, salt, token, status)
+        values (#{username}, #{password}, #{salt}, #{token}, #{status})
     </insert>
 
     <!--通过主键修改数据-->
@@ -91,9 +87,6 @@
             </if>
             <if test="status != null">
                 status = #{status},
-            </if>
-            <if test="type != null">
-                type = #{type},
             </if>
         </set>
         where id = #{id}

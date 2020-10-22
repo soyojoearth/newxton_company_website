@@ -33,7 +33,7 @@ public class NxtAdminCheckPermissionAspect {
 
     @Pointcut("execution(public * com.newxton.nxtframework.controller.api.admin..*.*(..))")
     public void pointcut() {
-        //这个pointcut里面的Class都需要超级管理员权限才能执行
+        //这个pointcut里面的Class执行之前都需要ACL鉴权
     }
 
     @Around("pointcut()")

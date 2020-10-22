@@ -49,7 +49,6 @@ public class NxtAclComponent {
     @Cacheable("getUserActionIdSet")
     public Set<Long> getUserActionIdSet(Long userId){
         Set<Long> userActionSet = new HashSet<>();
-        /*用户直接关联关联的权限*/
         NxtAclUserAction nxtAclUserAction = new NxtAclUserAction();
         nxtAclUserAction.setUserId(userId);
         List<NxtAclUserAction> list = nxtAclUserActionService.queryAll(nxtAclUserAction);

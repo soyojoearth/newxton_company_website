@@ -32,6 +32,16 @@ public class NxtAclUserRoleServiceImpl implements NxtAclUserRoleService {
     }
 
     /**
+     * 通过userId查询单条数据
+     *
+     * @param userId
+     * @return 实例对象
+     */
+    public NxtAclUserRole queryByUserId(Long userId){
+        return this.nxtAclUserRoleDao.queryByUserId(userId);
+    }
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置

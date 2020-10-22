@@ -1,6 +1,10 @@
 package com.newxton.nxtframework.controller.api.admin;
 
+import com.newxton.nxtframework.entity.NxtAclRole;
+import com.newxton.nxtframework.entity.NxtAclUserRole;
 import com.newxton.nxtframework.entity.NxtUser;
+import com.newxton.nxtframework.service.NxtAclRoleService;
+import com.newxton.nxtframework.service.NxtAclUserRoleService;
 import com.newxton.nxtframework.service.NxtUserService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +29,12 @@ public class NxtApiAdminUserListController {
     @Resource
     private NxtUserService nxtUserService;
 
+    @Resource
+    private NxtAclUserRoleService nxtAclUserRoleService;
+
+    @Resource
+    private NxtAclRoleService nxtAclRoleService;
+
     @RequestMapping(value = "/api/admin/user_list", method = RequestMethod.POST)
     public Map<String, Object> index(
             @RequestParam(value = "page_number", required = false) Integer pageNumber
@@ -38,6 +48,22 @@ public class NxtApiAdminUserListController {
             result.put("status", 52);
             result.put("message", "参数错误");
             return result;
+        }
+
+        //roleId 映射 role name
+        List<NxtAclRole> nxtAclRoleList = nxtAclRoleService.queryAll(new NxtAclRole());
+        Map<Long,String> mapRoleIdToName = new HashMap<>();
+        for (NxtAclRole nxtAclRole :
+                nxtAclRoleList) {
+            mapRoleIdToName.put(nxtAclRole.getId(), nxtAclRole.getRoleName());
+        }
+
+        //userId 映射 roleId
+        List<NxtAclUserRole> nxtAclUserRoleList = nxtAclUserRoleService.queryAll(new NxtAclUserRole());
+        Map<Long,Long> mapUserIdToRoleId = new HashMap<>();
+        for (NxtAclUserRole nxtAclUserRole :
+                nxtAclUserRoleList) {
+            mapUserIdToRoleId.put(nxtAclUserRole.getUserId(), nxtAclUserRole.getRoleId());
         }
 
         int limit = 20;
@@ -56,21 +82,24 @@ public class NxtApiAdminUserListController {
 
             NxtUser user = list.get(i);
 
+
+
             Map<String, Object> item = new HashMap<>();
 
             item.put("id",user.getId());
             item.put("username",user.getUsername());
             item.put("status",user.getStatus());
-            item.put("type",user.getType());
+            item.put("roleId",null);
+            item.put("roleName","--");
 
-            if (user.getType().equals(1)){
-                item.put("type_description","超级管理员");
-            }
-            if (user.getType().equals(2)){
-                item.put("type_description","小编");
-            }
-            if (user.getType().equals(0)){
-                item.put("type_description","只读用户");
+            Long roleId = mapUserIdToRoleId.get(user.getId());
+
+            if (roleId != null){
+                item.put("roleId",roleId);
+                String roleName = mapRoleIdToName.get(roleId);
+                if (roleName != null){
+                    item.put("roleName",roleName);
+                }
             }
 
             if (user.getStatus().equals(-1)){

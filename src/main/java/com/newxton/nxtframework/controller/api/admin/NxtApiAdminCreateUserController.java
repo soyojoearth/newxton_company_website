@@ -1,8 +1,13 @@
 package com.newxton.nxtframework.controller.api.admin;
 
+import com.newxton.nxtframework.entity.NxtAclUserRole;
 import com.newxton.nxtframework.entity.NxtUser;
+import com.newxton.nxtframework.service.NxtAclUserRoleService;
 import com.newxton.nxtframework.service.NxtUserService;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,17 +30,22 @@ public class NxtApiAdminCreateUserController {
     @Resource
     private NxtUserService nxtUserService;
 
+    @Resource
+    private NxtAclUserRoleService nxtAclUserRoleService;
+
+    @CacheEvict(cacheNames = {"getUserRoleGroupActionIdSet","getUserActionIdSet"},allEntries = true,beforeInvocation = false)
+    @Transactional
     @RequestMapping(value = "/api/admin/create_user", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "new_user_name", required=false) String newUserName,
                                      @RequestParam(value = "new_user_pwd", required=false) String newUserPwd,
-                                     @RequestParam(value = "new_user_type", required=false) Integer newUserType
+                                     @RequestParam(value = "new_user_role", required=false) Long newUserRole
     ) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
 
-        if (newUserName == null || newUserPwd == null || newUserType == null) {
+        if (newUserName == null || newUserPwd == null || newUserRole == null) {
             result.put("status", 52);
             result.put("message", "参数错误");
             return result;
@@ -63,16 +73,6 @@ public class NxtApiAdminCreateUserController {
         user.setPassword(newUserPwd);
         user.setStatus(0);
 
-        if (newUserType.equals(1)){
-            user.setType(1);//管理员
-        }
-        else if (newUserType.equals(2)){
-            user.setType(2);//小编
-        }
-        else {
-            user.setType(0);//只读用户
-        }
-
         //增加用户
         NxtUser userCreated = nxtUserService.insert(user);
 
@@ -81,6 +81,12 @@ public class NxtApiAdminCreateUserController {
             result.put("message", "系统错误");
             return result;
         }
+
+        NxtAclUserRole nxtAclUserRole = new NxtAclUserRole();
+        nxtAclUserRole.setUserId(userCreated.getId());
+        nxtAclUserRole.setRoleId(newUserRole);
+        nxtAclUserRoleService.insert(nxtAclUserRole);
+
 
         return result;
 

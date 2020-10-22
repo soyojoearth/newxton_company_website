@@ -1,7 +1,10 @@
 package com.newxton.nxtframework.controller.api.admin;
 
+import com.newxton.nxtframework.entity.NxtAclUserRole;
 import com.newxton.nxtframework.entity.NxtUser;
+import com.newxton.nxtframework.service.NxtAclUserRoleService;
 import com.newxton.nxtframework.service.NxtUserService;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -10,27 +13,31 @@ import java.util.Map;
 
 /**
  * @author soyojo.earth@gmail.com
- * @time 2020/7/23
+ * @time 2020/10/22
  * @address Shenzhen, China
- * @copyright NxtFramework
  */
 @RestController
-public class NxtApiAdminResetUserTypeController {
+public class NxtApiAdminResetUserRoleController {
+
     @Resource
     private NxtUserService nxtUserService;
 
-    @RequestMapping(value = "/api/admin/reset_user_type", method = RequestMethod.POST)
+    @Resource
+    private NxtAclUserRoleService nxtAclUserRoleService;
+
+    @CacheEvict(cacheNames = {"getUserRoleGroupActionIdSet","getUserActionIdSet"},allEntries = true,beforeInvocation = false)
+    @RequestMapping(value = "/api/admin/reset_user_role", method = RequestMethod.POST)
     public Map<String, Object> index(
             @RequestHeader("user_id") Long adminUserId,
             @RequestParam(value = "reset_user_id", required = false) Long resetUserId,
-            @RequestParam(value = "reset_user_type", required = false) Integer resetUserType
+            @RequestParam(value = "reset_user_role", required = false) Long resetUserRoleId
     ) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
 
-        if (resetUserId == null || resetUserType == null){
+        if (resetUserId == null || resetUserRoleId == null){
             result.put("status",52);
             result.put("message","参数错误");
             return result;
@@ -51,26 +58,21 @@ public class NxtApiAdminResetUserTypeController {
             return result;
         }
 
-        NxtUser userPrepare = new NxtUser();
-        userPrepare.setId(user.getId());
+        NxtAclUserRole nxtAclUserRole = nxtAclUserRoleService.queryByUserId(resetUserId);
 
-        if (resetUserType.equals(1)) {
-            //设为超级管理员
-            userPrepare.setType(1);
+        if (nxtAclUserRole == null){
+            nxtAclUserRole = new NxtAclUserRole();
+            nxtAclUserRole.setUserId(user.getId());
+            nxtAclUserRole.setRoleId(resetUserRoleId);
+            nxtAclUserRoleService.insert(nxtAclUserRole);
         }
-        if (resetUserType.equals(2))  {
-            //设为小编
-            userPrepare.setType(2);
+        else {
+            nxtAclUserRole.setRoleId(resetUserRoleId);
+            nxtAclUserRoleService.update(nxtAclUserRole);
         }
-        if (resetUserType.equals(0))  {
-            //设为只读访客
-            userPrepare.setType(0);
-        }
-
-        //更新
-        nxtUserService.update(userPrepare);
 
         return result;
 
     }
+
 }
