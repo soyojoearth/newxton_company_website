@@ -1,5 +1,5 @@
 .DS_Store
-application-development.properties
+application-dev.properties
 HELP.md
 mysql/
 target/
