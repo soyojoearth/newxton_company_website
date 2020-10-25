@@ -71,6 +71,18 @@
         </where>
     </select>
 
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAllGreaterThanStatusDateline" resultMap="BaseResultMap">
+        select
+        id, job_name, job_key, job_status, job_status_description, job_status_dateline
+        from nxt_cronjob
+        <where>
+            <if test="jobStatusDateline != null">
+                and job_status_dateline > #{jobStatusDateline}
+            </if>
+        </where>
+    </select>
+
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into nxt_cronjob(job_name, job_key, job_status, job_status_description, job_status_dateline)

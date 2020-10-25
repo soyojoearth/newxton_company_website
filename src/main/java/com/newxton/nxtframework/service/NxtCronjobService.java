@@ -45,6 +45,21 @@ public interface NxtCronjobService {
     List<NxtCronjob> queryAllByLimit(int offset, int limit);
 
     /**
+     * 查询多条数据
+     *
+     * @return 对象列表
+     */
+    List<NxtCronjob> queryAll(NxtCronjob nxtCronjob);
+
+    /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtCronjob 实例对象
+     * @return 对象列表
+     */
+    List<NxtCronjob> queryAllGreaterThanStatusDateline(NxtCronjob nxtCronjob);
+
+    /**
      * 新增数据
      *
      * @param nxtCronjob 实例对象

@@ -1,28 +1,25 @@
-package com.newxton.nxtframework.schedule;
+package com.newxton.nxtframework.task;
 
 import com.newxton.nxtframework.component.NxtImageTransferComponent;
 import com.newxton.nxtframework.entity.NxtCronjob;
 import com.newxton.nxtframework.service.NxtCronjobService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
-
 /**
  * @author soyojo.earth@gmail.com
- * @time 2020/10/8
+ * @time 2020/10/23
  * @address Shenzhen, China
- * Cronjob 移动图片
  */
 @Component
-public class ScheduledTasksMoveImage {
+public class NxtTaskMoveImage {
 
-    private Logger logger = LoggerFactory.getLogger(ScheduledTasksMoveImage.class);
+    private Logger logger = LoggerFactory.getLogger(NxtTaskMoveImage.class);
 
     @Resource
     private NxtCronjobService nxtCronjobService;
@@ -31,7 +28,6 @@ public class ScheduledTasksMoveImage {
     private NxtImageTransferComponent nxtImageTransferComponent;
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    @Scheduled(fixedDelay = 5000)
     public void moveQiniuImageToLocal() {
 
         // 由于实例并不一定只部署成单机一份，也可能由k8s集群部署好几个实例
@@ -57,10 +53,12 @@ public class ScheduledTasksMoveImage {
             //任务结束
             nxtCronjob.setJobStatus(0);
             nxtCronjob.setJobStatusDescription("任务结束");
+            nxtCronjob.setJobStatusDateline(System.currentTimeMillis());
         }
         else {
             nxtCronjob.setJobStatus(1);//改回1，下一轮再抢坑
             nxtCronjob.setJobStatusDescription("移动了"+count+"张");
+            nxtCronjob.setJobStatusDateline(System.currentTimeMillis());
         }
 
         nxtCronjobService.update(nxtCronjob);
@@ -70,7 +68,6 @@ public class ScheduledTasksMoveImage {
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    @Scheduled(fixedDelay = 5000)
     public void moveLocalImageToQiniu() {
 
         // 由于实例并不一定只部署成单机一份，也可能由k8s集群部署好几个实例
@@ -95,13 +92,16 @@ public class ScheduledTasksMoveImage {
             //任务结束
             nxtCronjob.setJobStatus(0);
             nxtCronjob.setJobStatusDescription("任务结束");
+            nxtCronjob.setJobStatusDateline(System.currentTimeMillis());
         }
         else {
             nxtCronjob.setJobStatusDescription("移动了"+count+"张");
+            nxtCronjob.setJobStatusDateline(System.currentTimeMillis());
         }
         nxtCronjobService.update(nxtCronjob);
         logger.info("moveLocalImageToQiniu Result:"+nxtCronjob.getJobStatusDescription());
 
     }
+
 
 }

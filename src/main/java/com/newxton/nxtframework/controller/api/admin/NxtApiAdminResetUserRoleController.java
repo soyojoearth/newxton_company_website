@@ -1,5 +1,6 @@
 package com.newxton.nxtframework.controller.api.admin;
 
+import com.newxton.nxtframework.component.NxtAclComponent;
 import com.newxton.nxtframework.entity.NxtAclUserRole;
 import com.newxton.nxtframework.entity.NxtUser;
 import com.newxton.nxtframework.service.NxtAclUserRoleService;
@@ -25,7 +26,9 @@ public class NxtApiAdminResetUserRoleController {
     @Resource
     private NxtAclUserRoleService nxtAclUserRoleService;
 
-    @CacheEvict(cacheNames = {"getUserRoleGroupActionIdSet","getUserActionIdSet"},allEntries = true,beforeInvocation = false)
+    @Resource
+    private NxtAclComponent nxtAclComponent;
+
     @RequestMapping(value = "/api/admin/reset_user_role", method = RequestMethod.POST)
     public Map<String, Object> index(
             @RequestHeader("user_id") Long adminUserId,
@@ -70,6 +73,9 @@ public class NxtApiAdminResetUserRoleController {
             nxtAclUserRole.setRoleId(resetUserRoleId);
             nxtAclUserRoleService.update(nxtAclUserRole);
         }
+
+        //提交cronjob任务，清除Acl缓存
+        nxtAclComponent.addJobForCleanCache();
 
         return result;
 
