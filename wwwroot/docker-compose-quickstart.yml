@@ -10,7 +10,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
   springboot-nxtframework:
     container_name: container_springboot_nxtframework
-    image: soyojoearth/nxtframework:0.1.0
+    image: nxtframework:0.1.0
     ports:
       - target: 8080
         published: 8686
@@ -19,11 +19,8 @@ services:
     volumes:
       - ./nxtframework_oss:/nxtframework_oss
     command: ["java", "-jar", "-Xms500m","-Xmx1500m", "/run.jar",
-              "--spring.profiles.active=development",
-              "--newxton.config.oss.localPath=/nxtframework_oss",
-              "--spring.datasource.url=jdbc:mysql://192.168.0.100:3306/nxtframework?serverTimezone=Hongkong&useSSL=false&allowPublicKeyRetrieval=true",
-              "--spring.datasource.username=root",
-              "--spring.datasource.password=12345678"
+              "--spring.profiles.active=prod",
+              "--newxton.config.oss.localPath=/nxtframework_oss"
     ]
   nginx:
     container_name: container_nginx_nxtframework

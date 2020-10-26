@@ -212,7 +212,7 @@ CREATE TABLE `nxt_banner` (
   `click_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_location_name` (`location_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -221,7 +221,7 @@ CREATE TABLE `nxt_banner` (
 
 LOCK TABLES `nxt_banner` WRITE;
 /*!40000 ALTER TABLE `nxt_banner` DISABLE KEYS */;
-INSERT INTO `nxt_banner` VALUES (118,'首页',367,''),(119,'案例页',362,''),(120,'项目页',365,'');
+INSERT INTO `nxt_banner` VALUES (122,'案例页',369,''),(123,'项目页',370,''),(126,'首页',374,'');
 /*!40000 ALTER TABLE `nxt_banner` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -271,7 +271,7 @@ CREATE TABLE `nxt_cronjob` (
   `job_status_dateline` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `job_key_UNIQUE` (`job_key`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -280,7 +280,7 @@ CREATE TABLE `nxt_cronjob` (
 
 LOCK TABLES `nxt_cronjob` WRITE;
 /*!40000 ALTER TABLE `nxt_cronjob` DISABLE KEYS */;
-INSERT INTO `nxt_cronjob` VALUES (1,'将本地图片移动到七牛云','moveLocalImageToQiniu',0,'任务结束',1603081709346),(2,'将七牛云图片移动到本地','moveQiniuImageToLocal',0,'任务结束',1603081665815);
+INSERT INTO `nxt_cronjob` VALUES (1,'将本地图片移动到七牛云','moveLocalImageToQiniu',0,'任务结束',1603607457405),(2,'将七牛云图片移动到本地','moveQiniuImageToLocal',0,'任务结束',1603607589821),(3,'清理Acl缓存','cleanAclCache',1,NULL,1603679520941);
 /*!40000 ALTER TABLE `nxt_cronjob` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -499,7 +499,7 @@ CREATE TABLE `nxt_setting` (
 
 LOCK TABLES `nxt_setting` WRITE;
 /*!40000 ALTER TABLE `nxt_setting` DISABLE KEYS */;
-INSERT INTO `nxt_setting` VALUES (1,'site_name','NxtFramework','网站名','input',1603364518524),(2,'stat_code','   ','统计代码','textarea',1603364527378),(3,'beian','粤ICP备20040927号-2','备案','input',1603364518523),(4,'domain','www.nxtframework.com','域名','input',1603364518528),(5,'admin_name','申生','管理员','input',1603364518527);
+INSERT INTO `nxt_setting` VALUES (1,'stat_code','','统计代码','textarea',1603364518524),(2,'contact_code','   ','客服代码','textarea',1603678545799),(3,'contact_link','','客服链接','input',1603364518523);
 /*!40000 ALTER TABLE `nxt_setting` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -524,7 +524,7 @@ CREATE TABLE `nxt_uploadfile` (
   `netdisk_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `netdisk_pwd` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=368 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=375 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -533,7 +533,7 @@ CREATE TABLE `nxt_uploadfile` (
 
 LOCK TABLES `nxt_uploadfile` WRITE;
 /*!40000 ALTER TABLE `nxt_uploadfile` DISABLE KEYS */;
-INSERT INTO `nxt_uploadfile` VALUES (362,1,0,'jpg','2020-08-04-1265800877.jpg','2020-10-19-1256105701.jpg','/2020-10-19-1256105701.jpg','/2020-10-19-1256105701.jpg',28126,1603081702310,NULL,NULL),(363,1,0,'jpg','2020-08-04-1991738016.jpg','2020-10-19-1170015765.jpg','/2020-10-19-1170015765.jpg','/2020-10-19-1170015765.jpg',138615,1603081702781,NULL,NULL),(364,1,0,'jpg','2020-08-04-1265800877.jpg','2020-10-19-1849171536.jpg','/2020-10-19-1849171536.jpg','/2020-10-19-1849171536.jpg',28126,1603081703148,NULL,NULL),(365,1,0,'jpg','2020-08-04-1991738016.jpg','2020-10-19-1186307773.jpg','/2020-10-19-1186307773.jpg','/2020-10-19-1186307773.jpg',138615,1603081703544,NULL,NULL),(366,1,0,'jpg','40744d34-06aa-4322-8dca-002cb34428cd.jpg','2020-10-19-1656437741.jpg','/2020-10-19-1656437741.jpg','/2020-10-19-1656437741.jpg',1688323,1603081704096,NULL,NULL),(367,3,0,'jpg','2020-08-04-1265800877.jpg','1551551928.jpg','/public_pic/2020/10/20/1551551928.jpg','/public_pic/2020/10/20/1551551928.jpg',28126,1603182916567,NULL,NULL);
+INSERT INTO `nxt_uploadfile` VALUES (374,3,0,'jpg','2020-08-04-1265800877.jpg','1921229637.jpg','/public_pic/2020/10/25/1921229637.jpg','/public_pic/2020/10/25/1921229637.jpg',28126,1603607584586,NULL,NULL);
 /*!40000 ALTER TABLE `nxt_uploadfile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -587,7 +587,7 @@ CREATE TABLE `nxt_user` (
 
 LOCK TABLES `nxt_user` WRITE;
 /*!40000 ALTER TABLE `nxt_user` DISABLE KEYS */;
-INSERT INTO `nxt_user` VALUES (3,'admin','f0866b655980a3f4aabf8133432a03bc','D7d5uKC&qRRei*nsc&2oA()$FN@Yj89Z','b83c35af2c686458a93c37c8c25972be',0),(6,'orange','432419d4ceea0fabb5f92b6e6747f8c0','4yOHXhkka6Lk6dELkd@DX$I6)Jt*4i4k','a4e15b09ad0e2fffccae371733d6b57a',0),(7,'apple','ecd8a47d682c5777eedfc5a47d35a499','bury!3qr9IYsuZ$7$VrZuePC623yiN(f','3b94989bae9b37a40272764462161a11',-1),(8,'apple3','745a44dc02f5b43a309438cb8869e0cb','hd!u3V4JCBkU115qGlYmES*j$1R!sRaw','05bd02fa431124882fddadf79927726e',0),(9,'test','03b9b1c79fceeaf80e12344c5ed2705c','b2paXO%mkF!By&XKF)MUhvBhOLBMVQLs',NULL,0),(10,'test11','a4207d3f2d9f77275b5df0ac82957abe','oF8j@aPcfVsJZEPTsJXXR*nNA7Cma&sQ',NULL,0),(11,'333','0dfdb43cd4e5badd25040b6a538d3830','%V@GwM@s6^bE)M98HrP0h#Sl9nEtq4!b',NULL,0),(12,'3445','47671640864c51bcdb5767fc7f734209','6R9Kq&hdOpZvwi@Dq@N&7MSRAZaejQvn',NULL,0),(13,'1111','d2315bd9edcbb93f5713c4b2774e0a98','er3tnwZZI0c8xy&O14n9I%ynnhWL&o9c',NULL,0),(14,'222','1d82a795a3000f22b3fae911b3afaf54','0)wc(44EBU&BkQ)x&BsTgd0@eLPh61Xs',NULL,0),(15,'11111','7d4084087c49da8e2150f4ea5e1c8c70','GfTgsWnnWAK0E1cOqxioG4!8@au^oM75','0de8dd3f1295fdc39427d9788e57b6e3',0),(16,'abc888','4b5487c1868182b42fc2d71fa9bb6369','Lpq0I&%d1*Vig%V3LNEx771#oOE1z1P%','8f0e5f6e7dac59d11e34c43924dc6b43',-1),(17,'main','a36b36b56dee556e59f97b9bb375039f','!ow4F*M9HI7rite57re6^POsYar!QmwU','4a61fe44f0ecaab9e87ca536b90831a2',0),(18,'abc123','10ff109ed38f7209f6624607f20106a5','D6&#dg0NxApoY9YveLaVNQaHwkvMJz!Y',NULL,0),(19,'abcabc123','12a44e0bb4ba695f7ae71af36a5a5c7f','u%Gv0WbkNQu*NI3lrSZ*HvZe4tR&y^)A',NULL,0);
+INSERT INTO `nxt_user` VALUES (3,'admin','f0866b655980a3f4aabf8133432a03bc','D7d5uKC&qRRei*nsc&2oA()$FN@Yj89Z','e603c323148aaee7d929f958e3365349',0),(6,'orange','432419d4ceea0fabb5f92b6e6747f8c0','4yOHXhkka6Lk6dELkd@DX$I6)Jt*4i4k','d85fb647758776f4587025d45038c1cd',0),(7,'apple','ecd8a47d682c5777eedfc5a47d35a499','bury!3qr9IYsuZ$7$VrZuePC623yiN(f','3b94989bae9b37a40272764462161a11',-1),(8,'apple3','745a44dc02f5b43a309438cb8869e0cb','hd!u3V4JCBkU115qGlYmES*j$1R!sRaw','05bd02fa431124882fddadf79927726e',0),(9,'test','03b9b1c79fceeaf80e12344c5ed2705c','b2paXO%mkF!By&XKF)MUhvBhOLBMVQLs',NULL,0),(10,'test11','a4207d3f2d9f77275b5df0ac82957abe','oF8j@aPcfVsJZEPTsJXXR*nNA7Cma&sQ',NULL,0),(11,'333','0dfdb43cd4e5badd25040b6a538d3830','%V@GwM@s6^bE)M98HrP0h#Sl9nEtq4!b',NULL,0),(12,'3445','47671640864c51bcdb5767fc7f734209','6R9Kq&hdOpZvwi@Dq@N&7MSRAZaejQvn',NULL,0),(13,'1111','d2315bd9edcbb93f5713c4b2774e0a98','er3tnwZZI0c8xy&O14n9I%ynnhWL&o9c',NULL,0),(14,'222','1d82a795a3000f22b3fae911b3afaf54','0)wc(44EBU&BkQ)x&BsTgd0@eLPh61Xs',NULL,0),(15,'11111','7d4084087c49da8e2150f4ea5e1c8c70','GfTgsWnnWAK0E1cOqxioG4!8@au^oM75','0de8dd3f1295fdc39427d9788e57b6e3',0),(16,'abc888','4b5487c1868182b42fc2d71fa9bb6369','Lpq0I&%d1*Vig%V3LNEx771#oOE1z1P%','8f0e5f6e7dac59d11e34c43924dc6b43',-1),(17,'main','a36b36b56dee556e59f97b9bb375039f','!ow4F*M9HI7rite57re6^POsYar!QmwU','4a61fe44f0ecaab9e87ca536b90831a2',0),(18,'abc123','10ff109ed38f7209f6624607f20106a5','D6&#dg0NxApoY9YveLaVNQaHwkvMJz!Y',NULL,0),(19,'abcabc123','12a44e0bb4ba695f7ae71af36a5a5c7f','u%Gv0WbkNQu*NI3lrSZ*HvZe4tR&y^)A',NULL,0);
 /*!40000 ALTER TABLE `nxt_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -620,6 +620,7 @@ LOCK TABLES `nxt_web_page` WRITE;
 INSERT INTO `nxt_web_page` VALUES (1,NULL,'联系我们111','联系我们x222','<p>。。是否反反复复<img class=\"wscnph\" src=\"http://qdyrmq5wy.bkt.clouddn.com/2020-08-04-1414689064.jpg\" />ssssb<img class=\"wscnph\" src=\"http://qdyrmq5wy.bkt.clouddn.com/2020-08-04-1501262746.jpg\" />b<img class=\"wscnph\" src=\"http://qdyrmq5wy.bkt.clouddn.com/2020-08-04-1408617700.jpg\" />b</p>',NULL,1596546321979),(2,NULL,'关于我们','关于我们xxx','<p>。。adsf</p>',NULL,1596513033323),(3,NULL,'加入我们','加入我们xxx','。。',NULL,0),(4,NULL,'sss','aaaa','<p>asdf<img class=\"wscnph\" src=\"http://qdyrmq5wy.bkt.clouddn.com/2020-08-04-1265800877.jpg\" />bb</p>',NULL,1596546491113);
 /*!40000 ALTER TABLE `nxt_web_page` ENABLE KEYS */;
 UNLOCK TABLES;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -630,4 +631,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-22 19:39:01
+-- Dump completed on 2020-10-26 16:18:22
