@@ -64,8 +64,6 @@ public class NxtNewsListController {
             int limit = 10;
             int offset = limit * page - limit;
 
-            ArrayList<Thread> threads = new ArrayList<>();
-
             //资讯大列表
             Map<String, Object> apiResult = nxtApiNormalNewsListController.exec(cid,limit,offset,1);
             List<Map<String,Object>> newsList = (List<Map<String,Object>>)apiResult.get("data");

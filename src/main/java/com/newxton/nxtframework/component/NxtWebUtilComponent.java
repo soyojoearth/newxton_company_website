@@ -37,4 +37,19 @@ public class NxtWebUtilComponent {
         }
     }
 
+    /**
+     * 	判断是不是微软浏览器
+     * @return
+     */
+    public boolean isMSBrowser() {
+        String[] IEBrowserSignals = {"MSIE", "Trident", "Edge"};
+        String userAgent = request.getHeader("User-Agent");
+        for (String signal : IEBrowserSignals) {
+            if (userAgent.contains(signal)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

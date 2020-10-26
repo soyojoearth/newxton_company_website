@@ -1,10 +1,11 @@
 package com.newxton.nxtframework.controller.web;
 
+import com.newxton.nxtframework.component.NxtWebUtilComponent;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.Resource;
 
 /**
  * @author soyojo.earth@gmail.com
@@ -15,16 +16,18 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class NxtAdminController {
 
+    @Resource
+    NxtWebUtilComponent nxtWebUtilComponent;
+
     /**
      * 管理后台技术采用前后端分离，前端使用Vue，后端调用/api/接口
      * @param model
      * @return
      */
     @RequestMapping("/admin")
-    public ModelAndView index(ModelAndView model, HttpServletRequest request) {
+    public ModelAndView index(ModelAndView model) {
 
-
-        if (isMSBrowser(request)){
+        if (nxtWebUtilComponent.isMSBrowser()){
             //后台不支持微软的浏览器：IE和Edge
             model.setViewName("admin_no_ie");
         }
@@ -35,22 +38,6 @@ public class NxtAdminController {
 
         return model;
 
-    }
-
-    /**
-     * 	判断是不是ie浏览器
-     * @param request
-     * @return
-     */
-    public boolean isMSBrowser(HttpServletRequest request) {
-        String[] IEBrowserSignals = {"MSIE", "Trident", "Edge"};
-        String userAgent = request.getHeader("User-Agent");
-        for (String signal : IEBrowserSignals) {
-            if (userAgent.contains(signal)){
-                return true;
-            }
-        }
-        return false;
     }
 
 }
