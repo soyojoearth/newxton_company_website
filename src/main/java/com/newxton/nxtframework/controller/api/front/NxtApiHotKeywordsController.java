@@ -21,7 +21,7 @@ public class NxtApiHotKeywordsController {
     private NxtSettingService nxtSettingService;
 
     @RequestMapping("/api/hot_keywords")
-    public Map<String,Object> index() {
+    public Map<String,Object> exec() {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);

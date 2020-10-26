@@ -34,7 +34,7 @@ public class NxtApiBannerListController {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/banner_list")
-    public Map<String,Object> index(@RequestParam("location_name") String locationName) {
+    public Map<String,Object> exec(@RequestParam("location_name") String locationName) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);

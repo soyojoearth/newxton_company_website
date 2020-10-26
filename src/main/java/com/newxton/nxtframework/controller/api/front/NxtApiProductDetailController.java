@@ -44,7 +44,7 @@ public class NxtApiProductDetailController  {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/product_detail")
-    public Map<String,Object> index(
+    public Map<String,Object> exec(
             @RequestParam(value = "product_id",required = false) Long productId,
             @RequestParam(value = "page",required = false) Long page
             ) {

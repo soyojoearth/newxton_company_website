@@ -44,7 +44,7 @@ public class NxtApiProductListController {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/product_list")
-    public Map<String,Object> index(
+    public Map<String,Object> exec(
             @RequestParam(value = "category_name",required = false) String categoryName,
             @RequestParam(value = "root_category_id",required = false) Long rootCategoryId,
             @RequestParam(value = "category_id",required = false) Long categoryId,

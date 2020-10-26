@@ -1,71 +1,55 @@
 package com.newxton.nxtframework.controller.web;
 
-import com.newxton.nxtframework.component.NxtRequestSelfApiComponent;
+import com.newxton.nxtframework.component.NxtWebUtilComponent;
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+
 
 @Controller
 public class NxtAboutUsController {
 
     @Resource
-    NxtRequestSelfApiComponent nxtRequestSelfApiComponent;
+    NxtWebUtilComponent nxtWebUtilComponent;
 
     @RequestMapping("/about")
-    public ModelAndView index(Device device, ModelAndView model) throws InterruptedException {
+    public ModelAndView index(Device device, ModelAndView model) {
 
         boolean isMobile = device.isMobile();
-//        isMobile = true;
-        if (isMobile) {
 
-            model.setViewName("h5/about.html");
+        boolean isSpider = nxtWebUtilComponent.isSpider();
 
-            return model;
+        if (!isSpider){
+            /**
+             * 前后端分离，无论PC端还是移动端全部用SPA开发
+             * SPA是单页应用，所以无论那个Controler里面都渲染h5/index.html或pc/index.html这个编译单页
+             * 但是，SPA应用也是可以自定义url路由的，可以定义成和pc端一样的url，保持一致
+             */
+            if (isMobile) {
+                model.setViewName("mobile/index");
+            } else {
+                model.setViewName("pc/index");
+            }
+        }
+        else {
 
-        } else {
+            /**
+             * 之所以准备一个"搜索引擎特供版渲染"，是为了前后端分离的同时也能照顾到搜索引擎收录
+             * 后端工程师只要写个简单的不带css样式的页面就ok了
+             * 大大降低前后端工程师的交流成本、后续的修改成本，且还可以专门针对搜索引擎优化
+             */
 
-            model.setViewName("about");
-
-            Thread thread1 = new Thread(new Runnable() {
-                @Override
-                public void run() {
-
-                    try {
-
-                        Map<String, Object> json = nxtRequestSelfApiComponent.postFormAndReturnMap("/api/about_us", null, null);
-
-                        Map<String, Object> data = new HashMap<>();
-                        if (json.containsKey("data")) {
-                            data = (Map<String, Object>) json.get("data");
-                        }
-
-                        Iterator<Map.Entry<String, Object>> iterator = data.entrySet().iterator();
-                        while (iterator.hasNext()) {
-                            Map.Entry<String, Object> entry = iterator.next();
-                            model.addObject(entry.getKey(), entry.getValue());
-                        }
-
-                    } catch (Exception e) {
-                        System.out.println(e);
-                    }
-
-                }
-            });
-
-            thread1.start();
-
-            thread1.join();
-
-            return model;
+            //SEO优化&搜索引擎特供版
+            model.setViewName("seo/about");
 
         }
 
+        return model;
+
     }
+
 
 }

@@ -35,7 +35,7 @@ public class NxtApiNormalNewsListController {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/normal_news_list")
-    public Map<String,Object> index(
+    public Map<String,Object> exec(
             @RequestParam(value = "root_category_id",required = false) Long rootCategoryId,
             @RequestParam("limit") Integer limit,
             @RequestParam(value = "offset",required = false) Integer offset,

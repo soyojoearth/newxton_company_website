@@ -24,7 +24,7 @@ public class NxtApiGuestmessageCreateController {
     private NxtGuestmessageService nxtGuestmessageService;
 
     @RequestMapping(value = "/api/guestmessage/create", method = RequestMethod.POST)
-    public Map<String, Object> index(@RequestParam(value = "guest_company", required=false) String guestCompany,
+    public Map<String, Object> exec(@RequestParam(value = "guest_company", required=false) String guestCompany,
                                      @RequestParam(value = "guest_name", required=false) String guestName,
                                      @RequestParam(value = "guest_phone", required=false) String guestPhone,
                                      @RequestParam(value = "guest_email", required=false) String guestEmail,

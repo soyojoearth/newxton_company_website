@@ -1,13 +1,16 @@
 package com.newxton.nxtframework.controller.web;
 
-import com.newxton.nxtframework.component.NxtRequestSelfApiComponent;
+import com.newxton.nxtframework.component.NxtWebUtilComponent;
+import com.newxton.nxtframework.controller.api.front.NxtApiNewsDetailController;
+import com.newxton.nxtframework.controller.api.front.NxtApiNormalNewsListController;
+import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,89 +18,61 @@ import java.util.Map;
 public class NxtNewsDetailController {
 
     @Resource
-    NxtRequestSelfApiComponent nxtRequestSelfApiComponent;
+    NxtWebUtilComponent nxtWebUtilComponent;
+
+    @Resource
+    NxtApiNewsDetailController nxtApiNewsDetailController;
+
+    @Resource
+    NxtApiNormalNewsListController nxtApiNormalNewsListController;
 
     @RequestMapping(value = "/news/detail" )
-    public ModelAndView index(ModelAndView model, @RequestParam("id") Long id) throws InterruptedException {
+    public ModelAndView index(Device device, ModelAndView model, @RequestParam("id") Long id) throws InterruptedException {
 
-        model.addObject("title", "资讯列表");
+        boolean isMobile = device.isMobile();
 
-        model.setViewName("news_detail");
+        boolean isSpider = nxtWebUtilComponent.isSpider();
 
-        Map<String,Object> detail = new HashMap<>();
-
-        //资讯详情
-        Thread thread1 = new Thread(new Runnable()  {
-            @Override
-            public void run()  {
-
-                try {
-                    Map<String,Object> params = new HashMap<>();
-                    params.put("id",id);
-                    Map<String,Object> data = nxtRequestSelfApiComponent.postFormAndReturnMap("/api/news/detail",params,null);
-                    model.addObject("detail",data.get("data"));
-                }
-                catch (Exception e){
-                    System.out.println(e);
-                }
-
+        if (!isSpider){
+            /**
+             * 前后端分离，无论PC端还是移动端全部用SPA开发
+             * SPA是单页应用，所以无论那个Controler里面都渲染h5/index.html或pc/index.html这个编译单页
+             * 但是，SPA应用也是可以自定义url路由的，可以定义成和pc端一样的url，保持一致
+             */
+            if (isMobile) {
+                model.setViewName("mobile/index");
+            } else {
+                model.setViewName("pc/index");
             }
-        });
+        }
+        else {
 
-        thread1.start();
-        thread1.join();
+            /**
+             * 之所以准备一个"搜索引擎特供版渲染"，是为了前后端分离的同时也能照顾到搜索引擎收录
+             * 后端工程师只要写个简单的不带css样式的页面就ok了
+             * 大大降低前后端工程师的交流成本、后续的修改成本，且还可以专门针对搜索引擎优化
+             */
 
-        detail = (Map<String,Object>)model.getModel().get("detail");
+            //SEO优化&搜索引擎特供版
+            model.setViewName("seo/news_detail");
 
-        Long categoryId = Long.valueOf(detail.get("categoryId").toString());
+            //资讯详情
+            Map<String,Object> apiResult = nxtApiNewsDetailController.exec(id);
+            Map<String,Object> detail = (Map<String,Object>)apiResult.get("data");
+            model.addObject("detail",detail);
 
-        //相关资讯
-        Thread thread2 = new Thread(new Runnable()  {
-            @Override
-            public void run()  {
+            //相关资讯
+            Long categoryId = Long.valueOf(detail.get("categoryId").toString());
+            Map<String,Object> apiResultNewsList = nxtApiNormalNewsListController.exec(categoryId,3,null,null);
+            List<Map<String,Object>> newsList = (List<Map<String,Object>>)apiResultNewsList.get("data");
+            model.addObject("newsList_bottom",newsList);
 
-                try {
-                    Map<String,Object> paramsNewsList1 = new HashMap<>();
-                    paramsNewsList1.put("root_category_id",categoryId);
-                    paramsNewsList1.put("limit",3);
-                    Map<String,Object> paramsNewsList1_JSON = nxtRequestSelfApiComponent.postFormAndReturnMap("/api/normal_news_list",paramsNewsList1,null);
-                    List<Map<String,Object>> newsList = (List<Map<String,Object>>)paramsNewsList1_JSON.get("data");
-                    model.addObject("newsList_bottom",newsList);
-                }
-                catch (Exception e){
-                    System.out.println(e);
-                }
+            //相关资讯
+            Map<String,Object> apiResultNewsListRight = nxtApiNormalNewsListController.exec(null,6,null,null);
+            List<Map<String,Object>> newsListRight = (List<Map<String,Object>>)apiResultNewsListRight.get("data");
+            model.addObject("newsList_right",newsListRight);
 
-            }
-        });
-
-
-        //最新资讯
-        Thread thread3 = new Thread(new Runnable()  {
-            @Override
-            public void run()  {
-
-                try {
-                    Map<String,Object> paramsNewsList1 = new HashMap<>();
-                    paramsNewsList1.put("limit",6);
-                    Map<String,Object> paramsNewsList1_JSON = nxtRequestSelfApiComponent.postFormAndReturnMap("/api/normal_news_list",paramsNewsList1,null);
-                    List<Map<String,Object>> newsList = (List<Map<String,Object>>)paramsNewsList1_JSON.get("data");
-                    model.addObject("newsList_right",newsList);
-                }
-                catch (Exception e){
-                    System.out.println(e);
-                }
-
-            }
-        });
-
-
-        thread2.start();
-        thread3.start();
-
-        thread2.join();
-        thread3.join();
-
+        }
 
         return model;
 

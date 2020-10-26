@@ -29,7 +29,7 @@ public class NxtApiWebPageDetailController {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/web_content/detail")
-    public  Map<String, Object> index(@RequestParam(value = "id",required = true) Long id) {
+    public  Map<String, Object> exec(@RequestParam(value = "id",required = true) Long id) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);

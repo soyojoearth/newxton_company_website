@@ -1,4 +1,4 @@
-package com.newxton.nxtframework.controller.web;
+package com.newxton.nxtframework.controller.image;
 
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;

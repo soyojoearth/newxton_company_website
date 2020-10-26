@@ -22,7 +22,7 @@ public class NxtApiHelloController {
 
 
     @RequestMapping("/api/hello")
-    public String index() {
+    public String exec() {
 
         //心跳检查
 
