@@ -51,6 +51,10 @@ public class NxtApiAdminSettingSaveController {
             return result;
         }
 
+        if (settingKey.toLowerCase().contains("secret") && settingValue.contains("****")){
+            return result;
+        }
+
         setting.setSettingValue(settingValue);
         setting.setDatelineUpdated(System.currentTimeMillis());
 
