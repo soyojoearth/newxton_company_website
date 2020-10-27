@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -34,26 +35,29 @@ import java.util.regex.Pattern;
 @Component
 public class NxtUploadImageComponent {
 
-    @Value("${newxton.config.oss.type}")
-    private String ossType;
-
     @Value("${newxton.config.oss.localPath}")
     private String ossLocalPath;
 
-    @Value("${newxton.config.oss.qiniuDomain}")
-    private String ossQniuDomain;
-
-    @Value("${newxton.config.oss.qiniuAccessKey}")
-    private String qiniuAccessKey;
-
-    @Value("${newxton.config.oss.qiniuSecretKey}")
-    private String qiniuSecretKey;
-
-    @Value("${newxton.config.oss.qiniuBucket}")
-    private String qiniuBucket;
-
     @Resource
     private NxtUploadfileService nxtUploadfileService;
+
+    @Resource
+    private NxtGlobalSettingComponent nxtGlobalSettingComponent;
+
+    @Resource
+    private HttpServletRequest request;
+
+    private String getOssLocation(){
+        String ossLocation = nxtGlobalSettingComponent.getSettingValueInCache("oss_location");
+        if (ossLocation == null || ossLocation.isEmpty()){
+            ossLocation = "local";
+        }
+        return ossLocation;
+    }
+
+    private String getOssQiniuDomain(){
+        return nxtGlobalSettingComponent.getSettingValueInCache("oss_qiniuDomain");
+    }
 
     /**
      * 把Html里面的第三方图片抓取过来，存放到自己这里
@@ -65,7 +69,7 @@ public class NxtUploadImageComponent {
         Matcher m = Pattern.compile("<img.*?src=\"(http.*?)\"").matcher(contentHTML);
         while (m.find()) {
             String imgUrl = m.group(1);
-            if (!imgUrl.contains(this.ossQniuDomain)){
+            if (!imgUrl.contains(this.getOssQiniuDomain())){
                 //抓取图片，上传
                 String uploadResultFilename = null;
                 try {
@@ -93,10 +97,10 @@ public class NxtUploadImageComponent {
                     if (fileExt != null) {
                         String urlPath = null;
                         try {
-                            if (this.ossType.equals("local")){
+                            if (this.getOssLocation().equals("local")){
                                 urlPath = this.saveUploadFileLocal(fileBytesAll, fileExt);
                             }
-                            else if (this.ossType.equals("qiniu")){
+                            else if (this.getOssLocation().equals("qiniu")){
                                 urlPath = this.uploadFileToQiniuYun(fileBytesAll, fileExt);
                             }
                         }
@@ -110,10 +114,10 @@ public class NxtUploadImageComponent {
 
                         //文件记录保存数据库
                         NxtUploadfile nxtUploadfile = new NxtUploadfile();
-                        if (this.ossType.equals("local")){
+                        if (this.getOssLocation().equals("local")){
                             nxtUploadfile.setFileLocation(3);//本地
                         }
-                        else if (this.ossType.equals("qiniu")) {
+                        else if (this.getOssLocation().equals("qiniu")) {
                             nxtUploadfile.setFileLocation(1);//七牛云
                         }
                         nxtUploadfile.setCategoryId(0L);
@@ -127,11 +131,11 @@ public class NxtUploadImageComponent {
                         //增加记录
                         NxtUploadfile userCreated = nxtUploadfileService.insert(nxtUploadfile);
                         //替换旧图片
-                        if (this.ossType.equals("local")) {
+                        if (this.getOssLocation().equals("local")) {
                             contentHTML = contentHTML.replace(imgUrl, urlPath);
                         }
-                        else if (this.ossType.equals("qiniu")){
-                            contentHTML = contentHTML.replace(imgUrl, this.ossQniuDomain + urlPath);
+                        else if (this.getOssLocation().equals("qiniu")){
+                            contentHTML = contentHTML.replace(imgUrl, this.getOssQiniuDomain() + urlPath);
                         }
                     }
                 }catch (IOException e){
@@ -148,7 +152,7 @@ public class NxtUploadImageComponent {
      * @return
      */
     public String checkHtmlAndReplaceImageUrlForDisplay(String contentHTML){
-        contentHTML = contentHTML.replace("http://newxton-image-domain",this.ossQniuDomain);
+        contentHTML = contentHTML.replace("http://newxton-image-domain",this.getOssQiniuDomain());
         return contentHTML;
     }
 
@@ -158,7 +162,7 @@ public class NxtUploadImageComponent {
      * @return
      */
     public String checkHtmlAndReplaceImageUrlForSave(String contentHTML){
-        contentHTML = contentHTML.replace(this.ossQniuDomain,"http://newxton-image-domain");
+        contentHTML = contentHTML.replace(this.getOssQiniuDomain(),"http://newxton-image-domain");
         return contentHTML;
     }
 
@@ -169,10 +173,10 @@ public class NxtUploadImageComponent {
      */
     public String convertImagePathToDomainImagePath(String imagePath){
         if (imagePath.contains("/public_pic")){
-            return imagePath;
+            return request.getScheme() + "://" + request.getHeader("host") + imagePath;
         }
         else {
-            return this.ossQniuDomain + imagePath;
+            return this.getOssQiniuDomain() + imagePath;
         }
     }
 
@@ -191,10 +195,10 @@ public class NxtUploadImageComponent {
         String url_path = null;
 
         try {
-            if (this.ossType.equals("local")){
+            if (this.getOssLocation().equals("local")){
                 url_path = this.saveUploadFileLocal(multipartFile);
             }
-            else if (this.ossType.equals("qiniu")){
+            else if (this.getOssLocation().equals("qiniu")){
                 url_path = this.uploadFileToQiniuYun(multipartFile);
             }
         }
@@ -217,10 +221,10 @@ public class NxtUploadImageComponent {
 
             NxtUploadfile nxtUploadfile = new NxtUploadfile();
 
-            if (this.ossType.equals("local")){
+            if (this.getOssLocation().equals("local")){
                 nxtUploadfile.setFileLocation(3);//本地
             }
-            else if (this.ossType.equals("qiniu")) {
+            else if (this.getOssLocation().equals("qiniu")) {
                 nxtUploadfile.setFileLocation(1);//七牛云
             }
 
@@ -240,8 +244,8 @@ public class NxtUploadImageComponent {
                 result.put("message", "系统错误");
             }
             else {
-                if (this.ossType.equals("qiniu")) {
-                    result.put("url", this.ossQniuDomain + url_path);
+                if (this.getOssLocation().equals("qiniu")) {
+                    result.put("url", this.getOssQiniuDomain() + url_path);
                 }
                 else {
                     result.put("url", url_path);
@@ -350,9 +354,9 @@ public class NxtUploadImageComponent {
         Configuration cfg = new Configuration(Region.autoRegion());
         UploadManager uploadManager = new UploadManager(cfg);
 
-        String accessKey = this.qiniuAccessKey;
-        String secretKey = this.qiniuSecretKey;
-        String bucket = this.qiniuBucket;
+        String accessKey = nxtGlobalSettingComponent.getSettingValueInCache("oss_qiniuAccessKey");;
+        String secretKey = nxtGlobalSettingComponent.getSettingValueInCache("oss_qiniuSecretKey");;
+        String bucket = nxtGlobalSettingComponent.getSettingValueInCache("oss_qiniuBucket");;
 
         String suffix = fileExt;
         String yunPath = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));

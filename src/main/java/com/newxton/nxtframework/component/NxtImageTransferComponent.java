@@ -27,9 +27,6 @@ public class NxtImageTransferComponent {
 
     private Logger logger = LoggerFactory.getLogger(NxtImageTransferComponent.class);
 
-    @Value("${newxton.config.oss.qiniuDomain}")
-    private String ossQniuDomain;
-
     @Value("${newxton.config.oss.localPath}")
     private String ossLocalPath;
 
@@ -38,6 +35,13 @@ public class NxtImageTransferComponent {
 
     @Resource
     private NxtUploadImageComponent nxtUploadImageComponent;
+
+    @Resource
+    private NxtGlobalSettingComponent nxtGlobalSettingComponent;
+
+    private String getOssQniuDomain(){
+        return nxtGlobalSettingComponent.getSettingValueInCache("oss_qiniuDomain");
+    }
 
     /**
      * 移动一部分本地图片到七牛云
@@ -106,7 +110,7 @@ public class NxtImageTransferComponent {
         for (NxtUploadfile nxtUploadfile :
                 list) {
             String urlPath = nxtUploadfile.getUrlpath();
-            String newUrlPath = getRemoteImageAndSaveToLocal(this.ossQniuDomain + urlPath);
+            String newUrlPath = getRemoteImageAndSaveToLocal(this.getOssQniuDomain() + urlPath);
             if (newUrlPath != null){
                 //抓取保存成功，修改数据库
                 nxtUploadfile.setFileLocation(3);//七牛云

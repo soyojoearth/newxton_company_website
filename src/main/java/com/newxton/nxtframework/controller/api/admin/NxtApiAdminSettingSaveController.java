@@ -1,5 +1,6 @@
 package com.newxton.nxtframework.controller.api.admin;
 
+import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
 import com.newxton.nxtframework.entity.NxtSetting;
 import com.newxton.nxtframework.service.NxtSettingService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,9 @@ public class NxtApiAdminSettingSaveController {
 
     @Resource
     private NxtSettingService nxtSettingService;
+
+    @Resource
+    private NxtGlobalSettingComponent nxtGlobalSettingComponent;
 
     @RequestMapping(value = "/api/admin/setting_save", method = RequestMethod.POST)
     public Map<String, Object> index(
@@ -51,6 +55,9 @@ public class NxtApiAdminSettingSaveController {
         setting.setDatelineUpdated(System.currentTimeMillis());
 
         nxtSettingService.update(setting);
+
+        //清理缓存
+        nxtGlobalSettingComponent.addJobForCleanSettingValueCache();
 
         return result;
 

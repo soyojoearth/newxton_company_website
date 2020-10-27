@@ -80,6 +80,16 @@ public class ScheduledTasks {
                     //本实例已经执行过jobStatusDateline这次任务了
                 }
             }
+            else if (jobKey.equals("cleanSettingValueCache")){
+                //清空SettingValue缓存
+                if (lastJobStatusDatelineMap.get("cleanSettingValueCache") == null || lastJobStatusDatelineMap.get("cleanSettingValueCache") < jobStatusDateline){
+                    lastJobStatusDatelineMap.put("cleanSettingValueCache",jobStatusDateline);
+                    nxtTaskCleanCache.cleanSettingValueCache();
+                }
+                else {
+                    //本实例已经执行过jobStatusDateline这次任务了
+                }
+            }
         }
     }
 

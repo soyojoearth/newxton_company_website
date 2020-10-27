@@ -23,6 +23,8 @@ public class NxtSetting implements Serializable {
     
     private Long datelineUpdated;
 
+    private String placeholder;
+
 
     public Long getId() {
         return id;
@@ -72,4 +74,11 @@ public class NxtSetting implements Serializable {
         this.datelineUpdated = datelineUpdated;
     }
 
+    public String getPlaceholder() {
+        return placeholder;
+    }
+
+    public void setPlaceholder(String placeholder) {
+        this.placeholder = placeholder;
+    }
 }

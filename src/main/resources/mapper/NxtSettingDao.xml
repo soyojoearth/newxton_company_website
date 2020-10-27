@@ -10,11 +10,12 @@
         <result property="settingName" column="setting_name" jdbcType="VARCHAR"/>
         <result property="displayType" column="display_type" jdbcType="VARCHAR"/>
         <result property="datelineUpdated" column="dateline_updated" jdbcType="INTEGER"/>
+        <result property="placeholder" column="placeholder" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="selectByKeySet" resultMap="BaseResultMap">
         SELECT
-        id, setting_key, setting_value, setting_name, display_type, dateline_updated
+        id, setting_key, setting_value, setting_name, display_type, dateline_updated, placeholder
         from nxt_setting
         WHERE id IN
         <foreach collection="keyList" item="key" index="index" open="(" close=")" separator=",">
@@ -25,7 +26,7 @@
     <!--查询单个-->
     <select id="queryBySettingKey" resultMap="BaseResultMap">
         select
-          id, setting_key, setting_value, setting_name, display_type, dateline_updated
+          id, setting_key, setting_value, setting_name, display_type, dateline_updated, placeholder
         from nxt_setting
         where setting_key = #{settingKey} limit 1
     </select>
@@ -33,7 +34,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, setting_key, setting_value, setting_name, display_type, dateline_updated
+          id, setting_key, setting_value, setting_name, display_type, dateline_updated, placeholder
         from nxt_setting
         where id = #{id}
     </select>
@@ -43,7 +44,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, setting_key, setting_value, setting_name, display_type, dateline_updated
+          id, setting_key, setting_value, setting_name, display_type, dateline_updated, placeholder
         from nxt_setting
         limit #{offset}, #{limit}
     </select>
@@ -51,7 +52,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, setting_key, setting_value, setting_name, display_type, dateline_updated
+          id, setting_key, setting_value, setting_name, display_type, dateline_updated, placeholder
         from nxt_setting
         <where>
             <if test="id != null">
@@ -72,13 +73,16 @@
             <if test="datelineUpdated != null">
                 and dateline_updated = #{datelineUpdated}
             </if>
+            <if test="placeholder != null and placeholder != ''">
+                and placeholder = #{placeholder}
+            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_setting(setting_key, setting_value, setting_name, display_type, dateline_updated)
-        values (#{settingKey}, #{settingValue}, #{settingName}, #{displayType}, #{datelineUpdated})
+        insert into nxt_setting(setting_key, setting_value, setting_name, display_type, dateline_updated, placeholder)
+        values (#{settingKey}, #{settingValue}, #{settingName}, #{displayType}, #{datelineUpdated}), #{placeholder})
     </insert>
 
     <!--通过主键修改数据-->
@@ -99,6 +103,9 @@
             </if>
             <if test="datelineUpdated != null">
                 dateline_updated = #{datelineUpdated},
+            </if>
+            <if test="placeholder != null and placeholder != ''">
+                placeholder = #{placeholder},
             </if>
         </set>
         where id = #{id}
