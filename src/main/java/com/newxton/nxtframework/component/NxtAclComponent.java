@@ -121,7 +121,9 @@ public class NxtAclComponent {
                 if (nxtAclRoleGroup.getRoleId().equals(roleId)) {
                     Long groupId = nxtAclRoleGroup.getGroupId();
                     //3、查询该groupId关联的action
-                    userActionSet.addAll(mapGroupIdToActionIdSet.get(groupId));
+                    if (mapGroupIdToActionIdSet.containsKey(groupId)) {
+                        userActionSet.addAll(mapGroupIdToActionIdSet.get(groupId));
+                    }
                 }
             }
         }
