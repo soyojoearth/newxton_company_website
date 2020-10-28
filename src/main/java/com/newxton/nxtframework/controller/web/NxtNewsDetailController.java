@@ -1,33 +1,29 @@
 package com.newxton.nxtframework.controller.web;
 
+import com.newxton.nxtframework.component.NxtHTMLUtilComponent;
 import com.newxton.nxtframework.component.NxtWebUtilComponent;
-import com.newxton.nxtframework.controller.api.front.NxtApiNewsDetailController;
-import com.newxton.nxtframework.controller.api.front.NxtApiNormalNewsListController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 public class NxtNewsDetailController {
+
+    private Logger logger = LoggerFactory.getLogger(NxtNewsDetailController.class);
 
     @Resource
     NxtWebUtilComponent nxtWebUtilComponent;
 
     @Resource
-    NxtApiNewsDetailController nxtApiNewsDetailController;
-
-    @Resource
-    NxtApiNormalNewsListController nxtApiNormalNewsListController;
+    NxtHTMLUtilComponent nxtHTMLUtilComponent;
 
     @RequestMapping(value = "/news/detail" )
-    public ModelAndView index(Device device, ModelAndView model, @RequestParam("id") Long id) throws InterruptedException {
+    public ModelAndView index(Device device,ModelAndView model) {
 
         boolean isMobile = device.isMobile();
 
@@ -48,29 +44,23 @@ public class NxtNewsDetailController {
         else {
 
             /**
-             * 之所以准备一个"搜索引擎特供版渲染"，是为了前后端分离的同时也能照顾到搜索引擎收录
-             * 后端工程师只要写个简单的不带css样式的页面就ok了
-             * 大大降低前后端工程师的交流成本、后续的修改成本，且还可以专门针对搜索引擎优化
+             * 为了前后端分离的同时也能照顾到搜索引擎收录，特此解决
+             * 方法一：可以自动模拟浏览器解析PC版ajax SPA页面变成传统html再丢给搜索引擎
+             * 方法二：SEO优化&搜索引擎特供版渲染（后端工程师写一个不含CSS样式的模版）
+             * 使用方法一，一般都可以应付；如果特殊情况测试有问题，再用方法二；
              */
 
-            //SEO优化&搜索引擎特供版
-            model.setViewName("seo/news_detail");
+            /*方法一：自动解析PC版 ajax SPA页面后丢给搜索引擎*/
+            /*
+            自己抓取自己的PC版页面，别解析其中的ajax
+            这里需阻塞一段时间执行其中的异步js，感觉2秒应该可以了
+            太短了执行不完，太长了会让搜索引擎等太久，根据不同的页面的ajax量，自己判断时间吧
+            */
+            String html = nxtHTMLUtilComponent.parseAjaxHtmlWithSelfUrl(2000);
+            model.addObject("html",html);
+            model.setViewName("seo/auto");
 
-            //资讯详情
-            Map<String,Object> apiResult = nxtApiNewsDetailController.exec(id);
-            Map<String,Object> detail = (Map<String,Object>)apiResult.get("data");
-            model.addObject("detail",detail);
-
-            //相关资讯
-            Long categoryId = Long.valueOf(detail.get("categoryId").toString());
-            Map<String,Object> apiResultNewsList = nxtApiNormalNewsListController.exec(categoryId,3,null,null);
-            List<Map<String,Object>> newsList = (List<Map<String,Object>>)apiResultNewsList.get("data");
-            model.addObject("newsList_bottom",newsList);
-
-            //相关资讯
-            Map<String,Object> apiResultNewsListRight = nxtApiNormalNewsListController.exec(null,6,null,null);
-            List<Map<String,Object>> newsListRight = (List<Map<String,Object>>)apiResultNewsListRight.get("data");
-            model.addObject("newsList_right",newsListRight);
+            logger.info("被搜索引擎光顾了一下");
 
         }
 

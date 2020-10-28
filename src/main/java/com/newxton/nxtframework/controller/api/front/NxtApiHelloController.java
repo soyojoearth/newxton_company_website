@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -22,13 +24,17 @@ public class NxtApiHelloController {
 
 
     @RequestMapping("/api/hello")
-    public String exec() {
+    public Map<String,Object> exec() {
 
         //心跳检查
 
         NxtUser user = nxtUserService.queryById(1L);
 
-        return "hello world";
+        Map<String,Object> result = new HashMap<>();
+        result.put("status",0);
+        result.put("message","hello world");
+
+        return result;
 
     }
 

@@ -1,24 +1,28 @@
 package com.newxton.nxtframework.controller.web;
 
+import com.newxton.nxtframework.component.NxtHTMLUtilComponent;
 import com.newxton.nxtframework.component.NxtWebUtilComponent;
 import com.newxton.nxtframework.controller.api.front.NxtApiBannerListController;
 import com.newxton.nxtframework.controller.api.front.NxtApiNormalNewsListController;
-import com.newxton.nxtframework.entity.NxtBanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 public class NxtIndexController {
 
+    private Logger logger = LoggerFactory.getLogger(NxtIndexController.class);
+
     @Resource
     NxtWebUtilComponent nxtWebUtilComponent;
+
+    @Resource
+    NxtHTMLUtilComponent nxtHTMLUtilComponent;
 
     @Resource
     NxtApiBannerListController nxtApiBannerListController;
@@ -27,7 +31,7 @@ public class NxtIndexController {
     NxtApiNormalNewsListController nxtApiNormalNewsListController;
 
     @RequestMapping("/")
-    public ModelAndView index(Device device, ModelAndView model) throws InterruptedException {
+    public ModelAndView index(Device device,ModelAndView model) {
 
         boolean isMobile = device.isMobile();
 
@@ -41,25 +45,36 @@ public class NxtIndexController {
              */
             if (isMobile) {
                 model.setViewName("mobile/index");
+                logger.info("移动端访客");
             } else {
                 model.setViewName("pc/index");
+                logger.info("PC端访客");
             }
         }
         else {
 
             /**
-             * 之所以准备一个"搜索引擎特供版渲染"，是为了前后端分离的同时也能照顾到搜索引擎收录
-             * 后端工程师只要写个简单的不带css样式的页面就ok了
-             * 大大降低前后端工程师的交流成本、后续的修改成本，且还可以专门针对搜索引擎优化
+             * 为了前后端分离的同时也能照顾到搜索引擎收录，特此解决
+             * 方法一：可以自动模拟浏览器解析PC版ajax SPA页面变成传统html再丢给搜索引擎
+             * 方法二：SEO优化&搜索引擎特供版渲染（后端工程师写一个不含CSS样式的模版）
+             * 使用方法一，一般都可以应付；如果特殊情况测试有问题，再用方法二；
              */
 
-            //SEO优化&搜索引擎特供版
-            model.setViewName("seo/index");
+            /*方法一：自动解析PC版 ajax SPA页面后丢给搜索引擎*/
+            /*
+            自己抓取自己的PC版页面，别解析其中的ajax
+            这里需阻塞一段时间执行其中的异步js，感觉2秒应该可以了
+            太短了执行不完，太长了会让搜索引擎等太久，根据不同的页面的ajax量，自己判断时间吧
+            */
+            String html = nxtHTMLUtilComponent.parseAjaxHtmlWithSelfUrl(2000);
+            model.addObject("html",html);
+            model.setViewName("seo/auto");
 
-            //轮播横幅
-            Map<String, Object> apiResult = nxtApiBannerListController.exec("首页");
-            List<NxtBanner> bannerList = (List<NxtBanner>) apiResult.get("data");
-            model.addObject("bannerList", bannerList);
+            logger.info("被搜索引擎光顾了一下");
+
+            /*方法二：SEO优化&搜索引擎特供版渲染*/
+            /**
+            model.setViewName("seo/index");
 
             //资讯1
             Map<String, Object> apiResult1 = nxtApiNormalNewsListController.exec(1L,4,null,null);
@@ -70,7 +85,7 @@ public class NxtIndexController {
             Map<String, Object> apiResult2 = nxtApiNormalNewsListController.exec(2L,4,null,null);
             List<Map<String, Object>> newsList2 = (List<Map<String, Object>>) apiResult2.get("data");
             model.addObject("newsList2", newsList2);
-
+            **/
         }
 
         return model;
