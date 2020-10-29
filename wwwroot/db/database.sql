@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.19, for macos10.15 (x86_64)
 --
--- Host: rm-j6c3bm95y4bmeg4x0mo.mysql.rds.aliyuncs.com    Database: nxtframework
+-- Database: nxtframework_demo
 -- ------------------------------------------------------
 -- Server version	8.0.18
 
@@ -30,7 +30,7 @@ CREATE TABLE `nxt_acl_action` (
   `action_remark` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `action_name_UNIQUE` (`action_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `nxt_acl_action` (
 
 LOCK TABLES `nxt_acl_action` WRITE;
 /*!40000 ALTER TABLE `nxt_acl_action` DISABLE KEYS */;
-INSERT INTO `nxt_acl_action` VALUES (1,'NxtApiAdminBannerListController',NULL,NULL),(2,'NxtApiAdminBannerSaveController',NULL,NULL),(3,'NxtApiAdminBlockUserController',NULL,NULL),(4,'NxtApiAdminCreateUserController',NULL,NULL),(5,'NxtApiAdminFilemanageCreateControler',NULL,NULL),(6,'NxtApiAdminGuestmessageDeleteController',NULL,NULL),(7,'NxtApiAdminGuestmessageDetailController',NULL,NULL),(8,'NxtApiAdminGuestmessageListController',NULL,NULL),(9,'NxtApiAdminNewsCategoryCreateController',NULL,NULL),(10,'NxtApiAdminNewsCategoryDeleteController',NULL,NULL),(11,'NxtApiAdminNewsCategoryListController',NULL,NULL),(12,'NxtApiAdminNewsCategoryUpdateController',NULL,NULL),(13,'NxtApiAdminNewsCreateController',NULL,NULL),(14,'NxtApiAdminNewsDeleteController',NULL,NULL),(15,'NxtApiAdminNewsDetailController',NULL,NULL),(16,'NxtApiAdminNewsListController',NULL,NULL),(17,'NxtApiAdminNewsOrderSwapController',NULL,NULL),(18,'NxtApiAdminNewsRecommendController',NULL,NULL),(19,'NxtApiAdminNewsUpdateController',NULL,NULL),(20,'NxtApiAdminProductCategoryCreateController',NULL,NULL),(21,'NxtApiAdminProductCategoryDeleteController',NULL,NULL),(22,'NxtApiAdminProductCategoryListController',NULL,NULL),(23,'NxtApiAdminProductCategoryUpdateController',NULL,NULL),(24,'NxtApiAdminProductCreateController',NULL,NULL),(25,'NxtApiAdminProductDeleteController',NULL,NULL),(26,'NxtApiAdminProductDetailController',NULL,NULL),(27,'NxtApiAdminProductListController',NULL,NULL),(28,'NxtApiAdminProductOrderSwapController',NULL,NULL),(29,'NxtApiAdminProductPictureListController',NULL,NULL),(30,'NxtApiAdminProductRecommendController',NULL,NULL),(31,'NxtApiAdminProductUpdateController',NULL,NULL),(32,'NxtApiAdminResetPwdController',NULL,NULL),(33,'NxtApiAdminResetUserPwdController',NULL,NULL),(34,'NxtApiAdminResetUserTypeController',NULL,NULL),(35,'NxtApiAdminSettingListController',NULL,NULL),(36,'NxtApiAdminSettingSaveController',NULL,NULL),(37,'NxtApiAdminUploadfileCategoryCreateController',NULL,NULL),(38,'NxtApiAdminUploadfileCategoryDeleteController',NULL,NULL),(39,'NxtApiAdminUploadfileCategoryListController',NULL,NULL),(40,'NxtApiAdminUploadfileCategoryUpdateController',NULL,NULL),(41,'NxtApiAdminUploadPublicPicController',NULL,NULL),(42,'NxtApiAdminUserListController',NULL,NULL),(43,'NxtApiAdminWebContentDetailController',NULL,NULL),(44,'NxtApiAdminWebContentListController',NULL,NULL),(45,'NxtApiAdminWebContentUpdateController',NULL,NULL),(46,'NxtApiAdminAclRoleListController',NULL,NULL),(47,'NxtApiAdminResetUserRoleController',NULL,NULL),(48,'NxtApiAdminOSSInfoController',NULL,NULL),(49,'NxtApiAdminOSSAddJobTransferController',NULL,NULL);
+INSERT INTO `nxt_acl_action` VALUES (1,'NxtApiAdminBannerListController','广告横幅列表',NULL),(2,'NxtApiAdminBannerSaveController','广告横幅保存',NULL),(3,'NxtApiAdminBlockUserController','拉黑用户',NULL),(4,'NxtApiAdminCreateUserController','增加用户',NULL),(5,'NxtApiAdminFilemanageCreateControler','文件添加',NULL),(6,'NxtApiAdminGuestmessageDeleteController','留言删除',NULL),(7,'NxtApiAdminGuestmessageDetailController','留言详情查看',NULL),(8,'NxtApiAdminGuestmessageListController','留言列表',NULL),(9,'NxtApiAdminNewsCategoryCreateController','文章类别添加',NULL),(10,'NxtApiAdminNewsCategoryDeleteController','文章类别删除',NULL),(11,'NxtApiAdminNewsCategoryListController','文章类别列表',NULL),(12,'NxtApiAdminNewsCategoryUpdateController','文章类别修改',NULL),(13,'NxtApiAdminNewsCreateController','文章添加',NULL),(14,'NxtApiAdminNewsDeleteController','文章删除',NULL),(15,'NxtApiAdminNewsDetailController','文章详情查看',NULL),(16,'NxtApiAdminNewsListController','文章列表查看',NULL),(17,'NxtApiAdminNewsOrderSwapController','文章顺序修改',NULL),(18,'NxtApiAdminNewsRecommendController','文章推荐操作',NULL),(19,'NxtApiAdminNewsUpdateController','文章修改',NULL),(20,'NxtApiAdminProductCategoryCreateController','产品类别添加',NULL),(21,'NxtApiAdminProductCategoryDeleteController','产品类别删除',NULL),(22,'NxtApiAdminProductCategoryListController','产品类别列表',NULL),(23,'NxtApiAdminProductCategoryUpdateController','产品类别修改',NULL),(24,'NxtApiAdminProductCreateController','产品添加',NULL),(25,'NxtApiAdminProductDeleteController','产品删除',NULL),(26,'NxtApiAdminProductDetailController','产品详情查看',NULL),(27,'NxtApiAdminProductListController','产品列表',NULL),(28,'NxtApiAdminProductOrderSwapController','产品顺序修改',NULL),(29,'NxtApiAdminProductPictureListController','产品图片列表',NULL),(30,'NxtApiAdminProductRecommendController','产品推荐操作',NULL),(31,'NxtApiAdminProductUpdateController','产品修改',NULL),(32,'NxtApiAdminResetPwdController','个人密码修改',NULL),(33,'NxtApiAdminResetUserPwdController','修改他人密码',NULL),(34,'NxtApiAdminResetUserTypeController','修改他人类型',NULL),(35,'NxtApiAdminSettingListController','系统设置列表',NULL),(36,'NxtApiAdminSettingSaveController','系统设置修改',NULL),(37,'NxtApiAdminUploadfileCategoryCreateController','文件类别添加',NULL),(38,'NxtApiAdminUploadfileCategoryDeleteController','文件类别删除',NULL),(39,'NxtApiAdminUploadfileCategoryListController','文件类别列表',NULL),(40,'NxtApiAdminUploadfileCategoryUpdateController','文件类别修改',NULL),(41,'NxtApiAdminUploadPublicPicController','上传图片',NULL),(42,'NxtApiAdminUserListController','用户列表',NULL),(43,'NxtApiAdminWebContentDetailController','页面详情',NULL),(44,'NxtApiAdminWebContentListController','页面列表',NULL),(45,'NxtApiAdminWebContentUpdateController','页面修改',NULL),(47,'NxtApiAdminResetUserRoleController','用户角色修改',NULL),(48,'NxtApiAdminOSSInfoController','查看OSS信息',NULL),(49,'NxtApiAdminOSSAddJobTransferController','OSS图片搬运任务',NULL),(50,'NxtApiAdminAclRoleListController','ACL角色列表',NULL),(51,'NxtApiAdminAclRoleDeleteController','ACL角色删除',NULL),(52,'NxtApiAdminAclGroupListController','ACL权限组列表',NULL),(53,'NxtApiAdminAclGroupDeleteController','ACL权限组删除',NULL),(54,'NxtApiAdminAclActionListController','ACL权限资源列表',NULL),(55,'NxtApiAdminAclRoleDetailController','ACL角色详情',NULL),(56,'NxtApiAdminAclGroupDetailController','ACL权限组详情',NULL),(57,'NxtApiAdminAclRoleDetailUpdateController','ACL角色详情更新',NULL),(58,'NxtApiAdminAclGroupDetailUpdateController','ACL权限组详情更新',NULL),(59,'NxtApiAdminAclRoleAddController','ACL角色添加',NULL),(60,'NxtApiAdminAclGroupAddController','ACL权限组添加',NULL);
 /*!40000 ALTER TABLE `nxt_acl_action` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -56,7 +56,7 @@ CREATE TABLE `nxt_acl_group` (
   `group_remark` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `group_name_UNIQUE` (`group_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,7 +65,7 @@ CREATE TABLE `nxt_acl_group` (
 
 LOCK TABLES `nxt_acl_group` WRITE;
 /*!40000 ALTER TABLE `nxt_acl_group` DISABLE KEYS */;
-INSERT INTO `nxt_acl_group` VALUES (1,'系统设置',NULL),(2,'用户管理',NULL),(3,'资讯管理',NULL),(4,'产品管理',NULL),(5,'留言管理',NULL),(6,'广告管理',NULL),(7,'页面管理',NULL),(8,'只读查看',NULL),(9,'个人管理',NULL),(10,'文件管理',NULL);
+INSERT INTO `nxt_acl_group` VALUES (1,'系统设置',NULL),(2,'用户管理',NULL),(3,'资讯管理',NULL),(4,'产品管理',NULL),(5,'留言管理',NULL),(6,'广告管理',NULL),(7,'页面管理',NULL),(8,'只读查看',NULL),(9,'个人管理',NULL),(10,'文件管理',NULL),(16,'ACL管理','权限分配');
 /*!40000 ALTER TABLE `nxt_acl_group` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,7 +82,7 @@ CREATE TABLE `nxt_acl_group_action` (
   `action_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `group_action` (`group_id`,`action_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,7 +91,7 @@ CREATE TABLE `nxt_acl_group_action` (
 
 LOCK TABLES `nxt_acl_group_action` WRITE;
 /*!40000 ALTER TABLE `nxt_acl_group_action` DISABLE KEYS */;
-INSERT INTO `nxt_acl_group_action` VALUES (1,1,35),(2,1,36),(66,1,48),(67,1,49),(3,2,3),(8,2,4),(4,2,33),(5,2,34),(6,2,42),(64,2,46),(65,2,47),(11,3,9),(12,3,10),(13,3,11),(14,3,12),(15,3,13),(16,3,14),(17,3,15),(18,3,16),(19,3,17),(20,3,18),(21,3,19),(10,3,41),(22,4,20),(23,4,21),(24,4,22),(25,4,23),(26,4,24),(27,4,25),(28,4,26),(29,4,27),(30,4,28),(31,4,29),(32,4,30),(33,4,31),(34,4,41),(35,5,6),(36,5,7),(37,5,8),(38,6,1),(39,6,2),(40,6,41),(41,7,41),(42,7,43),(43,7,44),(44,7,45),(45,8,1),(55,8,7),(46,8,8),(47,8,11),(56,8,15),(48,8,16),(49,8,22),(57,8,26),(50,8,27),(51,8,29),(52,8,35),(53,8,42),(58,8,43),(54,8,44),(7,9,32),(59,10,37),(60,10,38),(61,10,39),(62,10,40),(63,10,41);
+INSERT INTO `nxt_acl_group_action` VALUES (1,1,35),(2,1,36),(66,1,48),(67,1,49),(3,2,3),(8,2,4),(4,2,33),(5,2,34),(6,2,42),(65,2,47),(68,2,50),(69,2,51),(70,2,52),(71,2,53),(72,2,54),(74,2,55),(75,2,56),(76,2,57),(77,2,58),(80,2,59),(81,2,60),(11,3,9),(12,3,10),(13,3,11),(14,3,12),(15,3,13),(16,3,14),(17,3,15),(18,3,16),(19,3,17),(20,3,18),(21,3,19),(10,3,41),(22,4,20),(23,4,21),(24,4,22),(25,4,23),(26,4,24),(27,4,25),(28,4,26),(29,4,27),(30,4,28),(31,4,29),(32,4,30),(33,4,31),(34,4,41),(35,5,6),(36,5,7),(37,5,8),(38,6,1),(39,6,2),(40,6,41),(41,7,41),(42,7,43),(43,7,44),(44,7,45),(45,8,1),(55,8,7),(46,8,8),(47,8,11),(56,8,15),(48,8,16),(49,8,22),(57,8,26),(50,8,27),(51,8,29),(52,8,35),(53,8,42),(58,8,43),(54,8,44),(97,8,48),(98,8,50),(99,8,52),(100,8,54),(101,8,55),(102,8,56),(78,9,32),(59,10,37),(60,10,38),(61,10,39),(62,10,40),(63,10,41),(82,14,1),(83,14,2),(84,15,1),(85,15,2),(86,16,50),(87,16,51),(88,16,52),(89,16,53),(90,16,54),(91,16,55),(92,16,56),(93,16,57),(94,16,58),(95,16,59),(96,16,60);
 /*!40000 ALTER TABLE `nxt_acl_group_action` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -108,7 +108,7 @@ CREATE TABLE `nxt_acl_role` (
   `role_remark` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `role_name_UNIQUE` (`role_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -117,7 +117,7 @@ CREATE TABLE `nxt_acl_role` (
 
 LOCK TABLES `nxt_acl_role` WRITE;
 /*!40000 ALTER TABLE `nxt_acl_role` DISABLE KEYS */;
-INSERT INTO `nxt_acl_role` VALUES (1,'超级管理员',NULL),(2,'编辑',NULL),(3,'客人','只给看看，不能动');
+INSERT INTO `nxt_acl_role` VALUES (1,'超级管理员',NULL),(2,'内容主管',NULL),(3,'访客','只给看看，不许改'),(8,'产品编辑','仅管理产品'),(9,'资讯编辑','可管理资讯、留言板');
 /*!40000 ALTER TABLE `nxt_acl_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,7 +134,7 @@ CREATE TABLE `nxt_acl_role_group` (
   `group_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `role_group` (`role_id`,`group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,7 +143,7 @@ CREATE TABLE `nxt_acl_role_group` (
 
 LOCK TABLES `nxt_acl_role_group` WRITE;
 /*!40000 ALTER TABLE `nxt_acl_role_group` DISABLE KEYS */;
-INSERT INTO `nxt_acl_role_group` VALUES (2,1,1),(3,1,2),(4,1,3),(5,1,4),(6,1,5),(7,1,6),(8,1,7),(14,1,9),(15,1,10),(9,2,3),(10,2,4),(11,2,5),(12,2,6),(13,2,7),(16,2,9),(17,2,10),(1,3,8);
+INSERT INTO `nxt_acl_role_group` VALUES (2,1,1),(3,1,2),(4,1,3),(5,1,4),(6,1,5),(7,1,6),(14,1,9),(15,1,10),(28,1,16),(9,2,3),(10,2,4),(11,2,5),(12,2,6),(13,2,7),(16,2,9),(17,2,10),(34,3,8),(29,8,4),(30,8,9),(31,9,3),(32,9,5),(33,9,9);
 /*!40000 ALTER TABLE `nxt_acl_role_group` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,7 +185,7 @@ CREATE TABLE `nxt_acl_user_role` (
   `role_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_role` (`role_id`,`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -194,7 +194,7 @@ CREATE TABLE `nxt_acl_user_role` (
 
 LOCK TABLES `nxt_acl_user_role` WRITE;
 /*!40000 ALTER TABLE `nxt_acl_user_role` DISABLE KEYS */;
-INSERT INTO `nxt_acl_user_role` VALUES (1,3,1),(14,6,1),(16,7,1),(15,8,3),(17,19,3);
+INSERT INTO `nxt_acl_user_role` VALUES (1,3,1),(14,6,2),(15,8,3),(17,19,3),(19,20,3),(16,7,8);
 /*!40000 ALTER TABLE `nxt_acl_user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -280,7 +280,7 @@ CREATE TABLE `nxt_cronjob` (
 
 LOCK TABLES `nxt_cronjob` WRITE;
 /*!40000 ALTER TABLE `nxt_cronjob` DISABLE KEYS */;
-INSERT INTO `nxt_cronjob` VALUES (1,'将本地图片移动到七牛云','moveLocalImageToQiniu',0,'任务结束',1603796797219),(2,'将七牛云图片移动到本地','moveQiniuImageToLocal',0,'任务结束',1603796805167),(3,'清理Acl缓存','cleanAclCache',1,NULL,1603679520941),(4,'清理SettingValue缓存','cleanSettingValueCache',1,NULL,1603797844053);
+INSERT INTO `nxt_cronjob` VALUES (1,'将本地图片移动到七牛云','moveLocalImageToQiniu',0,'任务结束',1603796797219),(2,'将七牛云图片移动到本地','moveQiniuImageToLocal',0,'任务结束',1603796805167),(3,'清理Acl缓存','cleanAclCache',1,NULL,1603961847430),(4,'清理SettingValue缓存','cleanSettingValueCache',1,NULL,1603797844053);
 /*!40000 ALTER TABLE `nxt_cronjob` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -488,7 +488,7 @@ CREATE TABLE `nxt_setting` (
   `setting_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `display_type` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `dateline_updated` bigint(20) DEFAULT NULL,
-  `placeholder` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `placeholder` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `setting_key_UNIQUE` (`setting_key`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -579,7 +579,7 @@ CREATE TABLE `nxt_user` (
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -588,7 +588,7 @@ CREATE TABLE `nxt_user` (
 
 LOCK TABLES `nxt_user` WRITE;
 /*!40000 ALTER TABLE `nxt_user` DISABLE KEYS */;
-INSERT INTO `nxt_user` VALUES (3,'admin','f0866b655980a3f4aabf8133432a03bc','D7d5uKC&qRRei*nsc&2oA()$FN@Yj89Z','481557450b436203342c1309c2392d13',0),(6,'orange','432419d4ceea0fabb5f92b6e6747f8c0','4yOHXhkka6Lk6dELkd@DX$I6)Jt*4i4k','d85fb647758776f4587025d45038c1cd',0),(7,'apple','ecd8a47d682c5777eedfc5a47d35a499','bury!3qr9IYsuZ$7$VrZuePC623yiN(f','3b94989bae9b37a40272764462161a11',-1),(8,'apple3','745a44dc02f5b43a309438cb8869e0cb','hd!u3V4JCBkU115qGlYmES*j$1R!sRaw','05bd02fa431124882fddadf79927726e',0),(9,'test','03b9b1c79fceeaf80e12344c5ed2705c','b2paXO%mkF!By&XKF)MUhvBhOLBMVQLs',NULL,0),(10,'test11','a4207d3f2d9f77275b5df0ac82957abe','oF8j@aPcfVsJZEPTsJXXR*nNA7Cma&sQ',NULL,0),(11,'333','0dfdb43cd4e5badd25040b6a538d3830','%V@GwM@s6^bE)M98HrP0h#Sl9nEtq4!b',NULL,0),(12,'3445','47671640864c51bcdb5767fc7f734209','6R9Kq&hdOpZvwi@Dq@N&7MSRAZaejQvn',NULL,0),(13,'1111','d2315bd9edcbb93f5713c4b2774e0a98','er3tnwZZI0c8xy&O14n9I%ynnhWL&o9c',NULL,0),(14,'222','1d82a795a3000f22b3fae911b3afaf54','0)wc(44EBU&BkQ)x&BsTgd0@eLPh61Xs',NULL,0),(15,'11111','7d4084087c49da8e2150f4ea5e1c8c70','GfTgsWnnWAK0E1cOqxioG4!8@au^oM75','0de8dd3f1295fdc39427d9788e57b6e3',0),(16,'abc888','4b5487c1868182b42fc2d71fa9bb6369','Lpq0I&%d1*Vig%V3LNEx771#oOE1z1P%','8f0e5f6e7dac59d11e34c43924dc6b43',-1),(17,'main','a36b36b56dee556e59f97b9bb375039f','!ow4F*M9HI7rite57re6^POsYar!QmwU','4a61fe44f0ecaab9e87ca536b90831a2',0),(18,'abc123','10ff109ed38f7209f6624607f20106a5','D6&#dg0NxApoY9YveLaVNQaHwkvMJz!Y',NULL,0),(19,'abcabc123','12a44e0bb4ba695f7ae71af36a5a5c7f','u%Gv0WbkNQu*NI3lrSZ*HvZe4tR&y^)A',NULL,0);
+INSERT INTO `nxt_user` VALUES (3,'admin','31d20de972bf6c0a162be9d08c2c1d11','k81lni(w5QeyI8R(7PWrn5SHPeV$)#%^','f96bec8b84fe98aeb206bf3342eb5632',0),(6,'orange','9fb44f81950b2007f2d4e9cb4e9ab0a7','Yg3mXXe0gorH9qxSCGa1sh5S^VSRypQt','',0),(7,'apple','ecd8a47d682c5777eedfc5a47d35a499','bury!3qr9IYsuZ$7$VrZuePC623yiN(f','f2b7a3f5dfa8ba23f4c1bab11a57e66e',-1),(20,'guest','d3cb90cc581e3c3d1c00b0d48a26cef4','GxlUk&d!u16qB4O$lszjYJ4k@NhnO5&J','04cde8bea463094dd30738a2736891bb',0);
 /*!40000 ALTER TABLE `nxt_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -622,6 +622,7 @@ INSERT INTO `nxt_web_page` VALUES (1,NULL,'联系我们111','联系我们x222','
 /*!40000 ALTER TABLE `nxt_web_page` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -632,4 +633,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-27 19:27:13
+-- Dump completed on 2020-10-29 17:00:38
