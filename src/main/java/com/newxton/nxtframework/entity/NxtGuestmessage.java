@@ -6,23 +6,37 @@ import java.io.Serializable;
  * (NxtGuestmessage)实体类
  *
  * @author makejava
- * @since 2020-07-23 09:24:31
+ * @since 2020-11-02 19:07:03
  */
 public class NxtGuestmessage implements Serializable {
-    private static final long serialVersionUID = -40051767999543023L;
-    
+    private static final long serialVersionUID = -58368174012142587L;
+    /**
+    * 【留言板】
+    */
     private Long id;
-    
+    /**
+    * 留言者公司
+    */
     private String guestCompany;
-    
+    /**
+    * 留言者名称
+    */
     private String guestName;
-    
+    /**
+    * 联系电话
+    */
     private String guestPhone;
-    
+    /**
+    * 联系邮箱
+    */
     private String guestEmail;
-    
+    /**
+    * 内容
+    */
     private String messageContent;
-    
+    /**
+    * 留言时间
+    */
     private Long messageDateline;
 
 

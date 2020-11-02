@@ -6,16 +6,20 @@ import java.io.Serializable;
  * (NxtProductSku)实体类
  *
  * @author makejava
- * @since 2020-08-26 09:16:25
+ * @since 2020-11-02 19:07:06
  */
 public class NxtProductSku implements Serializable {
-    private static final long serialVersionUID = -12759281674424796L;
+    private static final long serialVersionUID = 909357348279522898L;
     
     private Long id;
-    
+    /**
+    * 产品ID
+    */
     private Long productId;
-    
-    private String skuName;
+    /**
+    * sku键名称
+    */
+    private String skuKeyName;
 
 
     public Long getId() {
@@ -34,12 +38,12 @@ public class NxtProductSku implements Serializable {
         this.productId = productId;
     }
 
-    public String getSkuName() {
-        return skuName;
+    public String getSkuKeyName() {
+        return skuKeyName;
     }
 
-    public void setSkuName(String skuName) {
-        this.skuName = skuName;
+    public void setSkuKeyName(String skuKeyName) {
+        this.skuKeyName = skuKeyName;
     }
 
 }

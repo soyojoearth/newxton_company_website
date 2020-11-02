@@ -70,8 +70,6 @@ public class NxtApiAdminProductDetailController {
         else {
             item.put("price", null);
         }
-        item.put("priceNegotiation",content.getPriceNegotiation());
-        item.put("priceRemark",content.getPriceRemark());
         item.put("productSubtitle",content.getProductSubtitle());
         item.put("productDescription",nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForDisplay(content.getProductDescription()));
         item.put("datelineUpdated",content.getDatelineUpdated());
@@ -91,7 +89,7 @@ public class NxtApiAdminProductDetailController {
         for (NxtProductSku productSku :
                 listSku) {
             Map<String,Object> itemSkuMap = new HashMap<>();
-            itemSkuMap.put("name",productSku.getSkuName());
+            itemSkuMap.put("name",productSku.getSkuKeyName());
             List<String> itemSkuValueList = new ArrayList<>();
             Long skuId = productSku.getId();
             NxtProductSkuValue nxtProductSkuValueCondition = new NxtProductSkuValue();
@@ -99,7 +97,7 @@ public class NxtApiAdminProductDetailController {
             List<NxtProductSkuValue> listSkuValue = nxtProductSkuValueService.queryAll(nxtProductSkuValueCondition);
             for (NxtProductSkuValue productSkuValue :
                     listSkuValue) {
-                itemSkuValueList.add(productSkuValue.getSkuValue());
+                itemSkuValueList.add(productSkuValue.getSkuValueName());
             }
             itemSkuMap.put("sku",itemSkuValueList);
             resultSkuList.add(itemSkuMap);

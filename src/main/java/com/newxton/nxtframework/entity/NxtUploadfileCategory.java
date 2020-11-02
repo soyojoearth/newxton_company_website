@@ -6,15 +6,19 @@ import java.io.Serializable;
  * (NxtUploadfileCategory)实体类
  *
  * @author makejava
- * @since 2020-07-23 09:25:47
+ * @since 2020-11-02 19:07:10
  */
 public class NxtUploadfileCategory implements Serializable {
-    private static final long serialVersionUID = 765594253824063653L;
+    private static final long serialVersionUID = -12438535885269010L;
     
     private Long id;
-    
+    /**
+    * 分类名称
+    */
     private String categoryName;
-    
+    /**
+    * 上级分类id
+    */
     private Long categoryPid;
 
 

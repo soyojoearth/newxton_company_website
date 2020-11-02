@@ -82,7 +82,7 @@
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into nxt_setting(setting_key, setting_value, setting_name, display_type, dateline_updated, placeholder)
-        values (#{settingKey}, #{settingValue}, #{settingName}, #{displayType}, #{datelineUpdated}), #{placeholder})
+        values (#{settingKey}, #{settingValue}, #{settingName}, #{displayType}, #{datelineUpdated}, #{placeholder})
     </insert>
 
     <!--通过主键修改数据-->

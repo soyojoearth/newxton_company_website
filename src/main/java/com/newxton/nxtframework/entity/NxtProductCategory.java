@@ -6,15 +6,19 @@ import java.io.Serializable;
  * (NxtProductCategory)实体类
  *
  * @author makejava
- * @since 2020-08-03 10:22:22
+ * @since 2020-11-02 19:07:08
  */
 public class NxtProductCategory implements Serializable {
-    private static final long serialVersionUID = 944715962544684930L;
+    private static final long serialVersionUID = 665039909079748919L;
     
     private Long id;
-    
+    /**
+    * 分类名称
+    */
     private String categoryName;
-    
+    /**
+    * 上级分类id
+    */
     private Long categoryPid;
 
 

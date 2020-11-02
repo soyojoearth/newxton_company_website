@@ -31,6 +31,16 @@ public class NxtWebPageServiceImpl implements NxtWebPageService {
     }
 
     /**
+     * 通过key查询单条数据
+     *
+     * @param key key
+     * @return 实例对象
+     */
+    public NxtWebPage queryByKey(String key){
+        return this.nxtWebPageDao.queryByKey(key);
+    }
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置
