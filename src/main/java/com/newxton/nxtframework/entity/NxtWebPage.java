@@ -6,23 +6,37 @@ import java.io.Serializable;
  * (NxtWebPage)实体类
  *
  * @author makejava
- * @since 2020-08-04 11:21:23
+ * @since 2020-11-02 19:07:12
  */
 public class NxtWebPage implements Serializable {
-    private static final long serialVersionUID = -36009658178861883L;
-    
+    private static final long serialVersionUID = -84904335115730564L;
+    /**
+    * 网站页面表【包含页面标题和其它设置等】
+    */
     private Long id;
-    
+    /**
+    * 标识(会根据web_key 查询)
+    */
     private String webKey;
-    
+    /**
+    * 页面标题
+    */
     private String webTitle;
-    
+    /**
+    * 内容标题
+    */
     private String contentTitle;
-    
+    /**
+    * 内容HTML
+    */
     private String contentDetail;
-    
+    /**
+    * SEO关键词
+    */
     private String seoKeyword;
-    
+    /**
+    * 更新时间（精确到毫秒）
+    */
     private Long datelineUpdate;
 
 

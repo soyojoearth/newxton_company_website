@@ -6,17 +6,25 @@ import java.io.Serializable;
  * (NxtBanner)实体类
  *
  * @author makejava
- * @since 2020-08-26 16:48:06
+ * @since 2020-11-02 19:06:08
  */
 public class NxtBanner implements Serializable {
-    private static final long serialVersionUID = 828387650090459002L;
-    
+    private static final long serialVersionUID = -34111239133317114L;
+    /**
+    * 网站轮播图
+    */
     private Long id;
-    
+    /**
+    * 位置名
+    */
     private String locationName;
-    
+    /**
+    * 图片id
+    */
     private Long uploadfileId;
-
+    /**
+    * 点击链接
+    */
     private String clickUrl;
 
 

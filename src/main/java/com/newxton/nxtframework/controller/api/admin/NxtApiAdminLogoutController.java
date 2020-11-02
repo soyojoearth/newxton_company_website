@@ -35,7 +35,7 @@ public class NxtApiAdminLogoutController {
 
         NxtUser user = nxtUserService.queryById(user_id);
 
-        if (user == null){
+        if (user == null || user.getToken() == null){
             //未登录状态，直接提示注销成功
             result.put("status", 0);
             result.put("message", "");

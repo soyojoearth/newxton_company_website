@@ -6,15 +6,21 @@ import java.io.Serializable;
  * (NxtNewsCategory)实体类
  *
  * @author makejava
- * @since 2020-07-23 09:25:13
+ * @since 2020-11-02 19:07:05
  */
 public class NxtNewsCategory implements Serializable {
-    private static final long serialVersionUID = -39894514990635166L;
-    
+    private static final long serialVersionUID = -16702223478288720L;
+    /**
+    * 资讯分类
+    */
     private Long id;
-    
+    /**
+    * 分类名称
+    */
     private String categoryName;
-    
+    /**
+    * 上级分类id
+    */
     private Long categoryPid;
 
 

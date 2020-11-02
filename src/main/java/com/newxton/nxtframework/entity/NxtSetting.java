@@ -6,23 +6,37 @@ import java.io.Serializable;
  * (NxtSetting)实体类
  *
  * @author makejava
- * @since 2020-07-23 19:30:08
+ * @since 2020-11-02 19:07:09
  */
 public class NxtSetting implements Serializable {
-    private static final long serialVersionUID = -15725629083862033L;
-    
+    private static final long serialVersionUID = -58763712983083270L;
+    /**
+    * 网站设置表【相当于一个key-value数据库】
+    */
     private Long id;
-    
+    /**
+    * key
+    */
     private String settingKey;
-    
+    /**
+    * value
+    */
     private String settingValue;
-    
+    /**
+    * 设置名
+    */
     private String settingName;
-    
+    /**
+    * input、textarea两种
+    */
     private String displayType;
-    
+    /**
+    * 保存或更新时间（精确到毫秒）
+    */
     private Long datelineUpdated;
-
+    /**
+    * 填写说明
+    */
     private String placeholder;
 
 
@@ -81,4 +95,5 @@ public class NxtSetting implements Serializable {
     public void setPlaceholder(String placeholder) {
         this.placeholder = placeholder;
     }
+
 }

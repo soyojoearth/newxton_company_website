@@ -21,6 +21,14 @@
         where id = #{id}
     </select>
 
+    <!--查询单个-->
+    <select id="queryByKey" resultMap="BaseResultMap">
+        select
+          id, web_key, web_title, content_title, content_detail, seo_keyword, dateline_update
+        from nxt_web_page
+        where web_key = #{webKey}
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select

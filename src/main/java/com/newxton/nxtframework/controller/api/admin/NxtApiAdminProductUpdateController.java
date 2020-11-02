@@ -54,8 +54,6 @@ public class NxtApiAdminProductUpdateController {
                                      @RequestParam(value = "is_recommend", required=false) Integer isRecommend,
                                     @RequestParam(value = "product_sku", required=false) String productSku,
                                     @RequestParam(value = "price", required=false) Object price,
-                                    @RequestParam(value = "price_negotiation", required=false) Integer priceNegotiation,
-                                    @RequestParam(value = "price_remark", required=false) String priceRemark,
                                     @RequestParam(value = "product_subtitle", required=false) String productSubtitle
     ) {
 
@@ -84,12 +82,6 @@ public class NxtApiAdminProductUpdateController {
             price = "";
         }
 
-        if (priceNegotiation == null){
-            priceNegotiation = 0;
-        }
-        if (priceRemark == null){
-            priceRemark = "";
-        }
         if (productSubtitle == null){
             productSubtitle = "";
         }
@@ -130,8 +122,6 @@ public class NxtApiAdminProductUpdateController {
             product.setPrice(priceLong);
         }
 
-        product.setPriceNegotiation(priceNegotiation);
-        product.setPriceRemark(priceRemark);
         product.setProductSubtitle(productSubtitle);
 
         nxtProductService.update(product);
@@ -199,14 +189,14 @@ public class NxtApiAdminProductUpdateController {
                     productSkuList) {
                 NxtProductSku nxtProductSku = new NxtProductSku();
                 nxtProductSku.setProductId(product.getId());
-                nxtProductSku.setSkuName(skuItem.get("name").toString());
+                nxtProductSku.setSkuKeyName(skuItem.get("name").toString());
                 NxtProductSku nxtProductSkuCreated = nxtProductSkuService.insert(nxtProductSku);
                 List<String> skuValueList = (List<String>)skuItem.get("sku");
                 for (String skuValue :
                         skuValueList) {
                     NxtProductSkuValue nxtProductSkuValue = new NxtProductSkuValue();
                     nxtProductSkuValue.setSkuId(nxtProductSkuCreated.getId());
-                    nxtProductSkuValue.setSkuValue(skuValue);
+                    nxtProductSkuValue.setSkuValueName(skuValue);
                     nxtProductSkuValueService.insert(nxtProductSkuValue);
                 }
             }

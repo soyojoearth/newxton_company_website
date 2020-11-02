@@ -21,6 +21,14 @@ public interface NxtWebPageService {
     NxtWebPage queryById(Long id);
 
     /**
+     * 通过key查询单条数据
+     *
+     * @param key key
+     * @return 实例对象
+     */
+    NxtWebPage queryByKey(String key);
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置

@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtAclRole)实体类
  *
  * @author makejava
- * @since 2020-10-21 11:10:19
+ * @since 2020-11-02 19:05:24
  */
 public class NxtAclRole implements Serializable {
-    private static final long serialVersionUID = 876785789759595456L;
+    private static final long serialVersionUID = 763926935213765033L;
     
     private Long id;
     

@@ -20,7 +20,7 @@ import java.util.Map;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiAdminFilemanageCreateControler {
+public class NxtApiAdminFilemanageCreateController {
 
     @Resource
     private NxtUploadfileService nxtUploadfileService;

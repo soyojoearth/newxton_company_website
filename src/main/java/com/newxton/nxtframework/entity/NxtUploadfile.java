@@ -6,33 +6,55 @@ import java.io.Serializable;
  * (NxtUploadfile)实体类
  *
  * @author makejava
- * @since 2020-07-23 09:25:37
+ * @since 2020-11-02 19:07:09
  */
 public class NxtUploadfile implements Serializable {
-    private static final long serialVersionUID = 628106893689284749L;
+    private static final long serialVersionUID = -13575440800168348L;
     
     private Long id;
-    
+    /**
+    * 0:网盘文件 1:七牛云oss 2:阿里云oss 3:本地
+    */
     private Integer fileLocation;
-    
+    /**
+    * 0:图片 正数:category表分类
+    */
     private Long categoryId;
-    
+    /**
+    * 文件类型后缀（小写）
+    */
     private String fileExt;
-    
+    /**
+    * 原始文件名
+    */
     private String filenameSource;
-    
+    /**
+    * 存储文件名
+    */
     private String filenameSaved;
-    
+    /**
+    * 相对于ftp或oss根目录的路径
+    */
     private String filepath;
-    
+    /**
+    * 相对于域名的路径
+    */
     private String urlpath;
-    
+    /**
+    * 文件大小 字节
+    */
     private Long filesize;
-    
+    /**
+    * 保存或更新时间（精确到毫秒）
+    */
     private Long datelineUpdate;
-    
+    /**
+    * 网盘地址
+    */
     private String netdiskUrl;
-    
+    /**
+    * 网盘下载密码
+    */
     private String netdiskPwd;
 
 

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,6 +63,9 @@ public class NxtUploadfileServiceImpl implements NxtUploadfileService {
      */
     public List<NxtUploadfile> selectByIdSet(@Param("offset") int offset, @Param("limit") int limit,
                                              @Param("idList") List<Long> idList){
+        if (idList.size() == 0){
+            return new ArrayList<>();
+        }
         return this.nxtUploadfileDao.selectByIdSet(offset, limit, idList);
     }
 
