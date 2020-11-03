@@ -107,6 +107,11 @@ public class NxtApiAdminProductListController {
             item.put("datelineCreate",content.getDatelineCreate());
             item.put("datelineCreateReadable",sdf.format(new Date(content.getDatelineCreate())));
             item.put("isRecommend",content.getIsRecommend());
+            item.put("isHot",content.getIsHot());
+            item.put("isNew",content.getIsNew());
+            item.put("isSelling",content.getIsSelling());
+            item.put("isTrash",content.getIsTrash());
+
             listResult.add(item);
 
             /*查询产品图片*/

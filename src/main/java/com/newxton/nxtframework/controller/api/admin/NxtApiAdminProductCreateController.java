@@ -45,13 +45,25 @@ public class NxtApiAdminProductCreateController {
 
     @RequestMapping(value = "/api/admin/product/create", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "category_id", required=false) Long categoryId,
+                                     @RequestParam(value = "brand_id", required=false) Long brandId,
                                      @RequestParam(value = "product_name", required=false) String productName,
-                                     @RequestParam(value = "product_description", required=false) String productDescription,
-                                     @RequestParam(value = "product_picture_list", required=false) String productPictureList,
-                                     @RequestParam(value = "is_recommend", required=false) Integer isRecommend,
-                                     @RequestParam(value = "product_sku", required=false) String productSku,
+                                     @RequestParam(value = "product_subtitle", required=false) String productSubtitle,
+                                     @RequestParam(value = "deal_quantity_min", required=false) Long dealQuantityMin,
+                                     @RequestParam(value = "deal_quantity_max", required=false) Long dealQuantityMax,
+                                     @RequestParam(value = "free_shipping", required=false) Integer freeShipping,
+                                     @RequestParam(value = "delivery_config_id", required=false) Long deliveryConfigId,
+                                     @RequestParam(value = "item_no", required=false) String itemNo,
+                                     @RequestParam(value = "with_sku", required=false) Integer withSku,
                                      @RequestParam(value = "price", required=false) Float price,
-                                     @RequestParam(value = "product_subtitle", required=false) String productSubtitle
+                                     @RequestParam(value = "price_discount", required=false) Long priceDiscount,
+                                     @RequestParam(value = "inventory_quantity", required=false) Long inventoryQuantity,
+                                     @RequestParam(value = "product_description", required=false) String productDescription,
+                                     @RequestParam(value = "is_recommend", required=false) Integer isRecommend,
+                                     @RequestParam(value = "is_hot", required=false) Integer isHot,
+                                     @RequestParam(value = "is_new", required=false) Integer isNew,
+                                     @RequestParam(value = "is_selling", required=false) Integer isSelling,
+                                     @RequestParam(value = "product_sku", required=false) String productSku,
+                                     @RequestParam(value = "product_picture_list", required=false) String productPictureList
     ) {
 
         Map<String, Object> result = new HashMap<>();

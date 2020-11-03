@@ -3,9 +3,11 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.dao.NxtProductSkuValueDao;
 import com.newxton.nxtframework.entity.NxtProductSkuValue;
 import com.newxton.nxtframework.service.NxtProductSkuValueService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,6 +52,20 @@ public class NxtProductSkuValueServiceImpl implements NxtProductSkuValueService 
      */
     public List<NxtProductSkuValue> queryAll(NxtProductSkuValue nxtProductSkuValue){
         return this.nxtProductSkuValueDao.queryAll(nxtProductSkuValue);
+    }
+
+    /**
+     * 查询指定多个类型数据
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    public List<NxtProductSkuValue> selectBySkuIdSet(@Param("offset") int offset, @Param("limit") int limit,
+                                              @Param("skuIdList") List<Long> skuIdList){
+        if (skuIdList.size() == 0){
+            return new ArrayList<>();
+        }
+        return this.nxtProductSkuValueDao.selectBySkuIdSet(offset,limit,skuIdList);
     }
 
     /**
