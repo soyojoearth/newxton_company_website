@@ -20,18 +20,6 @@ public class NxtProductSkuValue implements Serializable {
     * 值名
     */
     private String skuValueName;
-    /**
-    * 库存
-    */
-    private Long skuValueInventoryQuantity;
-    /**
-    * 价格
-    */
-    private Long skuValuePrice;
-    /**
-    * 折扣
-    */
-    private Long skuValuePriceDiscount;
 
 
     public Long getId() {
@@ -56,30 +44,6 @@ public class NxtProductSkuValue implements Serializable {
 
     public void setSkuValueName(String skuValueName) {
         this.skuValueName = skuValueName;
-    }
-
-    public Long getSkuValueInventoryQuantity() {
-        return skuValueInventoryQuantity;
-    }
-
-    public void setSkuValueInventoryQuantity(Long skuValueInventoryQuantity) {
-        this.skuValueInventoryQuantity = skuValueInventoryQuantity;
-    }
-
-    public Long getSkuValuePrice() {
-        return skuValuePrice;
-    }
-
-    public void setSkuValuePrice(Long skuValuePrice) {
-        this.skuValuePrice = skuValuePrice;
-    }
-
-    public Long getSkuValuePriceDiscount() {
-        return skuValuePriceDiscount;
-    }
-
-    public void setSkuValuePriceDiscount(Long skuValuePriceDiscount) {
-        this.skuValuePriceDiscount = skuValuePriceDiscount;
     }
 
 }

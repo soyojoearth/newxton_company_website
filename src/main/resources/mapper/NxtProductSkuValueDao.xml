@@ -6,30 +6,30 @@
         <!--@Table nxt_product_sku_value-->
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="skuId" column="sku_id" jdbcType="INTEGER"/>
-        <result property="skuValue" column="sku_value" jdbcType="VARCHAR"/>
+        <result property="skuValueName" column="sku_value_name" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, sku_id, sku_value
-        from nxt_product_sku_value
+          id, sku_id, sku_value_name
+        from nxtframework.nxt_product_sku_value
         where id = #{id}
     </select>
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, sku_id, sku_value
-        from nxt_product_sku_value
+          id, sku_id, sku_value_name
+        from nxtframework.nxt_product_sku_value
         limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, sku_id, sku_value
-        from nxt_product_sku_value
+          id, sku_id, sku_value_name
+        from nxtframework.nxt_product_sku_value
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -37,27 +37,38 @@
             <if test="skuId != null">
                 and sku_id = #{skuId}
             </if>
-            <if test="skuValue != null and skuValue != ''">
-                and sku_value = #{skuValue}
+            <if test="skuValueName != null and skuValueName != ''">
+                and sku_value_name = #{skuValueName}
             </if>
         </where>
     </select>
 
+    <select id="selectBySkuIdSet" resultMap="BaseResultMap">
+        select
+        id, sku_id, sku_value_name
+        from nxtframework.nxt_product_sku_value
+        WHERE sku_id IN
+        <foreach collection="skuIdList" item="skuId" index="index" open="(" close=")" separator=",">
+            #{skuId}
+        </foreach>
+        limit #{offset}, #{limit}
+    </select>
+
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_product_sku_value(sku_id, sku_value)
-        values (#{skuId}, #{skuValue})
+        insert into nxtframework.nxt_product_sku_value(sku_id, sku_value_name)
+        values (#{skuId}, #{skuValueName})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update nxt_product_sku_value
+        update nxtframework.nxt_product_sku_value
         <set>
             <if test="skuId != null">
                 sku_id = #{skuId},
             </if>
-            <if test="skuValue != null and skuValue != ''">
-                sku_value = #{skuValue},
+            <if test="skuValueName != null and skuValueName != ''">
+                sku_value_name = #{skuValueName},
             </if>
         </set>
         where id = #{id}
@@ -65,7 +76,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_product_sku_value where id = #{id}
+        delete from nxtframework.nxt_product_sku_value where id = #{id}
     </delete>
 
 </mapper>

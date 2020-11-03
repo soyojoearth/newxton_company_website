@@ -17,14 +17,14 @@ import java.util.Map;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiAdminProductRecommendController {
+public class NxtApiAdminProductSetNewController {
 
     @Resource
     private NxtProductService nxtProductService;
 
-    @RequestMapping(value = "/api/admin/product/recommend", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/admin/product/set_new", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "id", required=false) Long id,
-                                     @RequestParam(value = "recommend", required=false) Integer recommend
+                                     @RequestParam(value = "set_new", required=false) Integer setNew
                                      ) {
 
         Map<String, Object> result = new HashMap<>();
@@ -45,11 +45,11 @@ public class NxtApiAdminProductRecommendController {
             return result;
         }
 
-        if (recommend != null && !recommend.equals(0)) {
-            content.setIsRecommend(1);//推荐
+        if (setNew != null && !setNew.equals(0)) {
+            content.setIsNew(1);//新品
         }
         else {
-            content.setIsRecommend(0);//撤销推荐
+            content.setIsNew(0);//取消新品
         }
 
         nxtProductService.update(content);

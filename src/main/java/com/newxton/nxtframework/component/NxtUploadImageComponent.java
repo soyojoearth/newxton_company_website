@@ -172,6 +172,9 @@ public class NxtUploadImageComponent {
      * @return
      */
     public String convertImagePathToDomainImagePath(String imagePath){
+        if (imagePath == null){
+            return null;
+        }
         if (imagePath.contains("/public_pic")){
             return request.getScheme() + "://" + request.getHeader("host") + imagePath;
         }

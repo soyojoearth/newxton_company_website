@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtProductSkuValue;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -36,6 +37,15 @@ public interface NxtProductSkuValueService {
      * @return 对象列表
      */
     List<NxtProductSkuValue> queryAll(NxtProductSkuValue nxtProductSkuValue);
+
+    /**
+     * 查询指定多个类型数据
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    List<NxtProductSkuValue> selectBySkuIdSet(@Param("offset") int offset, @Param("limit") int limit,
+                                      @Param("skuIdList") List<Long> skuIdList);
 
     /**
      * 新增数据
