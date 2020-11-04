@@ -3,6 +3,7 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.entity.NxtDeliveryConfigItemRegion;
 import com.newxton.nxtframework.dao.NxtDeliveryConfigItemRegionDao;
 import com.newxton.nxtframework.service.NxtDeliveryConfigItemRegionService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,6 +44,16 @@ public class NxtDeliveryConfigItemRegionServiceImpl implements NxtDeliveryConfig
     }
 
     /**
+     * 通过实体作为筛选条件查询Count
+     *
+     * @param nxtDeliveryConfigItemRegion 实例对象
+     * @return 对象列表
+     */
+    public Long queryCount(NxtDeliveryConfigItemRegion nxtDeliveryConfigItemRegion){
+        return this.nxtDeliveryConfigItemRegionDao.queryCount(nxtDeliveryConfigItemRegion);
+    }
+
+    /**
      * 新增数据
      *
      * @param nxtDeliveryConfigItemRegion 实例对象
@@ -76,4 +87,13 @@ public class NxtDeliveryConfigItemRegionServiceImpl implements NxtDeliveryConfig
     public boolean deleteById(Long id) {
         return this.nxtDeliveryConfigItemRegionDao.deleteById(id) > 0;
     }
+
+    /**
+     * 删除指定多个类型数据
+     * @return 对象列表
+     */
+    public void deleteByConfigItemIdSet(@Param("idList") List<Long> idList){
+        this.nxtDeliveryConfigItemRegionDao.deleteByConfigItemIdSet(idList);
+    }
+
 }

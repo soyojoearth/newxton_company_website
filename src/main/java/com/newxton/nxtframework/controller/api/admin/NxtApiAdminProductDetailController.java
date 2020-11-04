@@ -1,6 +1,5 @@
 package com.newxton.nxtframework.controller.api.admin;
 
-import com.newxton.nxtframework.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.model.NxtModelProduct;
 import com.newxton.nxtframework.service.*;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -48,7 +46,7 @@ public class NxtApiAdminProductDetailController {
             return result;
         }
 
-        result.put("detail",nxtModelProduct.productAllDetail(nxtProduct));
+        result.put("detail",nxtModelProduct.getProductAllDetail(nxtProduct));
 
         return result;
 

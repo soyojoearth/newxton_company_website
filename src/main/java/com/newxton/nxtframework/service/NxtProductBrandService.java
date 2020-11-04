@@ -29,6 +29,13 @@ public interface NxtProductBrandService {
     List<NxtProductBrand> queryAllByLimit(int offset, int limit);
 
     /**
+     * 查询所有数据(按名字排序)
+     *
+     * @return 对象列表
+     */
+    List<NxtProductBrand> queryAllOrderByNameASC();
+
+    /**
      * 新增数据
      *
      * @param nxtProductBrand 实例对象

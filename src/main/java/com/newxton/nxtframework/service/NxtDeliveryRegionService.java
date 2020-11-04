@@ -29,6 +29,14 @@ public interface NxtDeliveryRegionService {
     List<NxtDeliveryRegion> queryAllByLimit(int offset, int limit);
 
     /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtDeliveryRegion 实例对象
+     * @return 对象列表
+     */
+    List<NxtDeliveryRegion> queryAll(NxtDeliveryRegion nxtDeliveryRegion);
+
+    /**
      * 新增数据
      *
      * @param nxtDeliveryRegion 实例对象

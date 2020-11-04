@@ -41,11 +41,9 @@ public interface NxtProductSkuValuePriceEtcService {
 
     /**
      * 删除指定多个类型数据
-     * @param offset 查询起始位置
-     * @param limit 查询条数
      * @return 对象列表
      */
-    List<NxtProductSkuValuePriceEtc> deleteByValueIdSet(@Param("valueIdList") List<Long> valueIdList);
+    void deleteByValueIdSet(@Param("valueIdList") List<Long> valueIdList);
 
     /**
      * 新增数据

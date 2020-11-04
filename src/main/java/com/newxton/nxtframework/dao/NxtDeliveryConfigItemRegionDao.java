@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.dao;
 
 import com.newxton.nxtframework.entity.NxtDeliveryConfigItemRegion;
+import com.newxton.nxtframework.entity.NxtProductSkuValuePriceEtc;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
@@ -39,6 +40,14 @@ public interface NxtDeliveryConfigItemRegionDao {
     List<NxtDeliveryConfigItemRegion> queryAll(NxtDeliveryConfigItemRegion nxtDeliveryConfigItemRegion);
 
     /**
+     * 通过实体作为筛选条件查询Count
+     *
+     * @param nxtDeliveryConfigItemRegion 实例对象
+     * @return 对象列表
+     */
+    Long queryCount(NxtDeliveryConfigItemRegion nxtDeliveryConfigItemRegion);
+
+    /**
      * 新增数据
      *
      * @param nxtDeliveryConfigItemRegion 实例对象
@@ -61,5 +70,11 @@ public interface NxtDeliveryConfigItemRegionDao {
      * @return 影响行数
      */
     int deleteById(Long id);
+
+    /**
+     * 删除指定多个类型数据
+     * @return 对象列表
+     */
+    void deleteByConfigItemIdSet(@Param("idList") List<Long> idList);
 
 }
