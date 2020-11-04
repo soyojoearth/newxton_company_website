@@ -43,6 +43,16 @@ public class NxtDeliveryConfigServiceImpl implements NxtDeliveryConfigService {
     }
 
     /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtDeliveryConfig 实例对象
+     * @return 对象列表
+     */
+    public List<NxtDeliveryConfig> queryAll(NxtDeliveryConfig nxtDeliveryConfig){
+        return this.nxtDeliveryConfigDao.queryAll(nxtDeliveryConfig);
+    }
+
+    /**
      * 新增数据
      *
      * @param nxtDeliveryConfig 实例对象

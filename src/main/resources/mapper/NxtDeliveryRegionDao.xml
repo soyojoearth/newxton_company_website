@@ -48,6 +48,17 @@
         order by sort_id desc
     </select>
 
+    <select id="selectByIdSet" resultMap="BaseResultMap">
+        select
+            id, region_name, region_pid, sort_id
+        from nxt_delivery_region
+        WHERE id IN
+        <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        limit #{offset}, #{limit}
+    </select>
+
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into nxt_delivery_region(region_name, region_pid, sort_id)

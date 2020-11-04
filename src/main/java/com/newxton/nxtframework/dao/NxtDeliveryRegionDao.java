@@ -39,6 +39,15 @@ public interface NxtDeliveryRegionDao {
     List<NxtDeliveryRegion> queryAll(NxtDeliveryRegion nxtDeliveryRegion);
 
     /**
+     * 查询指定多个类型数据
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    List<NxtDeliveryRegion> selectByIdSet(@Param("offset") int offset, @Param("limit") int limit,
+                                          @Param("idList") List<Long> idList);
+
+    /**
      * 新增数据
      *
      * @param nxtDeliveryRegion 实例对象

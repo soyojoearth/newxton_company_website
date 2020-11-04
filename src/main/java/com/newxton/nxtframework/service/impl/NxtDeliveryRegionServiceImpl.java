@@ -3,6 +3,7 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.entity.NxtDeliveryRegion;
 import com.newxton.nxtframework.dao.NxtDeliveryRegionDao;
 import com.newxton.nxtframework.service.NxtDeliveryRegionService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -50,6 +51,17 @@ public class NxtDeliveryRegionServiceImpl implements NxtDeliveryRegionService {
      */
     public List<NxtDeliveryRegion> queryAll(NxtDeliveryRegion nxtDeliveryRegion){
         return this.nxtDeliveryRegionDao.queryAll(nxtDeliveryRegion);
+    }
+
+    /**
+     * 查询指定多个类型数据
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    public List<NxtDeliveryRegion> selectByIdSet(@Param("offset") int offset, @Param("limit") int limit,
+                                          @Param("idList") List<Long> idList){
+        return this.nxtDeliveryRegionDao.selectByIdSet(offset,limit,idList);
     }
 
     /**
