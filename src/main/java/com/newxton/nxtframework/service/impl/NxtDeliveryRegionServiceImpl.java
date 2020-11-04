@@ -43,6 +43,16 @@ public class NxtDeliveryRegionServiceImpl implements NxtDeliveryRegionService {
     }
 
     /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtDeliveryRegion 实例对象
+     * @return 对象列表
+     */
+    public List<NxtDeliveryRegion> queryAll(NxtDeliveryRegion nxtDeliveryRegion){
+        return this.nxtDeliveryRegionDao.queryAll(nxtDeliveryRegion);
+    }
+
+    /**
      * 新增数据
      *
      * @param nxtDeliveryRegion 实例对象

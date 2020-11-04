@@ -2,6 +2,7 @@ package com.newxton.nxtframework.component;
 
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.Random;
 
 /**
@@ -26,6 +27,16 @@ public class NxtUtilComponent {
             buffet.append(str.charAt(number));
         }
         return buffet.toString();
+    }
+
+    public boolean isNumeric(String str) {
+        String bigStr;
+        try {
+            bigStr = new BigDecimal(str).toString();
+        } catch (Exception e) {
+            return false;//异常 说明包含非数字。
+        }
+        return true;
     }
 
 }

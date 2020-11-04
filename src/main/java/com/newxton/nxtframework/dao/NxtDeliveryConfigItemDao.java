@@ -62,4 +62,10 @@ public interface NxtDeliveryConfigItemDao {
      */
     int deleteById(Long id);
 
+    /**
+     * 删除指定多个类型数据
+     * @return 对象列表
+     */
+    void deleteByIdSet(@Param("idList") List<Long> idList);
+
 }

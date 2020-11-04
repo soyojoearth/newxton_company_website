@@ -45,6 +45,7 @@
                 and sort_id = #{sortId}
             </if>
         </where>
+        order by sort_id desc
     </select>
 
     <!--新增所有列-->

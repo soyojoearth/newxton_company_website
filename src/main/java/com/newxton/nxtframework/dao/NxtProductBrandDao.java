@@ -29,6 +29,12 @@ public interface NxtProductBrandDao {
      */
     List<NxtProductBrand> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
 
+    /**
+     * 查询所有数据(按名字排序)
+     *
+     * @return 对象列表
+     */
+    List<NxtProductBrand> queryAllOrderByNameASC();
 
     /**
      * 通过实体作为筛选条件查询

@@ -1,6 +1,8 @@
 package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtDeliveryConfigItem;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -29,6 +31,14 @@ public interface NxtDeliveryConfigItemService {
     List<NxtDeliveryConfigItem> queryAllByLimit(int offset, int limit);
 
     /**
+     * 查询多条数据
+     *
+     * @param nxtDeliveryConfigItem 实例对象
+     * @return 对象列表
+     */
+    List<NxtDeliveryConfigItem> queryAll(NxtDeliveryConfigItem nxtDeliveryConfigItem);
+
+    /**
      * 新增数据
      *
      * @param nxtDeliveryConfigItem 实例对象
@@ -51,5 +61,11 @@ public interface NxtDeliveryConfigItemService {
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    /**
+     * 删除指定多个类型数据
+     * @return 对象列表
+     */
+    void deleteByIdSet(@Param("idList") List<Long> idList);
 
 }

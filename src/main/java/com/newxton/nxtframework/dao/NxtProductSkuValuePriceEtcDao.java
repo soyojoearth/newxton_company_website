@@ -51,7 +51,7 @@ public interface NxtProductSkuValuePriceEtcDao {
      * 删除指定多个类型数据
      * @return 对象列表
      */
-    List<NxtProductSkuValuePriceEtc> deleteByValueIdSet(@Param("valueIdList") List<Long> valueIdList);
+    void deleteByValueIdSet(@Param("valueIdList") List<Long> valueIdList);
 
     /**
      * 新增数据

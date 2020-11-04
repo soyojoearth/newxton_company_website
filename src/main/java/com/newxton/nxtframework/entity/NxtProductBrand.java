@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtProductBrand)实体类
  *
  * @author makejava
- * @since 2020-11-02 19:04:21
+ * @since 2020-11-04 17:12:51
  */
 public class NxtProductBrand implements Serializable {
-    private static final long serialVersionUID = -42711501511584401L;
+    private static final long serialVersionUID = 846573605618068739L;
     /**
     * 产品品牌管理
     */
@@ -20,10 +20,6 @@ public class NxtProductBrand implements Serializable {
     private String brandName;
     
     private Long uploadfileId;
-    /**
-    * 排序，大的在前
-    */
-    private Long sortId;
 
 
     public Long getId() {
@@ -48,14 +44,6 @@ public class NxtProductBrand implements Serializable {
 
     public void setUploadfileId(Long uploadfileId) {
         this.uploadfileId = uploadfileId;
-    }
-
-    public Long getSortId() {
-        return sortId;
-    }
-
-    public void setSortId(Long sortId) {
-        this.sortId = sortId;
     }
 
 }
