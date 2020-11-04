@@ -1,7 +1,6 @@
 package com.newxton.nxtframework.controller.api.admin;
 
 import com.alibaba.fastjson.JSONObject;
-import com.newxton.nxtframework.entity.NxtDeliveryCompany;
 import com.newxton.nxtframework.entity.NxtDeliveryConfig;
 import com.newxton.nxtframework.entity.NxtDeliveryConfigItem;
 import com.newxton.nxtframework.service.NxtDeliveryConfigItemRegionService;

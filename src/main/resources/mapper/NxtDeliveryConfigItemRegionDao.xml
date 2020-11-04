@@ -43,6 +43,16 @@
         </where>
     </select>
 
+    <select id="selectByConfigItemIdSet" resultMap="BaseResultMap">
+        select
+        id, delivery_config_item_id, delivery_region_id
+        from nxt_delivery_config_item_region
+        WHERE delivery_config_item_id IN
+        <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
     <!--通过实体作为筛选条件查询-->
     <select id="queryCount" resultType="Long">
         select

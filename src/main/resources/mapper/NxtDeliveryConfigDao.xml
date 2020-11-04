@@ -41,6 +41,7 @@
                 and type = #{type}
             </if>
         </where>
+        order by type asc,name asc
     </select>
 
     <!--新增所有列-->

@@ -44,6 +44,15 @@ public class NxtDeliveryConfigItemRegionServiceImpl implements NxtDeliveryConfig
     }
 
     /**
+     * 根据idList查询多条记录
+     *
+     * @return 对象列表
+     */
+    public List<NxtDeliveryConfigItemRegion> selectByConfigItemIdSet(@Param("idList") List<Long> idList){
+        return this.nxtDeliveryConfigItemRegionDao.selectByConfigItemIdSet(idList);
+    }
+
+    /**
      * 通过实体作为筛选条件查询Count
      *
      * @param nxtDeliveryConfigItemRegion 实例对象
