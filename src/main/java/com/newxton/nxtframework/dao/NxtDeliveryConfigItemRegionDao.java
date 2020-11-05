@@ -84,4 +84,10 @@ public interface NxtDeliveryConfigItemRegionDao {
      */
     void deleteByConfigItemIdSet(@Param("idList") List<Long> idList);
 
+    /**
+     * 删除指定多个类型数据
+     * @return 对象列表
+     */
+    int deleteByIdSet(@Param("idList") List<Long> idList);
+
 }

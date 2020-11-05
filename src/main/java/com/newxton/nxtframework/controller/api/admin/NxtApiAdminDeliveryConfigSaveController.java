@@ -1,7 +1,8 @@
 package com.newxton.nxtframework.controller.api.admin;
 
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
 import com.newxton.nxtframework.model.NxtModelDeliveryConfig;
+import com.newxton.nxtframework.model.struct.NxtStructDeliveryConfig;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,15 +17,19 @@ import java.util.Map;
  * @address Shenzhen, China
  */
 @RestController
-public class NxtApiAdminDeliveryConfigUpdateController {
+public class NxtApiAdminDeliveryConfigSaveController {
 
     @Resource
     private NxtModelDeliveryConfig nxtModelDeliveryConfig;
 
-    @RequestMapping(value = "/api/admin/delivery_config/update", method = RequestMethod.POST)
-    public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
+    @RequestMapping(value = "/api/admin/delivery_config/save", method = RequestMethod.POST)
+    public Map<String, Object> index(@RequestBody String json) {
 
-        return nxtModelDeliveryConfig.save(jsonParam);
+        Gson gson = new Gson();
+
+        NxtStructDeliveryConfig nxtStructDeliveryConfig = gson.fromJson(json,NxtStructDeliveryConfig.class);
+
+        return nxtModelDeliveryConfig.save(nxtStructDeliveryConfig);
 
     }
 

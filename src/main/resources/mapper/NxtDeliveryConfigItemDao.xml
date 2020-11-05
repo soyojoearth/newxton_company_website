@@ -89,12 +89,12 @@
         delete from nxt_delivery_config_item where id = #{id}
     </delete>
 
-    <select id="deleteByIdSet">
+    <delete id="deleteByIdSet">
         delete from nxt_delivery_config_item
         WHERE id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
-    </select>
+    </delete>
 
 </mapper>

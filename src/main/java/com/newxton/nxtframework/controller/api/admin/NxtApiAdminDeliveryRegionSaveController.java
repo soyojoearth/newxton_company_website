@@ -1,7 +1,7 @@
 package com.newxton.nxtframework.controller.api.admin;
 
 import com.alibaba.fastjson.JSONObject;
-import com.newxton.nxtframework.model.NxtModelDeliveryConfig;
+import com.newxton.nxtframework.model.NxtModelDeliveryRegion;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,19 +16,16 @@ import java.util.Map;
  * @address Shenzhen, China
  */
 @RestController
-public class NxtApiAdminDeliveryConfigCreateController {
+public class NxtApiAdminDeliveryRegionSaveController {
 
     @Resource
-    private NxtModelDeliveryConfig nxtModelDeliveryConfig;
+    private NxtModelDeliveryRegion nxtModelDeliveryRegion;
 
-    @RequestMapping(value = "/api/admin/delivery_config/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/admin/delivery_region/save", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
 
-        jsonParam.put("id",null);
-
-        return nxtModelDeliveryConfig.save(jsonParam);
+        return nxtModelDeliveryRegion.save(jsonParam);
 
     }
-
 
 }
