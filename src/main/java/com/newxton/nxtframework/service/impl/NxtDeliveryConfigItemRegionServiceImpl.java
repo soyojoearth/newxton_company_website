@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,6 +50,9 @@ public class NxtDeliveryConfigItemRegionServiceImpl implements NxtDeliveryConfig
      * @return 对象列表
      */
     public List<NxtDeliveryConfigItemRegion> selectByConfigItemIdSet(@Param("idList") List<Long> idList){
+        if (idList.size() == 0){
+            return new ArrayList<>();
+        }
         return this.nxtDeliveryConfigItemRegionDao.selectByConfigItemIdSet(idList);
     }
 
@@ -103,6 +107,14 @@ public class NxtDeliveryConfigItemRegionServiceImpl implements NxtDeliveryConfig
      */
     public void deleteByConfigItemIdSet(@Param("idList") List<Long> idList){
         this.nxtDeliveryConfigItemRegionDao.deleteByConfigItemIdSet(idList);
+    }
+
+    /**
+     * 删除指定多个类型数据
+     * @return 对象列表
+     */
+    public int deleteByIdSet(@Param("idList") List<Long> idList){
+        return this.nxtDeliveryConfigItemRegionDao.deleteByIdSet(idList);
     }
 
 }

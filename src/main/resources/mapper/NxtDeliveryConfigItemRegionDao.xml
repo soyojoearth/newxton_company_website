@@ -96,12 +96,20 @@
         delete from nxt_delivery_config_item_region where id = #{id}
     </delete>
 
-    <select id="deleteByConfigItemIdSet">
+    <delete id="deleteByConfigItemIdSet">
         delete from nxt_delivery_config_item_region
         WHERE delivery_config_item_id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
-    </select>
+    </delete>
+
+    <delete id="deleteByIdSet">
+        delete from nxt_delivery_config_item_region
+        WHERE id IN
+        <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 
 </mapper>

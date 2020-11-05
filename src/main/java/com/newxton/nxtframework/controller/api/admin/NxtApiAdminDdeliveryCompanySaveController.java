@@ -16,15 +16,13 @@ import java.util.Map;
  * @address Shenzhen, China
  */
 @RestController
-public class NxtApiAdminDdeliveryCompanyCreateController {
+public class NxtApiAdminDdeliveryCompanySaveController {
 
     @Resource
     private NxtModelDdeliveryCompany nxtModelDdeliveryCompany;
 
-    @RequestMapping(value = "/api/admin/delivery_company/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/admin/delivery_company/save", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
-
-        jsonParam.put("id",null);
 
         return nxtModelDdeliveryCompany.save(jsonParam);
 

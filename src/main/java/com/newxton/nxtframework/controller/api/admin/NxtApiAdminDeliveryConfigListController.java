@@ -3,6 +3,7 @@ package com.newxton.nxtframework.controller.api.admin;
 import com.newxton.nxtframework.entity.NxtDeliveryCompany;
 import com.newxton.nxtframework.entity.NxtDeliveryConfig;
 import com.newxton.nxtframework.model.NxtModelDeliveryConfig;
+import com.newxton.nxtframework.model.struct.NxtStructDeliveryConfig;
 import com.newxton.nxtframework.service.NxtDeliveryCompanyService;
 import com.newxton.nxtframework.service.NxtDeliveryConfigService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,12 +39,12 @@ public class NxtApiAdminDeliveryConfigListController {
 
         List<NxtDeliveryConfig> nxtDeliveryConfigList = nxtDeliveryConfigService.queryAllByLimit(0,Integer.MAX_VALUE);
 
-        List<Map<String,Object>> list = new ArrayList<>();
+        List<NxtStructDeliveryConfig> list = new ArrayList<>();
 
         for (NxtDeliveryConfig nxtDeliveryConfig :
                 nxtDeliveryConfigList) {
-            Map<String, Object> mapItemAllDetail = nxtModelDeliveryConfig.getDeliveryConfigAllDetail(nxtDeliveryConfig);
-            list.add(mapItemAllDetail);
+            NxtStructDeliveryConfig mapItemAllDetailG = nxtModelDeliveryConfig.getDeliveryConfigAllDetail(nxtDeliveryConfig);
+            list.add(mapItemAllDetailG);
         }
 
         result.put("list",list);
