@@ -53,7 +53,7 @@ services:
       MYSQL_DATABASE: nxtframework
     ports:
       - target: 3306
-        published: 33060
+#        published: 33060
         protocol: tcp
         mode: host
     volumes:
