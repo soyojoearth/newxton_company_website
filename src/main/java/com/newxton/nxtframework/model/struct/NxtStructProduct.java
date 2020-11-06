@@ -28,6 +28,10 @@ public class NxtStructProduct {
     public Float priceDiscount;
     public Long inventoryQuantity;
     public String productDescription;
+    public Long datelineUpdated;
+    public String datelineUpdatedReadable;
+    public Long datelineCreate;
+    public String datelineCreateReadable;
     public Boolean isRecommend;
     public Boolean isHot;
     public Boolean isNew;
@@ -155,6 +159,38 @@ public class NxtStructProduct {
 
     public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
+    }
+
+    public Long getDatelineUpdated() {
+        return datelineUpdated;
+    }
+
+    public void setDatelineUpdated(Long datelineUpdated) {
+        this.datelineUpdated = datelineUpdated;
+    }
+
+    public String getDatelineUpdatedReadable() {
+        return datelineUpdatedReadable;
+    }
+
+    public void setDatelineUpdatedReadable(String datelineUpdatedReadable) {
+        this.datelineUpdatedReadable = datelineUpdatedReadable;
+    }
+
+    public Long getDatelineCreate() {
+        return datelineCreate;
+    }
+
+    public void setDatelineCreate(Long datelineCreate) {
+        this.datelineCreate = datelineCreate;
+    }
+
+    public String getDatelineCreateReadable() {
+        return datelineCreateReadable;
+    }
+
+    public void setDatelineCreateReadable(String datelineCreateReadable) {
+        this.datelineCreateReadable = datelineCreateReadable;
     }
 
     public Boolean getRecommend() {
