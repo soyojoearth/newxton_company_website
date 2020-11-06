@@ -34,8 +34,6 @@ typora-copy-images-to: ./gitbook_resource
 
 2、Api接口文档：请clone项目后打开 document/nxtframework_api.html
 
-3、数据库文档：请clone项目后打开 document/数据库结构.docx
-
 
 
 #### Demo：
