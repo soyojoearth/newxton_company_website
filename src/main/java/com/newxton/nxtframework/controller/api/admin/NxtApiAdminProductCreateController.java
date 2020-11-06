@@ -1,7 +1,8 @@
 package com.newxton.nxtframework.controller.api.admin;
 
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
 import com.newxton.nxtframework.model.NxtModelProduct;
+import com.newxton.nxtframework.model.struct.NxtStructProduct;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,11 +21,13 @@ public class NxtApiAdminProductCreateController {
     private NxtModelProduct nxtModelProduct;
 
     @RequestMapping(value = "/api/admin/product/create", method = RequestMethod.POST)
-    public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
+    public Map<String, Object> index(@RequestBody String json) {
 
-        jsonParam.put("id",null);
+        Gson gson = new Gson();
 
-        return nxtModelProduct.saveProductAllDetail(jsonParam);
+        NxtStructProduct nxtStructProduct = gson.fromJson(json,NxtStructProduct.class);
+
+        return nxtModelProduct.saveProductAllDetail(nxtStructProduct);
 
     }
 

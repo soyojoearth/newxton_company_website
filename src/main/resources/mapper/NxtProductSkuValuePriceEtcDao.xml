@@ -101,7 +101,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxtframework.nxt_product_sku_value_price_etc where id = #{id}
+        delete from nxt_product_sku_value_price_etc where id = #{id}
     </delete>
 
     <select id="deleteByValueIdSet">

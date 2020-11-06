@@ -18,7 +18,7 @@ typora-copy-images-to: ./gitbook_resource
 
 2、CMS模块（完成）；
 
-3、产品（商品）管理（开发中）；
+3、产品（商品）管理（完成）；
 
 4、订单模块（开发中）；
 
@@ -105,7 +105,7 @@ cd wwwroot
 docker-compose -f docker-compose-quickstart-with-db.yml up
 ```
 
-**3、然后浏览器打开：`http://127.0.0.1:8686/admin`  用户名：`admin` 密码：`12345678`**
+**3、然后浏览器打开：`http://127.0.0.1:8686/admin`  用户名：`admin` 密码：`nxtframework.com`**
 
 **4、如何启用80端口、部署SSL：**
 
