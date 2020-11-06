@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -44,9 +45,6 @@ public class NxtModelProduct {
     @Resource
     private NxtUploadImageComponent nxtUploadImageComponent;
 
-    @Resource
-    private NxtUtilComponent nxtUtilComponent;
-
     public NxtStructProduct getProductAllDetail(NxtProduct nxtProduct) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -70,7 +68,6 @@ public class NxtModelProduct {
         nxtStructProduct.setPriceDiscount(nxtProduct.getPriceDiscount()/100F);
         nxtStructProduct.setInventoryQuantity(nxtProduct.getInventoryQuantity());
         nxtStructProduct.setProductDescription(nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForDisplay(nxtProduct.getProductDescription()));
-
 
         nxtStructProduct.setDatelineCreate(nxtProduct.getDatelineCreate());
         nxtStructProduct.setDatelineUpdated(nxtProduct.getDatelineUpdated());
@@ -234,16 +231,6 @@ public class NxtModelProduct {
         result.put("status", 0);
         result.put("message", "");
 
-        /*检查分类*/
-        if (nxtStructProduct.getCategoryId() > 0) {
-            NxtProductCategory category = nxtProductCategoryService.queryById(nxtStructProduct.getCategoryId());
-            if (category == null) {
-                result.put("status", 48);
-                result.put("message", "该类别不存在");
-                return result;
-            }
-        }
-
         NxtProduct product;
 
         if (nxtStructProduct.getId() == null){
@@ -274,9 +261,9 @@ public class NxtModelProduct {
         product.setItemNo(nxtStructProduct.getItemNo());
         product.setWithSku(nxtStructProduct.getWithSku() ? 1 : 0);
 
-        product.setPrice((long)(nxtStructProduct.getPrice()*100));
+        product.setPrice((long)Math.round(nxtStructProduct.getPrice()*100));
 
-        product.setPriceDiscount((long) (nxtStructProduct.getPriceDiscount() * 100));
+        product.setPriceDiscount((long)Math.round(nxtStructProduct.getPriceDiscount()*100));
         product.setInventoryQuantity(nxtStructProduct.getInventoryQuantity());
         product.setProductDescription(nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForSave(productDescription));
         product.setDatelineCreate(System.currentTimeMillis());
@@ -286,12 +273,14 @@ public class NxtModelProduct {
         product.setIsNew(nxtStructProduct.getNew() ? 1 : 0);
         product.setIsSelling(nxtStructProduct.getSelling() ? 1 : 0);
 
+        product.setIsTrash(0);
+
         if (nxtStructProduct.getId() == null){
             nxtProductService.insert(product);
+            product.setSortId(product.getId());
         }
-        else {
-            nxtProductService.update(product);
-        }
+
+        nxtProductService.update(product);
 
         List<NxtStructProductSku> skuList = nxtStructProduct.getSkuList();
         List<NxtStructProductSkuValuePriceEtc> skuValuePriceEtcList = nxtStructProduct.getSkuValuePriceEtcList();
@@ -383,8 +372,8 @@ public class NxtModelProduct {
                 nxtProductSkuValuePriceEtc.setSkuValueId2(0L);
             }
             nxtProductSkuValuePriceEtc.setSkuValueInventoryQuantity(skuValuePrictEtc.getSkuValueInventoryQuantity());
-            nxtProductSkuValuePriceEtc.setSkuValuePrice((long) (skuValuePrictEtc.getSkuValuePrice() * 100));
-            nxtProductSkuValuePriceEtc.setSkuValuePriceDiscount((long) (skuValuePrictEtc.getSkuValuePriceDiscount() * 100));
+            nxtProductSkuValuePriceEtc.setSkuValuePrice((long) Math.round(skuValuePrictEtc.getSkuValuePrice() * 100));
+            nxtProductSkuValuePriceEtc.setSkuValuePriceDiscount((long) Math.round(skuValuePrictEtc.getSkuValuePriceDiscount() * 100));
             nxtProductSkuValuePriceEtcService.insert(nxtProductSkuValuePriceEtc);
         }
 
