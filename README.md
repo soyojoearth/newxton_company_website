@@ -129,5 +129,7 @@ docker-compose -f docker-compose-quickstart-with-db.yml up
 
 1、使用k8s部署；
 
-2、完。
+2、部署完成^_^。
+
+本项目已经充分考虑过集群多实例部署的情况，已针对性优化过。
 
