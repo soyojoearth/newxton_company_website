@@ -5,10 +5,7 @@ import com.newxton.nxtframework.entity.NxtProduct;
 import com.newxton.nxtframework.entity.NxtProductBrand;
 import com.newxton.nxtframework.service.NxtProductBrandService;
 import com.newxton.nxtframework.service.NxtProductService;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -29,9 +26,7 @@ public class NxtApiAdminProductBrandDeleteController {
     private NxtProductService nxtProductService;
 
     @RequestMapping(value = "/api/admin/product_brand/delete", method = RequestMethod.POST)
-    public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
-
-        Long id = jsonParam.getLong("id");
+    public Map<String, Object> index(@RequestParam(value = "id", required=false) Long id) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
