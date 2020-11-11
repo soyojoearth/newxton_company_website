@@ -3,6 +3,7 @@ package com.newxton.nxtframework.controller.api.admin;
 import com.newxton.nxtframework.entity.NxtUser;
 import com.newxton.nxtframework.service.NxtUserService;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +22,9 @@ import java.util.Random;
  */
 @RestController
 public class NxtApiAdminLogoutController {
+
+    @Value("${newxton.config.multi-device-login}")
+    private boolean multiDeviceLogin;
 
     @Resource
     private NxtUserService nxtUserService;
@@ -49,13 +53,19 @@ public class NxtApiAdminLogoutController {
             return result;
         }
 
-        //已登录状态，注销时有权重置token（让旧token失效）
-        String newToken = getRandomString(32);
-        newToken = DigestUtils.md5Hex(newToken).toLowerCase();
+        if (!multiDeviceLogin){
 
-        //更新token
-        user.setToken(newToken);
-        nxtUserService.update(user);
+            //不允许多设备登录时
+
+            //已登录状态，注销时有权重置token（让旧token失效）
+            String newToken = getRandomString(32);
+            newToken = DigestUtils.md5Hex(newToken).toLowerCase();
+
+            //更新token
+            user.setToken(newToken);
+            nxtUserService.update(user);
+
+        }
 
         return result;
 

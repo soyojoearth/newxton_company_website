@@ -3,6 +3,7 @@ package com.newxton.nxtframework.controller.api.admin;
 import com.newxton.nxtframework.entity.NxtUser;
 import com.newxton.nxtframework.service.NxtUserService;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,9 @@ import java.util.Random;
 @RestController
 public class NxtApiAdminLoginController {
 
+    @Value("${newxton.config.multi-device-login}")
+    private boolean multiDeviceLogin;
+
     @Resource
     private NxtUserService nxtUserService;
 
@@ -31,51 +35,60 @@ public class NxtApiAdminLoginController {
                                     @RequestParam(value="password", required=false) String password
                                     ) {
 
-        Map<String,Object> result = new HashMap<>();
-        result.put("status",0);
-        result.put("message","");
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", 0);
+        result.put("message", "");
 
 
-        if (username == null || password == null){
-            result.put("status",52);
-            result.put("message","参数错误");
+        if (username == null || password == null) {
+            result.put("status", 52);
+            result.put("message", "参数错误");
             return result;
         }
 
         username = username.trim();
 
         NxtUser user = nxtUserService.queryByUsername(username);
-        if (user == null){
-            result.put("status",44);
-            result.put("message","用户不存在");
+        if (user == null) {
+            result.put("status", 44);
+            result.put("message", "用户不存在");
             return result;
         }
 
         String salt = user.getSalt();
-        String pwdSalt = password+salt;
+        String pwdSalt = password + salt;
         password = DigestUtils.md5Hex(pwdSalt).toLowerCase();
 
-        if (user.getPassword() == null || !user.getPassword().equals(password)){
-            result.put("status",42);
-            result.put("message","密码错误");
+        if (user.getPassword() == null || !user.getPassword().equals(password)) {
+            result.put("status", 42);
+            result.put("message", "密码错误");
             return result;
         }
 
-        if (user.getStatus().equals(-1)){
-            result.put("status",-1);
-            result.put("message","禁止登录");
+        if (user.getStatus().equals(-1)) {
+            result.put("status", -1);
+            result.put("message", "禁止登录");
             return result;
         }
 
-        String newToken = getRandomString(32);
-        newToken = DigestUtils.md5Hex(newToken).toLowerCase();
+        if (multiDeviceLogin) {
+            //允许多设备登录
+            result.put("token", user.getToken());
+            result.put("user_id", user.getId());
+        }
+        else{
+            //不允许多设备登录
 
-        //更新token
-        user.setToken(newToken);
-        nxtUserService.update(user);
+            String newToken = getRandomString(32);
+            newToken = DigestUtils.md5Hex(newToken).toLowerCase();
 
-        result.put("token",newToken);
-        result.put("user_id",user.getId());
+            //更新token
+            user.setToken(newToken);
+            nxtUserService.update(user);
+
+            result.put("token", newToken);
+            result.put("user_id", user.getId());
+        }
 
         return result;
 
