@@ -17,7 +17,7 @@
         SELECT
         id, setting_key, setting_value, setting_name, display_type, dateline_updated, placeholder
         from nxt_setting
-        WHERE id IN
+        WHERE setting_key IN
         <foreach collection="keyList" item="key" index="index" open="(" close=")" separator=",">
             #{key}
         </foreach>

@@ -144,10 +144,22 @@ public class ScheduledSystemInit {
      */
     private void checkAndInitSystemConfig(){
 
-        NxtSetting nxtSetting1 = nxtSettingService.queryBySettingKey("stat_code");
+        NxtSetting nxtSetting0 = nxtSettingService.queryBySettingKey("beianCode");
+        if (nxtSetting0 == null){
+            nxtSetting0 = new NxtSetting();
+            nxtSetting0.setSettingKey("beianCode");
+            nxtSetting0.setSettingName("备案号");
+            nxtSetting0.setSettingValue("");
+            nxtSetting0.setDisplayType("input");
+            nxtSetting0.setDatelineUpdated(System.currentTimeMillis());
+            nxtSetting0.setPlaceholder("");
+            nxtSettingService.insert(nxtSetting0);
+        }
+
+        NxtSetting nxtSetting1 = nxtSettingService.queryBySettingKey("statCode");
         if (nxtSetting1 == null){
             nxtSetting1 = new NxtSetting();
-            nxtSetting1.setSettingKey("stat_code");
+            nxtSetting1.setSettingKey("statCode");
             nxtSetting1.setSettingName("统计代码");
             nxtSetting1.setSettingValue("");
             nxtSetting1.setDisplayType("textarea");
@@ -155,10 +167,10 @@ public class ScheduledSystemInit {
             nxtSettingService.insert(nxtSetting1);
         }
 
-        NxtSetting nxtSetting2 = nxtSettingService.queryBySettingKey("contact_code");
+        NxtSetting nxtSetting2 = nxtSettingService.queryBySettingKey("contactCode");
         if (nxtSetting2 == null){
             nxtSetting2 = new NxtSetting();
-            nxtSetting2.setSettingKey("contact_code");
+            nxtSetting2.setSettingKey("contactCode");
             nxtSetting2.setSettingName("客服代码");
             nxtSetting2.setSettingValue("");
             nxtSetting2.setDisplayType("textarea");
@@ -166,10 +178,10 @@ public class ScheduledSystemInit {
             nxtSettingService.insert(nxtSetting2);
         }
 
-        NxtSetting nxtSetting3 = nxtSettingService.queryBySettingKey("contact_link");
+        NxtSetting nxtSetting3 = nxtSettingService.queryBySettingKey("contactLink");
         if (nxtSetting3 == null){
             nxtSetting3 = new NxtSetting();
-            nxtSetting3.setSettingKey("contact_link");
+            nxtSetting3.setSettingKey("contactLink");
             nxtSetting3.setSettingName("客服链接");
             nxtSetting3.setSettingValue("");
             nxtSetting3.setDisplayType("input");
@@ -178,10 +190,11 @@ public class ScheduledSystemInit {
             nxtSettingService.insert(nxtSetting3);
         }
 
-        NxtSetting nxtSetting4 = nxtSettingService.queryBySettingKey("oss_location");
+
+        NxtSetting nxtSetting4 = nxtSettingService.queryBySettingKey("ossLocation");
         if (nxtSetting4 == null){
             nxtSetting4 = new NxtSetting();
-            nxtSetting4.setSettingKey("oss_location");
+            nxtSetting4.setSettingKey("ossLocation");
             nxtSetting4.setSettingName("图片存储位置");
             nxtSetting4.setSettingValue("");
             nxtSetting4.setDisplayType("input");
@@ -190,10 +203,10 @@ public class ScheduledSystemInit {
             nxtSettingService.insert(nxtSetting4);
         }
 
-        NxtSetting nxtSetting5 = nxtSettingService.queryBySettingKey("oss_qiniuAccessKey");
+        NxtSetting nxtSetting5 = nxtSettingService.queryBySettingKey("ossQiniuAccessKey");
         if (nxtSetting5 == null){
             nxtSetting5 = new NxtSetting();
-            nxtSetting5.setSettingKey("oss_qiniuAccessKey");
+            nxtSetting5.setSettingKey("ossQiniuAccessKey");
             nxtSetting5.setSettingName("七牛云AccessKey");
             nxtSetting5.setSettingValue("--");
             nxtSetting5.setDisplayType("input");
@@ -201,10 +214,10 @@ public class ScheduledSystemInit {
             nxtSettingService.insert(nxtSetting5);
         }
 
-        NxtSetting nxtSetting6 = nxtSettingService.queryBySettingKey("oss_qiniuSecretKey");
+        NxtSetting nxtSetting6 = nxtSettingService.queryBySettingKey("ossQiniuSecretKey");
         if (nxtSetting6 == null){
             nxtSetting6 = new NxtSetting();
-            nxtSetting6.setSettingKey("oss_qiniuSecretKey");
+            nxtSetting6.setSettingKey("ossQiniuSecretKey");
             nxtSetting6.setSettingName("七牛云SecretKey");
             nxtSetting6.setSettingValue("--");
             nxtSetting6.setDisplayType("input");
@@ -212,10 +225,10 @@ public class ScheduledSystemInit {
             nxtSettingService.insert(nxtSetting6);
         }
 
-        NxtSetting nxtSetting7 = nxtSettingService.queryBySettingKey("oss_qiniuBucket");
+        NxtSetting nxtSetting7 = nxtSettingService.queryBySettingKey("ossQiniuBucket");
         if (nxtSetting7 == null){
             nxtSetting7 = new NxtSetting();
-            nxtSetting7.setSettingKey("oss_qiniuBucket");
+            nxtSetting7.setSettingKey("ossQiniuBucket");
             nxtSetting7.setSettingName("七牛云bucket");
             nxtSetting7.setSettingValue("--");
             nxtSetting7.setDisplayType("input");
@@ -223,10 +236,10 @@ public class ScheduledSystemInit {
             nxtSettingService.insert(nxtSetting7);
         }
 
-        NxtSetting nxtSetting8 = nxtSettingService.queryBySettingKey("oss_qiniuDomain");
+        NxtSetting nxtSetting8 = nxtSettingService.queryBySettingKey("ossQiniuDomain");
         if (nxtSetting8 == null){
             nxtSetting8 = new NxtSetting();
-            nxtSetting8.setSettingKey("oss_qiniuDomain");
+            nxtSetting8.setSettingKey("ossQiniuDomain");
             nxtSetting8.setSettingName("七牛云OSS域名");
             nxtSetting8.setSettingValue("--");
             nxtSetting8.setDisplayType("input");

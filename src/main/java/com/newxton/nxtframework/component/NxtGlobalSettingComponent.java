@@ -36,9 +36,9 @@ public class NxtGlobalSettingComponent {
      * @param keys
      * @return
      */
-    public Map<String,Object> getSettingsByKeys(List<String> keys){
+    public Map<String,NxtSetting> getSettingsByKeys(List<String> keys){
         List<NxtSetting> nxtSettingList = nxtSettingService.selectByKeySet(keys);
-        Map<String,Object> resultMap = new HashMap<>();
+        Map<String,NxtSetting> resultMap = new HashMap<>();
         for (NxtSetting nxtSetting : nxtSettingList) {
             resultMap.put(nxtSetting.getSettingKey(),nxtSetting);
         }
