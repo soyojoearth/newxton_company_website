@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.entity.NxtDeliveryRegion;
 import com.newxton.nxtframework.service.NxtDeliveryRegionService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
@@ -21,6 +22,7 @@ public class NxtModelDeliveryRegion {
     @Resource
     private NxtDeliveryRegionService nxtDeliveryRegionService;
 
+    @Transactional
     public Map<String, Object> save(@RequestBody JSONObject jsonParam) {
 
         Long id = jsonParam.getLong("id");
@@ -49,10 +51,12 @@ public class NxtModelDeliveryRegion {
 
         nxtDeliveryRegion.setRegionName(regionName);
         nxtDeliveryRegion.setRegionPid(regionPid);
-        nxtDeliveryRegion.setSortId(sortId);
+
 
         if (id == null){
             nxtDeliveryRegionService.insert(nxtDeliveryRegion);
+            nxtDeliveryRegion.setSortId(nxtDeliveryRegion.getId());
+            nxtDeliveryRegionService.update(nxtDeliveryRegion);
         }
         else {
             nxtDeliveryRegionService.update(nxtDeliveryRegion);
