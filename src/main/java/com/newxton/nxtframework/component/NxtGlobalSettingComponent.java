@@ -32,6 +32,27 @@ public class NxtGlobalSettingComponent {
     private NxtCronjobService nxtCronjobService;
 
     /**
+     * 保存值
+     * @param key
+     * @param value
+     * @return
+     */
+    public NxtSetting saveSettingsValueByKey(String key, String value){
+        NxtSetting nxtSetting = nxtSettingService.queryBySettingKey(key);
+        if (nxtSetting == null){
+            nxtSetting = new NxtSetting();
+            nxtSetting.setSettingKey(key);
+            nxtSetting.setSettingValue(value);
+            nxtSettingService.insert(nxtSetting);
+        }
+        else {
+            nxtSetting.setSettingValue(value);
+            nxtSettingService.update(nxtSetting);
+        }
+        return nxtSetting;
+    }
+
+    /**
      * 查询多个key的设置
      * @param keys
      * @return

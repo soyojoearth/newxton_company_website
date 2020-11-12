@@ -89,22 +89,22 @@
     <update id="update">
         update nxt_setting
         <set>
-            <if test="settingKey != null and settingKey != ''">
+            <if test="settingKey != null">
                 setting_key = #{settingKey},
             </if>
-            <if test="settingValue != null and settingValue != ''">
+            <if test="settingValue != null">
                 setting_value = #{settingValue},
             </if>
-            <if test="settingName != null and settingName != ''">
+            <if test="settingName != null">
                 setting_name = #{settingName},
             </if>
-            <if test="displayType != null and displayType != ''">
+            <if test="displayType != null">
                 display_type = #{displayType},
             </if>
             <if test="datelineUpdated != null">
                 dateline_updated = #{datelineUpdated},
             </if>
-            <if test="placeholder != null and placeholder != ''">
+            <if test="placeholder != null">
                 placeholder = #{placeholder},
             </if>
         </set>
