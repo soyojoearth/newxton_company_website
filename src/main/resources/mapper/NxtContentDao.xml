@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtContentDao">
+
+    <resultMap id="BaseResultMap" type="com.newxton.nxtframework.entity.NxtContent">
+        <!--@Table nxt_content-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
+        <result property="contentTitle" column="content_title" jdbcType="VARCHAR"/>
+        <result property="contentDetail" column="content_detail" jdbcType="VARCHAR"/>
+        <result property="datelineUpdate" column="dateline_update" jdbcType="INTEGER"/>
+        <result property="datelineCreate" column="dateline_create" jdbcType="INTEGER"/>
+        <result property="isRecommend" column="is_recommend" jdbcType="INTEGER"/>
+        <result property="sortId" column="sort_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
+        from nxt_content
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
+        from nxt_content
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询指定行数据-->
+    <select id="selectAllByLimit" resultMap="BaseResultMap">
+        select
+          id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
+        from nxt_content
+        <where>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+        </where>
+        order by is_recommend desc, sort_id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="selectByCategoryIdSet" resultMap="BaseResultMap">
+        SELECT
+        id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
+        from nxt_content
+        WHERE category_id IN
+        <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        order by is_recommend desc, sort_id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="countSelectByCategoryIdSet" resultType="Long">
+        SELECT
+        count(*)
+        from nxt_content
+        WHERE category_id IN
+        <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
+        from nxt_content
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="contentTitle != null and contentTitle != ''">
+                and content_title = #{contentTitle}
+            </if>
+            <if test="contentDetail != null and contentDetail != ''">
+                and content_detail = #{contentDetail}
+            </if>
+            <if test="datelineUpdate != null">
+                and dateline_update = #{datelineUpdate}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="isRecommend != null">
+                and is_recommend = #{isRecommend}
+            </if>
+            <if test="sortId != null">
+                and sort_id = #{sortId}
+            </if>
+        </where>
+    </select>
+
+
+    <!--通过实体作为筛选条件查询Count-->
+    <select id="queryCount" resultType="Long">
+        select
+        count(*)
+        from nxt_content
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="contentTitle != null and contentTitle != ''">
+                and content_title = #{contentTitle}
+            </if>
+            <if test="contentDetail != null and contentDetail != ''">
+                and content_detail = #{contentDetail}
+            </if>
+            <if test="datelineUpdate != null">
+                and dateline_update = #{datelineUpdate}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="isRecommend != null">
+                and is_recommend = #{isRecommend}
+            </if>
+            <if test="sortId != null">
+                and sort_id = #{sortId}
+            </if>
+        </where>
+    </select>
+
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_content(category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id)
+        values (#{categoryId}, #{contentTitle}, #{contentDetail}, #{datelineUpdate}, #{datelineCreate}, #{isRecommend}, #{sortId})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxt_content
+        <set>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            <if test="contentTitle != null and contentTitle != ''">
+                content_title = #{contentTitle},
+            </if>
+            <if test="contentDetail != null and contentDetail != ''">
+                content_detail = #{contentDetail},
+            </if>
+            <if test="datelineUpdate != null">
+                dateline_update = #{datelineUpdate},
+            </if>
+            <if test="datelineCreate != null">
+                dateline_create = #{datelineCreate},
+            </if>
+            <if test="isRecommend != null">
+                is_recommend = #{isRecommend},
+            </if>
+            <if test="sortId != null">
+                sort_id = #{sortId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxt_content where id = #{id}
+    </delete>
+
+    <!--通过实体作为筛选条件查询（且字符串字段作为搜索关键词）-->
+    <select id="searchQueryAllByMap" parameterType="map" resultMap="BaseResultMap">
+        select
+        id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
+        from nxt_content
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="contentTitle != null and contentTitle != ''">
+                and content_title like #{contentTitle}
+            </if>
+            <if test="contentDetail != null and contentDetail != ''">
+                and content_detail = #{contentDetail}
+            </if>
+            <if test="datelineUpdate != null">
+                and dateline_update = #{datelineUpdate}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="isRecommend != null">
+                and is_recommend = #{isRecommend}
+            </if>
+            <if test="sortId != null">
+                and sort_id = #{sortId}
+            </if>
+        </where>
+        order by is_recommend desc, sort_id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--统计：通过实体作为筛选条件查询（且字符串字段作为搜索关键词）-->
+    <select id="countSearchQueryAllByMap" parameterType="map" resultType="Long">
+        select
+        count(*)
+        from nxt_content
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="contentTitle != null and contentTitle != ''">
+                and content_title like #{contentTitle}
+            </if>
+            <if test="contentDetail != null and contentDetail != ''">
+                and content_detail = #{contentDetail}
+            </if>
+            <if test="datelineUpdate != null">
+                and dateline_update = #{datelineUpdate}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="isRecommend != null">
+                and is_recommend = #{isRecommend}
+            </if>
+            <if test="sortId != null">
+                and sort_id = #{sortId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

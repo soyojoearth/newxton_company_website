@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtDeliveryCompanyDao">
+
+    <resultMap id="BaseResultMap" type="com.newxton.nxtframework.entity.NxtDeliveryCompany">
+        <!--@Table nxt_delivery_company-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="code100" column="code_100" jdbcType="VARCHAR"/>
+        <result property="activity" column="activity" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, name, code_100, activity
+        from nxt_delivery_company
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, name, code_100, activity
+        from nxt_delivery_company
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, name, code_100, activity
+        from nxt_delivery_company
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="code100 != null and code100 != ''">
+                and code_100 = #{code100}
+            </if>
+            <if test="activity != null">
+                and activity = #{activity}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_delivery_company(name, code_100, activity)
+        values (#{name}, #{code100}, #{activity})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxt_delivery_company
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="code100 != null and code100 != ''">
+                code_100 = #{code100},
+            </if>
+            <if test="activity != null">
+                activity = #{activity},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxt_delivery_company where id = #{id}
+    </delete>
+
+</mapper>

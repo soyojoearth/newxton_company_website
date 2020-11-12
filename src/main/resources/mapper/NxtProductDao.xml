@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtProductDao">
+
+    <resultMap id="BaseResultMap" type="com.newxton.nxtframework.entity.NxtProduct">
+        <!--@Table nxt_product-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
+        <result property="brandId" column="brand_id" jdbcType="INTEGER"/>
+        <result property="productName" column="product_name" jdbcType="VARCHAR"/>
+        <result property="productSubtitle" column="product_subtitle" jdbcType="VARCHAR"/>
+        <result property="dealQuantityMin" column="deal_quantity_min" jdbcType="INTEGER"/>
+        <result property="dealQuantityMax" column="deal_quantity_max" jdbcType="INTEGER"/>
+        <result property="freeShipping" column="free_shipping" jdbcType="INTEGER"/>
+        <result property="deliveryConfigId" column="delivery_config_id" jdbcType="INTEGER"/>
+        <result property="itemNo" column="item_no" jdbcType="VARCHAR"/>
+        <result property="withSku" column="with_sku" jdbcType="INTEGER"/>
+        <result property="price" column="price" jdbcType="INTEGER"/>
+        <result property="priceDiscount" column="price_discount" jdbcType="INTEGER"/>
+        <result property="inventoryQuantity" column="inventory_quantity" jdbcType="INTEGER"/>
+        <result property="productDescription" column="product_description" jdbcType="VARCHAR"/>
+        <result property="datelineCreate" column="dateline_create" jdbcType="INTEGER"/>
+        <result property="datelineUpdated" column="dateline_updated" jdbcType="INTEGER"/>
+        <result property="isRecommend" column="is_recommend" jdbcType="INTEGER"/>
+        <result property="isHot" column="is_hot" jdbcType="INTEGER"/>
+        <result property="isNew" column="is_new" jdbcType="INTEGER"/>
+        <result property="isSelling" column="is_selling" jdbcType="INTEGER"/>
+        <result property="sortId" column="sort_id" jdbcType="INTEGER"/>
+        <result property="isTrash" column="is_trash" jdbcType="INTEGER"/>
+
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash
+        from nxt_product
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash
+        from nxt_product
+        limit #{offset}, #{limit}
+    </select>
+
+
+    <select id="selectByCategoryIdSet" resultMap="BaseResultMap">
+        SELECT
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash
+        from nxt_product
+        WHERE category_id IN
+        <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        order by is_recommend desc, sort_id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="countByCategoryIdSet" resultType="Long">
+        SELECT
+        count(*)
+        from nxt_product
+        WHERE category_id IN
+        <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash
+        from nxtframework.nxt_product
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="brandId != null">
+                and brand_id = #{brandId}
+            </if>
+            <if test="productName != null and productName != ''">
+                and product_name = #{productName}
+            </if>
+            <if test="productSubtitle != null and productSubtitle != ''">
+                and product_subtitle = #{productSubtitle}
+            </if>
+            <if test="dealQuantityMin != null">
+                and deal_quantity_min = #{dealQuantityMin}
+            </if>
+            <if test="dealQuantityMax != null">
+                and deal_quantity_max = #{dealQuantityMax}
+            </if>
+            <if test="freeShipping != null">
+                and free_shipping = #{freeShipping}
+            </if>
+            <if test="deliveryConfigId != null">
+                and delivery_config_id = #{deliveryConfigId}
+            </if>
+            <if test="itemNo != null and itemNo != ''">
+                and item_no = #{itemNo}
+            </if>
+            <if test="withSku != null">
+                and with_sku = #{withSku}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="priceDiscount != null">
+                and price_discount = #{priceDiscount}
+            </if>
+            <if test="inventoryQuantity != null">
+                and inventory_quantity = #{inventoryQuantity}
+            </if>
+            <if test="productDescription != null and productDescription != ''">
+                and product_description = #{productDescription}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="datelineUpdated != null">
+                and dateline_updated = #{datelineUpdated}
+            </if>
+            <if test="isRecommend != null">
+                and is_recommend = #{isRecommend}
+            </if>
+            <if test="isHot != null">
+                and is_hot = #{isHot}
+            </if>
+            <if test="isNew != null">
+                and is_new = #{isNew}
+            </if>
+            <if test="isSelling != null">
+                and is_selling = #{isSelling}
+            </if>
+            <if test="sortId != null">
+                and sort_id = #{sortId}
+            </if>
+            <if test="isTrash != null">
+                and is_trash = #{isTrash}
+            </if>
+        </where>
+    </select>
+
+    <!--通过实体作为筛选条件查询指定行数据-->
+    <select id="selectAllByLimit" resultMap="BaseResultMap">
+        select
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash
+        from nxt_product
+        <where>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+        </where>
+        order by is_recommend desc, sort_id desc
+        limit #{offset}, #{limit}
+    </select>
+
+
+    <!--根据关键字搜索-->
+    <select id="searchAllByLimit" resultMap="BaseResultMap">
+        select
+          id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash
+        from nxt_product
+        where product_name like #{keyword}
+        order by is_recommend desc, sort_id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="searchAllCount" resultType="Long">
+        select
+        count(*)
+        from nxt_product
+        where product_name like #{keyword}
+    </select>
+
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryCount" resultType="Long">
+        select
+        count(*)
+        from nxt_product
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="brandId != null">
+                and brand_id = #{brandId}
+            </if>
+            <if test="productName != null and productName != ''">
+                and product_name = #{productName}
+            </if>
+            <if test="productSubtitle != null and productSubtitle != ''">
+                and product_subtitle = #{productSubtitle}
+            </if>
+            <if test="dealQuantityMin != null">
+                and deal_quantity_min = #{dealQuantityMin}
+            </if>
+            <if test="dealQuantityMax != null">
+                and deal_quantity_max = #{dealQuantityMax}
+            </if>
+            <if test="freeShipping != null">
+                and free_shipping = #{freeShipping}
+            </if>
+            <if test="deliveryConfigId != null">
+                and delivery_config_id = #{deliveryConfigId}
+            </if>
+            <if test="itemNo != null and itemNo != ''">
+                and item_no = #{itemNo}
+            </if>
+            <if test="withSku != null">
+                and with_sku = #{withSku}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="priceDiscount != null">
+                and price_discount = #{priceDiscount}
+            </if>
+            <if test="inventoryQuantity != null">
+                and inventory_quantity = #{inventoryQuantity}
+            </if>
+            <if test="productDescription != null and productDescription != ''">
+                and product_description = #{productDescription}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="datelineUpdated != null">
+                and dateline_updated = #{datelineUpdated}
+            </if>
+            <if test="isRecommend != null">
+                and is_recommend = #{isRecommend}
+            </if>
+            <if test="isHot != null">
+                and is_hot = #{isHot}
+            </if>
+            <if test="isNew != null">
+                and is_new = #{isNew}
+            </if>
+            <if test="isSelling != null">
+                and is_selling = #{isSelling}
+            </if>
+            <if test="sortId != null">
+                and sort_id = #{sortId}
+            </if>
+            <if test="isTrash != null">
+                and is_trash = #{isTrash}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxtframework.nxt_product(category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash)
+        values (#{categoryId}, #{brandId}, #{productName}, #{productSubtitle}, #{dealQuantityMin}, #{dealQuantityMax}, #{freeShipping}, #{deliveryConfigId}, #{itemNo}, #{withSku}, #{price}, #{priceDiscount}, #{inventoryQuantity}, #{productDescription}, #{datelineCreate}, #{datelineUpdated}, #{isRecommend}, #{isHot}, #{isNew}, #{isSelling}, #{sortId}, #{isTrash})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxtframework.nxt_product
+        <set>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            <if test="brandId != null">
+                brand_id = #{brandId},
+            </if>
+            <if test="productName != null and productName != ''">
+                product_name = #{productName},
+            </if>
+            <if test="productSubtitle != null and productSubtitle != ''">
+                product_subtitle = #{productSubtitle},
+            </if>
+            <if test="dealQuantityMin != null">
+                deal_quantity_min = #{dealQuantityMin},
+            </if>
+            <if test="dealQuantityMax != null">
+                deal_quantity_max = #{dealQuantityMax},
+            </if>
+            <if test="freeShipping != null">
+                free_shipping = #{freeShipping},
+            </if>
+            <if test="deliveryConfigId != null">
+                delivery_config_id = #{deliveryConfigId},
+            </if>
+            <if test="itemNo != null and itemNo != ''">
+                item_no = #{itemNo},
+            </if>
+            <if test="withSku != null">
+                with_sku = #{withSku},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="priceDiscount != null">
+                price_discount = #{priceDiscount},
+            </if>
+            <if test="inventoryQuantity != null">
+                inventory_quantity = #{inventoryQuantity},
+            </if>
+            <if test="productDescription != null and productDescription != ''">
+                product_description = #{productDescription},
+            </if>
+            <if test="datelineCreate != null">
+                dateline_create = #{datelineCreate},
+            </if>
+            <if test="datelineUpdated != null">
+                dateline_updated = #{datelineUpdated},
+            </if>
+            <if test="isRecommend != null">
+                is_recommend = #{isRecommend},
+            </if>
+            <if test="isHot != null">
+                is_hot = #{isHot},
+            </if>
+            <if test="isNew != null">
+                is_new = #{isNew},
+            </if>
+            <if test="isSelling != null">
+                is_selling = #{isSelling},
+            </if>
+            <if test="sortId != null">
+                sort_id = #{sortId},
+            </if>
+            <if test="isTrash != null">
+                is_trash = #{isTrash},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxt_product where id = #{id}
+    </delete>
+
+
+    <!--通过实体作为筛选条件查询（且字符串字段作为搜索关键词）-->
+    <select id="searchQueryAllByMap" parameterType="map" resultMap="BaseResultMap">
+        select
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash
+        from nxt_product
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="brandId != null">
+                and brand_id = #{brandId}
+            </if>
+            <if test="productName != null and productName != ''">
+                and product_name like #{productName}
+            </if>
+            <if test="productSubtitle != null and productSubtitle != ''">
+                and product_subtitle = #{productSubtitle}
+            </if>
+            <if test="dealQuantityMin != null">
+                and deal_quantity_min = #{dealQuantityMin}
+            </if>
+            <if test="dealQuantityMax != null">
+                and deal_quantity_max = #{dealQuantityMax}
+            </if>
+            <if test="freeShipping != null">
+                and free_shipping = #{freeShipping}
+            </if>
+            <if test="deliveryConfigId != null">
+                and delivery_config_id = #{deliveryConfigId}
+            </if>
+            <if test="itemNo != null and itemNo != ''">
+                and item_no = #{itemNo}
+            </if>
+            <if test="withSku != null">
+                and with_sku = #{withSku}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="priceDiscount != null">
+                and price_discount = #{priceDiscount}
+            </if>
+            <if test="inventoryQuantity != null">
+                and inventory_quantity = #{inventoryQuantity}
+            </if>
+            <if test="productDescription != null and productDescription != ''">
+                and product_description = #{productDescription}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="datelineUpdated != null">
+                and dateline_updated = #{datelineUpdated}
+            </if>
+            <if test="isRecommend != null">
+                and is_recommend = #{isRecommend}
+            </if>
+            <if test="isHot != null">
+                and is_hot = #{isHot}
+            </if>
+            <if test="isNew != null">
+                and is_new = #{isNew}
+            </if>
+            <if test="isSelling != null">
+                and is_selling = #{isSelling}
+            </if>
+            <if test="sortId != null">
+                and sort_id = #{sortId}
+            </if>
+            <if test="isTrash != null">
+                and is_trash = #{isTrash}
+            </if>
+        </where>
+        order by is_recommend desc, sort_id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--统计：通过实体作为筛选条件查询（且字符串字段作为搜索关键词）-->
+    <select id="countSearchQueryAllByMap" parameterType="map" resultType="Long">
+        select
+        count(*)
+        from nxt_product
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="brandId != null">
+                and brand_id = #{brandId}
+            </if>
+            <if test="productName != null and productName != ''">
+                and product_name like #{productName}
+            </if>
+            <if test="productSubtitle != null and productSubtitle != ''">
+                and product_subtitle = #{productSubtitle}
+            </if>
+            <if test="dealQuantityMin != null">
+                and deal_quantity_min = #{dealQuantityMin}
+            </if>
+            <if test="dealQuantityMax != null">
+                and deal_quantity_max = #{dealQuantityMax}
+            </if>
+            <if test="freeShipping != null">
+                and free_shipping = #{freeShipping}
+            </if>
+            <if test="deliveryConfigId != null">
+                and delivery_config_id = #{deliveryConfigId}
+            </if>
+            <if test="itemNo != null and itemNo != ''">
+                and item_no = #{itemNo}
+            </if>
+            <if test="withSku != null">
+                and with_sku = #{withSku}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="priceDiscount != null">
+                and price_discount = #{priceDiscount}
+            </if>
+            <if test="inventoryQuantity != null">
+                and inventory_quantity = #{inventoryQuantity}
+            </if>
+            <if test="productDescription != null and productDescription != ''">
+                and product_description = #{productDescription}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="datelineUpdated != null">
+                and dateline_updated = #{datelineUpdated}
+            </if>
+            <if test="isRecommend != null">
+                and is_recommend = #{isRecommend}
+            </if>
+            <if test="isHot != null">
+                and is_hot = #{isHot}
+            </if>
+            <if test="isNew != null">
+                and is_new = #{isNew}
+            </if>
+            <if test="isSelling != null">
+                and is_selling = #{isSelling}
+            </if>
+            <if test="sortId != null">
+                and sort_id = #{sortId}
+            </if>
+            <if test="isTrash != null">
+                and is_trash = #{isTrash}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtDeliveryConfigItemDao">
+
+    <resultMap id="BaseResultMap" type="com.newxton.nxtframework.entity.NxtDeliveryConfigItem">
+        <!--@Table nxt_delivery_config_item-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="deliveryConfigId" column="delivery_config_id" jdbcType="INTEGER"/>
+        <result property="billableQuantity" column="billable_quantity" jdbcType="INTEGER"/>
+        <result property="billablePrice" column="billable_price" jdbcType="INTEGER"/>
+        <result property="additionQuantity" column="addition_quantity" jdbcType="INTEGER"/>
+        <result property="additionPrice" column="addition_price" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, delivery_config_id, billable_quantity, billable_price, addition_quantity, addition_price
+        from nxt_delivery_config_item
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, delivery_config_id, billable_quantity, billable_price, addition_quantity, addition_price
+        from nxt_delivery_config_item
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, delivery_config_id, billable_quantity, billable_price, addition_quantity, addition_price
+        from nxt_delivery_config_item
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="deliveryConfigId != null">
+                and delivery_config_id = #{deliveryConfigId}
+            </if>
+            <if test="billableQuantity != null">
+                and billable_quantity = #{billableQuantity}
+            </if>
+            <if test="billablePrice != null">
+                and billable_price = #{billablePrice}
+            </if>
+            <if test="additionQuantity != null">
+                and addition_quantity = #{additionQuantity}
+            </if>
+            <if test="additionPrice != null">
+                and addition_price = #{additionPrice}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_delivery_config_item(delivery_config_id, billable_quantity, billable_price, addition_quantity, addition_price)
+        values (#{deliveryConfigId}, #{billableQuantity}, #{billablePrice}, #{additionQuantity}, #{additionPrice})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxt_delivery_config_item
+        <set>
+            <if test="deliveryConfigId != null">
+                delivery_config_id = #{deliveryConfigId},
+            </if>
+            <if test="billableQuantity != null">
+                billable_quantity = #{billableQuantity},
+            </if>
+            <if test="billablePrice != null">
+                billable_price = #{billablePrice},
+            </if>
+            <if test="additionQuantity != null">
+                addition_quantity = #{additionQuantity},
+            </if>
+            <if test="additionPrice != null">
+                addition_price = #{additionPrice},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxt_delivery_config_item where id = #{id}
+    </delete>
+
+    <delete id="deleteByIdSet">
+        delete from nxt_delivery_config_item
+        WHERE id IN
+        <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

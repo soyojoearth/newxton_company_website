@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtProductSkuValuePriceEtcDao">
+
+    <resultMap id="BaseResultMap" type="com.newxton.nxtframework.entity.NxtProductSkuValuePriceEtc">
+        <!--@Table nxt_product_sku_value_price_etc-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="skuValueId1" column="sku_value_id_1" jdbcType="INTEGER"/>
+        <result property="skuValueId2" column="sku_value_id_2" jdbcType="INTEGER"/>
+        <result property="skuValueInventoryQuantity" column="sku_value_inventory_quantity" jdbcType="INTEGER"/>
+        <result property="skuValuePrice" column="sku_value_price" jdbcType="INTEGER"/>
+        <result property="skuValuePriceDiscount" column="sku_value_price_discount" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, sku_value_id_1, sku_value_id_2, sku_value_inventory_quantity, sku_value_price, sku_value_price_discount
+        from nxt_product_sku_value_price_etc
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, sku_value_id_1, sku_value_id_2, sku_value_inventory_quantity, sku_value_price, sku_value_price_discount
+        from nxt_product_sku_value_price_etc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, sku_value_id_1, sku_value_id_2, sku_value_inventory_quantity, sku_value_price, sku_value_price_discount
+        from nxt_product_sku_value_price_etc
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="skuValueId1 != null">
+                and sku_value_id_1 = #{skuValueId1}
+            </if>
+            <if test="skuValueId2 != null">
+                and sku_value_id_2 = #{skuValueId2}
+            </if>
+            <if test="skuValueInventoryQuantity != null">
+                and sku_value_inventory_quantity = #{skuValueInventoryQuantity}
+            </if>
+            <if test="skuValuePrice != null">
+                and sku_value_price = #{skuValuePrice}
+            </if>
+            <if test="skuValuePriceDiscount != null">
+                and sku_value_price_discount = #{skuValuePriceDiscount}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByValueIdSet" resultMap="BaseResultMap">
+        select
+        id, sku_value_id_1, sku_value_id_2, sku_value_inventory_quantity, sku_value_price, sku_value_price_discount
+        from nxt_product_sku_value_price_etc
+        WHERE sku_value_id_1 IN
+        <foreach collection="valueIdList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        OR sku_value_id_2 IN
+        <foreach collection="valueIdList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_product_sku_value_price_etc(sku_value_id_1, sku_value_id_2, sku_value_inventory_quantity, sku_value_price, sku_value_price_discount)
+        values (#{skuValueId1}, #{skuValueId2}, #{skuValueInventoryQuantity}, #{skuValuePrice}, #{skuValuePriceDiscount})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxt_product_sku_value_price_etc
+        <set>
+            <if test="skuValueId1 != null">
+                sku_value_id_1 = #{skuValueId1},
+            </if>
+            <if test="skuValueId2 != null">
+                sku_value_id_2 = #{skuValueId2},
+            </if>
+            <if test="skuValueInventoryQuantity != null">
+                sku_value_inventory_quantity = #{skuValueInventoryQuantity},
+            </if>
+            <if test="skuValuePrice != null">
+                sku_value_price = #{skuValuePrice},
+            </if>
+            <if test="skuValuePriceDiscount != null">
+                sku_value_price_discount = #{skuValuePriceDiscount},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxt_product_sku_value_price_etc where id = #{id}
+    </delete>
+
+    <select id="deleteByValueIdSet">
+        delete from nxt_product_sku_value_price_etc
+        WHERE sku_value_id_1 IN
+        <foreach collection="valueIdList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        OR sku_value_id_2 IN
+        <foreach collection="valueIdList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>
