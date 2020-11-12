@@ -34,6 +34,8 @@ typora-copy-images-to: ./gitbook_resource
 
 2、Api接口文档：请clone项目后打开 document/nxtframework_api.html
 
+3、数据库结构模型：请clone项目后打开document/nxtframework_db_model.mwb（使用Mysql Workbench 8.0打开）
+
 
 
 #### Demo：
