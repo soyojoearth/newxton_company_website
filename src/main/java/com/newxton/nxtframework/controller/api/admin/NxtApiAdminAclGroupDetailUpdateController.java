@@ -1,16 +1,14 @@
 package com.newxton.nxtframework.controller.api.admin;
 
-import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
 import com.newxton.nxtframework.component.NxtAclComponent;
 import com.newxton.nxtframework.entity.NxtAclGroup;
 import com.newxton.nxtframework.entity.NxtAclGroupAction;
+import com.newxton.nxtframework.model.struct.NxtStructAclGroup;
 import com.newxton.nxtframework.service.NxtAclGroupActionService;
 import com.newxton.nxtframework.service.NxtAclGroupService;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -34,12 +32,17 @@ public class NxtApiAdminAclGroupDetailUpdateController {
 
     @Transactional
     @RequestMapping(value = "/api/admin/acl_group_detail_update", method = RequestMethod.POST)
-    public Map<String, Object> index(
-            @RequestParam(value = "group_id", required = false) Long groupId,
-            @RequestParam(value = "group_name", required = false) String groupName,
-            @RequestParam(value = "group_remark", required = false) String groupRemark,
-            @RequestParam(value = "group_action_list", required = false) String groupActionList
-    ) {
+    public Map<String, Object> index(@RequestBody String json) {
+
+        Gson gson = new Gson();
+
+        NxtStructAclGroup nxtStructAclGroup = gson.fromJson(json,NxtStructAclGroup.class);
+
+        Long groupId = nxtStructAclGroup.getId();
+        String groupName = nxtStructAclGroup.getGroupName();
+        String groupRemark = nxtStructAclGroup.getGroupRemark();
+
+        List<Long> groupActionList = nxtStructAclGroup.getGroupActionList();
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
@@ -50,19 +53,6 @@ public class NxtApiAdminAclGroupDetailUpdateController {
             result.put("message", "参数错误");
             return result;
         }
-
-        List<Long> actionIdListUpdate = new ArrayList<>();
-
-        if (groupActionList != null) {
-            try {
-                actionIdListUpdate = JSON.parseArray(groupActionList).toJavaList(Long.class);
-            } catch (Exception e) {
-                result.put("status", 52);
-                result.put("message", "参数错误:group_action_list");
-                return result;
-            }
-        }
-
 
         NxtAclGroup nxtAclGroup = nxtAclGroupService.queryById(groupId);
 
@@ -98,13 +88,13 @@ public class NxtApiAdminAclGroupDetailUpdateController {
         //需要添加的actionId
         ArrayList<Long> listActionIdAdd = new ArrayList<>();
 
-        for (Long actionIdUpdate :
-                actionIdListUpdate) {
-            if (!actionIdSet.contains(actionIdUpdate)) {
-                listActionIdAdd.add(actionIdUpdate);
+        for (Long actionId :
+                groupActionList) {
+            if (!actionIdSet.contains(actionId)) {
+                listActionIdAdd.add(actionId);
             }
             else {
-                actionIdSet.remove(actionIdUpdate);
+                actionIdSet.remove(actionId);
             }
         }
 

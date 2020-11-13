@@ -1,16 +1,14 @@
 package com.newxton.nxtframework.controller.api.admin;
 
-import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
 import com.newxton.nxtframework.component.NxtAclComponent;
 import com.newxton.nxtframework.entity.NxtAclRole;
 import com.newxton.nxtframework.entity.NxtAclRoleGroup;
+import com.newxton.nxtframework.model.struct.NxtStructAclRole;
 import com.newxton.nxtframework.service.NxtAclRoleGroupService;
 import com.newxton.nxtframework.service.NxtAclRoleService;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -34,12 +32,17 @@ public class NxtApiAdminAclRoleDetailUpdateController {
 
     @Transactional
     @RequestMapping(value = "/api/admin/acl_role_detail_update", method = RequestMethod.POST)
-    public Map<String, Object> index(
-            @RequestParam(value = "role_id", required = false) Long roleId,
-            @RequestParam(value = "role_name", required = false) String roleName,
-            @RequestParam(value = "role_remark", required = false) String roleRemark,
-            @RequestParam(value = "role_group_list", required = false) String roleGroupList
-    ) {
+    public Map<String, Object> index(@RequestBody String json) {
+
+        Gson gson = new Gson();
+
+        NxtStructAclRole nxtStructAclRole = gson.fromJson(json,NxtStructAclRole.class);
+
+        Long roleId = nxtStructAclRole.getId();
+        String roleName = nxtStructAclRole.getRoleName();
+        String roleRemark = nxtStructAclRole.getRoleRemark();
+
+        List<Long> roleGroupList = nxtStructAclRole.getRoleGroupList();
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
@@ -49,18 +52,6 @@ public class NxtApiAdminAclRoleDetailUpdateController {
             result.put("status", 52);
             result.put("message", "参数错误");
             return result;
-        }
-
-        List<Long> groupIdListUpdate = new ArrayList<>();
-
-        if (roleGroupList != null) {
-            try {
-                groupIdListUpdate = JSON.parseArray(roleGroupList).toJavaList(Long.class);
-            } catch (Exception e) {
-                result.put("status", 52);
-                result.put("message", "参数错误:role_group_list");
-                return result;
-            }
         }
 
 
@@ -98,13 +89,13 @@ public class NxtApiAdminAclRoleDetailUpdateController {
         //需要添加的groupId
         ArrayList<Long> listGroupIdAdd = new ArrayList<>();
 
-        for (Long groupIdUpdate :
-                groupIdListUpdate) {
-            if (!groupIdSet.contains(groupIdUpdate)) {
-                listGroupIdAdd.add(groupIdUpdate);
+        for (Long groupId :
+                roleGroupList) {
+            if (!groupIdSet.contains(groupId)) {
+                listGroupIdAdd.add(groupId);
             }
             else {
-                groupIdSet.remove(groupIdUpdate);
+                groupIdSet.remove(groupId);
             }
         }
 

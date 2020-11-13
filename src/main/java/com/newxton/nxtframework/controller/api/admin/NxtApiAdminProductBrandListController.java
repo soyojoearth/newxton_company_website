@@ -68,7 +68,7 @@ public class NxtApiAdminProductBrandListController {
             NxtStructProductBrand nxtStructProductBrand = new NxtStructProductBrand();
             nxtStructProductBrand.setId(item.getId());
             nxtStructProductBrand.setBrandName(item.getBrandName());
-            nxtStructProductBrand.setUploadFileId(item.getId());
+            nxtStructProductBrand.setUploadFileId(item.getUploadfileId());
 
             NxtUploadfile nxtUploadfile = mapFileIdToItem.get(item.getUploadfileId());
 

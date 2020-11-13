@@ -56,7 +56,7 @@ public class NxtUploadImageComponent {
     }
 
     private String getOssQiniuDomain(){
-        return nxtGlobalSettingComponent.getSettingValueInCache("oss_qiniuDomain");
+        return nxtGlobalSettingComponent.getSettingValueInCache("ossQiniuDomain");
     }
 
     /**
@@ -162,6 +162,9 @@ public class NxtUploadImageComponent {
      * @return
      */
     public String checkHtmlAndReplaceImageUrlForSave(String contentHTML){
+        if (contentHTML == null){
+            return contentHTML;
+        }
         contentHTML = contentHTML.replace(this.getOssQiniuDomain(),"http://newxton-image-domain");
         return contentHTML;
     }

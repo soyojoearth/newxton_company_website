@@ -26,7 +26,9 @@ public class NxtApiAdminProductBrandDeleteController {
     private NxtProductService nxtProductService;
 
     @RequestMapping(value = "/api/admin/product_brand/delete", method = RequestMethod.POST)
-    public Map<String, Object> index(@RequestParam(value = "id", required=false) Long id) {
+    public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
+
+        Long id = jsonParam.getLong("id");
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);

@@ -139,7 +139,7 @@ public class NxtApiNormalNewsListController {
 
             }
             else {
-                firstPictureUrl = nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForDisplay("/public_pic/image_empty.png");
+                firstPictureUrl = nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForDisplay("/common/images/empty.png");
             }
 
             Map<String, Object> item = new HashMap<>();

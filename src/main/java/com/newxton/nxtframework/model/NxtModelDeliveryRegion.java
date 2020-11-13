@@ -28,7 +28,9 @@ public class NxtModelDeliveryRegion {
         Long id = jsonParam.getLong("id");
         String regionName = jsonParam.getString("regionName");
         Long regionPid = jsonParam.getLong("regionPid");
-        Long sortId = jsonParam.getLong("sortId");
+        if (regionPid == null){
+            regionPid = 0L;
+        }
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
