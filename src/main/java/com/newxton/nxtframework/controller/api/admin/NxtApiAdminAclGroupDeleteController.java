@@ -1,13 +1,11 @@
 package com.newxton.nxtframework.controller.api.admin;
 
+import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.component.NxtAclComponent;
 import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.service.*;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -36,7 +34,9 @@ public class NxtApiAdminAclGroupDeleteController {
 
     @Transactional
     @RequestMapping(value = "/api/admin/acl_group_delete", method = RequestMethod.POST)
-    public Map<String, Object> index(@RequestParam(value = "group_id", required = false) Long groupId) {
+    public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
+
+        Long groupId = jsonParam.getLong("id");
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);

@@ -1,15 +1,13 @@
 package com.newxton.nxtframework.controller.api.admin;
 
+import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.entity.NxtAclGroup;
 import com.newxton.nxtframework.entity.NxtAclRole;
 import com.newxton.nxtframework.entity.NxtAclRoleGroup;
 import com.newxton.nxtframework.service.NxtAclGroupService;
 import com.newxton.nxtframework.service.NxtAclRoleGroupService;
 import com.newxton.nxtframework.service.NxtAclRoleService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -32,7 +30,9 @@ public class NxtApiAdminAclRoleDetailController {
     private NxtAclGroupService nxtAclGroupService;
 
     @RequestMapping(value = "/api/admin/acl_role_detail", method = RequestMethod.POST)
-    public Map<String, Object> index(@RequestParam(value = "role_id", required = false) Long roleId) {
+    public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
+
+        Long roleId = jsonParam.getLong("id");
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
