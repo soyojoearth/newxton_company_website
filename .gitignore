@@ -2,6 +2,7 @@
 HELP.md
 mysql/
 target/
+public_pic/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
