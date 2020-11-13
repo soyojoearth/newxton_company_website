@@ -32,13 +32,34 @@ public class NxtGlobalSettingComponent {
     private NxtCronjobService nxtCronjobService;
 
     /**
+     * 保存值
+     * @param key
+     * @param value
+     * @return
+     */
+    public NxtSetting saveSettingsValueByKey(String key, String value){
+        NxtSetting nxtSetting = nxtSettingService.queryBySettingKey(key);
+        if (nxtSetting == null){
+            nxtSetting = new NxtSetting();
+            nxtSetting.setSettingKey(key);
+            nxtSetting.setSettingValue(value);
+            nxtSettingService.insert(nxtSetting);
+        }
+        else {
+            nxtSetting.setSettingValue(value);
+            nxtSettingService.update(nxtSetting);
+        }
+        return nxtSetting;
+    }
+
+    /**
      * 查询多个key的设置
      * @param keys
      * @return
      */
-    public Map<String,Object> getSettingsByKeys(List<String> keys){
+    public Map<String,NxtSetting> getSettingsByKeys(List<String> keys){
         List<NxtSetting> nxtSettingList = nxtSettingService.selectByKeySet(keys);
-        Map<String,Object> resultMap = new HashMap<>();
+        Map<String,NxtSetting> resultMap = new HashMap<>();
         for (NxtSetting nxtSetting : nxtSettingList) {
             resultMap.put(nxtSetting.getSettingKey(),nxtSetting);
         }
