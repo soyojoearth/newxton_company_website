@@ -101,9 +101,12 @@ public class ScheduledSystemInit {
             String salt = nxtUtilComponent.getRandomString(32);
             String pwdSalt = defaultAdminPwd+salt;
             String userPwd = DigestUtils.md5Hex(pwdSalt).toLowerCase();
+            String newToken = nxtUtilComponent.getRandomString(32);
+            newToken = DigestUtils.md5Hex(newToken).toLowerCase();
             adminUser = new NxtUser();
             adminUser.setUsername("admin");
             adminUser.setPassword(userPwd);
+            adminUser.setToken(newToken);
             adminUser.setSalt(salt);
             adminUser.setStatus(0);
             adminUser = nxtUserService.insert(adminUser);
