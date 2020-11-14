@@ -1,5 +1,6 @@
 package com.newxton.nxtframework;
 
+import com.github.yt.web.EnableYtWeb;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +14,7 @@ import java.util.TimeZone;
 @SpringBootApplication
 @EnableScheduling
 @EnableCaching
+@EnableYtWeb
 public class NxtframeworkApplication {
 
     public static void main(String[] args) {

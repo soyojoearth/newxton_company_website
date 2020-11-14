@@ -157,6 +157,12 @@
             <version>1.13.1</version>
         </dependency>
 
+        <!-- 自动包装返回体 参考： https://github.com/javawebers/yt/tree/master/yt-web  -->
+        <dependency>
+            <groupId>com.github.javawebers</groupId>
+            <artifactId>yt-web</artifactId>
+            <version>2.1.6</version>
+        </dependency>
 
     </dependencies>
 
