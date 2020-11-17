@@ -158,4 +158,32 @@ public class NxtProductServiceImpl implements NxtProductService {
     public boolean deleteById(Long id) {
         return this.nxtProductDao.deleteById(id) > 0;
     }
+
+    /**
+     * 前台获取热卖产品
+     * @param limit
+     * @return
+     */
+    public List<NxtProduct> queryAllHot(int limit){
+        return this.nxtProductDao.queryAllHot(limit);
+    }
+
+    /**
+     * 前台获取热卖产品
+     * @param limit
+     * @return
+     */
+    public List<NxtProduct> queryAllNew(int limit){
+        return this.nxtProductDao.queryAllNew(limit);
+    }
+
+    /**
+     * 前台获取热卖产品
+     * @param limit
+     * @return
+     */
+    public List<NxtProduct> queryAllRecommend(int limit){
+        return this.nxtProductDao.queryAllRecommend(limit);
+    }
+
 }

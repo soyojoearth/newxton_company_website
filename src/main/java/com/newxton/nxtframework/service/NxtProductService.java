@@ -118,4 +118,25 @@ public interface NxtProductService {
      */
     boolean deleteById(Long id);
 
+    /**
+     * 前台获取热卖产品
+     * @param limit
+     * @return
+     */
+    List<NxtProduct> queryAllHot(int limit);
+
+    /**
+     * 前台获取新品
+     * @param limit
+     * @return
+     */
+    List<NxtProduct> queryAllNew(int limit);
+
+    /**
+     * 前台获取推荐产品
+     * @param limit
+     * @return
+     */
+    List<NxtProduct> queryAllRecommend(int limit);
+
 }

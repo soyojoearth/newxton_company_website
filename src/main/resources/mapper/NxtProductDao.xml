@@ -502,4 +502,36 @@
         </where>
     </select>
 
+
+    <!--前台获取热卖产品列表-->
+    <select id="queryAllHot" resultMap="BaseResultMap">
+        select
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash
+        from nxt_product
+        where is_selling = 1 and is_trash = 0 and is_hot = 1
+        order by sort_id desc,dateline_updated desc
+        limit 0,#{limit}
+    </select>
+
+    <!--前台获取推荐产品列表-->
+    <select id="queryAllRecommend" resultMap="BaseResultMap">
+        select
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash
+        from nxt_product
+        where is_selling = 1 and is_trash = 0 and is_recommend = 1
+        order by sort_id desc,dateline_updated desc
+        limit 0,#{limit}
+    </select>
+
+    <!--前台获取新品产品列表-->
+    <select id="queryAllNew" resultMap="BaseResultMap">
+        select
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash
+        from nxt_product
+        where is_selling = 1 and is_trash = 0 and is_new = 1
+        order by sort_id desc,dateline_updated desc
+        limit 0,#{limit}
+    </select>
+
+
 </mapper>

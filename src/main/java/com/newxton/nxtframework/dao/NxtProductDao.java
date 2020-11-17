@@ -128,4 +128,24 @@ public interface NxtProductDao {
      */
     int deleteById(Long id);
 
+    /**
+     * 前台获取热卖产品
+     * @param limit
+     * @return
+     */
+    List<NxtProduct> queryAllHot(@Param("limit") int limit);
+
+    /**
+     * 前台获取热卖产品
+     * @param limit
+     * @return
+     */
+    List<NxtProduct> queryAllNew(@Param("limit") int limit);
+
+    /**
+     * 前台获取热卖产品
+     * @param limit
+     * @return
+     */
+    List<NxtProduct> queryAllRecommend(@Param("limit") int limit);
 }
