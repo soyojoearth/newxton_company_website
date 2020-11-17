@@ -44,6 +44,9 @@ public class ScheduledSystemInit {
     @Resource
     private NxtWebPageService nxtWebPageService;
 
+    @Resource
+    private NxtBannerService nxtBannerService;
+
     @Scheduled(initialDelay = 1000, fixedRate = Long.MAX_VALUE)
     public void exec() {
 
@@ -55,6 +58,9 @@ public class ScheduledSystemInit {
 
         //检查&初始化默认系统配置
         this.checkAndInitSystemConfig();
+
+        //检查&初始化默认系统配置
+        this.checkAndInitBannerData();
 
     }
 
@@ -273,5 +279,23 @@ public class ScheduledSystemInit {
         }
 
     }
+
+    private void checkAndInitBannerData(){
+
+       List<NxtBanner> nxtBannerList = nxtBannerService.queryAll(new NxtBanner());
+
+       if (nxtBannerList.size() == 0){
+
+           NxtBanner nxtBanner = new NxtBanner();
+           nxtBanner.setLocationName("首页");
+           nxtBanner.setClickUrl("#");
+           nxtBanner.setUploadfileId(1L);
+
+           nxtBannerService.insert(nxtBanner);
+
+       }
+
+    }
+
 
 }
