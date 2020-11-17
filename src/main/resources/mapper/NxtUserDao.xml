@@ -10,6 +10,7 @@
         <result property="salt" column="salt" jdbcType="VARCHAR"/>
         <result property="token" column="token" jdbcType="VARCHAR"/>
         <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="inviteesCount" column="invitees_count" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--通过username查询单个-->
@@ -65,8 +66,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_user(username, password, salt, token, status)
-        values (#{username}, #{password}, #{salt}, #{token}, #{status})
+        insert into nxt_user(username, password, salt, token, status, phone, email, inviter_user_id)
+        values (#{username}, #{password}, #{salt}, #{token}, #{status}, #{phone}, #{email}, #{inviterUserId})
     </insert>
 
     <!--通过主键修改数据-->
@@ -88,6 +89,9 @@
             <if test="status != null">
                 status = #{status},
             </if>
+            <if test="inviteesCount != null">
+                invitees_count = #{inviteesCount},
+            </if>
         </set>
         where id = #{id}
     </update>
@@ -97,4 +101,12 @@
         delete from nxt_user where id = #{id}
     </delete>
 
+
+    <!--通过inviteCode查询单个-->
+    <select id="queryByInviteCode" resultMap="BaseResultMap">
+        select
+          id, username, password, salt, token, status, invitees_count
+        from nxt_user
+        where invite_code = #{inviteCode}
+    </select>
 </mapper>
