@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtTransactionDao">
+
+    <resultMap type="com.newxton.nxtframework.entity.NxtTransaction" id="NxtTransactionMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="amount" column="amount" jdbcType="INTEGER"/>
+        <result property="dateline" column="dateline" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="outerId" column="outer_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="NxtTransactionMap">
+        select
+          id, user_id, amount, dateline, type, outer_id
+        from nxtframework.nxt_transaction
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="NxtTransactionMap">
+        select
+          id, user_id, amount, dateline, type, outer_id
+        from nxtframework.nxt_transaction
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="NxtTransactionMap">
+        select
+        id, user_id, amount, dateline, type, outer_id
+        from nxtframework.nxt_transaction
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="amount != null">
+                and amount = #{amount}
+            </if>
+            <if test="dateline != null">
+                and dateline = #{dateline}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="outerId != null">
+                and outer_id = #{outerId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxtframework.nxt_transaction(user_id, amount, dateline, type, outer_id)
+        values (#{userId}, #{amount}, #{dateline}, #{type}, #{outerId})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxtframework.nxt_transaction(user_id, amount, dateline, type, outer_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.amount}, #{entity.dateline}, #{entity.type}, #{entity.outerId})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxtframework.nxt_transaction(user_id, amount, dateline, type, outer_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.amount}, #{entity.dateline}, #{entity.type}, #{entity.outerId})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id) , amount = values(amount) , dateline = values(dateline) , type = values(type) ,
+        outer_id = values(outer_id)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxtframework.nxt_transaction
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+            <if test="dateline != null">
+                dateline = #{dateline},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="outerId != null">
+                outer_id = #{outerId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxtframework.nxt_transaction where id = #{id}
+    </delete>
+
+</mapper>

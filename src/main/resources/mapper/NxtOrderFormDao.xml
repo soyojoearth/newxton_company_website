@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtOrderFormDao">
+
+    <resultMap type="com.newxton.nxtframework.entity.NxtOrderForm" id="NxtOrderFormMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="datelineCreate" column="dateline_create" jdbcType="INTEGER"/>
+        <result property="serialNum" column="serial_num" jdbcType="VARCHAR"/>
+        <result property="amountInitial" column="amount_initial" jdbcType="INTEGER"/>
+        <result property="amountDiscount" column="amount_discount" jdbcType="INTEGER"/>
+        <result property="amountFinally" column="amount_finally" jdbcType="INTEGER"/>
+        <result property="deliveryAddress" column="delivery_address" jdbcType="VARCHAR"/>
+        <result property="deliveryPerson" column="delivery_person" jdbcType="VARCHAR"/>
+        <result property="deliveryPhone" column="delivery_phone" jdbcType="VARCHAR"/>
+        <result property="deliveryPostcode" column="delivery_postcode" jdbcType="VARCHAR"/>
+        <result property="deliveryRemark" column="delivery_remark" jdbcType="VARCHAR"/>
+        <result property="deliveryType" column="delivery_type" jdbcType="VARCHAR"/>
+        <result property="deliveryCost" column="delivery_cost" jdbcType="INTEGER"/>
+        <result property="statusPaid" column="status_paid" jdbcType="INTEGER"/>
+        <result property="statusDelivery" column="status_delivery" jdbcType="INTEGER"/>
+        <result property="statusReviews" column="status_reviews" jdbcType="INTEGER"/>
+        <result property="statusRefund" column="status_refund" jdbcType="INTEGER"/>
+        <result property="dealPlatform" column="deal_platform" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="NxtOrderFormMap">
+        select
+          id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_phone, delivery_postcode, delivery_remark, delivery_type, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform
+        from nxtframework.nxt_order_form
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="NxtOrderFormMap">
+        select
+          id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_phone, delivery_postcode, delivery_remark, delivery_type, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform
+        from nxtframework.nxt_order_form
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="NxtOrderFormMap">
+        select
+        id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address,
+        delivery_person, delivery_phone, delivery_postcode, delivery_remark, delivery_type, delivery_cost, status_paid,
+        status_delivery, status_reviews, status_refund, deal_platform
+        from nxtframework.nxt_order_form
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="serialNum != null and serialNum != ''">
+                and serial_num = #{serialNum}
+            </if>
+            <if test="amountInitial != null">
+                and amount_initial = #{amountInitial}
+            </if>
+            <if test="amountDiscount != null">
+                and amount_discount = #{amountDiscount}
+            </if>
+            <if test="amountFinally != null">
+                and amount_finally = #{amountFinally}
+            </if>
+            <if test="deliveryAddress != null and deliveryAddress != ''">
+                and delivery_address = #{deliveryAddress}
+            </if>
+            <if test="deliveryPerson != null and deliveryPerson != ''">
+                and delivery_person = #{deliveryPerson}
+            </if>
+            <if test="deliveryPhone != null and deliveryPhone != ''">
+                and delivery_phone = #{deliveryPhone}
+            </if>
+            <if test="deliveryPostcode != null and deliveryPostcode != ''">
+                and delivery_postcode = #{deliveryPostcode}
+            </if>
+            <if test="deliveryRemark != null and deliveryRemark != ''">
+                and delivery_remark = #{deliveryRemark}
+            </if>
+            <if test="deliveryType != null and deliveryType != ''">
+                and delivery_type = #{deliveryType}
+            </if>
+            <if test="deliveryCost != null">
+                and delivery_cost = #{deliveryCost}
+            </if>
+            <if test="statusPaid != null">
+                and status_paid = #{statusPaid}
+            </if>
+            <if test="statusDelivery != null">
+                and status_delivery = #{statusDelivery}
+            </if>
+            <if test="statusReviews != null">
+                and status_reviews = #{statusReviews}
+            </if>
+            <if test="statusRefund != null">
+                and status_refund = #{statusRefund}
+            </if>
+            <if test="dealPlatform != null">
+                and deal_platform = #{dealPlatform}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxtframework.nxt_order_form(user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_phone, delivery_postcode, delivery_remark, delivery_type, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform)
+        values (#{userId}, #{datelineCreate}, #{serialNum}, #{amountInitial}, #{amountDiscount}, #{amountFinally}, #{deliveryAddress}, #{deliveryPerson}, #{deliveryPhone}, #{deliveryPostcode}, #{deliveryRemark}, #{deliveryType}, #{deliveryCost}, #{statusPaid}, #{statusDelivery}, #{statusReviews}, #{statusRefund}, #{dealPlatform})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxtframework.nxt_order_form(user_id, dateline_create, serial_num, amount_initial, amount_discount,
+        amount_finally, delivery_address, delivery_person, delivery_phone, delivery_postcode, delivery_remark,
+        delivery_type, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.datelineCreate}, #{entity.serialNum}, #{entity.amountInitial},
+            #{entity.amountDiscount}, #{entity.amountFinally}, #{entity.deliveryAddress}, #{entity.deliveryPerson},
+            #{entity.deliveryPhone}, #{entity.deliveryPostcode}, #{entity.deliveryRemark}, #{entity.deliveryType},
+            #{entity.deliveryCost}, #{entity.statusPaid}, #{entity.statusDelivery}, #{entity.statusReviews},
+            #{entity.statusRefund}, #{entity.dealPlatform})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxtframework.nxt_order_form(user_id, dateline_create, serial_num, amount_initial, amount_discount,
+        amount_finally, delivery_address, delivery_person, delivery_phone, delivery_postcode, delivery_remark,
+        delivery_type, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.datelineCreate}, #{entity.serialNum}, #{entity.amountInitial},
+            #{entity.amountDiscount}, #{entity.amountFinally}, #{entity.deliveryAddress}, #{entity.deliveryPerson},
+            #{entity.deliveryPhone}, #{entity.deliveryPostcode}, #{entity.deliveryRemark}, #{entity.deliveryType},
+            #{entity.deliveryCost}, #{entity.statusPaid}, #{entity.statusDelivery}, #{entity.statusReviews},
+            #{entity.statusRefund}, #{entity.dealPlatform})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id) , dateline_create = values(dateline_create) , serial_num = values(serial_num) ,
+        amount_initial = values(amount_initial) , amount_discount = values(amount_discount) , amount_finally =
+        values(amount_finally) , delivery_address = values(delivery_address) , delivery_person = values(delivery_person)
+        , delivery_phone = values(delivery_phone) , delivery_postcode = values(delivery_postcode) , delivery_remark =
+        values(delivery_remark) , delivery_type = values(delivery_type) , delivery_cost = values(delivery_cost) ,
+        status_paid = values(status_paid) , status_delivery = values(status_delivery) , status_reviews =
+        values(status_reviews) , status_refund = values(status_refund) , deal_platform = values(deal_platform)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxtframework.nxt_order_form
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="datelineCreate != null">
+                dateline_create = #{datelineCreate},
+            </if>
+            <if test="serialNum != null and serialNum != ''">
+                serial_num = #{serialNum},
+            </if>
+            <if test="amountInitial != null">
+                amount_initial = #{amountInitial},
+            </if>
+            <if test="amountDiscount != null">
+                amount_discount = #{amountDiscount},
+            </if>
+            <if test="amountFinally != null">
+                amount_finally = #{amountFinally},
+            </if>
+            <if test="deliveryAddress != null and deliveryAddress != ''">
+                delivery_address = #{deliveryAddress},
+            </if>
+            <if test="deliveryPerson != null and deliveryPerson != ''">
+                delivery_person = #{deliveryPerson},
+            </if>
+            <if test="deliveryPhone != null and deliveryPhone != ''">
+                delivery_phone = #{deliveryPhone},
+            </if>
+            <if test="deliveryPostcode != null and deliveryPostcode != ''">
+                delivery_postcode = #{deliveryPostcode},
+            </if>
+            <if test="deliveryRemark != null and deliveryRemark != ''">
+                delivery_remark = #{deliveryRemark},
+            </if>
+            <if test="deliveryType != null and deliveryType != ''">
+                delivery_type = #{deliveryType},
+            </if>
+            <if test="deliveryCost != null">
+                delivery_cost = #{deliveryCost},
+            </if>
+            <if test="statusPaid != null">
+                status_paid = #{statusPaid},
+            </if>
+            <if test="statusDelivery != null">
+                status_delivery = #{statusDelivery},
+            </if>
+            <if test="statusReviews != null">
+                status_reviews = #{statusReviews},
+            </if>
+            <if test="statusRefund != null">
+                status_refund = #{statusRefund},
+            </if>
+            <if test="dealPlatform != null">
+                deal_platform = #{dealPlatform},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxtframework.nxt_order_form where id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtRechargeDao">
+
+    <resultMap type="com.newxton.nxtframework.entity.NxtRecharge" id="NxtRechargeMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="transactionId" column="transaction_id" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="platform" column="platform" jdbcType="INTEGER"/>
+        <result property="dateline" column="dateline" jdbcType="VARCHAR"/>
+        <result property="amount" column="amount" jdbcType="INTEGER"/>
+        <result property="notifyDateline" column="notify_dateline" jdbcType="INTEGER"/>
+        <result property="notifySerialNum" column="notify_serial_num" jdbcType="VARCHAR"/>
+        <result property="notifyData" column="notify_data" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="NxtRechargeMap">
+        select
+          id, user_id, transaction_id, status, platform, dateline, amount, notify_dateline, notify_serial_num, notify_data, remark
+        from nxtframework.nxt_recharge
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="NxtRechargeMap">
+        select
+          id, user_id, transaction_id, status, platform, dateline, amount, notify_dateline, notify_serial_num, notify_data, remark
+        from nxtframework.nxt_recharge
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="NxtRechargeMap">
+        select
+        id, user_id, transaction_id, status, platform, dateline, amount, notify_dateline, notify_serial_num,
+        notify_data, remark
+        from nxtframework.nxt_recharge
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="transactionId != null">
+                and transaction_id = #{transactionId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="platform != null">
+                and platform = #{platform}
+            </if>
+            <if test="dateline != null and dateline != ''">
+                and dateline = #{dateline}
+            </if>
+            <if test="amount != null">
+                and amount = #{amount}
+            </if>
+            <if test="notifyDateline != null">
+                and notify_dateline = #{notifyDateline}
+            </if>
+            <if test="notifySerialNum != null and notifySerialNum != ''">
+                and notify_serial_num = #{notifySerialNum}
+            </if>
+            <if test="notifyData != null and notifyData != ''">
+                and notify_data = #{notifyData}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxtframework.nxt_recharge(user_id, transaction_id, status, platform, dateline, amount, notify_dateline, notify_serial_num, notify_data, remark)
+        values (#{userId}, #{transactionId}, #{status}, #{platform}, #{dateline}, #{amount}, #{notifyDateline}, #{notifySerialNum}, #{notifyData}, #{remark})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxtframework.nxt_recharge(user_id, transaction_id, status, platform, dateline, amount,
+        notify_dateline, notify_serial_num, notify_data, remark)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.transactionId}, #{entity.status}, #{entity.platform}, #{entity.dateline},
+            #{entity.amount}, #{entity.notifyDateline}, #{entity.notifySerialNum}, #{entity.notifyData},
+            #{entity.remark})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxtframework.nxt_recharge(user_id, transaction_id, status, platform, dateline, amount,
+        notify_dateline, notify_serial_num, notify_data, remark)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.transactionId}, #{entity.status}, #{entity.platform}, #{entity.dateline},
+            #{entity.amount}, #{entity.notifyDateline}, #{entity.notifySerialNum}, #{entity.notifyData},
+            #{entity.remark})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id) , transaction_id = values(transaction_id) , status = values(status) , platform =
+        values(platform) , dateline = values(dateline) , amount = values(amount) , notify_dateline =
+        values(notify_dateline) , notify_serial_num = values(notify_serial_num) , notify_data = values(notify_data) ,
+        remark = values(remark)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxtframework.nxt_recharge
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="transactionId != null">
+                transaction_id = #{transactionId},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="platform != null">
+                platform = #{platform},
+            </if>
+            <if test="dateline != null and dateline != ''">
+                dateline = #{dateline},
+            </if>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+            <if test="notifyDateline != null">
+                notify_dateline = #{notifyDateline},
+            </if>
+            <if test="notifySerialNum != null and notifySerialNum != ''">
+                notify_serial_num = #{notifySerialNum},
+            </if>
+            <if test="notifyData != null and notifyData != ''">
+                notify_data = #{notifyData},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxtframework.nxt_recharge where id = #{id}
+    </delete>
+
+</mapper>

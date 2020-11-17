@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtCommissionDao">
+
+    <resultMap type="com.newxton.nxtframework.entity.NxtCommission" id="NxtCommissionMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="inviterLevel" column="inviter_level" jdbcType="INTEGER"/>
+        <result property="orderFormId" column="order_form_id" jdbcType="INTEGER"/>
+        <result property="orderFormProductId" column="order_form_product_id" jdbcType="INTEGER"/>
+        <result property="commissionTransferInId" column="commission_transfer_in_id" jdbcType="INTEGER"/>
+        <result property="commissionRate" column="commission_rate" jdbcType="INTEGER"/>
+        <result property="commissionAmount" column="commission_amount" jdbcType="VARCHAR"/>
+        <result property="datelineCreate" column="dateline_create" jdbcType="INTEGER"/>
+        <result property="datelineEnd" column="dateline_end" jdbcType="INTEGER"/>
+        <result property="dealStatus" column="deal_status" jdbcType="INTEGER"/>
+        <result property="isRefund" column="is_refund" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="NxtCommissionMap">
+        select
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, deal_status, is_refund
+        from nxtframework.nxt_commission
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="NxtCommissionMap">
+        select
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, deal_status, is_refund
+        from nxtframework.nxt_commission
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="NxtCommissionMap">
+        select
+        id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate,
+        commission_amount, dateline_create, dateline_end, deal_status, is_refund
+        from nxtframework.nxt_commission
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="inviterLevel != null">
+                and inviter_level = #{inviterLevel}
+            </if>
+            <if test="orderFormId != null">
+                and order_form_id = #{orderFormId}
+            </if>
+            <if test="orderFormProductId != null">
+                and order_form_product_id = #{orderFormProductId}
+            </if>
+            <if test="commissionTransferInId != null">
+                and commission_transfer_in_id = #{commissionTransferInId}
+            </if>
+            <if test="commissionRate != null">
+                and commission_rate = #{commissionRate}
+            </if>
+            <if test="commissionAmount != null and commissionAmount != ''">
+                and commission_amount = #{commissionAmount}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="datelineEnd != null">
+                and dateline_end = #{datelineEnd}
+            </if>
+            <if test="dealStatus != null">
+                and deal_status = #{dealStatus}
+            </if>
+            <if test="isRefund != null">
+                and is_refund = #{isRefund}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxtframework.nxt_commission(user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, deal_status, is_refund)
+        values (#{userId}, #{inviterLevel}, #{orderFormId}, #{orderFormProductId}, #{commissionTransferInId}, #{commissionRate}, #{commissionAmount}, #{datelineCreate}, #{datelineEnd}, #{dealStatus}, #{isRefund})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxtframework.nxt_commission(user_id, inviter_level, order_form_id, order_form_product_id,
+        commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, deal_status,
+        is_refund)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.inviterLevel}, #{entity.orderFormId}, #{entity.orderFormProductId},
+            #{entity.commissionTransferInId}, #{entity.commissionRate}, #{entity.commissionAmount},
+            #{entity.datelineCreate}, #{entity.datelineEnd}, #{entity.dealStatus}, #{entity.isRefund})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxtframework.nxt_commission(user_id, inviter_level, order_form_id, order_form_product_id,
+        commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, deal_status,
+        is_refund)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.inviterLevel}, #{entity.orderFormId}, #{entity.orderFormProductId},
+            #{entity.commissionTransferInId}, #{entity.commissionRate}, #{entity.commissionAmount},
+            #{entity.datelineCreate}, #{entity.datelineEnd}, #{entity.dealStatus}, #{entity.isRefund})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id) , inviter_level = values(inviter_level) , order_form_id = values(order_form_id) ,
+        order_form_product_id = values(order_form_product_id) , commission_transfer_in_id =
+        values(commission_transfer_in_id) , commission_rate = values(commission_rate) , commission_amount =
+        values(commission_amount) , dateline_create = values(dateline_create) , dateline_end = values(dateline_end) ,
+        deal_status = values(deal_status) , is_refund = values(is_refund)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxtframework.nxt_commission
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="inviterLevel != null">
+                inviter_level = #{inviterLevel},
+            </if>
+            <if test="orderFormId != null">
+                order_form_id = #{orderFormId},
+            </if>
+            <if test="orderFormProductId != null">
+                order_form_product_id = #{orderFormProductId},
+            </if>
+            <if test="commissionTransferInId != null">
+                commission_transfer_in_id = #{commissionTransferInId},
+            </if>
+            <if test="commissionRate != null">
+                commission_rate = #{commissionRate},
+            </if>
+            <if test="commissionAmount != null and commissionAmount != ''">
+                commission_amount = #{commissionAmount},
+            </if>
+            <if test="datelineCreate != null">
+                dateline_create = #{datelineCreate},
+            </if>
+            <if test="datelineEnd != null">
+                dateline_end = #{datelineEnd},
+            </if>
+            <if test="dealStatus != null">
+                deal_status = #{dealStatus},
+            </if>
+            <if test="isRefund != null">
+                is_refund = #{isRefund},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxtframework.nxt_commission where id = #{id}
+    </delete>
+
+</mapper>

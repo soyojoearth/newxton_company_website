@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtOrderFormLogDao">
+
+    <resultMap type="com.newxton.nxtframework.entity.NxtOrderFormLog" id="NxtOrderFormLogMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="orderFormId" column="order_form_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="isAdmin" column="is_admin" jdbcType="INTEGER"/>
+        <result property="dateline" column="dateline" jdbcType="INTEGER"/>
+        <result property="statusPaid" column="status_paid" jdbcType="INTEGER"/>
+        <result property="statusDelivery" column="status_delivery" jdbcType="INTEGER"/>
+        <result property="statusRefund" column="status_refund" jdbcType="INTEGER"/>
+        <result property="logName" column="log_name" jdbcType="VARCHAR"/>
+        <result property="logRemark" column="log_remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="NxtOrderFormLogMap">
+        select
+          id, order_form_id, user_id, is_admin, dateline, status_paid, status_delivery, status_refund, log_name, log_remark
+        from nxtframework.nxt_order_form_log
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="NxtOrderFormLogMap">
+        select
+          id, order_form_id, user_id, is_admin, dateline, status_paid, status_delivery, status_refund, log_name, log_remark
+        from nxtframework.nxt_order_form_log
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="NxtOrderFormLogMap">
+        select
+        id, order_form_id, user_id, is_admin, dateline, status_paid, status_delivery, status_refund, log_name,
+        log_remark
+        from nxtframework.nxt_order_form_log
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="orderFormId != null">
+                and order_form_id = #{orderFormId}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="isAdmin != null">
+                and is_admin = #{isAdmin}
+            </if>
+            <if test="dateline != null">
+                and dateline = #{dateline}
+            </if>
+            <if test="statusPaid != null">
+                and status_paid = #{statusPaid}
+            </if>
+            <if test="statusDelivery != null">
+                and status_delivery = #{statusDelivery}
+            </if>
+            <if test="statusRefund != null">
+                and status_refund = #{statusRefund}
+            </if>
+            <if test="logName != null and logName != ''">
+                and log_name = #{logName}
+            </if>
+            <if test="logRemark != null and logRemark != ''">
+                and log_remark = #{logRemark}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxtframework.nxt_order_form_log(order_form_id, user_id, is_admin, dateline, status_paid, status_delivery, status_refund, log_name, log_remark)
+        values (#{orderFormId}, #{userId}, #{isAdmin}, #{dateline}, #{statusPaid}, #{statusDelivery}, #{statusRefund}, #{logName}, #{logRemark})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxtframework.nxt_order_form_log(order_form_id, user_id, is_admin, dateline, status_paid,
+        status_delivery, status_refund, log_name, log_remark)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.orderFormId}, #{entity.userId}, #{entity.isAdmin}, #{entity.dateline}, #{entity.statusPaid},
+            #{entity.statusDelivery}, #{entity.statusRefund}, #{entity.logName}, #{entity.logRemark})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxtframework.nxt_order_form_log(order_form_id, user_id, is_admin, dateline, status_paid,
+        status_delivery, status_refund, log_name, log_remark)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.orderFormId}, #{entity.userId}, #{entity.isAdmin}, #{entity.dateline}, #{entity.statusPaid},
+            #{entity.statusDelivery}, #{entity.statusRefund}, #{entity.logName}, #{entity.logRemark})
+        </foreach>
+        on duplicate key update
+        order_form_id = values(order_form_id) , user_id = values(user_id) , is_admin = values(is_admin) , dateline =
+        values(dateline) , status_paid = values(status_paid) , status_delivery = values(status_delivery) , status_refund
+        = values(status_refund) , log_name = values(log_name) , log_remark = values(log_remark)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxtframework.nxt_order_form_log
+        <set>
+            <if test="orderFormId != null">
+                order_form_id = #{orderFormId},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="isAdmin != null">
+                is_admin = #{isAdmin},
+            </if>
+            <if test="dateline != null">
+                dateline = #{dateline},
+            </if>
+            <if test="statusPaid != null">
+                status_paid = #{statusPaid},
+            </if>
+            <if test="statusDelivery != null">
+                status_delivery = #{statusDelivery},
+            </if>
+            <if test="statusRefund != null">
+                status_refund = #{statusRefund},
+            </if>
+            <if test="logName != null and logName != ''">
+                log_name = #{logName},
+            </if>
+            <if test="logRemark != null and logRemark != ''">
+                log_remark = #{logRemark},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxtframework.nxt_order_form_log where id = #{id}
+    </delete>
+
+</mapper>
