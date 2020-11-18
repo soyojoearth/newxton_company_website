@@ -1,7 +1,8 @@
-package com.newxton.nxtframework.controller.api.admin;
+package com.newxton.nxtframework.controller.api.front;
 
 import com.google.gson.Gson;
-import com.newxton.nxtframework.model.NxModelShoppingCart;
+import com.newxton.nxtframework.model.struct.NxtStructShoppingCartItem;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +18,7 @@ import java.util.Map;
  * @copyright NxtFramework
  */
 @RestController
-public class NxtApiAdminShoppingCartAddController {
+public class NxtApiShoppingCartAddController {
 	
 	/* TODO 待用
 	 * @Resource private NxtProductService nxtProductService;
@@ -27,16 +28,15 @@ public class NxtApiAdminShoppingCartAddController {
 	 * @Resource private NxtProductPictureService nxtProductPictureService;
 	 */
 
-    @RequestMapping(value = "/api/admin/shopping_cart/add_product", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/shopping_cart/add_product", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestBody String json) {
     	// 检查条件guestToken,还是user_id
     	Gson gson = new Gson();
-    	NxModelShoppingCart shoppingCart = gson.fromJson(json,NxModelShoppingCart.class);
-    	if (shoppingCart.getGuestToken() == null) {
-    		this.processGuestShoppingCart();
-    	} else {
-    		this.processUserShoppingCart();
-    	}
+    	NxtStructShoppingCartItem shoppingCartItem = gson.fromJson(json, NxtStructShoppingCartItem.class);
+		/*
+		 * if (shoppingCart.getGuestToken() == null) { this.processGuestShoppingCart();
+		 * } else { this.processUserShoppingCart(); }
+		 */
     	
     	// 返回状态码
     	Map<String, Object> result = new HashMap<>();
