@@ -1,13 +1,11 @@
 package com.newxton.nxtframework.controller.api.front;
 
+import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.entity.NxtUser;
 import com.newxton.nxtframework.service.NxtUserService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -20,6 +18,7 @@ import java.util.regex.Pattern;
  * @author hexiao
  * @description 用户注册接口
  * @date 2020/11/17 15:06
+ * @copyright NxtFramework
  */
 @RestController
 public class NxtApiUserRegisterController {
@@ -29,11 +28,14 @@ public class NxtApiUserRegisterController {
 
 
     @RequestMapping(value = "/api/user/register", method = RequestMethod.POST)
-    public Map<String, Object> exec(@RequestParam(value = "username", required = false) String username,
-                                    @RequestParam(value = "password", required = false) String password,
-                                    @RequestParam(value = "inviterCode", required = false) String inviterCode,
-                                    @RequestParam(value = "phone", required = false) String phone,
-                                    @RequestParam(value = "email", required = false) String email) {
+    public Map<String, Object> exec(@RequestBody JSONObject jsonParam) {
+
+        String username = jsonParam.getString("username");
+        String password = jsonParam.getString("password");
+        String inviterCode = jsonParam.getString("inviterCode");
+        String phone = jsonParam.getString("phone");
+        String email = jsonParam.getString("email");
+
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
@@ -93,9 +95,14 @@ public class NxtApiUserRegisterController {
         String pwdSaltNew = password + saltNew;
         password = DigestUtils.md5Hex(pwdSaltNew).toLowerCase();
 
+        //token
+        String newToken = getRandomString(32);
+        newToken = DigestUtils.md5Hex(newToken).toLowerCase();
+
         newNxtUser.setUsername(username);
         newNxtUser.setPassword(password);
         newNxtUser.setSalt(saltNew);
+        newNxtUser.setToken(newToken);
         newNxtUser.setPhone(phone);
         newNxtUser.setEmail(email);
         newNxtUser.setStatus(0);
