@@ -18,6 +18,17 @@ import java.util.List;
 public class NxtShoppingCartServiceImpl implements NxtShoppingCartService {
     @Resource
     private NxtShoppingCartDao nxtShoppingCartDao;
+	
+	/**
+     * 通过userId查询
+     *
+     * @param userId 用户id
+     * @return 实例对象
+     */
+    @Override
+    public NxtShoppingCart queryByUserId(Long userId) {
+        return this.nxtShoppingCartDao.queryByUserId(userId);
+    }
 
     /**
      * 通过ID查询单条数据
