@@ -11,6 +11,15 @@ import java.util.List;
  * @since 2020-11-14 21:45:47
  */
 public interface NxtShoppingCartProductService {
+	
+	/**
+     * 通过shoppingCartId、productId查询单条数据
+     *
+     * @param shoppingCartId 购物车主键
+     * @param productId 产品主键
+     * @return 实例对象
+     */
+    NxtShoppingCartProduct queryByShoppingCartIdProductId(Long shoppingCartId, Long productId);
 
     /**
      * 通过ID查询单条数据
