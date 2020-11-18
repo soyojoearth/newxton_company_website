@@ -90,9 +90,9 @@ public class NxtApiShoppingCartDeleteController {
         }
         
         // 查询当前用户当前购物车产品信息
-        NxtShoppingCartProduct ShoppingCartProduct = nxtShoppingCartProductService.queryByShoppingCartIdProductId(shoppingCart.getId(), productId);
+        NxtShoppingCartProduct shoppingCartProduct = nxtShoppingCartProductService.queryByShoppingCartIdProductId(shoppingCart.getId(), productId);
         
-        if (ShoppingCartProduct == null) {
+        if (shoppingCartProduct == null) {
         	result.put("status", 100040);
             result.put("message", "当前用户:" + userId + "无此产品:" + productId + "记录");
             return result;
@@ -107,13 +107,13 @@ public class NxtApiShoppingCartDeleteController {
         }
         
         // 如果大于数据库的数量则删除此记录
-        if (quantity >= ShoppingCartProduct.getQuantity()) {
-        	nxtShoppingCartProductService.deleteById(ShoppingCartProduct.getId());
+        if (quantity >= shoppingCartProduct.getQuantity()) {
+        	nxtShoppingCartProductService.deleteById(shoppingCartProduct.getId());
         } else {
         	// 如果小于则更新数据库数量
-        	Long finalQuantity = ShoppingCartProduct.getQuantity() - quantity;
-        	ShoppingCartProduct.setQuantity(finalQuantity);
-        	nxtShoppingCartProductService.update(ShoppingCartProduct);
+        	Long finalQuantity = shoppingCartProduct.getQuantity() - quantity;
+        	shoppingCartProduct.setQuantity(finalQuantity);
+        	nxtShoppingCartProductService.update(shoppingCartProduct);
         }
         
         return result;
