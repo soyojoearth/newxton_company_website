@@ -1,7 +1,6 @@
 package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtShoppingCart;
-
 import java.util.List;
 
 /**
@@ -11,6 +10,14 @@ import java.util.List;
  * @since 2020-11-14 21:45:46
  */
 public interface NxtShoppingCartService {
+	
+	/**
+     * 通过userId查询
+     *
+     * @param userId 用户id
+     * @return 实例对象
+     */
+	NxtShoppingCart queryByUserId(Long userId);
 
     /**
      * 通过ID查询单条数据

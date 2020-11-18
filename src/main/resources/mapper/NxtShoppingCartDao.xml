@@ -7,6 +7,14 @@
         <result property="userId" column="user_id" jdbcType="INTEGER"/>
         <result property="token" column="token" jdbcType="VARCHAR"/>
     </resultMap>
+    
+    <!--查询单个-->
+    <select id="queryByUserId" resultMap="NxtShoppingCartMap">
+        select
+          id, user_id, token
+        from nxtframework.nxt_shopping_cart
+        where user_id = #{userId}
+    </select>
 
     <!--查询单个-->
     <select id="queryById" resultMap="NxtShoppingCartMap">
