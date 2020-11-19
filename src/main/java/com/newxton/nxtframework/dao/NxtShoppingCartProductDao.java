@@ -39,6 +39,13 @@ public interface NxtShoppingCartProductDao {
      */
     List<NxtShoppingCartProduct> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
 
+    /**
+     * 查询指定购物车内所有选中的产品
+     * @param shoppingCartId
+     * @return
+     */
+    List<NxtShoppingCartProduct> queryAllCheckedProductByShoppingCartId(Long shoppingCartId);
+
 
     /**
      * 通过实体作为筛选条件查询

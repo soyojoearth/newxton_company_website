@@ -36,18 +36,12 @@ public class NxtApiShoppingCartDeleteController {
     @RequestMapping(value = "/api/shopping_cart/del_product", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestHeader(value="user_id", required=false) Long userId, @RequestBody String json) {
     	Map<String, Object> result = new HashMap<>();
-    	result.put("status", 0);
-        result.put("message", "");
         
     	// 检查条件user_id有值，还是guestToken有值，如果都有值以user_id为主
     	Gson gson = new Gson();
     	NxtStructShoppingCartItem shoppingCartItem = gson.fromJson(json, NxtStructShoppingCartItem.class);
-    	
     	if (userId == null && (shoppingCartItem.getGuestToken() == null || shoppingCartItem.getGuestToken().equals(""))) {
-    		result.put("status", 100001);
-            result.put("message", "user_id、guestToken没传入参数值");
-            
-            return result;
+            return this.fail(result, 100001, "user_id、guestToken没传入参数值");
     	}
     	
     	if (userId != null) {
@@ -66,44 +60,31 @@ public class NxtApiShoppingCartDeleteController {
     private Map<String, Object> processUserShoppingCartDelProduct(Map<String, Object> result, Long userId, NxtStructShoppingCartItem shoppingCartItem) {
     	// 查询购物车
     	NxtShoppingCart shoppingCart = nxtShoppingCartService.queryByUserId(userId);
-
         if (shoppingCart == null) {
-            result.put("status", 100010);
-            result.put("message", "当前用户:" + userId + "无购物车记录");
-            return result;
+            return this.fail(result, 100010, "当前用户user_id:" + userId + "无购物车记录");
         }
         
         // 产品主键
         Long productId = null;
         try {
         	productId = shoppingCartItem.getProduct().getId();
-        	
         	if (productId == null) {
-        		result.put("status", 100030);
-                result.put("message", "当前用户:" + userId + "付入产品主键为家");
-                return result;
+                return this.fail(result, 100030, "当前用户user_id:" + userId + "传入产品主键为宽");
         	}
         } catch(Exception ex) {
-        	result.put("status", 100020);
-            result.put("message", "当前用户:" + userId + "付入产品信息有误");
-            return result;
+            return this.fail(result, 100020, "当前用户user_id:" + userId + "传入产品信息有误");
         }
         
         // 查询当前用户当前购物车产品信息
         NxtShoppingCartProduct shoppingCartProduct = nxtShoppingCartProductService.queryByShoppingCartIdProductId(shoppingCart.getId(), productId);
-        
-        if (shoppingCartProduct == null) {
-        	result.put("status", 100040);
-            result.put("message", "当前用户:" + userId + "无此产品:" + productId + "记录");
-            return result;
+        if (shoppingCartProduct == null) {            
+            return this.fail(result, 100040, "当前用户user_id:" + userId + "无此产品id:" + productId + "记录");
         }
         
         // 判读移除产品数量是否合法
         Long quantity = shoppingCartItem.getProduct().getQuantity();
         if (quantity == null) {
-        	result.put("status", 100050);
-            result.put("message", "当前用户:" + userId + "产品:" + productId + "移除数量:传入参数为空");
-            return result;
+            return this.fail(result, 100050, "当前用户user_id:" + userId + "产品id:" + productId + "移除数量:传入参数为空");
         }
         
         // 如果大于数据库的数量则删除此记录
@@ -116,7 +97,21 @@ public class NxtApiShoppingCartDeleteController {
         	nxtShoppingCartProductService.update(shoppingCartProduct);
         }
         
+        return this.success(result);
+    }
+    
+    private Map<String, Object> success(Map<String, Object> result) {
+    	result.put("status", 0);
+        result.put("message", "");
+        
         return result;
     }
+    
+    private Map<String, Object> fail(Map<String, Object> result, int statusCode, String statusMsg) {
+    	result.put("status", statusCode);
+        result.put("message", statusMsg);
+        
+        return result;
+    } 
 
 }

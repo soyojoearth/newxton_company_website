@@ -31,6 +31,16 @@ public class NxtUserLevelServiceImpl implements NxtUserLevelService {
     }
 
     /**
+     * 通过num查询单条数据
+     *
+     * @param num
+     * @return 实例对象
+     */
+    public NxtUserLevel queryByNum(Integer num){
+        return this.nxtUserLevelDao.queryByNum(num);
+    }
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置

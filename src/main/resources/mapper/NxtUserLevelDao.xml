@@ -18,6 +18,14 @@
         where id = #{id}
     </select>
 
+    <!--查询单个-->
+    <select id="queryByNum" resultMap="NxtUserLevelMap">
+        select
+          id, num, name, cost, discount
+        from nxtframework.nxt_user_level
+        where num = #{num}
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="NxtUserLevelMap">
         select

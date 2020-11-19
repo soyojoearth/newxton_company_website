@@ -39,6 +39,14 @@ public interface NxtShoppingCartProductService {
     List<NxtShoppingCartProduct> queryAllByLimit(int offset, int limit);
 
     /**
+     * 查询指定购物车内所有选中的产品
+     * @param shoppingCartId
+     * @return
+     */
+    List<NxtShoppingCartProduct> queryAllCheckedProductByShoppingCartId(Long shoppingCartId);
+
+
+    /**
      * 新增数据
      *
      * @param nxtShoppingCartProduct 实例对象
