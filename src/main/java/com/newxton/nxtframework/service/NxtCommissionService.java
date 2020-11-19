@@ -1,14 +1,13 @@
 package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtCommission;
-
 import java.util.List;
 
 /**
  * (NxtCommission)表服务接口
  *
  * @author makejava
- * @since 2020-11-14 21:44:39
+ * @since 2020-11-19 12:05:42
  */
 public interface NxtCommissionService {
 
@@ -24,7 +23,7 @@ public interface NxtCommissionService {
      * 查询多条数据
      *
      * @param offset 查询起始位置
-     * @param limit  查询条数
+     * @param limit 查询条数
      * @return 对象列表
      */
     List<NxtCommission> queryAllByLimit(int offset, int limit);

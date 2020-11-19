@@ -45,6 +45,16 @@ public class NxtProductSkuValuePriceEtcServiceImpl implements NxtProductSkuValue
     }
 
     /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtProductSkuValuePriceEtc 实例对象
+     * @return 对象列表
+     */
+    public List<NxtProductSkuValuePriceEtc> queryAll(NxtProductSkuValuePriceEtc nxtProductSkuValuePriceEtc){
+        return this.nxtProductSkuValuePriceEtcDao.queryAll(nxtProductSkuValuePriceEtc);
+    }
+
+    /**
      * 查询指定多个类型数据
      * @param offset 查询起始位置
      * @param limit 查询条数

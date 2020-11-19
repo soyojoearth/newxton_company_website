@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtUserLevel;
+import org.springframework.data.relational.core.sql.In;
 
 import java.util.List;
 
@@ -19,6 +20,14 @@ public interface NxtUserLevelService {
      * @return 实例对象
      */
     NxtUserLevel queryById(Long id);
+
+    /**
+     * 通过num查询单条数据
+     *
+     * @param num
+     * @return 实例对象
+     */
+    NxtUserLevel queryByNum(Integer num);
 
     /**
      * 查询多条数据

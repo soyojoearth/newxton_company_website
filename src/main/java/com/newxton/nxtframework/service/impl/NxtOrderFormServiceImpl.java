@@ -1,7 +1,7 @@
 package com.newxton.nxtframework.service.impl;
 
-import com.newxton.nxtframework.dao.NxtOrderFormDao;
 import com.newxton.nxtframework.entity.NxtOrderForm;
+import com.newxton.nxtframework.dao.NxtOrderFormDao;
 import com.newxton.nxtframework.service.NxtOrderFormService;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * (NxtOrderForm)表服务实现类
  *
  * @author makejava
- * @since 2020-11-14 21:41:50
+ * @since 2020-11-19 11:11:07
  */
 @Service("nxtOrderFormService")
 public class NxtOrderFormServiceImpl implements NxtOrderFormService {
@@ -34,7 +34,7 @@ public class NxtOrderFormServiceImpl implements NxtOrderFormService {
      * 查询多条数据
      *
      * @param offset 查询起始位置
-     * @param limit  查询条数
+     * @param limit 查询条数
      * @return 对象列表
      */
     @Override

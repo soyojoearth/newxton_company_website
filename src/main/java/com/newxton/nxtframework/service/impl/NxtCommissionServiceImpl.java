@@ -1,7 +1,7 @@
 package com.newxton.nxtframework.service.impl;
 
-import com.newxton.nxtframework.dao.NxtCommissionDao;
 import com.newxton.nxtframework.entity.NxtCommission;
+import com.newxton.nxtframework.dao.NxtCommissionDao;
 import com.newxton.nxtframework.service.NxtCommissionService;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * (NxtCommission)表服务实现类
  *
  * @author makejava
- * @since 2020-11-14 21:44:39
+ * @since 2020-11-19 12:05:43
  */
 @Service("nxtCommissionService")
 public class NxtCommissionServiceImpl implements NxtCommissionService {
@@ -34,7 +34,7 @@ public class NxtCommissionServiceImpl implements NxtCommissionService {
      * 查询多条数据
      *
      * @param offset 查询起始位置
-     * @param limit  查询条数
+     * @param limit 查询条数
      * @return 对象列表
      */
     @Override
