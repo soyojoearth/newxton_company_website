@@ -8,7 +8,7 @@ import java.util.List;
  * (NxtCommission)表数据库访问层
  *
  * @author makejava
- * @since 2020-11-19 12:05:41
+ * @since 2020-11-19 20:57:07
  */
 public interface NxtCommissionDao {
 

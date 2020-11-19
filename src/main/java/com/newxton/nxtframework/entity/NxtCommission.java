@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtCommission)实体类
  *
  * @author makejava
- * @since 2020-11-19 12:05:40
+ * @since 2020-11-19 20:57:05
  */
 public class NxtCommission implements Serializable {
-    private static final long serialVersionUID = 827666880047063461L;
+    private static final long serialVersionUID = 252982378727326393L;
     /**
     * 佣金记录表
     */
@@ -46,14 +46,14 @@ public class NxtCommission implements Serializable {
     * 交易完成时间
     */
     private Long datelineEnd;
+    
+    private Long quantityDeal;
+    
+    private Long quantityRefund;
     /**
-    * 交易状态 (0:进行中 1:完成）
+    * 已经支付
     */
-    private Integer dealStatus;
-    /**
-    * 是否退款（0否 1是）
-    */
-    private Integer isRefund;
+    private Integer isPaid;
 
 
     public Long getId() {
@@ -136,20 +136,28 @@ public class NxtCommission implements Serializable {
         this.datelineEnd = datelineEnd;
     }
 
-    public Integer getDealStatus() {
-        return dealStatus;
+    public Long getQuantityDeal() {
+        return quantityDeal;
     }
 
-    public void setDealStatus(Integer dealStatus) {
-        this.dealStatus = dealStatus;
+    public void setQuantityDeal(Long quantityDeal) {
+        this.quantityDeal = quantityDeal;
     }
 
-    public Integer getIsRefund() {
-        return isRefund;
+    public Long getQuantityRefund() {
+        return quantityRefund;
     }
 
-    public void setIsRefund(Integer isRefund) {
-        this.isRefund = isRefund;
+    public void setQuantityRefund(Long quantityRefund) {
+        this.quantityRefund = quantityRefund;
+    }
+
+    public Integer getIsPaid() {
+        return isPaid;
+    }
+
+    public void setIsPaid(Integer isPaid) {
+        this.isPaid = isPaid;
     }
 
 }

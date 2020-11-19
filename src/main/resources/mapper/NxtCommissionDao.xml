@@ -14,14 +14,15 @@
         <result property="commissionAmount" column="commission_amount" jdbcType="INTEGER"/>
         <result property="datelineCreate" column="dateline_create" jdbcType="INTEGER"/>
         <result property="datelineEnd" column="dateline_end" jdbcType="INTEGER"/>
-        <result property="dealStatus" column="deal_status" jdbcType="INTEGER"/>
-        <result property="isRefund" column="is_refund" jdbcType="INTEGER"/>
+        <result property="quantityDeal" column="quantity_deal" jdbcType="INTEGER"/>
+        <result property="quantityRefund" column="quantity_refund" jdbcType="INTEGER"/>
+        <result property="isPaid" column="is_paid" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, deal_status, is_refund
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid
         from nxtframework.nxt_commission
         where id = #{id}
     </select>
@@ -29,7 +30,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, deal_status, is_refund
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid
         from nxtframework.nxt_commission
         limit #{offset}, #{limit}
     </select>
@@ -37,7 +38,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, deal_status, is_refund
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid
         from nxtframework.nxt_commission
         <where>
             <if test="id != null">
@@ -70,19 +71,22 @@
             <if test="datelineEnd != null">
                 and dateline_end = #{datelineEnd}
             </if>
-            <if test="dealStatus != null">
-                and deal_status = #{dealStatus}
+            <if test="quantityDeal != null">
+                and quantity_deal = #{quantityDeal}
             </if>
-            <if test="isRefund != null">
-                and is_refund = #{isRefund}
+            <if test="quantityRefund != null">
+                and quantity_refund = #{quantityRefund}
+            </if>
+            <if test="isPaid != null">
+                and is_paid = #{isPaid}
             </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_commission(user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, deal_status, is_refund)
-        values (#{userId}, #{inviterLevel}, #{orderFormId}, #{orderFormProductId}, #{commissionTransferInId}, #{commissionRate}, #{commissionAmount}, #{datelineCreate}, #{datelineEnd}, #{dealStatus}, #{isRefund})
+        insert into nxtframework.nxt_commission(user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid)
+        values (#{userId}, #{inviterLevel}, #{orderFormId}, #{orderFormProductId}, #{commissionTransferInId}, #{commissionRate}, #{commissionAmount}, #{datelineCreate}, #{datelineEnd}, #{quantityDeal}, #{quantityRefund}, #{isPaid})
     </insert>
 
     <!--通过主键修改数据-->
@@ -116,11 +120,14 @@
             <if test="datelineEnd != null">
                 dateline_end = #{datelineEnd},
             </if>
-            <if test="dealStatus != null">
-                deal_status = #{dealStatus},
+            <if test="quantityDeal != null">
+                quantity_deal = #{quantityDeal},
             </if>
-            <if test="isRefund != null">
-                is_refund = #{isRefund},
+            <if test="quantityRefund != null">
+                quantity_refund = #{quantityRefund},
+            </if>
+            <if test="isPaid != null">
+                is_paid = #{isPaid},
             </if>
         </set>
         where id = #{id}

@@ -17,14 +17,14 @@
         <result property="levelDiscount" column="level_discount" jdbcType="INTEGER"/>
         <result property="productPriceDeal" column="product_price_deal" jdbcType="INTEGER"/>
         <result property="productSku" column="product_sku" jdbcType="VARCHAR"/>
-        <result property="isRefund" column="is_refund" jdbcType="INTEGER"/>
+        <result property="quantityRefund" column="quantity_refund" jdbcType="INTEGER"/>
         <result property="commissionRate" column="commission_rate" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, is_refund, commission_rate
+          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
         from nxtframework.nxt_order_form_product
         where id = #{id}
     </select>
@@ -32,7 +32,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, is_refund, commission_rate
+          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
         from nxtframework.nxt_order_form_product
         limit #{offset}, #{limit}
     </select>
@@ -40,7 +40,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, is_refund, commission_rate
+          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
         from nxtframework.nxt_order_form_product
         <where>
             <if test="id != null">
@@ -82,8 +82,8 @@
             <if test="productSku != null and productSku != ''">
                 and product_sku = #{productSku}
             </if>
-            <if test="isRefund != null">
-                and is_refund = #{isRefund}
+            <if test="quantityRefund != null">
+                and quantity_refund = #{quantityRefund}
             </if>
             <if test="commissionRate != null">
                 and commission_rate = #{commissionRate}
@@ -93,8 +93,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_order_form_product(order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, is_refund, commission_rate)
-        values (#{orderFormId}, #{productId}, #{quantity}, #{productName}, #{unitWeight}, #{unitVolume}, #{productPrice}, #{productPriceDiscount}, #{levelNum}, #{levelDiscount}, #{productPriceDeal}, #{productSku}, #{isRefund}, #{commissionRate})
+        insert into nxtframework.nxt_order_form_product(order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate)
+        values (#{orderFormId}, #{productId}, #{quantity}, #{productName}, #{unitWeight}, #{unitVolume}, #{productPrice}, #{productPriceDiscount}, #{levelNum}, #{levelDiscount}, #{productPriceDeal}, #{productSku}, #{quantityRefund}, #{commissionRate})
     </insert>
 
     <!--通过主键修改数据-->
@@ -137,8 +137,8 @@
             <if test="productSku != null and productSku != ''">
                 product_sku = #{productSku},
             </if>
-            <if test="isRefund != null">
-                is_refund = #{isRefund},
+            <if test="quantityRefund != null">
+                quantity_refund = #{quantityRefund},
             </if>
             <if test="commissionRate != null">
                 commission_rate = #{commissionRate},

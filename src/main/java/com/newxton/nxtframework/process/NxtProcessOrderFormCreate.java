@@ -212,15 +212,15 @@ public class NxtProcessOrderFormCreate {
                 nxtOrderFormProduct.setLevelNum(user.getLevelNum());
                 nxtOrderFormProduct.setLevelDiscount(userLevelDiscount);
 
-                //产品进过所有折扣后，最终成交价
-                Integer priceDeal = Math.round(
+                //产品经过所有折扣后，最终成交价
+                Long priceDeal = (long)Math.round(
                         nxtOrderFormProduct.getProductPrice() *
                         (nxtOrderFormProduct.getProductPriceDiscount() / 100F) *
                         (nxtOrderFormProduct.getLevelDiscount() / 100F)
                 );
-                nxtOrderFormProduct.setProductPriceDeal(priceDeal.longValue());
+                nxtOrderFormProduct.setProductPriceDeal(priceDeal);
 
-                nxtOrderFormProduct.setIsRefund(0);
+                nxtOrderFormProduct.setQuantityRefund(0L);
 
                 nxtOrderFormProductService.insert(nxtOrderFormProduct);
 
@@ -275,8 +275,11 @@ public class NxtProcessOrderFormCreate {
                         nxtCommission1.setCommissionAmount(commissionAmount1);
 
                         nxtCommission1.setDatelineCreate(nxtOrderForm.getDatelineCreate());
-                        nxtCommission1.setDealStatus(0);
-                        nxtCommission1.setIsRefund(0);
+
+                        nxtCommission1.setQuantityRefund(0L);
+                        nxtCommission1.setQuantityDeal(nxtOrderFormProduct.getQuantity());
+
+                        nxtCommission1.setIsPaid(0);
 
                         if (inviterUser1.getStatus().equals(0)) {
                             nxtCommissionService.insert(nxtCommission1);
@@ -301,8 +304,11 @@ public class NxtProcessOrderFormCreate {
                             nxtCommission2.setCommissionAmount(commissionAmount2);
 
                             nxtCommission2.setDatelineCreate(nxtOrderForm.getDatelineCreate());
-                            nxtCommission2.setDealStatus(0);
-                            nxtCommission2.setIsRefund(0);
+
+                            nxtCommission2.setQuantityRefund(0L);
+                            nxtCommission2.setQuantityDeal(nxtOrderFormProduct.getQuantity());
+
+                            nxtCommission2.setIsPaid(0);
 
                             if (inviterUser2.getStatus().equals(0)) {
                                 nxtCommissionService.insert(nxtCommission2);
@@ -324,11 +330,14 @@ public class NxtProcessOrderFormCreate {
                                 nxtCommission3.setCommissionRate(userCommissionRate3);
 
                                 Long commissionAmount3 = (long)Math.round(priceDeal * userCommissionRate3 / 100F);
-                                nxtCommission3.setCommissionAmount(commissionAmount3);
+                                nxtCommission3.setCommissionAmount(commissionAmount3 * nxtOrderFormProduct.getQuantity());
 
                                 nxtCommission3.setDatelineCreate(nxtOrderForm.getDatelineCreate());
-                                nxtCommission3.setDealStatus(0);
-                                nxtCommission3.setIsRefund(0);
+
+                                nxtCommission3.setQuantityRefund(0L);
+                                nxtCommission3.setQuantityDeal(nxtOrderFormProduct.getQuantity());
+
+                                nxtCommission3.setIsPaid(0);
 
                                 if (inviterUser3.getStatus().equals(0)) {
                                     nxtCommissionService.insert(nxtCommission3);
@@ -343,8 +352,8 @@ public class NxtProcessOrderFormCreate {
 
                 }
 
-                amountInitial += nxtOrderFormProduct.getProductPrice();
-                amountFinally += priceDeal;
+                amountInitial = amountInitial + nxtOrderFormProduct.getProductPrice() * nxtOrderFormProduct.getQuantity();
+                amountFinally = amountFinally + priceDeal  * nxtOrderFormProduct.getQuantity();
 
             }
 
@@ -357,12 +366,13 @@ public class NxtProcessOrderFormCreate {
         nxtOrderForm.setAmountFinally(amountFinally);
         nxtOrderForm.setAmountInitial(amountInitial);
         nxtOrderFormService.update(nxtOrderForm);
+        
 
         //最最后，才删除购物车选中的产品
-        for (NxtShoppingCartProduct nxtShoppingCartProduct :
-                nxtShoppingCartProductList) {
-            nxtShoppingCartProductService.deleteById(nxtShoppingCartProduct.getId());
-        }
+//        for (NxtShoppingCartProduct nxtShoppingCartProduct :
+//                nxtShoppingCartProductList) {
+//            nxtShoppingCartProductService.deleteById(nxtShoppingCartProduct.getId());
+//        }
 
     }
 

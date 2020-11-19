@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtOrderFormProduct)实体类
  *
  * @author makejava
- * @since 2020-11-19 13:57:30
+ * @since 2020-11-19 20:58:12
  */
 public class NxtOrderFormProduct implements Serializable {
-    private static final long serialVersionUID = -42765532109667766L;
+    private static final long serialVersionUID = 830209453183432348L;
     /**
     * 订单管理商品
     */
@@ -28,9 +28,13 @@ public class NxtOrderFormProduct implements Serializable {
     * 产品名称
     */
     private String productName;
-    
+    /**
+    * 单位（克）
+    */
     private Long unitWeight;
-    
+    /**
+    * 单位（立法米）放大100万倍
+    */
     private Long unitVolume;
     
     private Long productPrice;
@@ -55,9 +59,9 @@ public class NxtOrderFormProduct implements Serializable {
     */
     private String productSku;
     /**
-    * 是否退货了（0否 1是）
+    * 退货数量
     */
-    private Integer isRefund;
+    private Long quantityRefund;
     
     private Long commissionRate;
 
@@ -166,12 +170,12 @@ public class NxtOrderFormProduct implements Serializable {
         this.productSku = productSku;
     }
 
-    public Integer getIsRefund() {
-        return isRefund;
+    public Long getQuantityRefund() {
+        return quantityRefund;
     }
 
-    public void setIsRefund(Integer isRefund) {
-        this.isRefund = isRefund;
+    public void setQuantityRefund(Long quantityRefund) {
+        this.quantityRefund = quantityRefund;
     }
 
     public Long getCommissionRate() {
