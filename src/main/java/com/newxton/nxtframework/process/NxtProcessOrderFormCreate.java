@@ -71,6 +71,34 @@ public class NxtProcessOrderFormCreate {
     @Transactional
     public void exec(NxtStructOrderFromCreate nxtStructOrderFromCreate, Long userId) throws NxtException{
 
+        if (nxtStructOrderFromCreate.deliveryCountry == null){
+            throw new NxtException("缺少国家");
+        }
+        if (nxtStructOrderFromCreate.deliveryProvince == null){
+            throw new NxtException("缺少省份");
+        }
+        if (nxtStructOrderFromCreate.deliveryCity == null){
+            throw new NxtException("缺少城市");
+        }
+        if (nxtStructOrderFromCreate.deliveryAddress == null || nxtStructOrderFromCreate.deliveryAddress.isEmpty()){
+            throw new NxtException("缺少详细地址");
+        }
+        if (nxtStructOrderFromCreate.deliveryPerson == null || nxtStructOrderFromCreate.deliveryPerson.isEmpty()){
+            throw new NxtException("缺少收件人");
+        }
+        if (nxtStructOrderFromCreate.deliveryPhone == null || nxtStructOrderFromCreate.deliveryPhone.isEmpty()){
+            throw new NxtException("缺少联系电话");
+        }
+        if (nxtStructOrderFromCreate.deliveryPostcode == null || nxtStructOrderFromCreate.deliveryPostcode.isEmpty()){
+            throw new NxtException("缺少邮编");
+        }
+        if (nxtStructOrderFromCreate.deliveryConfigId == null){
+            throw new NxtException("缺少配送方式");
+        }
+        if (nxtStructOrderFromCreate.dealPlatform == null){
+            throw new NxtException("缺少参数：成交平台（0:web 1:ios 2:android 3:wx ）");
+        }
+
         //查询购物车商品数据
         NxtShoppingCart nxtShoppingCart = nxtShoppingCartService.queryByUserId(userId);
 
@@ -366,7 +394,7 @@ public class NxtProcessOrderFormCreate {
         nxtOrderForm.setAmountFinally(amountFinally);
         nxtOrderForm.setAmountInitial(amountInitial);
         nxtOrderFormService.update(nxtOrderForm);
-        
+
 
         //最最后，才删除购物车选中的产品
 //        for (NxtShoppingCartProduct nxtShoppingCartProduct :
