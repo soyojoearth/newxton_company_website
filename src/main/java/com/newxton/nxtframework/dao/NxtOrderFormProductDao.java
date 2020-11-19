@@ -2,14 +2,13 @@ package com.newxton.nxtframework.dao;
 
 import com.newxton.nxtframework.entity.NxtOrderFormProduct;
 import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 
 /**
  * (NxtOrderFormProduct)表数据库访问层
  *
  * @author makejava
- * @since 2020-11-14 21:41:53
+ * @since 2020-11-19 13:57:31
  */
 public interface NxtOrderFormProductDao {
 
@@ -25,7 +24,7 @@ public interface NxtOrderFormProductDao {
      * 查询指定行数据
      *
      * @param offset 查询起始位置
-     * @param limit  查询条数
+     * @param limit 查询条数
      * @return 对象列表
      */
     List<NxtOrderFormProduct> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
@@ -46,22 +45,6 @@ public interface NxtOrderFormProductDao {
      * @return 影响行数
      */
     int insert(NxtOrderFormProduct nxtOrderFormProduct);
-
-    /**
-     * 批量新增数据（MyBatis原生foreach方法）
-     *
-     * @param entities List<NxtOrderFormProduct> 实例对象列表
-     * @return 影响行数
-     */
-    int insertBatch(@Param("entities") List<NxtOrderFormProduct> entities);
-
-    /**
-     * 批量新增或按主键更新数据（MyBatis原生foreach方法）
-     *
-     * @param entities List<NxtOrderFormProduct> 实例对象列表
-     * @return 影响行数
-     */
-    int insertOrUpdateBatch(@Param("entities") List<NxtOrderFormProduct> entities);
 
     /**
      * 修改数据

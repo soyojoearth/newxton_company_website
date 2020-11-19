@@ -22,6 +22,14 @@ public interface NxtUserLevelDao {
     NxtUserLevel queryById(Long id);
 
     /**
+     * 通过num查询单条数据
+     *
+     * @param num
+     * @return 实例对象
+     */
+    NxtUserLevel queryByNum(Integer num);
+
+    /**
      * 查询指定行数据
      *
      * @param offset 查询起始位置

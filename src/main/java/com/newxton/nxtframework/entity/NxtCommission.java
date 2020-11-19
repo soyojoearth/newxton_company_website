@@ -6,53 +6,53 @@ import java.io.Serializable;
  * (NxtCommission)实体类
  *
  * @author makejava
- * @since 2020-11-14 21:44:39
+ * @since 2020-11-19 12:05:40
  */
 public class NxtCommission implements Serializable {
-    private static final long serialVersionUID = 831522175353655350L;
+    private static final long serialVersionUID = 827666880047063461L;
     /**
-     * 佣金记录表
-     */
+    * 佣金记录表
+    */
     private Long id;
     /**
-     * 获佣会员user_id
-     */
+    * 获佣会员user_id
+    */
     private Long userId;
     /**
-     * 获佣等级（1上架 2:上上家 3:上上上家）
-     */
+    * 获佣等级（1上架 2:上上家 3:上上上家）
+    */
     private Integer inviterLevel;
-
+    
     private Long orderFormId;
-
+    
     private Long orderFormProductId;
     /**
-     * 有数字代表已结算
-     */
+    * 有数字代表已结算
+    */
     private Long commissionTransferInId;
     /**
-     * 佣金百分比（放大100倍）
-     */
+    * 佣金百分比（放大100倍）
+    */
     private Long commissionRate;
     /**
-     * 佣金（放大100倍）负数表示退佣金
-     */
-    private String commissionAmount;
+    * 佣金（放大100倍）负数表示退佣金
+    */
+    private Long commissionAmount;
     /**
-     * 交易创建时间
-     */
+    * 交易创建时间
+    */
     private Long datelineCreate;
     /**
-     * 交易完成时间
-     */
+    * 交易完成时间
+    */
     private Long datelineEnd;
     /**
-     * 交易状态 (0:进行中 1:完成）
-     */
+    * 交易状态 (0:进行中 1:完成）
+    */
     private Integer dealStatus;
     /**
-     * 是否退款（0否 1是）
-     */
+    * 是否退款（0否 1是）
+    */
     private Integer isRefund;
 
 
@@ -112,11 +112,11 @@ public class NxtCommission implements Serializable {
         this.commissionRate = commissionRate;
     }
 
-    public String getCommissionAmount() {
+    public Long getCommissionAmount() {
         return commissionAmount;
     }
 
-    public void setCommissionAmount(String commissionAmount) {
+    public void setCommissionAmount(Long commissionAmount) {
         this.commissionAmount = commissionAmount;
     }
 

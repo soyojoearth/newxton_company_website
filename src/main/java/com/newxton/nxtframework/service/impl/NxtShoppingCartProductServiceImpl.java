@@ -55,6 +55,15 @@ public class NxtShoppingCartProductServiceImpl implements NxtShoppingCartProduct
     }
 
     /**
+     * 查询指定购物车内所有选中的产品
+     * @param shoppingCartId
+     * @return
+     */
+    public List<NxtShoppingCartProduct> queryAllCheckedProductByShoppingCartId(Long shoppingCartId){
+        return this.nxtShoppingCartProductDao.queryAllCheckedProductByShoppingCartId(shoppingCartId);
+    }
+
+    /**
      * 新增数据
      *
      * @param nxtShoppingCartProduct 实例对象

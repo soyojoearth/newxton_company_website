@@ -2,12 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newxton.nxtframework.dao.NxtOrderFormProductDao">
 
-    <resultMap type="com.newxton.nxtframework.entity.NxtOrderFormProduct" id="NxtOrderFormProductMap">
+    <resultMap id="BaseResultMap" type="com.newxton.nxtframework.entity.NxtOrderFormProduct">
+        <!--@Table nxt_order_form_product-->
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="orderFormId" column="order_form_id" jdbcType="INTEGER"/>
         <result property="productId" column="product_id" jdbcType="INTEGER"/>
         <result property="quantity" column="quantity" jdbcType="INTEGER"/>
         <result property="productName" column="product_name" jdbcType="VARCHAR"/>
+        <result property="unitWeight" column="unit_weight" jdbcType="INTEGER"/>
+        <result property="unitVolume" column="unit_volume" jdbcType="INTEGER"/>
         <result property="productPrice" column="product_price" jdbcType="INTEGER"/>
         <result property="productPriceDiscount" column="product_price_discount" jdbcType="INTEGER"/>
         <result property="levelNum" column="level_num" jdbcType="INTEGER"/>
@@ -19,26 +22,25 @@
     </resultMap>
 
     <!--查询单个-->
-    <select id="queryById" resultMap="NxtOrderFormProductMap">
+    <select id="queryById" resultMap="BaseResultMap">
         select
-          id, order_form_id, product_id, quantity, product_name, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, is_refund, commission_rate
+          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, is_refund, commission_rate
         from nxtframework.nxt_order_form_product
         where id = #{id}
     </select>
 
     <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="NxtOrderFormProductMap">
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, order_form_id, product_id, quantity, product_name, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, is_refund, commission_rate
+          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, is_refund, commission_rate
         from nxtframework.nxt_order_form_product
         limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
-    <select id="queryAll" resultMap="NxtOrderFormProductMap">
+    <select id="queryAll" resultMap="BaseResultMap">
         select
-        id, order_form_id, product_id, quantity, product_name, product_price, product_price_discount, level_num,
-        level_discount, product_price_deal, product_sku, is_refund, commission_rate
+          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, is_refund, commission_rate
         from nxtframework.nxt_order_form_product
         <where>
             <if test="id != null">
@@ -55,6 +57,12 @@
             </if>
             <if test="productName != null and productName != ''">
                 and product_name = #{productName}
+            </if>
+            <if test="unitWeight != null">
+                and unit_weight = #{unitWeight}
+            </if>
+            <if test="unitVolume != null">
+                and unit_volume = #{unitVolume}
             </if>
             <if test="productPrice != null">
                 and product_price = #{productPrice}
@@ -85,38 +93,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_order_form_product(order_form_id, product_id, quantity, product_name, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, is_refund, commission_rate)
-        values (#{orderFormId}, #{productId}, #{quantity}, #{productName}, #{productPrice}, #{productPriceDiscount}, #{levelNum}, #{levelDiscount}, #{productPriceDeal}, #{productSku}, #{isRefund}, #{commissionRate})
-    </insert>
-
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_order_form_product(order_form_id, product_id, quantity, product_name,
-        product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, is_refund,
-        commission_rate)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.orderFormId}, #{entity.productId}, #{entity.quantity}, #{entity.productName},
-            #{entity.productPrice}, #{entity.productPriceDiscount}, #{entity.levelNum}, #{entity.levelDiscount},
-            #{entity.productPriceDeal}, #{entity.productSku}, #{entity.isRefund}, #{entity.commissionRate})
-        </foreach>
-    </insert>
-
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_order_form_product(order_form_id, product_id, quantity, product_name,
-        product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, is_refund,
-        commission_rate)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.orderFormId}, #{entity.productId}, #{entity.quantity}, #{entity.productName},
-            #{entity.productPrice}, #{entity.productPriceDiscount}, #{entity.levelNum}, #{entity.levelDiscount},
-            #{entity.productPriceDeal}, #{entity.productSku}, #{entity.isRefund}, #{entity.commissionRate})
-        </foreach>
-        on duplicate key update
-        order_form_id = values(order_form_id) , product_id = values(product_id) , quantity = values(quantity) ,
-        product_name = values(product_name) , product_price = values(product_price) , product_price_discount =
-        values(product_price_discount) , level_num = values(level_num) , level_discount = values(level_discount) ,
-        product_price_deal = values(product_price_deal) , product_sku = values(product_sku) , is_refund =
-        values(is_refund) , commission_rate = values(commission_rate)
+        insert into nxtframework.nxt_order_form_product(order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, is_refund, commission_rate)
+        values (#{orderFormId}, #{productId}, #{quantity}, #{productName}, #{unitWeight}, #{unitVolume}, #{productPrice}, #{productPriceDiscount}, #{levelNum}, #{levelDiscount}, #{productPriceDeal}, #{productSku}, #{isRefund}, #{commissionRate})
     </insert>
 
     <!--通过主键修改数据-->
@@ -134,6 +112,12 @@
             </if>
             <if test="productName != null and productName != ''">
                 product_name = #{productName},
+            </if>
+            <if test="unitWeight != null">
+                unit_weight = #{unitWeight},
+            </if>
+            <if test="unitVolume != null">
+                unit_volume = #{unitVolume},
             </if>
             <if test="productPrice != null">
                 product_price = #{productPrice},

@@ -19,6 +19,14 @@
         where id = #{id}
     </select>
 
+    <!--查询指定购物车内所有选中的产品-->
+    <select id="queryAllCheckedProductByShoppingCartId" resultMap="NxtShoppingCartProductMap">
+        select
+          id, shopping_cart_id, product_id, quantity, sku, dateline
+        from nxtframework.nxt_shopping_cart_product
+        where shopping_cart_id = #{shopping_cart_id} and checked = 1
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="NxtShoppingCartProductMap">
         select

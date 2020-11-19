@@ -6,55 +6,59 @@ import java.io.Serializable;
  * (NxtOrderFormProduct)实体类
  *
  * @author makejava
- * @since 2020-11-14 21:41:53
+ * @since 2020-11-19 13:57:30
  */
 public class NxtOrderFormProduct implements Serializable {
-    private static final long serialVersionUID = 158409188356376632L;
+    private static final long serialVersionUID = -42765532109667766L;
     /**
-     * 订单管理商品
-     */
+    * 订单管理商品
+    */
     private Long id;
-
+    
     private Long orderFormId;
     /**
-     * 产品id
-     */
+    * 产品id
+    */
     private Long productId;
     /**
-     * 成交数量
-     */
+    * 成交数量   
+    */
     private Long quantity;
     /**
-     * 产品名称
-     */
+    * 产品名称
+    */
     private String productName;
-
+    
+    private Long unitWeight;
+    
+    private Long unitVolume;
+    
     private Long productPrice;
     /**
-     * 价格折扣（放大100倍）
-     */
+    * 价格折扣（放大100倍）
+    */
     private Long productPriceDiscount;
     /**
-     * 用户等级
-     */
+    * 用户等级
+    */
     private Integer levelNum;
     /**
-     * 用户等级折扣（放大100倍）
-     */
+    * 用户等级折扣（放大100倍）
+    */
     private Long levelDiscount;
     /**
-     * 成交价（放大100倍）
-     */
+    * 成交价（放大100倍）
+    */
     private Long productPriceDeal;
     /**
-     * Sku（json）
-     */
+    * Sku（json）
+    */
     private String productSku;
     /**
-     * 是否退货了（0否 1是）
-     */
+    * 是否退货了（0否 1是）
+    */
     private Integer isRefund;
-
+    
     private Long commissionRate;
 
 
@@ -96,6 +100,22 @@ public class NxtOrderFormProduct implements Serializable {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public Long getUnitWeight() {
+        return unitWeight;
+    }
+
+    public void setUnitWeight(Long unitWeight) {
+        this.unitWeight = unitWeight;
+    }
+
+    public Long getUnitVolume() {
+        return unitVolume;
+    }
+
+    public void setUnitVolume(Long unitVolume) {
+        this.unitVolume = unitVolume;
     }
 
     public Long getProductPrice() {

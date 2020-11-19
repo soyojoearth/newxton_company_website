@@ -1,14 +1,13 @@
 package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtOrderFormProduct;
-
 import java.util.List;
 
 /**
  * (NxtOrderFormProduct)表服务接口
  *
  * @author makejava
- * @since 2020-11-14 21:41:54
+ * @since 2020-11-19 13:57:32
  */
 public interface NxtOrderFormProductService {
 
@@ -24,10 +23,18 @@ public interface NxtOrderFormProductService {
      * 查询多条数据
      *
      * @param offset 查询起始位置
-     * @param limit  查询条数
+     * @param limit 查询条数
      * @return 对象列表
      */
     List<NxtOrderFormProduct> queryAllByLimit(int offset, int limit);
+
+    /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtOrderFormProduct 实例对象
+     * @return 对象列表
+     */
+    List<NxtOrderFormProduct> queryAll(NxtOrderFormProduct nxtOrderFormProduct);
 
     /**
      * 新增数据
