@@ -8,7 +8,15 @@
         <result property="token" column="token" jdbcType="VARCHAR"/>
     </resultMap>
     
-    <!--查询单个-->
+    <!--查询单个根据匿名用户token-->
+    <select id="queryByToken" resultMap="NxtShoppingCartMap">
+        select
+          id, user_id, token
+        from nxtframework.nxt_shopping_cart
+        where token = #{token}
+    </select>
+    
+    <!--查询单个根据userId-->
     <select id="queryByUserId" resultMap="NxtShoppingCartMap">
         select
           id, user_id, token

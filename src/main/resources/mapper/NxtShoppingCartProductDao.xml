@@ -10,6 +10,14 @@
         <result property="sku" column="sku" jdbcType="VARCHAR"/>
         <result property="dateline" column="dateline" jdbcType="INTEGER"/>
     </resultMap>
+    
+    <!--查询单个根据shoppingCartId、productId-->
+    <select id="queryByShoppingCartIdProductId" resultMap="NxtShoppingCartProductMap">
+        select
+          id, shopping_cart_id, product_id, quantity, sku, dateline
+        from nxtframework.nxt_shopping_cart_product
+        where shopping_cart_id = #{shoppingCartId} and product_id = #{productId}
+    </select>
 
     <!--查询单个-->
     <select id="queryById" resultMap="NxtShoppingCartProductMap">
