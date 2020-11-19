@@ -359,10 +359,10 @@ public class NxtProcessOrderFormCreate {
         nxtOrderFormService.update(nxtOrderForm);
 
         //最最后，才删除购物车选中的产品
-//        for (NxtShoppingCartProduct nxtShoppingCartProduct :
-//                nxtShoppingCartProductList) {
-//            nxtShoppingCartProductService.deleteById(nxtShoppingCartProduct.getId());
-//        }
+        for (NxtShoppingCartProduct nxtShoppingCartProduct :
+                nxtShoppingCartProductList) {
+            nxtShoppingCartProductService.deleteById(nxtShoppingCartProduct.getId());
+        }
 
     }
 
