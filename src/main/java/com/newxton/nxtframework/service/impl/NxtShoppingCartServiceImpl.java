@@ -18,6 +18,18 @@ import java.util.List;
 public class NxtShoppingCartServiceImpl implements NxtShoppingCartService {
     @Resource
     private NxtShoppingCartDao nxtShoppingCartDao;
+    
+
+	/**
+     * 通过token查询
+     *
+     * @param token 匿名用户token
+     * @return 实例对象
+     */
+    @Override
+    public NxtShoppingCart queryByToken(String token) {
+        return this.nxtShoppingCartDao.queryByToken(token);
+    }
 	
 	/**
      * 通过userId查询

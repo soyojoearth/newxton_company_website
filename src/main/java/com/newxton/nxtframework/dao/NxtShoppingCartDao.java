@@ -14,6 +14,14 @@ import java.util.List;
 public interface NxtShoppingCartDao {
 	
 	/**
+     * 通过token查询
+     *
+     * @param token 匿名用户token
+     * @return 实例对象
+     */
+	NxtShoppingCart queryByToken(String token);
+	
+	/**
      * 通过userId查询
      *
      * @param userId 用户id
