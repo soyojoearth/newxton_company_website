@@ -122,6 +122,7 @@ public class NxtApiShoppingCartAddController {
 			newNxtShoppingCartProduct.setQuantity(shoppingCartItem.getProduct().getQuantity());
 			String skuJsonStr = JSONObject.toJSONString(shoppingCartItem.getProduct().getSku());
 			newNxtShoppingCartProduct.setSku(skuJsonStr);
+			newNxtShoppingCartProduct.setChecked(1); // 默认选中
 			
 			nxtShoppingCartProductService.insert(newNxtShoppingCartProduct);
 		} else {
