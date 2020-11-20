@@ -2,9 +2,14 @@ package com.newxton.nxtframework.controller.api.front;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import com.newxton.nxtframework.entity.NxtShoppingCart;
 import com.newxton.nxtframework.entity.NxtShoppingCartProduct;
+import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.struct.NxtStructShoppingCartItem;
+import com.newxton.nxtframework.struct.NxtStructShoppingCartProduct;
+import com.newxton.nxtframework.struct.NxtStructShoppingCartProductSku;
 import com.newxton.nxtframework.service.NxtShoppingCartProductService;
 import com.newxton.nxtframework.service.NxtShoppingCartService;
 
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -25,7 +31,7 @@ import javax.annotation.Resource;
  * @address Suzhou, China
  * @copyright NxtFramework
  * 
- * Api接口：购物车-商品加入
+ *            Api接口：购物车-商品加入
  * 
  */
 @RestController
@@ -38,8 +44,7 @@ public class NxtApiShoppingCartAddController {
 
 	@RequestMapping(value = "/api/shopping_cart/add_product", method = RequestMethod.POST)
 	public Map<String, Object> index(@RequestHeader(value = "user_id", required = false) Long userId,
-			@RequestHeader(value = "token", required = false) String token,
-			@RequestBody String json) {
+			@RequestHeader(value = "token", required = false) String token, @RequestBody String json) {
 		Map<String, Object> result = new HashMap<>();
 
 		// 检查条件user_id有值，还是guestToken有值，如果都有值以user_id为主
@@ -65,19 +70,19 @@ public class NxtApiShoppingCartAddController {
 		// 查询购物车
 		NxtShoppingCart shoppingCart = nxtShoppingCartService.queryByUserId(userId);
 		String prefixStatusMsg = "当前登录用户user_id:" + userId + ",";
-		
+
 		if (shoppingCart == null) {
 			NxtShoppingCart newNxtShoppingCart = new NxtShoppingCart();
 			newNxtShoppingCart.setUserId(userId);
 			newNxtShoppingCart.setToken(token);
 			nxtShoppingCartService.insert(newNxtShoppingCart);
-			
+
 			shoppingCart = newNxtShoppingCart;
 		}
 
 		return this.processShoppingCartAddProduct(result, prefixStatusMsg, shoppingCartItem, shoppingCart);
 	}
-	
+
 	// 处理匿名购物车 移除产品
 	private Map<String, Object> processGuestShoppingCartAddProduct(Map<String, Object> result,
 			NxtStructShoppingCartItem shoppingCartItem) {
@@ -85,12 +90,12 @@ public class NxtApiShoppingCartAddController {
 		String token = shoppingCartItem.getGuestToken();
 		NxtShoppingCart shoppingCart = nxtShoppingCartService.queryByToken(token);
 		String prefixStatusMsg = "当前匿名用户token:" + token + ",";
-		
+
 		if (shoppingCart == null) {
 			NxtShoppingCart newNxtShoppingCart = new NxtShoppingCart();
 			newNxtShoppingCart.setToken(token);
 			nxtShoppingCartService.insert(newNxtShoppingCart);
-			
+
 			shoppingCart = newNxtShoppingCart;
 		}
 
@@ -102,42 +107,85 @@ public class NxtApiShoppingCartAddController {
 		// 产品主键
 		Long productId = null;
 		try {
-			productId = shoppingCartItem.getProduct().getId();
+			productId = shoppingCartItem.getProduct().getProductId(); // 使用productId字段
 			if (productId == null) {
-				return this.fail(result, 120030, prefixStatusMsg + "传入产品主键为宽");
+				return this.fail(result, 120030, prefixStatusMsg + "传入产品主键为空");
 			}
 		} catch (Exception ex) {
 			return this.fail(result, 120020, prefixStatusMsg + "传入产品信息有误");
 		}
 
 		// 查询当前用户当前购物车产品信息
-		NxtShoppingCartProduct shoppingCartProduct = nxtShoppingCartProductService
+		List<NxtShoppingCartProduct> shoppingCartProductList = nxtShoppingCartProductService
 				.queryByShoppingCartIdProductId(shoppingCart.getId(), productId);
-		if (shoppingCartProduct == null) {
+		if (shoppingCartProductList == null || shoppingCartProductList.size() == 0) {
 			// 购物车中无此产品时则添加
-			NxtShoppingCartProduct newNxtShoppingCartProduct = new NxtShoppingCartProduct();
-			newNxtShoppingCartProduct.setDateline(System.currentTimeMillis());
-			newNxtShoppingCartProduct.setShoppingCartId(shoppingCart.getId());
-			newNxtShoppingCartProduct.setProductId(productId);
-			newNxtShoppingCartProduct.setQuantity(shoppingCartItem.getProduct().getQuantity());
-			String skuJsonStr = JSONObject.toJSONString(shoppingCartItem.getProduct().getSku());
-			newNxtShoppingCartProduct.setSku(skuJsonStr);
-			
-			nxtShoppingCartProductService.insert(newNxtShoppingCartProduct);
+			this.addNewNxtShoppingCartProduct(shoppingCartItem, shoppingCart);
 		} else {
-			// 购物车中已有此产品时则更新数量
 			// 判读移除产品数量是否合法
 			Long quantity = shoppingCartItem.getProduct().getQuantity();
 			if (quantity == null) {
 				return this.fail(result, 120050, prefixStatusMsg + "产品id:" + productId + "移除数量:传入参数为空");
 			}
 
-			Long finalQuantity = shoppingCartProduct.getQuantity() + quantity;
-			shoppingCartProduct.setQuantity(finalQuantity);
-			nxtShoppingCartProductService.update(shoppingCartProduct);
+			// 判断是否存在
+			NxtShoppingCartProduct dbNxtShoppingCartProduct = this.checkDbShoppingCartProductFlag(prefixStatusMsg,
+					shoppingCartProductList, shoppingCartItem);
+			if (dbNxtShoppingCartProduct != null) {
+				// 购物车中已有此产品时则更新数量
+				Long finalQuantity = dbNxtShoppingCartProduct.getQuantity() + quantity;
+				dbNxtShoppingCartProduct.setQuantity(finalQuantity);
+				nxtShoppingCartProductService.update(dbNxtShoppingCartProduct);
+			} else {
+				// 查询对比过无此产品时则添加
+				this.addNewNxtShoppingCartProduct(shoppingCartItem, shoppingCart);
+			}
 		}
 
 		return this.success(result);
+	}
+
+	// 返回空时，此产品不存在, 存在时返回数据库NxtShoppingCartProduct对象
+	private NxtShoppingCartProduct checkDbShoppingCartProductFlag(String prefixStatusMsg,
+			List<NxtShoppingCartProduct> shoppingCartProductList, NxtStructShoppingCartItem shoppingCartItem) {
+		NxtShoppingCartProduct dbNxtShoppingCartProduct = null;
+		NxtStructShoppingCartProduct shoppingCartProduct = shoppingCartItem.getProduct();
+		Gson gson1 = new Gson();
+		Gson gson2 = new Gson();
+		for (NxtShoppingCartProduct currShoppingCartProduct : shoppingCartProductList) {
+			// 对比sku
+			try {
+				List<NxtStructShoppingCartProductSku> skuList = gson1.fromJson(currShoppingCartProduct.getSku(),
+						new TypeToken<List<NxtStructShoppingCartProductSku>>() {
+						}.getType());
+
+				JsonElement e1 = gson1.toJsonTree(skuList);
+				JsonElement e2 = gson2.toJsonTree(shoppingCartProduct.getSku());
+
+				if (e1.equals(e2)) {
+					return currShoppingCartProduct;
+				}
+			} catch (Exception e) {
+				throw new NxtException(prefixStatusMsg + "120060" + "购物车suk查询解析错误");
+			}
+		}
+
+		return dbNxtShoppingCartProduct;
+	}
+
+	private void addNewNxtShoppingCartProduct(NxtStructShoppingCartItem shoppingCartItem,
+			NxtShoppingCart shoppingCart) {
+		// 购物车中无此产品时则添加
+		NxtShoppingCartProduct newNxtShoppingCartProduct = new NxtShoppingCartProduct();
+		newNxtShoppingCartProduct.setDateline(System.currentTimeMillis());
+		newNxtShoppingCartProduct.setShoppingCartId(shoppingCart.getId());
+		newNxtShoppingCartProduct.setProductId(shoppingCartItem.getProduct().getProductId());
+		newNxtShoppingCartProduct.setQuantity(shoppingCartItem.getProduct().getQuantity());
+		String skuJsonStr = JSONObject.toJSONString(shoppingCartItem.getProduct().getSku());
+		newNxtShoppingCartProduct.setSku(skuJsonStr);
+		newNxtShoppingCartProduct.setChecked(1);
+
+		nxtShoppingCartProductService.insert(newNxtShoppingCartProduct);
 	}
 
 	private Map<String, Object> success(Map<String, Object> result) {

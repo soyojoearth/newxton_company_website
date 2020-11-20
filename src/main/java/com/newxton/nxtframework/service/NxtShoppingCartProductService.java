@@ -13,13 +13,13 @@ import java.util.List;
 public interface NxtShoppingCartProductService {
 	
 	/**
-     * 通过shoppingCartId、productId查询单条数据
+     * 通过shoppingCartId、productId查询对象列表
      *
      * @param shoppingCartId 购物车主键
      * @param productId 产品主键
-     * @return 实例对象
+     * @return 对象列表
      */
-    NxtShoppingCartProduct queryByShoppingCartIdProductId(Long shoppingCartId, Long productId);
+	List<NxtShoppingCartProduct> queryByShoppingCartIdProductId(Long shoppingCartId, Long productId);
 
     /**
      * 通过ID查询单条数据

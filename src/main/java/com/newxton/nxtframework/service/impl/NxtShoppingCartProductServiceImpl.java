@@ -20,14 +20,13 @@ public class NxtShoppingCartProductServiceImpl implements NxtShoppingCartProduct
     private NxtShoppingCartProductDao nxtShoppingCartProductDao;
     
     /**
-     * 通过shoppingCartId、productId查询单条数据
+     * 通过shoppingCartId、productId查询对象列表
      *
      * @param shoppingCartId 购物车主键
      * @param productId 产品主键
-     * @return 实例对象
+     * @return 对象列表
      */
-    @Override
-    public NxtShoppingCartProduct queryByShoppingCartIdProductId(Long shoppingCartId, Long productId) {
+	public List<NxtShoppingCartProduct> queryByShoppingCartIdProductId(Long shoppingCartId, Long productId) {
         return this.nxtShoppingCartProductDao.queryByShoppingCartIdProductId(shoppingCartId, productId);
     }
 

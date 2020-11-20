@@ -96,9 +96,10 @@ public class NxtApiShoppingCartDeleteController {
 			return this.fail(result, 100020, prefixStatusMsg + "传入产品信息有误");
 		}
 
+		// TODO
 		// 查询当前用户当前购物车产品信息
 		NxtShoppingCartProduct shoppingCartProduct = nxtShoppingCartProductService
-				.queryByShoppingCartIdProductId(shoppingCart.getId(), productId);
+				.queryByShoppingCartIdProductId(shoppingCart.getId(), productId).get(0);
 		if (shoppingCartProduct == null) {
 			return this.fail(result, 100040, prefixStatusMsg + "无此产品id:" + productId + "记录");
 		}
