@@ -9,12 +9,13 @@
         <result property="quantity" column="quantity" jdbcType="INTEGER"/>
         <result property="sku" column="sku" jdbcType="VARCHAR"/>
         <result property="dateline" column="dateline" jdbcType="INTEGER"/>
+        <result property="checked" column="checked" jdbcType="INTEGER"/>
     </resultMap>
     
     <!--查询单个根据shoppingCartId、productId-->
     <select id="queryByShoppingCartIdProductId" resultMap="NxtShoppingCartProductMap">
         select
-          id, shopping_cart_id, product_id, quantity, sku, dateline
+          id, shopping_cart_id, product_id, quantity, sku, dateline, checked
         from nxtframework.nxt_shopping_cart_product
         where shopping_cart_id = #{shoppingCartId} and product_id = #{productId}
     </select>
@@ -22,7 +23,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="NxtShoppingCartProductMap">
         select
-          id, shopping_cart_id, product_id, quantity, sku, dateline
+          id, shopping_cart_id, product_id, quantity, sku, dateline, checked
         from nxtframework.nxt_shopping_cart_product
         where id = #{id}
     </select>
@@ -30,7 +31,7 @@
     <!--查询指定购物车内所有选中的产品-->
     <select id="queryAllCheckedProductByShoppingCartId" resultMap="NxtShoppingCartProductMap">
         select
-          id, shopping_cart_id, product_id, quantity, sku, dateline
+          id, shopping_cart_id, product_id, quantity, sku, dateline, checked
         from nxtframework.nxt_shopping_cart_product
         where shopping_cart_id = #{shopping_cart_id} and checked = 1
     </select>
@@ -38,7 +39,7 @@
     <!--查询指定购物车内所有选中的产品-->
     <select id="queryAllProductByShoppingCartId" resultMap="NxtShoppingCartProductMap">
         select
-          id, shopping_cart_id, product_id, quantity, sku, dateline
+          id, shopping_cart_id, product_id, quantity, sku, dateline, checked
         from nxtframework.nxt_shopping_cart_product
         where shopping_cart_id = #{shopping_cart_id}
     </select>
@@ -46,7 +47,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="NxtShoppingCartProductMap">
         select
-          id, shopping_cart_id, product_id, quantity, sku, dateline
+          id, shopping_cart_id, product_id, quantity, sku, dateline, checked
         from nxtframework.nxt_shopping_cart_product
         limit #{offset}, #{limit}
     </select>
@@ -54,7 +55,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="NxtShoppingCartProductMap">
         select
-        id, shopping_cart_id, product_id, quantity, sku, dateline
+        id, shopping_cart_id, product_id, quantity, sku, dateline, checked
         from nxtframework.nxt_shopping_cart_product
         <where>
             <if test="id != null">
@@ -75,32 +76,35 @@
             <if test="dateline != null">
                 and dateline = #{dateline}
             </if>
+            <if test="checked != null">
+                and checked = #{checked}
+            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_shopping_cart_product(shopping_cart_id, product_id, quantity, sku, dateline)
-        values (#{shoppingCartId}, #{productId}, #{quantity}, #{sku}, #{dateline})
+        insert into nxtframework.nxt_shopping_cart_product(shopping_cart_id, product_id, quantity, sku, dateline, checked)
+        values (#{shoppingCartId}, #{productId}, #{quantity}, #{sku}, #{dateline}, #{checked})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_shopping_cart_product(shopping_cart_id, product_id, quantity, sku, dateline)
+        insert into nxtframework.nxt_shopping_cart_product(shopping_cart_id, product_id, quantity, sku, dateline, checked)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.shoppingCartId}, #{entity.productId}, #{entity.quantity}, #{entity.sku}, #{entity.dateline})
+            (#{entity.shoppingCartId}, #{entity.productId}, #{entity.quantity}, #{entity.sku}, #{entity.dateline}, #{checked})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_shopping_cart_product(shopping_cart_id, product_id, quantity, sku, dateline)
+        insert into nxtframework.nxt_shopping_cart_product(shopping_cart_id, product_id, quantity, sku, dateline, checked)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.shoppingCartId}, #{entity.productId}, #{entity.quantity}, #{entity.sku}, #{entity.dateline})
+            (#{entity.shoppingCartId}, #{entity.productId}, #{entity.quantity}, #{entity.sku}, #{entity.dateline}, #{checked})
         </foreach>
         on duplicate key update
         shopping_cart_id = values(shopping_cart_id) , product_id = values(product_id) , quantity = values(quantity) ,
-        sku = values(sku) , dateline = values(dateline)
+        sku = values(sku) , dateline = values(dateline), checked = values(checked)
     </insert>
 
     <!--通过主键修改数据-->
@@ -121,6 +125,9 @@
             </if>
             <if test="dateline != null">
                 dateline = #{dateline},
+            </if>
+            <if test="checked != null">
+                checked = #{checked},
             </if>
         </set>
         where id = #{id}

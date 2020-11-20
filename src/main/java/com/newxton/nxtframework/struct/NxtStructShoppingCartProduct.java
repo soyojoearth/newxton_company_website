@@ -13,27 +13,39 @@ import java.util.List;
  * 
  */
 public class NxtStructShoppingCartProduct {
-	private Long id; // 产品id
+
+	private Long id;//nxt_shopping_cart_product表主键
+	private Long productId; // 产品id
     private Long quantity; // 购买数量
     private List<NxtStructShoppingCartProductSku> sku = new ArrayList<>(); // 选择的sku值
 
 	private String picUrl;
 	private String productName;
 
-
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
+
 	public Long getQuantity() {
 		return quantity;
 	}
+
 	public void setQuantity(Long quantity) {
 		this.quantity = quantity;
 	}
-	
+
 	public List<NxtStructShoppingCartProductSku> getSku() {
 		return sku;
 	}

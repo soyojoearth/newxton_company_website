@@ -6,28 +6,32 @@ import java.io.Serializable;
  * (NxtShoppingCartProduct)实体类
  *
  * @author makejava
- * @since 2020-11-14 21:45:47
+ * @since 2020-11-20 15:50:04
  */
 public class NxtShoppingCartProduct implements Serializable {
-    private static final long serialVersionUID = 412932394083447822L;
+    private static final long serialVersionUID = -17603808961619819L;
     /**
-     * 购物车里的东西
-     */
+    * 购物车里的东西
+    */
     private Long id;
-
+    
     private Long shoppingCartId;
-
+    
     private Long productId;
-
+    
     private Long quantity;
     /**
-     * sku（存json）
-     */
+    * sku（存json）
+    */
     private String sku;
     /**
-     * 加入时间
-     */
+    * 加入时间
+    */
     private Long dateline;
+    /**
+    * 是否选中（0:否 1:是）
+    */
+    private Integer checked;
 
 
     public Long getId() {
@@ -76,6 +80,14 @@ public class NxtShoppingCartProduct implements Serializable {
 
     public void setDateline(Long dateline) {
         this.dateline = dateline;
+    }
+
+    public Integer getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Integer checked) {
+        this.checked = checked;
     }
 
 }

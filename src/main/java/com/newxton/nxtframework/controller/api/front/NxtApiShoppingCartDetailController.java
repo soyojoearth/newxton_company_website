@@ -26,32 +26,19 @@ public class NxtApiShoppingCartDetailController {
     private NxtShoppingCartService nxtShoppingCartService;
 
     @Resource
-    private NxtUserService nxtUserService;
-
-    @Resource
     private NxtProcessShoppingCart nxtProcessShoppingCart;
 
     @RequestMapping("/api/shopping_cart/detail")
     public Map<String, Object> exec(@RequestHeader(value = "user_id", required = false) Long userId,
-                                    @RequestHeader(value = "token", required = false) String token,
                                     @RequestBody JSONObject jsonParam) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
 
-        //检查是否登录
-        Boolean isLogin = false;
-        if (!(userId == null || token == null || token.isEmpty())){
-            NxtUser user = nxtUserService.queryById(Long.valueOf(userId));
-            if (user == null && user.getToken().equals(token)){
-                isLogin = true;
-            }
-        }
-
         NxtShoppingCart nxtShoppingCart;
 
-        if (isLogin) {
+        if (userId != null) {
             //查询已登录用户购物车
             nxtShoppingCart = nxtShoppingCartService.queryByUserId(userId);
         } else {
