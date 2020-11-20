@@ -1,7 +1,5 @@
 package com.newxton.nxtframework.model.struct;
 
-import java.util.List;
-
 /**
  * @author youjian163mail@163.com
  * @time 2020/11/17
@@ -14,7 +12,6 @@ import java.util.List;
 public class NxtStructShoppingCartItem {
 	private String guestToken; // 匿名用户token
     private NxtStructShoppingCartProduct product; // 加入产品
-    private List<NxtStructProductSku> sku; // 选择的sku值
     
     public String getGuestToken() {
 		return guestToken;
@@ -27,11 +24,5 @@ public class NxtStructShoppingCartItem {
 	}
 	public void setProduct(NxtStructShoppingCartProduct product) {
 		this.product = product;
-	}
-	public List<NxtStructProductSku> getSku() {
-		return sku;
-	}
-	public void setSku(List<NxtStructProductSku> sku) {
-		this.sku = sku;
 	}
 }
