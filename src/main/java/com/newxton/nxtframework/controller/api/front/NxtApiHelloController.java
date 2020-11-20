@@ -22,17 +22,15 @@ public class NxtApiHelloController {
     @Resource
     private NxtUserService nxtUserService;
 
-
     @RequestMapping("/api/hello")
-    public Map<String,Object> exec() {
+    public Map<String, Object> exec() {
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", 0);
+        result.put("message", "");
 
         //心跳检查
-
         NxtUser user = nxtUserService.queryById(1L);
-
-        Map<String,Object> result = new HashMap<>();
-        result.put("status",0);
-        result.put("message","hello world");
 
         return result;
 

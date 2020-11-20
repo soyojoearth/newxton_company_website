@@ -1,8 +1,12 @@
 package com.newxton.nxtframework.controller.api.front;
 
+import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.*;
+import com.newxton.nxtframework.process.NxtProcessProduct;
 import com.newxton.nxtframework.service.*;
+import com.newxton.nxtframework.struct.NxtStructProduct;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,193 +47,31 @@ public class NxtApiProductDetailController  {
     @Resource
     private NxtUploadImageComponent nxtUploadImageComponent;
 
+    @Resource
+    private NxtProcessProduct nxtProcessProduct;
+
     @RequestMapping("/api/product_detail")
-    public Map<String,Object> exec(
-            @RequestParam(value = "product_id",required = false) Long productId,
-            @RequestParam(value = "page",required = false) Long page
-            ) {
+    public Map<String,Object> exec(@RequestBody JSONObject jsonParam) {
+
+        Long productId = jsonParam.getLong("product_id");
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
 
-        Map<String, Object> data = new HashMap<>();
-
-        result.put("data", data);
-
         NxtProduct nxtProduct = nxtProductService.queryById(productId);
 
         if (nxtProduct == null){
+            result.put("detail",new NxtStructProduct());
             return result;
         }
 
-        if (page == null){
-            page = 1L;
-        }
+        NxtStructProduct nxtStructProduct = nxtProcessProduct.getProductAllDetail(nxtProduct);
 
-
-        //产品详情
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        String description = "";
-        String[] descriptionArray = nxtProduct.getProductDescription().split("<p><!-- pagebreak --></p>");
-        if (page > descriptionArray.length){
-            description = "";
-        }
-        else {
-            description = descriptionArray[page.intValue()-1];
-        }
-
-//        description = description.replace("@常见问题@","<a name=\"detail_faq\"></a>");
-//        description = description.replace("@办理流程@","<a name=\"detail_process\"></a>");
-//        description = description.replace("@认证保障@","<a name=\"detail_safe\"></a>");
-
-        //解析Tabs，依次加入锚点
-        List<String> productDescriptionTabs = new ArrayList<>();
-        Matcher m = Pattern.compile("@(.*?)@").matcher(description);
-        while (m.find()) {
-            productDescriptionTabs.add(m.group(1));
-        }
-        for (int i = 0; i < productDescriptionTabs.size(); i++) {
-            description = description.replace("@"+productDescriptionTabs.get(i)+"@","<a name=\"detail_tab_"+i+"\"></a>");
-        }
-
-
-        Map<String, Object> item = new HashMap<>();
-        item.put("id",nxtProduct.getId());
-        item.put("categoryId",nxtProduct.getCategoryId());
-        item.put("productName",nxtProduct.getProductName());
-        item.put("productSubtitle",nxtProduct.getProductSubtitle());
-        if (nxtProduct.getPrice() != null) {
-            item.put("price", nxtProduct.getPrice() / 100F);
-        }
-        else {
-            item.put("price", null);
-        }
-        item.put("productSubtitle",nxtProduct.getProductSubtitle());
-        item.put("productDescription",nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForDisplay(description));
-        item.put("datelineUpdated",nxtProduct.getDatelineUpdated());
-        item.put("datelineUpdatedReadable",sdf.format(new Date(nxtProduct.getDatelineUpdated())));
-        item.put("datelineCreate",nxtProduct.getDatelineCreate());
-        item.put("datelineCreateReadable",sdf.format(new Date(nxtProduct.getDatelineCreate())));
-        item.put("isRecommend",nxtProduct.getDatelineCreate());
-
-        data.put("product", item);
-
-        //Tabs
-        item.put("productDescriptionTabs",productDescriptionTabs);
-
-
-        //SKU 加载
-        NxtProductSku nxtProductSkuCondition = new NxtProductSku();
-        nxtProductSkuCondition.setProductId(nxtProduct.getId());
-
-        List<NxtProductSku> listSku = nxtProductSkuService.queryAll(nxtProductSkuCondition);
-
-        List<Map<String,Object>> resultSkuList = new ArrayList<>();
-        for (NxtProductSku productSku :
-                listSku) {
-            Map<String,Object> itemSkuMap = new HashMap<>();
-            itemSkuMap.put("name",productSku.getSkuKeyName());
-            List<String> itemSkuValueList = new ArrayList<>();
-            Long skuId = productSku.getId();
-            NxtProductSkuValue nxtProductSkuValueCondition = new NxtProductSkuValue();
-            nxtProductSkuValueCondition.setSkuId(skuId);
-            List<NxtProductSkuValue> listSkuValue = nxtProductSkuValueService.queryAll(nxtProductSkuValueCondition);
-            for (NxtProductSkuValue productSkuValue :
-                    listSkuValue) {
-                itemSkuValueList.add(productSkuValue.getSkuValueName());
-            }
-            itemSkuMap.put("sku",itemSkuValueList);
-            resultSkuList.add(itemSkuMap);
-        }
-
-        item.put("product_sku",resultSkuList);
-
-        List<Map<String,Object>> listPicture = getProductPictureList(productId);
-        data.put("listPicture", listPicture);
-        if (listPicture.size() > 0){
-            data.put("firstPicUrl", listPicture.get(0).get("picUrl"));
-        }
-        else {
-            data.put("firstPicUrl", "");
-        }
-
-        //所属类别
-        List<NxtProductCategory> categoryList = nxtProductCategoryService.queryAll(new NxtProductCategory());
-
-        NxtProductCategory productCategory = nxtProductCategoryService.queryById(nxtProduct.getCategoryId());
-
-        NxtProductCategory rootCategory = getRootCategory(productCategory,categoryList);
-
-        data.put("category",productCategory);
-        data.put("rootCategory",rootCategory);
-
-
-        result.put("data", data);
+        result.put("detail",nxtStructProduct);
 
         return result;
 
-    }
-
-    /**
-     * 取得产品图列表
-     * @param productId
-     * @return
-     */
-    private List<Map<String,Object>> getProductPictureList(Long productId){
-
-        List<Map<String,Object>> resultList = new ArrayList<>();
-
-        List<Long> listProductId = new ArrayList<>();
-        listProductId.add(productId);
-
-        List<NxtProductPicture> listProductPicture = nxtProductPictureService.selectByProductIdSet(0,999,listProductId);
-
-        List<Long> listUploadFileId = new ArrayList<>();
-
-        for (NxtProductPicture productPicture:
-                listProductPicture) {
-            listUploadFileId.add(productPicture.getUploadfileId());
-        }
-
-        //产品图
-        if (listProductPicture.size() > 0){
-            List<NxtUploadfile> listUploadFile = nxtUploadfileService.selectByIdSet(0,999,listUploadFileId);
-            for (NxtUploadfile uploadFile :
-                    listUploadFile) {
-                Map<String,Object> item = new HashMap<>();
-                item.put("picUrl",nxtUploadImageComponent.convertImagePathToDomainImagePath(uploadFile.getUrlpath()));
-                resultList.add(item);
-            }
-        }
-
-        return resultList;
-
-    }
-
-    /**
-     * 获取顶级root分类
-     * @param productCategory
-     * @param categoryList
-     * @return
-     */
-    private NxtProductCategory getRootCategory(NxtProductCategory productCategory, List<NxtProductCategory> categoryList){
-        if (productCategory.getCategoryPid().equals(0L)){
-            return productCategory;
-        }
-        for (NxtProductCategory category :
-                categoryList) {
-            if (category.getId().equals(productCategory.getCategoryPid())){
-                if (category.getCategoryPid().equals(0L)){
-                    return category;
-                }
-                else {
-                    return getRootCategory(category,categoryList);
-                }
-            }
-        }
-        return null;
     }
 
 }

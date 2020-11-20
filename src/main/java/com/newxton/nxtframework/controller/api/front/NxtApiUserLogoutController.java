@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * @author soyojo.earth@gmail.com
@@ -44,15 +43,11 @@ public class NxtApiUserLogoutController {
 
         if (user == null || user.getToken() == null){
             //未登录状态，直接提示注销成功
-            result.put("status", 0);
-            result.put("message", "");
             return result;
         }
 
         if (!user.getToken().equals(token)){
             //未登录状态，直接提示注销成功
-            result.put("status", 0);
-            result.put("message", "");
             return result;
         }
 

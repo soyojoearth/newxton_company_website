@@ -2,11 +2,9 @@ package com.newxton.nxtframework.controller.api.front;
 
 import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.entity.NxtShoppingCart;
-import com.newxton.nxtframework.entity.NxtUser;
 import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.process.NxtProcessShoppingCart;
 import com.newxton.nxtframework.service.NxtShoppingCartService;
-import com.newxton.nxtframework.service.NxtUserService;
 import com.newxton.nxtframework.struct.NxtStructShoppingCart;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,8 +55,10 @@ public class NxtApiShoppingCartDetailController {
                 result.put("detail",nxtStructShoppingCart);
             }
             catch (NxtException e){
+
                 result.put("status",54);
                 result.put("message",e.getNxtExecptionMessage());
+
             }
         }
 

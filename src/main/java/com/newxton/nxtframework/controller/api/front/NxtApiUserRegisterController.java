@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.controller.api.front;
 
 import com.alibaba.fastjson.JSONObject;
+import com.newxton.nxtframework.component.NxtUtilComponent;
 import com.newxton.nxtframework.entity.NxtUser;
 import com.newxton.nxtframework.service.NxtUserService;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -10,9 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author hexiao
@@ -26,9 +24,15 @@ public class NxtApiUserRegisterController {
     @Resource
     private NxtUserService nxtUserService;
 
+    @Resource
+    private NxtUtilComponent nxtUtilComponent;
 
     @RequestMapping(value = "/api/user/register", method = RequestMethod.POST)
     public Map<String, Object> exec(@RequestBody JSONObject jsonParam) {
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", 0);
+        result.put("message", "");
 
         String username = jsonParam.getString("username");
         String password = jsonParam.getString("password");
@@ -36,46 +40,41 @@ public class NxtApiUserRegisterController {
         String phone = jsonParam.getString("phone");
         String email = jsonParam.getString("email");
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("status", 0);
-        result.put("message", "");
-
         if (StringUtils.isBlank(username)) {
-            result.put("status", 52);
-            result.put("message", "请输入手机号或邮箱");
+            result.put("status",52);
+            result.put("message","请输入用户名");
             return result;
         }
         if (StringUtils.isBlank(password)) {
-            result.put("status", 52);
-            result.put("message", "请输入密码");
+            result.put("status",52);
+            result.put("message","请输入密码");
             return result;
         }
+        //暂时不需要手机号、邮箱
+        /**
         String regEmail = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";//邮箱校验
         String regPhone = "^((13[0-9])|(14[0,1,4-9])|(15[0-3,5-9])|(16[2,5,6,7])|(17[0-8])|(18[0-9])|(19[0-3,5-9]))\\d{8}$";//手机号校验
         if (username.indexOf("@") != -1) {  //邮箱
             Pattern pattern = Pattern.compile(regEmail);
             Matcher matcher = pattern.matcher(username);
             if (!matcher.matches()) {
-                result.put("status", 52);
-                result.put("message", "请输入正确的邮箱");
-                return result;
+                return new NxtStructApiResult(52,"请输入正确的邮箱");
             }
             email = username;
         } else { //手机号
             Pattern pattern = Pattern.compile(regPhone);
             Matcher matcher = pattern.matcher(username);
             if (!matcher.matches()) {
-                result.put("status", 52);
-                result.put("message", "请输入正确的手机号");
-                return result;
+                return new NxtStructApiResult(52,"请输入正确的手机号");
             }
             phone = username;
         }
+         **/
         //查询该用户是否已注册
         NxtUser nxtUser = nxtUserService.queryByUsername(username);
         if (nxtUser != null) {
-            result.put("status", 45);
-            result.put("message", "此账号已经注册");
+            result.put("status",52);
+            result.put("message","此账号已经注册");
             return result;
         }
         NxtUser newNxtUser = new NxtUser();
@@ -91,12 +90,12 @@ public class NxtApiUserRegisterController {
             }
         }
         //创建salt和密码
-        String saltNew = getRandomString(32);
+        String saltNew = nxtUtilComponent.getRandomString(32);
         String pwdSaltNew = password + saltNew;
         password = DigestUtils.md5Hex(pwdSaltNew).toLowerCase();
 
         //token
-        String newToken = getRandomString(32);
+        String newToken = nxtUtilComponent.getRandomString(32);
         newToken = DigestUtils.md5Hex(newToken).toLowerCase();
 
         newNxtUser.setUsername(username);
@@ -109,22 +108,7 @@ public class NxtApiUserRegisterController {
         nxtUserService.insert(newNxtUser);
 
         return result;
+
     }
 
-    /**
-     * 获取随机字符串
-     *
-     * @param length
-     * @return
-     */
-    public String getRandomString(int length) {
-        String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_";
-        Random random = new Random();
-        StringBuffer buffet = new StringBuffer();
-        for (int i = 0; i < length; i++) {
-            int number = random.nextInt(str.length() - 1);
-            buffet.append(str.charAt(number));
-        }
-        return buffet.toString();
-    }
 }

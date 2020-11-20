@@ -1,5 +1,6 @@
 package com.newxton.nxtframework.controller.api.front;
 
+import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtProduct;
 import com.newxton.nxtframework.entity.NxtProductCategory;
@@ -9,8 +10,8 @@ import com.newxton.nxtframework.service.NxtProductCategoryService;
 import com.newxton.nxtframework.service.NxtProductPictureService;
 import com.newxton.nxtframework.service.NxtProductService;
 import com.newxton.nxtframework.service.NxtUploadfileService;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -44,20 +45,19 @@ public class NxtApiProductListController {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/product_list")
-    public Map<String,Object> exec(
-            @RequestParam(value = "category_name",required = false) String categoryName,
-            @RequestParam(value = "root_category_id",required = false) Long rootCategoryId,
-            @RequestParam(value = "category_id",required = false) Long categoryId,
-            @RequestParam(value = "offset",required = false) Integer offset,
-            @RequestParam(value = "limit",required = false) Integer limit,
-            @RequestParam(value = "require_pages",required = false) Integer requirePages,
-            @RequestParam(value = "search_keyword",required = false) String search_keyword
-    ) {
-
+    public Map<String, Object> exec(@RequestBody JSONObject jsonParam) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
+
+        String categoryName = jsonParam.getString("categoryName");
+        Long rootCategoryId = jsonParam.getLong("rootCategoryId");
+        Long categoryId = jsonParam.getLong("categoryId");
+        Integer offset = jsonParam.getInteger("offset");
+        Integer limit = jsonParam.getInteger("limit");
+        Integer requirePages = jsonParam.getInteger("requirePages");
+        String searchKeyword = jsonParam.getString("searchKeyword");
 
         Map<String, Object> data = new HashMap<>();
 
@@ -108,9 +108,16 @@ public class NxtApiProductListController {
         }
 
         //仅按分类筛选
-        if (search_keyword == null || search_keyword.trim().isEmpty()) {
+        if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
 
-            List<NxtProduct> list = this.nxtProductService.selectByCategoryIdSet(offset,limit,categoryIdList);
+            List<NxtProduct> list;
+
+            if (categoryIdList.size() > 0) {
+                list = this.nxtProductService.selectByCategoryIdSet(offset, limit, categoryIdList);
+            }
+            else {
+                list = this.nxtProductService.queryAllByLimit(offset, limit);
+            }
 
             List<Map<String, Object>> productList = setProductListWithFirstPicture(list);
 
@@ -126,7 +133,7 @@ public class NxtApiProductListController {
         }
         else {//仅按关键词筛选
 
-            List<NxtProduct> list = this.nxtProductService.searchAllByLimit(offset,limit,"%"+search_keyword+"%");
+            List<NxtProduct> list = this.nxtProductService.searchAllByLimit(offset,limit,"%"+searchKeyword+"%");
 
             List<Map<String,Object>> listProduct = setProductListWithFirstPicture(list);
 
@@ -134,7 +141,7 @@ public class NxtApiProductListController {
 
             if (requirePages != null && requirePages > 0) {
                 //分页统计
-                Long count = nxtProductService.searchAllCount("%" + search_keyword + "%");
+                Long count = nxtProductService.searchAllCount("%" + searchKeyword + "%");
                 Long pages = (long) Math.ceil((double) count / (double) limit);
 
                 data.put("pages", pages);
@@ -142,10 +149,9 @@ public class NxtApiProductListController {
 
         }
 
-        result.put("data",data);
+        result.put("detail",data);
 
         return result;
-
     }
 
     /**

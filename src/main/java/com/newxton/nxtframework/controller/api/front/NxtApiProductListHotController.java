@@ -34,13 +34,13 @@ public class NxtApiProductListHotController {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/product_list/hot")
-    public Map<String,Object> exec(@RequestBody JSONObject jsonParam) {
-
-        Integer limit = jsonParam.getInteger("limit");
+    public Map<String, Object> exec(@RequestBody JSONObject jsonParam) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
+
+        Integer limit = jsonParam.getInteger("limit");
 
         if (limit == null || limit < 1){
             limit = 4;
@@ -50,7 +50,7 @@ public class NxtApiProductListHotController {
 
         List<Map<String,Object>> listProduct = setProductListWithFirstPicture(list);
 
-        result.put("list", listProduct);
+        result.put("list",listProduct);
 
         return result;
 

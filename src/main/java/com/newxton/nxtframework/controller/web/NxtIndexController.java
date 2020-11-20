@@ -2,8 +2,6 @@ package com.newxton.nxtframework.controller.web;
 
 import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.controller.api.front.NxtApiBannerListController;
-import com.newxton.nxtframework.controller.api.front.NxtApiNormalNewsListController;
-import com.newxton.nxtframework.controller.api.front.NxtApiProductListNewController;
 import com.newxton.nxtframework.controller.api.front.NxtApiProductListRecommendController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Map;
 
 @Controller

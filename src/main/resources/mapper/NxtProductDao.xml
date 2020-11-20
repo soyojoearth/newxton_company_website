@@ -47,6 +47,7 @@
         select
           id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
+        order by is_recommend desc, sort_id desc
         limit #{offset}, #{limit}
     </select>
 

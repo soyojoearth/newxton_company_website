@@ -32,7 +32,7 @@ public class NxtApiUserLoginController {
 
 
     @RequestMapping(value = "/api/user/login", method = RequestMethod.POST)
-    public Map<String,Object> index(@RequestBody JSONObject jsonParam) {
+    public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
@@ -42,8 +42,8 @@ public class NxtApiUserLoginController {
         String password = jsonParam.getString("password");
 
         if (username == null || password == null) {
-            result.put("status", 52);
-            result.put("message", "参数错误");
+            result.put("status",52);
+            result.put("message","参数错误");
             return result;
         }
 
@@ -51,8 +51,8 @@ public class NxtApiUserLoginController {
 
         NxtUser user = nxtUserService.queryByUsername(username);
         if (user == null) {
-            result.put("status", 44);
-            result.put("message", "用户不存在");
+            result.put("status",42);
+            result.put("message","用户不存在");
             return result;
         }
 
@@ -61,21 +61,22 @@ public class NxtApiUserLoginController {
         password = DigestUtils.md5Hex(pwdSalt).toLowerCase();
 
         if (user.getPassword() == null || !user.getPassword().equals(password)) {
-            result.put("status", 42);
-            result.put("message", "密码错误");
+            result.put("status",42);
+            result.put("message","密码错误");
             return result;
         }
 
         if (user.getStatus().equals(-1)) {
-            result.put("status", -1);
-            result.put("message", "禁止登录");
+            result.put("status",-1);
+            result.put("message","禁止登录");
             return result;
         }
 
+        Map<String,Object> detail = new HashMap<>();
         if (multiDeviceLogin) {
             //允许多设备登录
-            result.put("token", user.getToken());
-            result.put("user_id", user.getId());
+            detail.put("token", user.getToken());
+            detail.put("user_id", user.getId());
         }
         else{
             //不允许多设备登录
@@ -87,9 +88,11 @@ public class NxtApiUserLoginController {
             user.setToken(newToken);
             nxtUserService.update(user);
 
-            result.put("token", newToken);
-            result.put("user_id", user.getId());
+            detail.put("token", newToken);
+            detail.put("user_id", user.getId());
         }
+
+        result.put("detail",detail);
 
         return result;
 
