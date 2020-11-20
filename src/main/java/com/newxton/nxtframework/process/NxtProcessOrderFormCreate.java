@@ -189,6 +189,8 @@ public class NxtProcessOrderFormCreate {
         Long countWeight = null;
         Long countVolume = null;
 
+        NxtStructSettingCommission nxtStructSettingCommission = nxtGlobalSettingComponent.getNxtStructSettingCommission();
+
         //nxt_order_form_product入库，且计算价格
         for (NxtShoppingCartProduct nxtShoppingCartProduct :
                 nxtShoppingCartProductList) {
@@ -257,24 +259,14 @@ public class NxtProcessOrderFormCreate {
                     //待瓜分的佣金占产品成交价的比率（数据库）
                     Long commissionRate = nxtProduct.getCommissionRate();
 
-                    //三个分销佣金等级配置（数据库）
-                    String settingCommissionRateLevel1 = nxtGlobalSettingComponent.getSettingValueInCache("commissionRateLevel1");
-                    String settingCommissionRateLevel2 = nxtGlobalSettingComponent.getSettingValueInCache("commissionRateLevel2");
-                    String settingCommissionRateLevel3 = nxtGlobalSettingComponent.getSettingValueInCache("commissionRateLevel3");
+                    if (commissionRate == null){
+                        commissionRate = nxtStructSettingCommission.getDefaultProductCommissionRate();
+                    }
 
-                    //三个分销佣金等级配置（默认）
-                    Long commissionRateLevel1 = 70L;
-                    Long commissionRateLevel2 = 20L;
-                    Long commissionRateLevel3 = 10L;
-                    if (settingCommissionRateLevel1 != null){
-                        commissionRateLevel1 = Long.valueOf(settingCommissionRateLevel1);
-                    }
-                    if (settingCommissionRateLevel2 != null){
-                        commissionRateLevel2 = Long.valueOf(settingCommissionRateLevel2);
-                    }
-                    if (settingCommissionRateLevel3 != null){
-                        commissionRateLevel3 = Long.valueOf(settingCommissionRateLevel3);
-                    }
+                    //三个分销佣金等级配置
+                    Long commissionRateLevel1 = nxtStructSettingCommission.getCommissionRateLevel1();
+                    Long commissionRateLevel2 = nxtStructSettingCommission.getCommissionRateLevel2();
+                    Long commissionRateLevel3 = nxtStructSettingCommission.getCommissionRateLevel3();
 
                     NxtUser inviterUser1 = nxtUserService.queryById(user.getInviterUserId());
 
@@ -372,7 +364,6 @@ public class NxtProcessOrderFormCreate {
                                 }
 
                             }
-
 
                         }
 

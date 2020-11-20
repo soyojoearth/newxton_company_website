@@ -1,7 +1,9 @@
 package com.newxton.nxtframework.schedule;
 
+import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
 import com.newxton.nxtframework.component.NxtUtilComponent;
 import com.newxton.nxtframework.entity.*;
+import com.newxton.nxtframework.model.struct.NxtStructSettingNormal;
 import com.newxton.nxtframework.service.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.reflections.Reflections;
@@ -46,6 +48,9 @@ public class ScheduledSystemInit {
 
     @Resource
     private NxtBannerService nxtBannerService;
+
+    @Resource
+    private NxtGlobalSettingComponent nxtGlobalSettingComponent;
 
     @Scheduled(initialDelay = 1000, fixedRate = Long.MAX_VALUE)
     public void exec() {
@@ -152,109 +157,6 @@ public class ScheduledSystemInit {
      * 检查&初始化默认系统配置
      */
     private void checkAndInitSystemConfig(){
-
-        NxtSetting nxtSetting0 = nxtSettingService.queryBySettingKey("beianCode");
-        if (nxtSetting0 == null){
-            nxtSetting0 = new NxtSetting();
-            nxtSetting0.setSettingKey("beianCode");
-            nxtSetting0.setSettingName("备案号");
-            nxtSetting0.setSettingValue("");
-            nxtSetting0.setDisplayType("input");
-            nxtSetting0.setDatelineUpdated(System.currentTimeMillis());
-            nxtSetting0.setPlaceholder("");
-            nxtSettingService.insert(nxtSetting0);
-        }
-
-        NxtSetting nxtSetting1 = nxtSettingService.queryBySettingKey("statCode");
-        if (nxtSetting1 == null){
-            nxtSetting1 = new NxtSetting();
-            nxtSetting1.setSettingKey("statCode");
-            nxtSetting1.setSettingName("统计代码");
-            nxtSetting1.setSettingValue("");
-            nxtSetting1.setDisplayType("textarea");
-            nxtSetting1.setDatelineUpdated(System.currentTimeMillis());
-            nxtSettingService.insert(nxtSetting1);
-        }
-
-        NxtSetting nxtSetting2 = nxtSettingService.queryBySettingKey("contactCode");
-        if (nxtSetting2 == null){
-            nxtSetting2 = new NxtSetting();
-            nxtSetting2.setSettingKey("contactCode");
-            nxtSetting2.setSettingName("客服代码");
-            nxtSetting2.setSettingValue("");
-            nxtSetting2.setDisplayType("textarea");
-            nxtSetting2.setDatelineUpdated(System.currentTimeMillis());
-            nxtSettingService.insert(nxtSetting2);
-        }
-
-        NxtSetting nxtSetting3 = nxtSettingService.queryBySettingKey("contactLink");
-        if (nxtSetting3 == null){
-            nxtSetting3 = new NxtSetting();
-            nxtSetting3.setSettingKey("contactLink");
-            nxtSetting3.setSettingName("客服链接");
-            nxtSetting3.setSettingValue("");
-            nxtSetting3.setDisplayType("input");
-            nxtSetting3.setDatelineUpdated(System.currentTimeMillis());
-            nxtSetting3.setPlaceholder("用户点击网页上的一个按钮，然后会打开一个客服窗口，这里填写该按钮的链接");
-            nxtSettingService.insert(nxtSetting3);
-        }
-
-
-        NxtSetting nxtSetting4 = nxtSettingService.queryBySettingKey("ossLocation");
-        if (nxtSetting4 == null){
-            nxtSetting4 = new NxtSetting();
-            nxtSetting4.setSettingKey("ossLocation");
-            nxtSetting4.setSettingName("图片存储位置");
-            nxtSetting4.setSettingValue("");
-            nxtSetting4.setDisplayType("input");
-            nxtSetting4.setDatelineUpdated(System.currentTimeMillis());
-            nxtSetting4.setPlaceholder("存储在本机，填写：local   存储在七牛云，填写：qiniu （不填或填错，默认local）");
-            nxtSettingService.insert(nxtSetting4);
-        }
-
-        NxtSetting nxtSetting5 = nxtSettingService.queryBySettingKey("ossQiniuAccessKey");
-        if (nxtSetting5 == null){
-            nxtSetting5 = new NxtSetting();
-            nxtSetting5.setSettingKey("ossQiniuAccessKey");
-            nxtSetting5.setSettingName("七牛云AccessKey");
-            nxtSetting5.setSettingValue("--");
-            nxtSetting5.setDisplayType("input");
-            nxtSetting5.setDatelineUpdated(System.currentTimeMillis());
-            nxtSettingService.insert(nxtSetting5);
-        }
-
-        NxtSetting nxtSetting6 = nxtSettingService.queryBySettingKey("ossQiniuSecretKey");
-        if (nxtSetting6 == null){
-            nxtSetting6 = new NxtSetting();
-            nxtSetting6.setSettingKey("ossQiniuSecretKey");
-            nxtSetting6.setSettingName("七牛云SecretKey");
-            nxtSetting6.setSettingValue("--");
-            nxtSetting6.setDisplayType("input");
-            nxtSetting6.setDatelineUpdated(System.currentTimeMillis());
-            nxtSettingService.insert(nxtSetting6);
-        }
-
-        NxtSetting nxtSetting7 = nxtSettingService.queryBySettingKey("ossQiniuBucket");
-        if (nxtSetting7 == null){
-            nxtSetting7 = new NxtSetting();
-            nxtSetting7.setSettingKey("ossQiniuBucket");
-            nxtSetting7.setSettingName("七牛云bucket");
-            nxtSetting7.setSettingValue("--");
-            nxtSetting7.setDisplayType("input");
-            nxtSetting7.setDatelineUpdated(System.currentTimeMillis());
-            nxtSettingService.insert(nxtSetting7);
-        }
-
-        NxtSetting nxtSetting8 = nxtSettingService.queryBySettingKey("ossQiniuDomain");
-        if (nxtSetting8 == null){
-            nxtSetting8 = new NxtSetting();
-            nxtSetting8.setSettingKey("ossQiniuDomain");
-            nxtSetting8.setSettingName("七牛云OSS域名");
-            nxtSetting8.setSettingValue("--");
-            nxtSetting8.setDisplayType("input");
-            nxtSetting8.setDatelineUpdated(System.currentTimeMillis());
-            nxtSettingService.insert(nxtSetting8);
-        }
 
         NxtWebPage nxtWebPage1 = nxtWebPageService.queryByKey("about_us");
         if (nxtWebPage1 == null){

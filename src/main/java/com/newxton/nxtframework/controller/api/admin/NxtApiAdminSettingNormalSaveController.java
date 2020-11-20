@@ -38,10 +38,7 @@ public class NxtApiAdminSettingNormalSaveController {
         result.put("status", 0);
         result.put("message", "");
 
-        nxtGlobalSettingComponent.saveSettingsValueByKey("statCode",nxtStructSettingNormal.statCode);
-        nxtGlobalSettingComponent.saveSettingsValueByKey("contactCode",nxtStructSettingNormal.contactCode);
-        nxtGlobalSettingComponent.saveSettingsValueByKey("contactLink",nxtStructSettingNormal.contactLink);
-        nxtGlobalSettingComponent.saveSettingsValueByKey("beianCode",nxtStructSettingNormal.beianCode);
+        nxtGlobalSettingComponent.saveNxtStructSettingNormal(nxtStructSettingNormal);
 
         return result;
     }

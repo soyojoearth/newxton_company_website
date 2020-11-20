@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.component;
 
 import com.newxton.nxtframework.entity.NxtUploadfile;
+import com.newxton.nxtframework.model.struct.NxtStructSettingOssConfig;
 import com.newxton.nxtframework.service.NxtUploadfileService;
 import com.qiniu.util.IOUtils;
 import org.slf4j.Logger;
@@ -40,7 +41,8 @@ public class NxtImageTransferComponent {
     private NxtGlobalSettingComponent nxtGlobalSettingComponent;
 
     private String getOssQniuDomain(){
-        return nxtGlobalSettingComponent.getSettingValueInCache("oss_qiniuDomain");
+        NxtStructSettingOssConfig nxtStructSettingOssConfig = nxtGlobalSettingComponent.getNxtStructSettingOssConfig();
+        return nxtStructSettingOssConfig.getOssQiniuDomain();
     }
 
     /**

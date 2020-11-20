@@ -31,41 +31,7 @@ public class NxtApiAdminSettingPayConfigDetailController {
         result.put("status", 0);
         result.put("message", "");
 
-        List keys = new ArrayList();
-        keys.add("wxpayAPPID");
-        keys.add("wxpayClinetID");
-        keys.add("wxpaySecretKey");
-        keys.add("alipayAPPID");
-        keys.add("alipaySecretKey");
-        keys.add("alipayPublicKey");
-
-        Map<String,NxtSetting> settingMap = nxtGlobalSettingComponent.getSettingsByKeys(keys);
-
-        NxtStructSettingPayConfig nxtStructSettingPayConfig = new NxtStructSettingPayConfig();
-        if (settingMap.get("wxpayAPPID") != null) {
-            NxtSetting nxtSetting = settingMap.get("wxpayAPPID");
-            nxtStructSettingPayConfig.wxpayAPPID = nxtSetting.getSettingValue();
-        }
-        if (settingMap.get("wxpayClinetID") != null) {
-            NxtSetting nxtSetting = settingMap.get("wxpayClinetID");
-            nxtStructSettingPayConfig.wxpayClinetID = nxtSetting.getSettingValue();
-        }
-        if (settingMap.get("wxpaySecretKey") != null) {
-            NxtSetting nxtSetting = settingMap.get("wxpaySecretKey");
-            nxtStructSettingPayConfig.wxpaySecretKey = nxtSetting.getSettingValue();
-        }
-        if (settingMap.get("alipayAPPID") != null) {
-            NxtSetting nxtSetting = settingMap.get("alipayAPPID");
-            nxtStructSettingPayConfig.alipayAPPID = nxtSetting.getSettingValue();
-        }
-        if (settingMap.get("alipaySecretKey") != null) {
-            NxtSetting nxtSetting = settingMap.get("alipaySecretKey");
-            nxtStructSettingPayConfig.alipaySecretKey = nxtSetting.getSettingValue();
-        }
-        if (settingMap.get("alipayPublicKey") != null) {
-            NxtSetting nxtSetting = settingMap.get("alipayPublicKey");
-            nxtStructSettingPayConfig.alipayPublicKey = nxtSetting.getSettingValue();
-        }
+        NxtStructSettingPayConfig nxtStructSettingPayConfig = nxtGlobalSettingComponent.getNxtStructSettingPayConfig();
 
         result.put("detail",nxtStructSettingPayConfig);
 

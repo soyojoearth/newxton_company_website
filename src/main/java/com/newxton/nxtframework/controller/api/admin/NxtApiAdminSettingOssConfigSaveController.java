@@ -31,23 +31,11 @@ public class NxtApiAdminSettingOssConfigSaveController {
 
         NxtStructSettingOssConfig nxtStructSettingOssConfig = gson.fromJson(json,NxtStructSettingOssConfig.class);
 
+        nxtGlobalSettingComponent.saveNxtStructSettingOssConfig(nxtStructSettingOssConfig);
+
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
-
-        if (nxtStructSettingOssConfig.ossLocation != null) {
-            if (!nxtStructSettingOssConfig.ossLocation.equals("local") && !nxtStructSettingOssConfig.ossLocation.equals("qiniu")){
-                nxtStructSettingOssConfig.ossLocation = "local";
-            }
-            nxtGlobalSettingComponent.saveSettingsValueByKey("ossLocation", nxtStructSettingOssConfig.ossLocation);
-        }
-        else {
-
-        }
-        nxtGlobalSettingComponent.saveSettingsValueByKey("ossQiniuAccessKey",nxtStructSettingOssConfig.ossQiniuAccessKey);
-        nxtGlobalSettingComponent.saveSettingsValueByKey("ossQiniuSecretKey",nxtStructSettingOssConfig.ossQiniuSecretKey);
-        nxtGlobalSettingComponent.saveSettingsValueByKey("ossQiniuBucket",nxtStructSettingOssConfig.ossQiniuBucket);
-        nxtGlobalSettingComponent.saveSettingsValueByKey("ossQiniuDomain",nxtStructSettingOssConfig.ossQiniuDomain);
 
         return result;
     }

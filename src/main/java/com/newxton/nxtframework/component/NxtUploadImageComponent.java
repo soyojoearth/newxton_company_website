@@ -48,15 +48,12 @@ public class NxtUploadImageComponent {
     private HttpServletRequest request;
 
     private String getOssLocation(){
-        String ossLocation = nxtGlobalSettingComponent.getSettingValueInCache("oss_location");
-        if (ossLocation == null || ossLocation.isEmpty()){
-            ossLocation = "local";
-        }
+        String ossLocation = nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssLocation();
         return ossLocation;
     }
 
     private String getOssQiniuDomain(){
-        return nxtGlobalSettingComponent.getSettingValueInCache("ossQiniuDomain");
+        return nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssQiniuDomain();
     }
 
     /**
@@ -360,9 +357,9 @@ public class NxtUploadImageComponent {
         Configuration cfg = new Configuration(Region.autoRegion());
         UploadManager uploadManager = new UploadManager(cfg);
 
-        String accessKey = nxtGlobalSettingComponent.getSettingValueInCache("oss_qiniuAccessKey");;
-        String secretKey = nxtGlobalSettingComponent.getSettingValueInCache("oss_qiniuSecretKey");;
-        String bucket = nxtGlobalSettingComponent.getSettingValueInCache("oss_qiniuBucket");;
+        String accessKey = nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssQiniuAccessKey();
+        String secretKey = nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssQiniuSecretKey();
+        String bucket = nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssQiniuBucket();
 
         String suffix = fileExt;
         String yunPath = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));

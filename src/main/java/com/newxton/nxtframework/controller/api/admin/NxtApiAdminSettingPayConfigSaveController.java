@@ -34,12 +34,7 @@ public class NxtApiAdminSettingPayConfigSaveController {
         result.put("status", 0);
         result.put("message", "");
 
-        nxtGlobalSettingComponent.saveSettingsValueByKey("wxpayAPPID",nxtStructSettingPayConfig.wxpayAPPID);
-        nxtGlobalSettingComponent.saveSettingsValueByKey("wxpayClinetID",nxtStructSettingPayConfig.wxpayClinetID);
-        nxtGlobalSettingComponent.saveSettingsValueByKey("wxpaySecretKey",nxtStructSettingPayConfig.wxpaySecretKey);
-        nxtGlobalSettingComponent.saveSettingsValueByKey("alipayAPPID",nxtStructSettingPayConfig.alipayAPPID);
-        nxtGlobalSettingComponent.saveSettingsValueByKey("alipaySecretKey",nxtStructSettingPayConfig.alipaySecretKey);
-        nxtGlobalSettingComponent.saveSettingsValueByKey("alipayPublicKey",nxtStructSettingPayConfig.alipayPublicKey);
+        nxtGlobalSettingComponent.saveNxtStructSettingPayConfig(nxtStructSettingPayConfig);
 
         return result;
     }

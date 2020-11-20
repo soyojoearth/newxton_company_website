@@ -22,23 +22,6 @@ public class NxtSetting implements Serializable {
     * value
     */
     private String settingValue;
-    /**
-    * 设置名
-    */
-    private String settingName;
-    /**
-    * input、textarea两种
-    */
-    private String displayType;
-    /**
-    * 保存或更新时间（精确到毫秒）
-    */
-    private Long datelineUpdated;
-    /**
-    * 填写说明
-    */
-    private String placeholder;
-
 
     public Long getId() {
         return id;
@@ -62,38 +45,6 @@ public class NxtSetting implements Serializable {
 
     public void setSettingValue(String settingValue) {
         this.settingValue = settingValue;
-    }
-
-    public String getSettingName() {
-        return settingName;
-    }
-
-    public void setSettingName(String settingName) {
-        this.settingName = settingName;
-    }
-
-    public String getDisplayType() {
-        return displayType;
-    }
-
-    public void setDisplayType(String displayType) {
-        this.displayType = displayType;
-    }
-
-    public Long getDatelineUpdated() {
-        return datelineUpdated;
-    }
-
-    public void setDatelineUpdated(Long datelineUpdated) {
-        this.datelineUpdated = datelineUpdated;
-    }
-
-    public String getPlaceholder() {
-        return placeholder;
-    }
-
-    public void setPlaceholder(String placeholder) {
-        this.placeholder = placeholder;
     }
 
 }

@@ -8,7 +8,7 @@ package com.newxton.nxtframework.model.struct;
 public class NxtStructSettingOssConfig {
 
     //存储在本机：local 存储在七牛云：qiniu
-    public String ossLocation;
+    public String ossLocation = "local";//默认值
 
     //七牛云AccessKey
     public String ossQiniuAccessKey;

@@ -32,36 +32,7 @@ public class NxtApiAdminSettingOssConfigDetailController {
         result.put("status", 0);
         result.put("message", "");
 
-        List keys = new ArrayList();
-        keys.add("ossLocation");
-        keys.add("ossQiniuAccessKey");
-        keys.add("ossQiniuSecretKey");
-        keys.add("ossQiniuBucket");
-        keys.add("ossQiniuDomain");
-
-        Map<String,NxtSetting> settingMap = nxtGlobalSettingComponent.getSettingsByKeys(keys);
-
-        NxtStructSettingOssConfig nxtStructSettingOssConfig = new NxtStructSettingOssConfig();
-        if (settingMap.get("ossLocation") != null) {
-            NxtSetting nxtSetting = settingMap.get("ossLocation");
-            nxtStructSettingOssConfig.ossLocation = nxtSetting.getSettingValue();
-        }
-        if (settingMap.get("ossQiniuAccessKey") != null) {
-            NxtSetting nxtSetting = settingMap.get("ossQiniuSecretKey");
-            nxtStructSettingOssConfig.ossQiniuAccessKey = nxtSetting.getSettingValue();
-        }
-        if (settingMap.get("ossQiniuSecretKey") != null) {
-            NxtSetting nxtSetting = settingMap.get("ossQiniuSecretKey");
-            nxtStructSettingOssConfig.ossQiniuSecretKey = nxtSetting.getSettingValue();
-        }
-        if (settingMap.get("ossQiniuBucket") != null) {
-            NxtSetting nxtSetting = settingMap.get("ossQiniuBucket");
-            nxtStructSettingOssConfig.ossQiniuBucket = nxtSetting.getSettingValue();
-        }
-        if (settingMap.get("ossQiniuDomain") != null) {
-            NxtSetting nxtSetting = settingMap.get("ossQiniuDomain");
-            nxtStructSettingOssConfig.ossQiniuDomain = nxtSetting.getSettingValue();
-        }
+        NxtStructSettingOssConfig nxtStructSettingOssConfig = nxtGlobalSettingComponent.getNxtStructSettingOssConfig();
 
         result.put("detail",nxtStructSettingOssConfig);
 

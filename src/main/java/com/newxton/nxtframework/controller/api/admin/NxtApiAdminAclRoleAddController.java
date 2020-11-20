@@ -72,9 +72,6 @@ public class NxtApiAdminAclRoleAddController {
             nxtAclRoleGroupService.insert(nxtAclRoleGroupAdd);
         }
 
-        //提交cronjob任务，清除Acl缓存
-        nxtAclComponent.addJobForCleanCache();
-
         return result;
 
     }
