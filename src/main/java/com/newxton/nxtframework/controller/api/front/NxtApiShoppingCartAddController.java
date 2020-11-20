@@ -102,7 +102,7 @@ public class NxtApiShoppingCartAddController {
 		// 产品主键
 		Long productId = null;
 		try {
-			productId = shoppingCartItem.getProduct().getId();
+			productId = shoppingCartItem.getProduct().getProductId(); // 使用productId字段
 			if (productId == null) {
 				return this.fail(result, 120030, prefixStatusMsg + "传入产品主键为宽");
 			}
@@ -122,6 +122,7 @@ public class NxtApiShoppingCartAddController {
 			newNxtShoppingCartProduct.setQuantity(shoppingCartItem.getProduct().getQuantity());
 			String skuJsonStr = JSONObject.toJSONString(shoppingCartItem.getProduct().getSku());
 			newNxtShoppingCartProduct.setSku(skuJsonStr);
+			newNxtShoppingCartProduct.setChecked(1); // 默认选中
 			
 			nxtShoppingCartProductService.insert(newNxtShoppingCartProduct);
 		} else {
