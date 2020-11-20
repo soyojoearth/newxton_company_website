@@ -1,7 +1,7 @@
 package com.newxton.nxtframework.component;
 
 import com.newxton.nxtframework.entity.NxtUploadfile;
-import com.newxton.nxtframework.model.struct.NxtStructSettingOssConfig;
+import com.newxton.nxtframework.struct.NxtStructSettingOssConfig;
 import com.newxton.nxtframework.service.NxtUploadfileService;
 import com.qiniu.util.IOUtils;
 import org.slf4j.Logger;

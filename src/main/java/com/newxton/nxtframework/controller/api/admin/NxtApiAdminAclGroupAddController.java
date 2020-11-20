@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.newxton.nxtframework.component.NxtAclComponent;
 import com.newxton.nxtframework.entity.NxtAclGroup;
 import com.newxton.nxtframework.entity.NxtAclGroupAction;
-import com.newxton.nxtframework.model.struct.NxtStructAclGroup;
+import com.newxton.nxtframework.struct.NxtStructAclGroup;
 import com.newxton.nxtframework.service.NxtAclGroupActionService;
 import com.newxton.nxtframework.service.NxtAclGroupService;
 import org.springframework.transaction.annotation.Transactional;

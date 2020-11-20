@@ -2,7 +2,7 @@ package com.newxton.nxtframework.controller.api.front;
 
 import com.google.gson.Gson;
 import com.newxton.nxtframework.exception.NxtException;
-import com.newxton.nxtframework.model.struct.NxtStructOrderFromCreate;
+import com.newxton.nxtframework.struct.NxtStructOrderFromCreate;
 import com.newxton.nxtframework.process.NxtProcessOrderFormCreate;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +37,7 @@ public class NxtApiOrderFromCreateController {
         }
         catch (NxtException e){
             result.put("status", 54);
-            result.put("message", e.getMessage());
+            result.put("message", e.getNxtExecptionMessage());
         }
 
         return result;

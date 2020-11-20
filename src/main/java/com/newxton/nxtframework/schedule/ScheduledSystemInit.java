@@ -3,7 +3,6 @@ package com.newxton.nxtframework.schedule;
 import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
 import com.newxton.nxtframework.component.NxtUtilComponent;
 import com.newxton.nxtframework.entity.*;
-import com.newxton.nxtframework.model.struct.NxtStructSettingNormal;
 import com.newxton.nxtframework.service.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.reflections.Reflections;

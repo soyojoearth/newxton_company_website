@@ -45,6 +45,13 @@ public interface NxtShoppingCartProductService {
      */
     List<NxtShoppingCartProduct> queryAllCheckedProductByShoppingCartId(Long shoppingCartId);
 
+    /**
+     * 查询指定购物车内所有选中的产品
+     * @param shoppingCartId
+     * @return
+     */
+    List<NxtShoppingCartProduct> queryAllProductByShoppingCartId(Long shoppingCartId);
+
 
     /**
      * 新增数据

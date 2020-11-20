@@ -41,6 +41,15 @@ public interface NxtProductService {
                                       @Param("categoryId") Long categoryId);
 
     /**
+     * 通过id类别批量查数据
+     * @param offset
+     * @param limit
+     * @param idList
+     * @return
+     */
+    List<NxtProduct> selectByIdSet(@Param("offset") int offset, @Param("limit") int limit, @Param("idList") List<Long> idList);
+
+    /**
      * 查询指定多个类型数据
      * @param offset 查询起始位置
      * @param limit 查询条数

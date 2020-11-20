@@ -4,7 +4,7 @@ import com.newxton.nxtframework.component.NxtAclComponent;
 import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
 import com.newxton.nxtframework.entity.NxtCronjob;
 import com.newxton.nxtframework.service.NxtCronjobService;
-import com.newxton.nxtframework.task.NxtTaskMoveImage;
+import com.newxton.nxtframework.schedule.task.NxtTaskMoveImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -5,8 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
 import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.exception.NxtException;
-import com.newxton.nxtframework.model.NxtModelDeliveryConfig;
-import com.newxton.nxtframework.model.struct.*;
+import com.newxton.nxtframework.struct.*;
 import com.newxton.nxtframework.service.*;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,7 +65,7 @@ public class NxtProcessOrderFormCreate {
     private NxtGlobalSettingComponent nxtGlobalSettingComponent;
 
     @Resource
-    private NxtModelDeliveryConfig nxtModelDeliveryConfig;
+    private NxtProcessDeliveryConfig nxtProcessDeliveryConfig;
 
     @Transactional
     public void exec(NxtStructOrderFromCreate nxtStructOrderFromCreate, Long userId) throws NxtException{
@@ -474,7 +473,7 @@ public class NxtProcessOrderFormCreate {
 
         //运费模版
         NxtDeliveryConfig nxtDeliveryConfig = nxtDeliveryConfigService.queryById(nxtDeliveryConfigId);
-        NxtStructDeliveryConfig nxtStructDeliveryConfig = nxtModelDeliveryConfig.getDeliveryConfigAllDetail(nxtDeliveryConfig);
+        NxtStructDeliveryConfig nxtStructDeliveryConfig = nxtProcessDeliveryConfig.getDeliveryConfigAllDetail(nxtDeliveryConfig);
 
         //购物车内的已选中产品列表
         List<NxtShoppingCartProduct> nxtShoppingCartProductList = nxtShoppingCartProductService.queryAllCheckedProductByShoppingCartId(nxtShoppingCart.getId());

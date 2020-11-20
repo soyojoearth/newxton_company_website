@@ -1,17 +1,13 @@
 package com.newxton.nxtframework.controller.api.admin;
 
 import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
-import com.newxton.nxtframework.entity.NxtSetting;
-import com.newxton.nxtframework.model.struct.NxtStructSettingEcConfig;
-import com.newxton.nxtframework.model.struct.NxtStructSettingOssConfig;
+import com.newxton.nxtframework.struct.NxtStructSettingOssConfig;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

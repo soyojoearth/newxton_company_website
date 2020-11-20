@@ -3,7 +3,7 @@ package com.newxton.nxtframework.controller.api.front;
 import com.google.gson.Gson;
 import com.newxton.nxtframework.entity.NxtShoppingCart;
 import com.newxton.nxtframework.entity.NxtShoppingCartProduct;
-import com.newxton.nxtframework.model.struct.NxtStructShoppingCartItem;
+import com.newxton.nxtframework.struct.NxtStructShoppingCartItem;
 import com.newxton.nxtframework.service.NxtShoppingCartProductService;
 import com.newxton.nxtframework.service.NxtShoppingCartService;
 

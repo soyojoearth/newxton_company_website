@@ -2,8 +2,7 @@ package com.newxton.nxtframework.controller.api.admin;
 
 import com.google.gson.Gson;
 import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
-import com.newxton.nxtframework.model.struct.NxtStructSettingEcConfig;
-import com.newxton.nxtframework.model.struct.NxtStructSettingOssConfig;
+import com.newxton.nxtframework.struct.NxtStructSettingOssConfig;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

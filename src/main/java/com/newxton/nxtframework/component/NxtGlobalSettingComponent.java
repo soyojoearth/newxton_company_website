@@ -1,9 +1,8 @@
 package com.newxton.nxtframework.component;
 
 import com.google.gson.Gson;
-import com.newxton.nxtframework.entity.NxtCronjob;
 import com.newxton.nxtframework.entity.NxtSetting;
-import com.newxton.nxtframework.model.struct.*;
+import com.newxton.nxtframework.struct.*;
 import com.newxton.nxtframework.service.NxtCronjobService;
 import com.newxton.nxtframework.service.NxtSettingService;
 import org.slf4j.Logger;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.*;
 
 /**
  * @author soyojo.earth@gmail.com

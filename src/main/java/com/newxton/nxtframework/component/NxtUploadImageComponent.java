@@ -176,7 +176,7 @@ public class NxtUploadImageComponent {
             return null;
         }
         if (imagePath.contains("/public_pic")){
-            return request.getScheme() + "://" + request.getHeader("host") + imagePath;
+            return imagePath;
         }
         else {
             return this.getOssQiniuDomain() + imagePath;
