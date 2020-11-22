@@ -58,6 +58,6 @@ public interface NxtTransactionService {
      * 查询单个用户的余额
      * @return Long
      */
-    Long queryAmountCountByUserId(@Param("userId") Long userId);
+    Long queryBalanceCountByUserId(@Param("userId") Long userId);
 
 }

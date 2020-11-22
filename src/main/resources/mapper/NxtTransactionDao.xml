@@ -109,7 +109,7 @@
 
 
     <!--查询单个用户的余额-->
-    <select id="queryAmountCountByUserId" resultType="Long">
+    <select id="queryBalanceCountByUserId" resultType="Long">
         select
           sum(amount)
         from nxt_transaction

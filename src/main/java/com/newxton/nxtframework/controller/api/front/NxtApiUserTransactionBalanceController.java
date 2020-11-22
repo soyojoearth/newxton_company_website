@@ -21,11 +21,11 @@ public class NxtApiUserTransactionBalanceController {
     @RequestMapping(value = "/api/user/transaction/balance", method = RequestMethod.POST)
     public NxtStructApiResult exec(@RequestHeader(value = "user_id", required = true) Long userId) {
 
-        Long amountCount = nxtTransactionService.queryAmountCountByUserId(userId);
+        Long balanceCount = nxtTransactionService.queryBalanceCountByUserId(userId);
 
-        Float amount = amountCount == null ? 0.00F : amountCount/100F;
+        Float balance = balanceCount == null ? 0.00F : balanceCount/100F;
 
-        return new NxtStructApiResult(amount);
+        return new NxtStructApiResult(balance);
 
     }
 

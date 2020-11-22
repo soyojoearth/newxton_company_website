@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtCommission)实体类
  *
  * @author makejava
- * @since 2020-11-19 20:57:05
+ * @since 2020-11-22 18:11:07
  */
 public class NxtCommission implements Serializable {
-    private static final long serialVersionUID = 252982378727326393L;
+    private static final long serialVersionUID = 871581093495057848L;
     /**
     * 佣金记录表
     */
@@ -54,6 +54,10 @@ public class NxtCommission implements Serializable {
     * 已经支付
     */
     private Integer isPaid;
+    /**
+    * 已结转完成
+    */
+    private Integer isTransfer;
 
 
     public Long getId() {
@@ -158,6 +162,14 @@ public class NxtCommission implements Serializable {
 
     public void setIsPaid(Integer isPaid) {
         this.isPaid = isPaid;
+    }
+
+    public Integer getIsTransfer() {
+        return isTransfer;
+    }
+
+    public void setIsTransfer(Integer isTransfer) {
+        this.isTransfer = isTransfer;
     }
 
 }

@@ -299,6 +299,7 @@ public class NxtProcessOrderFormCreate {
                         nxtCommission1.setQuantityDeal(nxtOrderFormProduct.getQuantity());
 
                         nxtCommission1.setIsPaid(0);
+                        nxtCommission1.setIsTransfer(0);
 
                         if (inviterUser1.getStatus().equals(0)) {
                             nxtCommissionService.insert(nxtCommission1);
@@ -328,6 +329,7 @@ public class NxtProcessOrderFormCreate {
                             nxtCommission2.setQuantityDeal(nxtOrderFormProduct.getQuantity());
 
                             nxtCommission2.setIsPaid(0);
+                            nxtCommission2.setIsTransfer(0);
 
                             if (inviterUser2.getStatus().equals(0)) {
                                 nxtCommissionService.insert(nxtCommission2);
@@ -357,6 +359,7 @@ public class NxtProcessOrderFormCreate {
                                 nxtCommission3.setQuantityDeal(nxtOrderFormProduct.getQuantity());
 
                                 nxtCommission3.setIsPaid(0);
+                                nxtCommission3.setIsTransfer(0);
 
                                 if (inviterUser3.getStatus().equals(0)) {
                                     nxtCommissionService.insert(nxtCommission3);
