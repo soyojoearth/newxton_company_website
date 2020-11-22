@@ -77,9 +77,6 @@ public class NxtApiAdminAclRoleDeleteController {
         //删除角色
         nxtAclRoleService.deleteById(roleId);
 
-        //提交cronjob任务，清除Acl缓存
-        nxtAclComponent.addJobForCleanCache();
-
         return result;
 
     }

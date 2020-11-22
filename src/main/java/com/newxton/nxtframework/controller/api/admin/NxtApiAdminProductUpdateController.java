@@ -1,10 +1,8 @@
 package com.newxton.nxtframework.controller.api.admin;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
-import com.newxton.nxtframework.model.NxtModelProduct;
-import com.newxton.nxtframework.model.struct.NxtStructDeliveryConfig;
-import com.newxton.nxtframework.model.struct.NxtStructProduct;
+import com.newxton.nxtframework.process.NxtProcessProduct;
+import com.newxton.nxtframework.struct.NxtStructProduct;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,7 +18,7 @@ import java.util.*;
 public class NxtApiAdminProductUpdateController {
 
     @Resource
-    private NxtModelProduct nxtModelProduct;
+    private NxtProcessProduct nxtProcessProduct;
 
     @RequestMapping(value = "/api/admin/product/update", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestBody String json) {
@@ -29,7 +27,7 @@ public class NxtApiAdminProductUpdateController {
 
         NxtStructProduct nxtStructProduct = gson.fromJson(json,NxtStructProduct.class);
 
-        return nxtModelProduct.saveProductAllDetail(nxtStructProduct);
+        return nxtProcessProduct.saveProductAllDetail(nxtStructProduct);
 
     }
 

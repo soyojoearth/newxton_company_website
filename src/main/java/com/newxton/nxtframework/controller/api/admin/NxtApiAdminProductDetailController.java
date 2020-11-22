@@ -1,7 +1,7 @@
 package com.newxton.nxtframework.controller.api.admin;
 
 import com.newxton.nxtframework.entity.*;
-import com.newxton.nxtframework.model.NxtModelProduct;
+import com.newxton.nxtframework.process.NxtProcessProduct;
 import com.newxton.nxtframework.service.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,7 +21,7 @@ import java.util.*;
 public class NxtApiAdminProductDetailController {
 
     @Resource
-    private NxtModelProduct nxtModelProduct;
+    private NxtProcessProduct nxtProcessProduct;
 
     @Resource
     private NxtProductService nxtProductService;
@@ -46,7 +46,7 @@ public class NxtApiAdminProductDetailController {
             return result;
         }
 
-        result.put("detail",nxtModelProduct.getProductAllDetail(nxtProduct));
+        result.put("detail", nxtProcessProduct.getProductAllDetail(nxtProduct));
 
         return result;
 

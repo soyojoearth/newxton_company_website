@@ -26,35 +26,14 @@ public class NxtAclComponent {
     @Resource
     private NxtAclActionService nxtAclActionService;
 
-    @Resource
-    private NxtCronjobService nxtCronjobService;
-
-    /**
-     * 清理缓存
-     * 由于实例可能由k8s部署多个，所以需要清除每个实例的缓存，就提交任务，分布式执行
-     *
-     */
-    public void addJobForCleanCache(){
-        NxtCronjob nxtCronjob = nxtCronjobService.queryByKeyForUpdate("cleanAclCache");
-        if (nxtCronjob == null){
-            nxtCronjob = new NxtCronjob();
-            nxtCronjob.setJobStatusDateline(System.currentTimeMillis());
-            nxtCronjob.setJobStatus(1);
-            nxtCronjob.setJobName("清理Acl缓存");
-            nxtCronjob.setJobKey("cleanAclCache");
-            nxtCronjobService.insert(nxtCronjob);
-        }
-        else {
-            nxtCronjob.setJobStatus(1);
-            nxtCronjob.setJobStatusDateline(System.currentTimeMillis());
-            nxtCronjobService.update(nxtCronjob);
-        }
-    }
-
     /**
      * 直接清理本实例Acl缓存
      */
-    @CacheEvict(cacheNames = {"getUserRoleGroupActionIdSet","getUserActionIdSet"},allEntries = true,beforeInvocation = false)
+    @CacheEvict(cacheNames = {
+            "getUserRoleGroupActionIdSet",
+            "getUserActionIdSet",
+            "getMapClassNameToActionId"
+    },allEntries = true,beforeInvocation = false)
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void cleanCache() {
         // 注解 @CacheEvict 就执行了清理，代码块里面什么也不用写

@@ -1,9 +1,10 @@
 package com.newxton.nxtframework.schedule;
 
+import com.newxton.nxtframework.component.NxtAclComponent;
+import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
 import com.newxton.nxtframework.entity.NxtCronjob;
 import com.newxton.nxtframework.service.NxtCronjobService;
-import com.newxton.nxtframework.task.NxtTaskCleanCache;
-import com.newxton.nxtframework.task.NxtTaskMoveImage;
+import com.newxton.nxtframework.schedule.task.NxtTaskMoveImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -35,7 +36,10 @@ public class ScheduledTasks {
     private NxtTaskMoveImage nxtTaskMoveImage;
 
     @Resource
-    private NxtTaskCleanCache nxtTaskCleanCache;
+    private NxtGlobalSettingComponent nxtGlobalSettingComponent;
+
+    @Resource
+    private NxtAclComponent nxtAclComponent;
 
     @Scheduled(fixedDelay = 5000)
     public void checkCronJob() {
@@ -70,27 +74,19 @@ public class ScheduledTasks {
                 //把七牛云图片搬到本地
                 nxtTaskMoveImage.moveQiniuImageToLocal();
             }
-            else if (jobKey.equals("cleanAclCache")){
-                //清空Acl缓存
-                if (lastJobStatusDatelineMap.get("cleanAclCache") == null || lastJobStatusDatelineMap.get("cleanAclCache") < jobStatusDateline){
-                    lastJobStatusDatelineMap.put("cleanAclCache",jobStatusDateline);
-                    nxtTaskCleanCache.cleanAclCache();
-                }
-                else {
-                    //本实例已经执行过jobStatusDateline这次任务了
-                }
-            }
-            else if (jobKey.equals("cleanSettingValueCache")){
-                //清空SettingValue缓存
-                if (lastJobStatusDatelineMap.get("cleanSettingValueCache") == null || lastJobStatusDatelineMap.get("cleanSettingValueCache") < jobStatusDateline){
-                    lastJobStatusDatelineMap.put("cleanSettingValueCache",jobStatusDateline);
-                    nxtTaskCleanCache.cleanSettingValueCache();
-                }
-                else {
-                    //本实例已经执行过jobStatusDateline这次任务了
-                }
-            }
         }
+    }
+
+    @Scheduled(fixedDelay = 15000)
+    public void cleanSettingCache() {
+        //15秒清理一次Setting缓存
+        nxtGlobalSettingComponent.cleanCache();
+    }
+
+    @Scheduled(fixedDelay = 15000)
+    public void cleanAclCache() {
+        //15秒清理一次ACL缓存
+        nxtAclComponent.cleanCache();
     }
 
 }

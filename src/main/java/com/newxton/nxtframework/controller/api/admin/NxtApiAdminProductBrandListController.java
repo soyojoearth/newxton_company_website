@@ -1,14 +1,11 @@
 package com.newxton.nxtframework.controller.api.admin;
 
-import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtProductBrand;
 import com.newxton.nxtframework.entity.NxtUploadfile;
-import com.newxton.nxtframework.model.struct.NxtStructProduct;
-import com.newxton.nxtframework.model.struct.NxtStructProductBrand;
+import com.newxton.nxtframework.struct.NxtStructProductBrand;
 import com.newxton.nxtframework.service.NxtProductBrandService;
 import com.newxton.nxtframework.service.NxtUploadfileService;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;

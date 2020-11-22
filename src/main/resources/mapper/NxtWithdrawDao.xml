@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtWithdrawDao">
+
+    <resultMap type="com.newxton.nxtframework.entity.NxtWithdraw" id="NxtWithdrawMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="transactionId" column="transaction_id" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="amount" column="amount" jdbcType="INTEGER"/>
+        <result property="datelineCreate" column="dateline_create" jdbcType="INTEGER"/>
+        <result property="datelineEnd" column="dateline_end" jdbcType="VARCHAR"/>
+        <result property="platform" column="platform" jdbcType="INTEGER"/>
+        <result property="platformPerson" column="platform_person" jdbcType="VARCHAR"/>
+        <result property="platformAccount" column="platform_account" jdbcType="VARCHAR"/>
+        <result property="platformSerialNum" column="platform_serial_num" jdbcType="VARCHAR"/>
+        <result property="remarkUser" column="remark_user" jdbcType="VARCHAR"/>
+        <result property="remarkAdmin" column="remark_admin" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="NxtWithdrawMap">
+        select
+          id, user_id, transaction_id, status, type, amount, dateline_create, dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin
+        from nxt_withdraw
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="NxtWithdrawMap">
+        select
+          id, user_id, transaction_id, status, type, amount, dateline_create, dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin
+        from nxt_withdraw
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="NxtWithdrawMap">
+        select
+        id, user_id, transaction_id, status, type, amount, dateline_create, dateline_end, platform, platform_person,
+        platform_account, platform_serial_num, remark_user, remark_admin
+        from nxt_withdraw
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="transactionId != null">
+                and transaction_id = #{transactionId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="amount != null">
+                and amount = #{amount}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="datelineEnd != null and datelineEnd != ''">
+                and dateline_end = #{datelineEnd}
+            </if>
+            <if test="platform != null">
+                and platform = #{platform}
+            </if>
+            <if test="platformPerson != null and platformPerson != ''">
+                and platform_person = #{platformPerson}
+            </if>
+            <if test="platformAccount != null and platformAccount != ''">
+                and platform_account = #{platformAccount}
+            </if>
+            <if test="platformSerialNum != null and platformSerialNum != ''">
+                and platform_serial_num = #{platformSerialNum}
+            </if>
+            <if test="remarkUser != null and remarkUser != ''">
+                and remark_user = #{remarkUser}
+            </if>
+            <if test="remarkAdmin != null and remarkAdmin != ''">
+                and remark_admin = #{remarkAdmin}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_withdraw(user_id, transaction_id, status, type, amount, dateline_create, dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin)
+        values (#{userId}, #{transactionId}, #{status}, #{type}, #{amount}, #{datelineCreate}, #{datelineEnd}, #{platform}, #{platformPerson}, #{platformAccount}, #{platformSerialNum}, #{remarkUser}, #{remarkAdmin})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_withdraw(user_id, transaction_id, status, type, amount, dateline_create,
+        dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.transactionId}, #{entity.status}, #{entity.type}, #{entity.amount},
+            #{entity.datelineCreate}, #{entity.datelineEnd}, #{entity.platform}, #{entity.platformPerson},
+            #{entity.platformAccount}, #{entity.platformSerialNum}, #{entity.remarkUser}, #{entity.remarkAdmin})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_withdraw(user_id, transaction_id, status, type, amount, dateline_create,
+        dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.transactionId}, #{entity.status}, #{entity.type}, #{entity.amount},
+            #{entity.datelineCreate}, #{entity.datelineEnd}, #{entity.platform}, #{entity.platformPerson},
+            #{entity.platformAccount}, #{entity.platformSerialNum}, #{entity.remarkUser}, #{entity.remarkAdmin})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id) , transaction_id = values(transaction_id) , status = values(status) , type =
+        values(type) , amount = values(amount) , dateline_create = values(dateline_create) , dateline_end =
+        values(dateline_end) , platform = values(platform) , platform_person = values(platform_person) ,
+        platform_account = values(platform_account) , platform_serial_num = values(platform_serial_num) , remark_user =
+        values(remark_user) , remark_admin = values(remark_admin)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxt_withdraw
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="transactionId != null">
+                transaction_id = #{transactionId},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+            <if test="datelineCreate != null">
+                dateline_create = #{datelineCreate},
+            </if>
+            <if test="datelineEnd != null and datelineEnd != ''">
+                dateline_end = #{datelineEnd},
+            </if>
+            <if test="platform != null">
+                platform = #{platform},
+            </if>
+            <if test="platformPerson != null and platformPerson != ''">
+                platform_person = #{platformPerson},
+            </if>
+            <if test="platformAccount != null and platformAccount != ''">
+                platform_account = #{platformAccount},
+            </if>
+            <if test="platformSerialNum != null and platformSerialNum != ''">
+                platform_serial_num = #{platformSerialNum},
+            </if>
+            <if test="remarkUser != null and remarkUser != ''">
+                remark_user = #{remarkUser},
+            </if>
+            <if test="remarkAdmin != null and remarkAdmin != ''">
+                remark_admin = #{remarkAdmin},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxt_withdraw where id = #{id}
+    </delete>
+
+</mapper>

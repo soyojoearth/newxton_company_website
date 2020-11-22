@@ -41,6 +41,15 @@ public interface NxtProductService {
                                       @Param("categoryId") Long categoryId);
 
     /**
+     * 通过id类别批量查数据
+     * @param offset
+     * @param limit
+     * @param idList
+     * @return
+     */
+    List<NxtProduct> selectByIdSet(@Param("offset") int offset, @Param("limit") int limit, @Param("idList") List<Long> idList);
+
+    /**
      * 查询指定多个类型数据
      * @param offset 查询起始位置
      * @param limit 查询条数
@@ -117,5 +126,26 @@ public interface NxtProductService {
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    /**
+     * 前台获取热卖产品
+     * @param limit
+     * @return
+     */
+    List<NxtProduct> queryAllHot(int limit);
+
+    /**
+     * 前台获取新品
+     * @param limit
+     * @return
+     */
+    List<NxtProduct> queryAllNew(int limit);
+
+    /**
+     * 前台获取推荐产品
+     * @param limit
+     * @return
+     */
+    List<NxtProduct> queryAllRecommend(int limit);
 
 }

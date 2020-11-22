@@ -56,6 +56,17 @@ public class NxtProductServiceImpl implements NxtProductService {
     }
 
     /**
+     * 通过id类别批量查数据
+     * @param offset
+     * @param limit
+     * @param idList
+     * @return
+     */
+    public List<NxtProduct> selectByIdSet(@Param("offset") int offset, @Param("limit") int limit, @Param("idList") List<Long> idList){
+        return this.nxtProductDao.selectByIdSet(offset, limit, idList);
+    }
+
+    /**
      * 查询指定多个类型数据
      * @param offset 查询起始位置
      * @param limit 查询条数
@@ -158,4 +169,32 @@ public class NxtProductServiceImpl implements NxtProductService {
     public boolean deleteById(Long id) {
         return this.nxtProductDao.deleteById(id) > 0;
     }
+
+    /**
+     * 前台获取热卖产品
+     * @param limit
+     * @return
+     */
+    public List<NxtProduct> queryAllHot(int limit){
+        return this.nxtProductDao.queryAllHot(limit);
+    }
+
+    /**
+     * 前台获取热卖产品
+     * @param limit
+     * @return
+     */
+    public List<NxtProduct> queryAllNew(int limit){
+        return this.nxtProductDao.queryAllNew(limit);
+    }
+
+    /**
+     * 前台获取热卖产品
+     * @param limit
+     * @return
+     */
+    public List<NxtProduct> queryAllRecommend(int limit){
+        return this.nxtProductDao.queryAllRecommend(limit);
+    }
+
 }

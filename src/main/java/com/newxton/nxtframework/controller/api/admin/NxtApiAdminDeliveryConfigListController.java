@@ -1,10 +1,8 @@
 package com.newxton.nxtframework.controller.api.admin;
 
-import com.newxton.nxtframework.entity.NxtDeliveryCompany;
 import com.newxton.nxtframework.entity.NxtDeliveryConfig;
-import com.newxton.nxtframework.model.NxtModelDeliveryConfig;
-import com.newxton.nxtframework.model.struct.NxtStructDeliveryConfig;
-import com.newxton.nxtframework.service.NxtDeliveryCompanyService;
+import com.newxton.nxtframework.process.NxtProcessDeliveryConfig;
+import com.newxton.nxtframework.struct.NxtStructDeliveryConfig;
 import com.newxton.nxtframework.service.NxtDeliveryConfigService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +26,7 @@ public class NxtApiAdminDeliveryConfigListController {
     private NxtDeliveryConfigService nxtDeliveryConfigService;
 
     @Resource
-    private NxtModelDeliveryConfig nxtModelDeliveryConfig;
+    private NxtProcessDeliveryConfig nxtProcessDeliveryConfig;
 
     @RequestMapping(value = "/api/admin/delivery_config/list", method = RequestMethod.POST)
     public Map<String, Object> index() {
@@ -43,7 +41,7 @@ public class NxtApiAdminDeliveryConfigListController {
 
         for (NxtDeliveryConfig nxtDeliveryConfig :
                 nxtDeliveryConfigList) {
-            NxtStructDeliveryConfig mapItemAllDetailG = nxtModelDeliveryConfig.getDeliveryConfigAllDetail(nxtDeliveryConfig);
+            NxtStructDeliveryConfig mapItemAllDetailG = nxtProcessDeliveryConfig.getDeliveryConfigAllDetail(nxtDeliveryConfig);
             list.add(mapItemAllDetailG);
         }
 

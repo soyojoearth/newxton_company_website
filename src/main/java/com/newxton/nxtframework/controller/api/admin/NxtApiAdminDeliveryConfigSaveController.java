@@ -1,8 +1,8 @@
 package com.newxton.nxtframework.controller.api.admin;
 
 import com.google.gson.Gson;
-import com.newxton.nxtframework.model.NxtModelDeliveryConfig;
-import com.newxton.nxtframework.model.struct.NxtStructDeliveryConfig;
+import com.newxton.nxtframework.process.NxtProcessDeliveryConfig;
+import com.newxton.nxtframework.struct.NxtStructDeliveryConfig;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class NxtApiAdminDeliveryConfigSaveController {
 
     @Resource
-    private NxtModelDeliveryConfig nxtModelDeliveryConfig;
+    private NxtProcessDeliveryConfig nxtProcessDeliveryConfig;
 
     @RequestMapping(value = "/api/admin/delivery_config/save", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestBody String json) {
@@ -29,7 +29,7 @@ public class NxtApiAdminDeliveryConfigSaveController {
 
         NxtStructDeliveryConfig nxtStructDeliveryConfig = gson.fromJson(json,NxtStructDeliveryConfig.class);
 
-        return nxtModelDeliveryConfig.save(nxtStructDeliveryConfig);
+        return nxtProcessDeliveryConfig.save(nxtStructDeliveryConfig);
 
     }
 

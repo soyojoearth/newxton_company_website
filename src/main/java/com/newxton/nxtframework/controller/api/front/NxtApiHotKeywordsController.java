@@ -2,6 +2,7 @@ package com.newxton.nxtframework.controller.api.front;
 
 import com.newxton.nxtframework.entity.NxtSetting;
 import com.newxton.nxtframework.service.NxtSettingService;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,18 +22,12 @@ public class NxtApiHotKeywordsController {
     private NxtSettingService nxtSettingService;
 
     @RequestMapping("/api/hot_keywords")
-    public Map<String,Object> exec() {
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("status", 0);
-        result.put("message", "");
+    public NxtStructApiResult exec() {
 
         //热门搜索
         List<String> hotKeywordList = getHotKeyword();
 
-        result.put("data", hotKeywordList);
-
-        return result;
+        return new NxtStructApiResult(hotKeywordList);
 
     }
 

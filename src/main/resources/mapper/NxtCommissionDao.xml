@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtCommissionDao">
+
+    <resultMap id="BaseResultMap" type="com.newxton.nxtframework.entity.NxtCommission">
+        <!--@Table nxt_commission-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="inviterLevel" column="inviter_level" jdbcType="INTEGER"/>
+        <result property="orderFormId" column="order_form_id" jdbcType="INTEGER"/>
+        <result property="orderFormProductId" column="order_form_product_id" jdbcType="INTEGER"/>
+        <result property="commissionTransferInId" column="commission_transfer_in_id" jdbcType="INTEGER"/>
+        <result property="commissionRate" column="commission_rate" jdbcType="INTEGER"/>
+        <result property="commissionAmount" column="commission_amount" jdbcType="INTEGER"/>
+        <result property="datelineCreate" column="dateline_create" jdbcType="INTEGER"/>
+        <result property="datelineEnd" column="dateline_end" jdbcType="INTEGER"/>
+        <result property="quantityDeal" column="quantity_deal" jdbcType="INTEGER"/>
+        <result property="quantityRefund" column="quantity_refund" jdbcType="INTEGER"/>
+        <result property="isPaid" column="is_paid" jdbcType="INTEGER"/>
+        <result property="isTransfer" column="is_transfer" jdbcType="INTEGER"/>
+
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
+        from nxt_commission
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
+        from nxt_commission
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
+        from nxt_commission
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="inviterLevel != null">
+                and inviter_level = #{inviterLevel}
+            </if>
+            <if test="orderFormId != null">
+                and order_form_id = #{orderFormId}
+            </if>
+            <if test="orderFormProductId != null">
+                and order_form_product_id = #{orderFormProductId}
+            </if>
+            <if test="commissionTransferInId != null">
+                and commission_transfer_in_id = #{commissionTransferInId}
+            </if>
+            <if test="commissionRate != null">
+                and commission_rate = #{commissionRate}
+            </if>
+            <if test="commissionAmount != null">
+                and commission_amount = #{commissionAmount}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="datelineEnd != null">
+                and dateline_end = #{datelineEnd}
+            </if>
+            <if test="quantityDeal != null">
+                and quantity_deal = #{quantityDeal}
+            </if>
+            <if test="quantityRefund != null">
+                and quantity_refund = #{quantityRefund}
+            </if>
+            <if test="isPaid != null">
+                and is_paid = #{isPaid}
+            </if>
+            <if test="isTransfer != null">
+                and is_transfer = #{isTransfer}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_commission(user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer)
+        values (#{userId}, #{inviterLevel}, #{orderFormId}, #{orderFormProductId}, #{commissionTransferInId}, #{commissionRate}, #{commissionAmount}, #{datelineCreate}, #{datelineEnd}, #{quantityDeal}, #{quantityRefund}, #{isPaid}, #{isTransfer})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxt_commission
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="inviterLevel != null">
+                inviter_level = #{inviterLevel},
+            </if>
+            <if test="orderFormId != null">
+                order_form_id = #{orderFormId},
+            </if>
+            <if test="orderFormProductId != null">
+                order_form_product_id = #{orderFormProductId},
+            </if>
+            <if test="commissionTransferInId != null">
+                commission_transfer_in_id = #{commissionTransferInId},
+            </if>
+            <if test="commissionRate != null">
+                commission_rate = #{commissionRate},
+            </if>
+            <if test="commissionAmount != null">
+                commission_amount = #{commissionAmount},
+            </if>
+            <if test="datelineCreate != null">
+                dateline_create = #{datelineCreate},
+            </if>
+            <if test="datelineEnd != null">
+                dateline_end = #{datelineEnd},
+            </if>
+            <if test="quantityDeal != null">
+                quantity_deal = #{quantityDeal},
+            </if>
+            <if test="quantityRefund != null">
+                quantity_refund = #{quantityRefund},
+            </if>
+            <if test="isPaid != null">
+                is_paid = #{isPaid},
+            </if>
+            <if test="isTransfer != null">
+                is_transfer = #{isTransfer},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxt_commission where id = #{id}
+    </delete>
+
+
+</mapper>

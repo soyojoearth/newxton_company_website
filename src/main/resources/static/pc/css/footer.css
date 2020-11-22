@@ -1,0 +1,51 @@
+#footer{
+    clear: both;
+    width: 960px;
+    height: 130px;
+    background: #1B1B1B;
+    opacity: 1;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#footer span{
+    color: #FFFFFF;
+}
+
+.footer-hd span{
+    width: 54px;
+    height: 16px;
+    font-size: 12px;
+    font-family: PingFang SC;
+    font-weight: normal;
+    line-height: 16px;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    opacity: 1;
+    display: inline-block;
+    margin: 32px 49px 13px 0;
+}
+
+.footer-bd span{
+    width: 363px;
+    height: 16px;
+    font-size: 12px;
+    font-family: PingFang SC;
+    font-weight: normal;
+    line-height: 16px;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    opacity: 1;
+}
+
+.footer-ft span{
+    width: 104px;
+    height: 16px;
+    font-size: 12px;
+    font-family: PingFang SC;
+    font-weight: normal;
+    line-height: 16px;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    opacity: 1;
+}
