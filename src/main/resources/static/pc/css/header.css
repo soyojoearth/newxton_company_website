@@ -8,7 +8,7 @@ a {
     text-decoration: none;
 }
 
-body{
+body {
     margin: 0 !important;
 }
 
@@ -28,8 +28,9 @@ p {
     color: black;
 }
 
-#header img{
+#header img {
     vertical-align: middle;
+    border: 0 !important;
 }
 
 .nav-l {
@@ -101,9 +102,11 @@ p {
     opacity: 1;
     text-align: center;
 }
-.nav-user-opt .nav-user-buy{
+
+.nav-user-opt .nav-user-buy {
     width: 40px;
 }
+
 .nav-user-opt .nav-user-lr {
     width: 90px;
     height: 60px;

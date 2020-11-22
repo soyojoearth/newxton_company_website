@@ -26,6 +26,7 @@
 
 .slider-banner-pic a img {
     height: 340px;
+    border: 0 !important;
 }
 
 .slider-banner-pic .banner-active {
