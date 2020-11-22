@@ -29,6 +29,7 @@ public class NxtApiUserCommissionBalanceController {
 
 
         NxtCommission nxtCommissionCondition = new NxtCommission();
+        nxtCommissionCondition.setUserId(userId);
         nxtCommissionCondition.setIsTransfer(0);
 
         List<NxtCommission> nxtCommissionList = nxtCommissionService.queryAll(nxtCommissionCondition);
