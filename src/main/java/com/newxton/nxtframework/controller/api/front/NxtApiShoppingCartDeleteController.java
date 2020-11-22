@@ -1,15 +1,11 @@
 package com.newxton.nxtframework.controller.api.front;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.newxton.nxtframework.entity.NxtShoppingCart;
 import com.newxton.nxtframework.entity.NxtShoppingCartProduct;
-import com.newxton.nxtframework.exception.NxtException;
-import com.newxton.nxtframework.struct.NxtStructShoppingCartItem;
-import com.newxton.nxtframework.struct.NxtStructShoppingCartProduct;
-import com.newxton.nxtframework.struct.NxtStructShoppingCartProductSku;
 import com.newxton.nxtframework.service.NxtShoppingCartProductService;
 import com.newxton.nxtframework.service.NxtShoppingCartService;
+import com.newxton.nxtframework.struct.NxtStructShoppingCartItem;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -17,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -92,44 +85,36 @@ public class NxtApiShoppingCartDeleteController {
 			return this.fail(result, 100010, prefixStatusMsg + "无购物车记录");
 		}
 
-		// 产品主键
-		Long productId = null;
+		// 购物车物品id
+		Long shoppingCartItemId = null;
 		try {
-			productId = shoppingCartItem.getProduct().getId();
-			if (productId == null) {
-				return this.fail(result, 100030, prefixStatusMsg + "传入产品主键为宽");
+			shoppingCartItemId = shoppingCartItem.getProduct().getId();
+			if (shoppingCartItemId == null) {
+				return this.fail(result, 100030, prefixStatusMsg + "传入购物车物品id为空");
 			}
 		} catch (Exception ex) {
 			return this.fail(result, 100020, prefixStatusMsg + "传入产品信息有误");
 		}
 
-		// 查询当前用户当前购物车产品信息
-		List<NxtShoppingCartProduct> shoppingCartProductList = nxtShoppingCartProductService
-				.queryByShoppingCartIdProductId(shoppingCart.getId(), productId);
-		if (shoppingCartProductList == null || shoppingCartProductList.size() == 0) {
-			return this.fail(result, 100040, prefixStatusMsg + "无此产品id:" + productId + "记录");
+		// 查询当前用户当前购物车物品信息
+		NxtShoppingCartProduct shoppingCartProduct = nxtShoppingCartProductService.queryById(shoppingCartItemId);
+		if (shoppingCartProduct == null) {
+			return this.fail(result, 100040, prefixStatusMsg + "无此购物车物品id:" + shoppingCartItemId + "记录");
 		}
 
 		// 判读移除产品数量是否合法
 		Long quantity = shoppingCartItem.getProduct().getQuantity();
 		if (quantity == null) {
-			return this.fail(result, 100050, prefixStatusMsg + "产品id:" + productId + "移除数量:传入参数为空");
+			return this.fail(result, 100050, prefixStatusMsg + "购物车物品id:" + shoppingCartItemId + "移除数量:传入参数为空");
 		}
-		
-		// 判断当前产品是否存在
-		NxtShoppingCartProduct dbNxtShoppingCartProduct = this.checkDbShoppingCartProductFlag(prefixStatusMsg,
-				shoppingCartProductList, shoppingCartItem);
-		if (dbNxtShoppingCartProduct != null) {			
-			// 如果大于数据库的数量则删除此记录
-			if (quantity >= dbNxtShoppingCartProduct.getQuantity()) {
-				nxtShoppingCartProductService.deleteById(dbNxtShoppingCartProduct.getId());
-			} else { // 如果小于则更新数据库数量
-				Long finalQuantity = dbNxtShoppingCartProduct.getQuantity() - quantity;
-				dbNxtShoppingCartProduct.setQuantity(finalQuantity);
-				nxtShoppingCartProductService.update(dbNxtShoppingCartProduct);
-			}
-		} else {
-			return this.fail(result, 100050, prefixStatusMsg + "无此产品id:" + productId + "记录");
+
+		// 如果大于数据库的数量则删除此记录
+		if (quantity >= shoppingCartProduct.getQuantity()) {
+			nxtShoppingCartProductService.deleteById(shoppingCartItemId);
+		} else { // 如果小于则更新数据库数量
+			Long finalQuantity = shoppingCartProduct.getQuantity() - quantity;
+			shoppingCartProduct.setQuantity(finalQuantity);
+			nxtShoppingCartProductService.update(shoppingCartProduct);
 		}
 
 		return this.success(result);
@@ -148,46 +133,5 @@ public class NxtApiShoppingCartDeleteController {
 
 		return result;
 	}
-	
-	// 返回空时，此产品不存在, 存在时返回数据库NxtShoppingCartProduct对象
-	private NxtShoppingCartProduct checkDbShoppingCartProductFlag(String prefixStatusMsg,
-			List<NxtShoppingCartProduct> shoppingCartProductList, NxtStructShoppingCartItem shoppingCartItem) {
-		NxtShoppingCartProduct dbNxtShoppingCartProduct = null;
-		NxtStructShoppingCartProduct shoppingCartProduct = shoppingCartItem.getProduct();
-		Gson gson = new Gson();
-		for (NxtShoppingCartProduct currShoppingCartProduct : shoppingCartProductList) {
-			// 对比sku
-			try {
-				List<NxtStructShoppingCartProductSku> dbSkuList = gson.fromJson(currShoppingCartProduct.getSku(),
-						new TypeToken<List<NxtStructShoppingCartProductSku>>() {
-						}.getType());
-				List<NxtStructShoppingCartProductSku> uiSkuList = shoppingCartProduct.getSku();
-				
-				if (dbSkuList.size() != uiSkuList.size()) {
-					throw new NxtException(prefixStatusMsg + "100070" + "购物车suk参数传入错误");
-				}
-				
-				dbSkuList = this.toSortedArray(dbSkuList);
-				uiSkuList = this.toSortedArray(uiSkuList);
-				
-				if (dbSkuList.equals(uiSkuList)) {
-					return currShoppingCartProduct;
-				}
-			} catch (Exception e) {
-				throw new NxtException(prefixStatusMsg + "100060" + "购物车suk查询解析错误");
-			}
-		}
 
-		return dbNxtShoppingCartProduct;
-	}
-	
-	// 比较sku前先将List<NxtStructShoppingCartProductSku>排序
-    private List<NxtStructShoppingCartProductSku> toSortedArray(List<NxtStructShoppingCartProductSku> arr) {
-    	Gson gson = new Gson();
-    	List<NxtStructShoppingCartProductSku> sortedList = new ArrayList<>();
-    	arr.forEach(sortedList::add);
-    	sortedList.sort(Comparator.comparing(gson::toJson));
-    	
-    	return sortedList;
-    }
 }
