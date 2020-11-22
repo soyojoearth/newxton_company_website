@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.struct;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,6 +22,40 @@ public class NxtStructShoppingCartProduct {
 
 	private String picUrl;
 	private String productName;
+
+	public boolean isSameProductWithSku(Object another){
+
+		//先判断是不是自己
+		if (this == another) {
+			return true;
+		}
+		//再判断是不是NxtStructShoppingCartProduct类
+		if (another instanceof NxtStructShoppingCartProduct) {
+			NxtStructShoppingCartProduct anotherObject = (NxtStructShoppingCartProduct) another;
+			if (this.productId.equals(anotherObject.getProductId())){
+				if (this.sku.size() != anotherObject.getSku().size()){
+					return false;
+				}
+				Collections.sort(this.sku);
+				Collections.sort(anotherObject.getSku());
+				for (int i = 0; i < this.sku.size(); i++) {
+					NxtStructShoppingCartProductSku productSku1 = this.sku.get(i);
+					NxtStructShoppingCartProductSku productSku2 = this.sku.get(i);
+					if (!productSku1.equals(productSku2)){
+						return false;
+					}
+				}
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
+
+	}
 
 	public Long getId() {
 		return id;
