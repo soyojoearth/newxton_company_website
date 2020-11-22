@@ -71,9 +71,6 @@ public class NxtApiAdminAclGroupDeleteController {
         //删除权限组
         nxtAclGroupService.deleteById(groupId);
 
-        //提交cronjob任务，清除Acl缓存
-        nxtAclComponent.addJobForCleanCache();
-
         return result;
 
     }

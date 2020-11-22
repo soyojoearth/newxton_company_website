@@ -86,4 +86,16 @@ public class NxtUserServiceImpl implements NxtUserService {
     public boolean deleteById(Long id) {
         return this.nxtUserDao.deleteById(id) > 0;
     }
+
+    /**
+     * 通过inviteCode查询单条数据
+     *
+     * @param inviteCode 推广码
+     * @return 实例对象
+     */
+    @Override
+    public NxtUser queryByInviteCode(String inviteCode) {
+        return this.nxtUserDao.queryByInviteCode(inviteCode);
+    }
+
 }

@@ -71,4 +71,12 @@ public interface NxtUserDao {
      */
     int deleteById(Long id);
 
+    /**
+     * 通过inviteCode查询
+     *
+     * @param inviteCode 推广码
+     * @return 实例对象
+     */
+    NxtUser queryByInviteCode(String inviteCode);
+
 }

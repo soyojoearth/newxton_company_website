@@ -2,8 +2,7 @@ package com.newxton.nxtframework.controller.api.admin;
 
 import com.google.gson.Gson;
 import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
-import com.newxton.nxtframework.model.struct.NxtStructSettingEcConfig;
-import com.newxton.nxtframework.model.struct.NxtStructSettingNormal;
+import com.newxton.nxtframework.struct.NxtStructSettingEcConfig;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,20 +34,8 @@ public class NxtApiAdminSettingEcConfigSaveController {
         result.put("status", 0);
         result.put("message", "");
 
-        nxtGlobalSettingComponent.saveSettingsValueByKey("keywords",nxtStructSettingEcConfig.keywords);
+        nxtGlobalSettingComponent.saveNxtStructSettingEcConfig(nxtStructSettingEcConfig);
 
-        if (nxtStructSettingEcConfig.inventoryUpdateType != null){
-            nxtGlobalSettingComponent.saveSettingsValueByKey("inventoryUpdateType",nxtStructSettingEcConfig.inventoryUpdateType.toString());
-        }
-        if (nxtStructSettingEcConfig.freeShippingAmount != null) {
-            nxtGlobalSettingComponent.saveSettingsValueByKey("freeShippingAmount", nxtStructSettingEcConfig.freeShippingAmount.toString());
-        }
-        if (nxtStructSettingEcConfig.automaticConfirmationOfReceiptTime != null) {
-            nxtGlobalSettingComponent.saveSettingsValueByKey("automaticConfirmationOfReceiptTime", nxtStructSettingEcConfig.automaticConfirmationOfReceiptTime.toString());
-        }
-        if (nxtStructSettingEcConfig.afterSalesServiceTimeLimit != null) {
-            nxtGlobalSettingComponent.saveSettingsValueByKey("afterSalesServiceTimeLimit", nxtStructSettingEcConfig.afterSalesServiceTimeLimit.toString());
-        }
         return result;
     }
 

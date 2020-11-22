@@ -2,8 +2,7 @@ package com.newxton.nxtframework.controller.api.admin;
 
 import com.google.gson.Gson;
 import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
-import com.newxton.nxtframework.model.struct.NxtStructSettingEcConfig;
-import com.newxton.nxtframework.model.struct.NxtStructSettingOssConfig;
+import com.newxton.nxtframework.struct.NxtStructSettingOssConfig;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,23 +30,11 @@ public class NxtApiAdminSettingOssConfigSaveController {
 
         NxtStructSettingOssConfig nxtStructSettingOssConfig = gson.fromJson(json,NxtStructSettingOssConfig.class);
 
+        nxtGlobalSettingComponent.saveNxtStructSettingOssConfig(nxtStructSettingOssConfig);
+
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
-
-        if (nxtStructSettingOssConfig.ossLocation != null) {
-            if (!nxtStructSettingOssConfig.ossLocation.equals("local") && !nxtStructSettingOssConfig.ossLocation.equals("qiniu")){
-                nxtStructSettingOssConfig.ossLocation = "local";
-            }
-            nxtGlobalSettingComponent.saveSettingsValueByKey("ossLocation", nxtStructSettingOssConfig.ossLocation);
-        }
-        else {
-
-        }
-        nxtGlobalSettingComponent.saveSettingsValueByKey("ossQiniuAccessKey",nxtStructSettingOssConfig.ossQiniuAccessKey);
-        nxtGlobalSettingComponent.saveSettingsValueByKey("ossQiniuSecretKey",nxtStructSettingOssConfig.ossQiniuSecretKey);
-        nxtGlobalSettingComponent.saveSettingsValueByKey("ossQiniuBucket",nxtStructSettingOssConfig.ossQiniuBucket);
-        nxtGlobalSettingComponent.saveSettingsValueByKey("ossQiniuDomain",nxtStructSettingOssConfig.ossQiniuDomain);
 
         return result;
     }

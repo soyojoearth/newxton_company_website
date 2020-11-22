@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtCommissionTransferInDao">
+
+    <resultMap type="com.newxton.nxtframework.entity.NxtCommissionTransferIn" id="NxtCommissionTransferInMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="transactionId" column="transaction_id" jdbcType="INTEGER"/>
+        <result property="amount" column="amount" jdbcType="INTEGER"/>
+        <result property="datelineCreate" column="dateline_create" jdbcType="INTEGER"/>
+        <result property="datelineEnd" column="dateline_end" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="NxtCommissionTransferInMap">
+        select
+          id, user_id, transaction_id, amount, dateline_create, dateline_end, status
+        from nxt_commission_transfer_in
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="NxtCommissionTransferInMap">
+        select
+          id, user_id, transaction_id, amount, dateline_create, dateline_end, status
+        from nxt_commission_transfer_in
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="NxtCommissionTransferInMap">
+        select
+        id, user_id, transaction_id, amount, dateline_create, dateline_end, status
+        from nxt_commission_transfer_in
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="transactionId != null">
+                and transaction_id = #{transactionId}
+            </if>
+            <if test="amount != null">
+                and amount = #{amount}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="datelineEnd != null">
+                and dateline_end = #{datelineEnd}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_commission_transfer_in(user_id, transaction_id, amount, dateline_create, dateline_end, status)
+        values (#{userId}, #{transactionId}, #{amount}, #{datelineCreate}, #{datelineEnd}, #{status})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_commission_transfer_in(user_id, transaction_id, amount, dateline_create,
+        dateline_end, status)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.transactionId}, #{entity.amount}, #{entity.datelineCreate},
+            #{entity.datelineEnd}, #{entity.status})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_commission_transfer_in(user_id, transaction_id, amount, dateline_create,
+        dateline_end, status)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.transactionId}, #{entity.amount}, #{entity.datelineCreate},
+            #{entity.datelineEnd}, #{entity.status})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id) , transaction_id = values(transaction_id) , amount = values(amount) , dateline_create
+        = values(dateline_create) , dateline_end = values(dateline_end) , status = values(status)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxt_commission_transfer_in
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="transactionId != null">
+                transaction_id = #{transactionId},
+            </if>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+            <if test="datelineCreate != null">
+                dateline_create = #{datelineCreate},
+            </if>
+            <if test="datelineEnd != null">
+                dateline_end = #{datelineEnd},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxt_commission_transfer_in where id = #{id}
+    </delete>
+
+</mapper>

@@ -1,7 +1,7 @@
 package com.newxton.nxtframework.controller.api.admin;
 
 import com.alibaba.fastjson.JSONObject;
-import com.newxton.nxtframework.model.NxtModelDdeliveryCompany;
+import com.newxton.nxtframework.process.NxtProcessdeliveryCompany;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,12 +19,12 @@ import java.util.Map;
 public class NxtApiAdminDdeliveryCompanySaveController {
 
     @Resource
-    private NxtModelDdeliveryCompany nxtModelDdeliveryCompany;
+    private NxtProcessdeliveryCompany nxtProcessdeliveryCompany;
 
     @RequestMapping(value = "/api/admin/delivery_company/save", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
 
-        return nxtModelDdeliveryCompany.save(jsonParam);
+        return nxtProcessdeliveryCompany.save(jsonParam);
 
     }
 

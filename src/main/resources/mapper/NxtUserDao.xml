@@ -9,13 +9,24 @@
         <result property="password" column="password" jdbcType="VARCHAR"/>
         <result property="salt" column="salt" jdbcType="VARCHAR"/>
         <result property="token" column="token" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="avatarId" column="avatar_id" jdbcType="INTEGER"/>
+        <result property="gender" column="gender" jdbcType="INTEGER"/>
+        <result property="levelNum" column="level_num" jdbcType="INTEGER"/>
+        <result property="moneyBalance" column="money_balance" jdbcType="INTEGER"/>
         <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="datelineCreate" column="dateline_create" jdbcType="INTEGER"/>
+        <result property="inviterUserId" column="inviter_user_id" jdbcType="INTEGER"/>
+        <result property="canInvite" column="can_invite" jdbcType="INTEGER"/>
+        <result property="inviteesCount" column="invitees_count" jdbcType="INTEGER"/>
+        <result property="inviteCode" column="invite_code" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--通过username查询单个-->
     <select id="queryByUsername" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, status
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
         where username = #{username} limit 1
     </select>
@@ -23,7 +34,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, status
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
         where id = #{id}
     </select>
@@ -31,7 +42,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, status
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
         limit #{offset}, #{limit}
     </select>
@@ -39,7 +50,8 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, status
+        id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status,
+        dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
         <where>
             <if test="id != null">
@@ -57,16 +69,61 @@
             <if test="token != null and token != ''">
                 and token = #{token}
             </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email}
+            </if>
+            <if test="avatarId != null">
+                and avatar_id = #{avatarId}
+            </if>
+            <if test="gender != null">
+                and gender = #{gender}
+            </if>
+            <if test="levelNum != null">
+                and level_num = #{levelNum}
+            </if>
+            <if test="moneyBalance != null">
+                and money_balance = #{moneyBalance}
+            </if>
             <if test="status != null">
                 and status = #{status}
+            </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="inviterUserId != null">
+                and inviter_user_id = #{inviterUserId}
+            </if>
+            <if test="canInvite != null">
+                and can_invite = #{canInvite}
+            </if>
+            <if test="inviteesCount != null">
+                and invitees_count = #{inviteesCount}
+            </if>
+            <if test="inviteCode != null">
+                and invite_code = #{inviteCode}
             </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_user(username, password, salt, token, status)
-        values (#{username}, #{password}, #{salt}, #{token}, #{status})
+        insert into nxt_user(username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code)
+        values (#{username}, #{password}, #{salt}, #{token}, #{phone}, #{email}, #{avatarId}, #{gender}, #{levelNum}, #{moneyBalance}, #{status}, #{datelineCreate}, #{inviterUserId}, #{canInvite}, #{inviteesCount}, #{inviteCode})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_user(username, password, salt, token, phone, email, avatar_id, gender, level_num,
+        money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.username}, #{entity.password}, #{entity.salt}, #{entity.token}, #{entity.phone}, #{entity.email},
+            #{entity.avatarId}, #{entity.gender}, #{entity.levelNum}, #{entity.moneyBalance}, #{entity.status},
+            #{entity.datelineCreate}, #{entity.inviterUserId}, #{entity.canInvite}, #{entity.inviteesCount},
+            #{entity.inviteCode})
+        </foreach>
     </insert>
 
     <!--通过主键修改数据-->
@@ -85,8 +142,41 @@
             <if test="token != null and token != ''">
                 token = #{token},
             </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="avatarId != null">
+                avatar_id = #{avatarId},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="levelNum != null">
+                level_num = #{levelNum},
+            </if>
+            <if test="moneyBalance != null">
+                money_balance = #{moneyBalance},
+            </if>
             <if test="status != null">
                 status = #{status},
+            </if>
+            <if test="datelineCreate != null">
+                dateline_create = #{datelineCreate},
+            </if>
+            <if test="inviterUserId != null">
+                inviter_user_id = #{inviterUserId},
+            </if>
+            <if test="canInvite != null">
+                can_invite = #{canInvite},
+            </if>
+            <if test="inviteesCount != null">
+                invitees_count = #{inviteesCount},
+            </if>
+            <if test="inviteCode != null">
+                invite_code = #{inviteCode},
             </if>
         </set>
         where id = #{id}
@@ -97,4 +187,12 @@
         delete from nxt_user where id = #{id}
     </delete>
 
+
+    <!--通过inviteCode查询单个-->
+    <select id="queryByInviteCode" resultMap="BaseResultMap">
+        select
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+        from nxt_user
+        where invite_code = #{inviteCode}
+    </select>
 </mapper>

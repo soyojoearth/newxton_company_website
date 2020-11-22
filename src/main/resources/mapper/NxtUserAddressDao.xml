@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtUserAddressDao">
+
+    <resultMap type="com.newxton.nxtframework.entity.NxtUserAddress" id="NxtUserAddressMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="regionLevel0" column="region_level_0" jdbcType="INTEGER"/>
+        <result property="regionLevel1" column="region_level_1" jdbcType="INTEGER"/>
+        <result property="regionLevel2" column="region_level_2" jdbcType="INTEGER"/>
+        <result property="regionLevel3" column="region_level_3" jdbcType="INTEGER"/>
+        <result property="regionLevel4" column="region_level_4" jdbcType="INTEGER"/>
+        <result property="regionAddress" column="region_address" jdbcType="VARCHAR"/>
+        <result property="deliveryPerson" column="delivery_person" jdbcType="VARCHAR"/>
+        <result property="deliveryPhone" column="delivery_phone" jdbcType="VARCHAR"/>
+        <result property="deliveryPostcode" column="delivery_postcode" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="NxtUserAddressMap">
+        select
+          id, user_id, region_level_0, region_level_1, region_level_2, region_level_3, region_level_4, region_address, delivery_person, delivery_phone, delivery_postcode
+        from nxt_user_address
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="NxtUserAddressMap">
+        select
+          id, user_id, region_level_0, region_level_1, region_level_2, region_level_3, region_level_4, region_address, delivery_person, delivery_phone, delivery_postcode
+        from nxt_user_address
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="NxtUserAddressMap">
+        select
+        id, user_id, region_level_0, region_level_1, region_level_2, region_level_3, region_level_4, region_address,
+        delivery_person, delivery_phone, delivery_postcode
+        from nxt_user_address
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="regionLevel0 != null">
+                and region_level_0 = #{regionLevel0}
+            </if>
+            <if test="regionLevel1 != null">
+                and region_level_1 = #{regionLevel1}
+            </if>
+            <if test="regionLevel2 != null">
+                and region_level_2 = #{regionLevel2}
+            </if>
+            <if test="regionLevel3 != null">
+                and region_level_3 = #{regionLevel3}
+            </if>
+            <if test="regionLevel4 != null">
+                and region_level_4 = #{regionLevel4}
+            </if>
+            <if test="regionAddress != null and regionAddress != ''">
+                and region_address = #{regionAddress}
+            </if>
+            <if test="deliveryPerson != null and deliveryPerson != ''">
+                and delivery_person = #{deliveryPerson}
+            </if>
+            <if test="deliveryPhone != null and deliveryPhone != ''">
+                and delivery_phone = #{deliveryPhone}
+            </if>
+            <if test="deliveryPostcode != null and deliveryPostcode != ''">
+                and delivery_postcode = #{deliveryPostcode}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_user_address(user_id, region_level_0, region_level_1, region_level_2, region_level_3, region_level_4, region_address, delivery_person, delivery_phone, delivery_postcode)
+        values (#{userId}, #{regionLevel0}, #{regionLevel1}, #{regionLevel2}, #{regionLevel3}, #{regionLevel4}, #{regionAddress}, #{deliveryPerson}, #{deliveryPhone}, #{deliveryPostcode})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_user_address(user_id, region_level_0, region_level_1, region_level_2,
+        region_level_3, region_level_4, region_address, delivery_person, delivery_phone, delivery_postcode)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.regionLevel0}, #{entity.regionLevel1}, #{entity.regionLevel2},
+            #{entity.regionLevel3}, #{entity.regionLevel4}, #{entity.regionAddress}, #{entity.deliveryPerson},
+            #{entity.deliveryPhone}, #{entity.deliveryPostcode})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_user_address(user_id, region_level_0, region_level_1, region_level_2,
+        region_level_3, region_level_4, region_address, delivery_person, delivery_phone, delivery_postcode)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.regionLevel0}, #{entity.regionLevel1}, #{entity.regionLevel2},
+            #{entity.regionLevel3}, #{entity.regionLevel4}, #{entity.regionAddress}, #{entity.deliveryPerson},
+            #{entity.deliveryPhone}, #{entity.deliveryPostcode})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id) , region_level_0 = values(region_level_0) , region_level_1 = values(region_level_1) ,
+        region_level_2 = values(region_level_2) , region_level_3 = values(region_level_3) , region_level_4 =
+        values(region_level_4) , region_address = values(region_address) , delivery_person = values(delivery_person) ,
+        delivery_phone = values(delivery_phone) , delivery_postcode = values(delivery_postcode)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxt_user_address
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="regionLevel0 != null">
+                region_level_0 = #{regionLevel0},
+            </if>
+            <if test="regionLevel1 != null">
+                region_level_1 = #{regionLevel1},
+            </if>
+            <if test="regionLevel2 != null">
+                region_level_2 = #{regionLevel2},
+            </if>
+            <if test="regionLevel3 != null">
+                region_level_3 = #{regionLevel3},
+            </if>
+            <if test="regionLevel4 != null">
+                region_level_4 = #{regionLevel4},
+            </if>
+            <if test="regionAddress != null and regionAddress != ''">
+                region_address = #{regionAddress},
+            </if>
+            <if test="deliveryPerson != null and deliveryPerson != ''">
+                delivery_person = #{deliveryPerson},
+            </if>
+            <if test="deliveryPhone != null and deliveryPhone != ''">
+                delivery_phone = #{deliveryPhone},
+            </if>
+            <if test="deliveryPostcode != null and deliveryPostcode != ''">
+                delivery_postcode = #{deliveryPostcode},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxt_user_address where id = #{id}
+    </delete>
+
+</mapper>

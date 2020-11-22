@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtReviewsPictureDao">
+
+    <resultMap type="com.newxton.nxtframework.entity.NxtReviewsPicture" id="NxtReviewsPictureMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="reviewsId" column="reviews_id" jdbcType="INTEGER"/>
+        <result property="uploadfileId" column="uploadfile_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="NxtReviewsPictureMap">
+        select
+          id, reviews_id, uploadfile_id
+        from nxt_reviews_picture
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="NxtReviewsPictureMap">
+        select
+          id, reviews_id, uploadfile_id
+        from nxt_reviews_picture
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="NxtReviewsPictureMap">
+        select
+        id, reviews_id, uploadfile_id
+        from nxt_reviews_picture
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="reviewsId != null">
+                and reviews_id = #{reviewsId}
+            </if>
+            <if test="uploadfileId != null">
+                and uploadfile_id = #{uploadfileId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_reviews_picture(reviews_id, uploadfile_id)
+        values (#{reviewsId}, #{uploadfileId})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_reviews_picture(reviews_id, uploadfile_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.reviewsId}, #{entity.uploadfileId})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_reviews_picture(reviews_id, uploadfile_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.reviewsId}, #{entity.uploadfileId})
+        </foreach>
+        on duplicate key update
+        reviews_id = values(reviews_id) , uploadfile_id = values(uploadfile_id)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxt_reviews_picture
+        <set>
+            <if test="reviewsId != null">
+                reviews_id = #{reviewsId},
+            </if>
+            <if test="uploadfileId != null">
+                uploadfile_id = #{uploadfileId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxt_reviews_picture where id = #{id}
+    </delete>
+
+</mapper>

@@ -1,10 +1,143 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8"  name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/index.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/header.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/content.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/footer.css}">
+    <script  th:src="@{/pc/js/jquery-1.8.2.min.js}" ></script>
+    <script  th:src="@{/pc/js/header.js}" ></script>
+    <script  th:src="@{/pc/js/content.js}" ></script>
 </head>
 <body>
+    <div id="header">
+        <div class="nav-l">
+            <ul class="nav-rec">
+                <li class="nav-logo"><a href=""><img th:src="@{/pc/img/logo.jpg}" alt=""></a></li>
+                <li class="nav-title"><a href="">首页</a></li>
+                <li class="nav-title"><a href="">产品</a></li>
+                <li class="nav-title"><a href="">资讯</a></li>
+                <li class="nav-bar nav-title">
+                    <div>
+                        <a href="">关于</a>
+                        <img th:src="@{/pc/img/icon-down.jpg}" alt="">
+                        <div class="nav-bar-bd"></div>
+                    </div>
+                    <div class="nav-about">
+                        <a href="#" class="nav-about-d">关于我们</a>
+                        <a href="#" class="nav-about-d">联系我们</a>
+                        <a href="#" class="nav-about-d">购买指南</a>
+                        <a href="#" class="nav-about-d">条款声明</a>
+                        <a href="#" class="nav-about-d">隐私政策</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="nav-r">
+            <ul class="nav-user-opt">
+                <li class="nav-user-buy"><img th:src="@{/pc/img/icon-buycart.jpg}" alt=""></li>
+                <li class="nav-user-lr"><a href="">登录/注册</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="content">
+        <div class="slider-banner">
+            <div class="slider-banner-pic">
+                <a th:each="b : ${bannerList}" th:href="${b.clickUrl}">
+                    <img th:src="${b.urlpath + '?imageView2/1/w/960/h/340/q/75'}">
+                </a>
+            </div>
+            <div class="slider-banner-dot">
+                <a th:each="b ,bStat: ${bannerList}" href="#"   class="dot-item"></a>
+            </div>
+        </div>
+        <div class="special-goods">
+            <ul class="goods-item" th:each="p : ${productListNew}">
+                <li class="goods-item-title" th:text="${p.productName}"></li>
+                <li class="goods-item-desc"  th:text="${p.productSubtitle}">省时/省力/省电/省人</li>
+                <li><a href="#" class="goods-item-view">查看详情</a></li>
+                <li><img th:src="${p.picUrl + '?imageView2/1/w/100/h/100/q/75'}" alt="" class="goods-item-pic"></li>
+            </ul>
+        </div>
+        <div class="about-us">
+            <div class="about-pic">
+                <p class="about-pic-up"><img th:src="@{/pc/img/about.jpg}" alt=""></p>
+                <p class="about-pic-down"><img th:src="@{/pc/img/product.jpg}" alt=""></p>
+            </div>
+            <div class="about-desc">
+                <p class="about-desc-bar"></p>
+                <p class="about-desc-title">关于我们</p>
+                <p class="about-desc-detail">Newxton致力于智慧家居系统解决方案的设计开发，打造新一代人工智能家庭，成为行业领先的智慧家居系统解决方案提供商，并助力海信智能家电竞争力的提升；研发并拓展技术含量高、市场规模大、单品价值高、附加值高的家居智能单品，为顾客提供便捷、健康、安全、节能的生活环境。</p>
+            </div>
+        </div>
+        <div class="virtue-product">
+            <div class="virtue-product-out">
+                <p class="virtue-product-title">优选产品</p>
+            </div>
+            <div class="product-list">
+                <ul class="product-item" th:each="p : ${productListRecommend}">
+                    <li class="product-item-pic"><img th:src="${p.picUrl + '?imageView2/1/w/190/h/190/q/75'}" alt=""></li>
+                    <li class="product-item-title" th:text="${p.productName}"></li>
+                    <li class="product-item-price">
+                        <a href="" class="sell-price">¥89.09</a>
+                        <a href="" class="orig-price">¥89.09</a>
+                        <a href="" class="shop-cart"><img th:src="@{/pc/img/buycart-small.png}" alt=""></a>
+                    </li>
+                </ul>
+            </div>
+            <div th:if="${not #lists.isEmpty(productListRecommend)}" class="product-view"><a href="" class="product-view-more">查看更多</a></div>
+            <div class="helper">
+                <ul class="helper-pt">
+                    <li class="helper-pic"><img th:src="@{/pc/img/inno-icon.png}" alt=""></li>
+                    <li class="helper-title">创新设计</li>
+                    <li class="helper-desc">创新设计创新设计创新设计创新设计创新设计创新设计</li>
+                </ul>
+                <ul class="helper-pt">
+                    <li class="helper-pic"><img th:src="@{/pc/img/inde-fact-icon.png}" alt=""></li>
+                    <li class="helper-title">独立工厂</li>
+                    <li class="helper-desc">独立工厂独立工厂独立工厂独立工厂独立工厂独立工厂</li>
+                </ul>
+                <ul class="helper-pt">
+                    <li class="helper-pic"><img th:src="@{/pc/img/sale-icon.png}" alt=""></li>
+                    <li class="helper-title">放心售后</li>
+                    <li class="helper-desc">放心售后放心售后放心售后放心售后放心售后放心售后</li>
+                </ul>
+            </div>
+        </div>
+        <div class="fre-que">
+            <div class="fre-que-pt">
+                <p class="fre-que-title">常见问题</p>
+            </div>
+            <div class="fre-desc">
+                <p class="fre-ask">1. 哪些国家可以在线购买？</p>
+                <p class="fre-ans">目前仅限中国大陆地区可购买。</p>
+                <p class="fre-ask">2. 我收到的产品是和图片上看到的一样吗？</p>
+                <p class="fre-ans">是的，除了某些手工制作的产品可能存在细微差别。</p>
+                <p class="fre-ask">3. 我可以使用哪些支付方式购买？</p>
+                <p class="fre-ans">我们接受以下支付方式： 微信支付和支付宝支付。</p>
+                <a href="" class="fre-view">查看全部</a>
+            </div>
+
+        </div>
+    </div>
+    <div id="footer">
+        <div class="footer-hd">
+            <span>联系我们</span>
+            <span>关于我们</span>
+            <span>条款声明</span>
+        </div>
+        <div class="footer-bd">
+            <span>Copyright © 2020. NxtFramework.com All Rights Reserved.</span>
+        </div>
+        <div class="footer-ft">
+            <span>备案号 88888888</span>
+        </div>
+    </div>
+
 
 </body>
 </html>

@@ -1,0 +1,125 @@
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    margin: 0 !important;
+}
+
+p {
+    margin: 0;
+}
+
+#header {
+    width: 960px;
+    height: 60px;
+    margin: 0 auto;
+    background: #FFFFFF;
+    opacity: 1;
+}
+
+#header ul a {
+    color: black;
+}
+
+#header img {
+    vertical-align: middle;
+    border: 0 !important;
+}
+
+.nav-l {
+    float: left;
+}
+
+.nav-r {
+    float: right;
+}
+
+.nav-rec li, .nav-user-opt li {
+    float: left;
+    width: 90px;
+    height: 60px;
+    font-size: 11px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 60px;
+    color: #1B1B1B;
+    letter-spacing: 1px;
+    opacity: 1;
+    text-align: center;
+}
+
+.nav-rec .nav-logo {
+    width: 152px;
+    height: 60px;
+    line-height: 60px;
+    margin-left: 70px;
+}
+
+.nav-rec .nav-bar {
+    width: 81px;
+    position: relative;
+    z-index: 10;
+}
+
+.nav-rec .nav-bar .nav-bar-bd {
+    width: 50px;
+    height: 2px;
+    background: #1B1B1B;
+    opacity: 1;
+    position: absolute;
+    left: 5px;
+    top: 57px;
+    display: none;
+}
+
+.nav-rec .nav-about {
+    width: 90px;
+    height: 172px;
+    background: #FFFFFF;
+    opacity: 1;
+    position: absolute;
+    top: 60px;
+    left: -15px;
+    display: none;
+}
+
+.nav-rec .nav-about .nav-about-d {
+    display: block;
+    height: 34px;
+    font-size: 10px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 34px;
+    color: #5F5F5F;
+    letter-spacing: 1px;
+    opacity: 1;
+    text-align: center;
+}
+
+.nav-user-opt .nav-user-buy {
+    width: 40px;
+}
+
+.nav-user-opt .nav-user-lr {
+    width: 90px;
+    height: 60px;
+    font-size: 11px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 60px;
+    color: #1B1B1B;
+    letter-spacing: 1px;
+    opacity: 1;
+    margin-right: 50px;
+}
+
+.nav-rec .active {
+    display: block !important;
+}

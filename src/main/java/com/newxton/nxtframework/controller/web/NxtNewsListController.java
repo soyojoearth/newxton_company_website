@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.controller.web;
 
 import com.newxton.nxtframework.controller.api.front.NxtApiNormalNewsListController;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mobile.device.Device;
@@ -33,14 +34,14 @@ public class NxtNewsListController {
         }
 
         //资讯1
-        Map<String, Object> apiResult1 = nxtApiNormalNewsListController.exec(1L,4,null,null);
-        List<Map<String, Object>> newsList1 = (List<Map<String, Object>>) apiResult1.get("data");
-        model.addObject("newsList1", newsList1);
+        NxtStructApiResult apiData1 = nxtApiNormalNewsListController.exec(1L,4,null,null);
+        Map<String,Object> result1 = (Map<String,Object>)apiData1.getResult();
+        model.addObject("newsList1", result1.get("newsList"));
 
         //资讯2
-        Map<String, Object> apiResult2 = nxtApiNormalNewsListController.exec(2L,4,null,null);
-        List<Map<String, Object>> newsList2 = (List<Map<String, Object>>) apiResult2.get("data");
-        model.addObject("newsList2", newsList2);
+        NxtStructApiResult apiData2 = nxtApiNormalNewsListController.exec(2L,4,null,null);
+        Map<String,Object> result2 = (Map<String,Object>)apiData2.getResult();
+        model.addObject("newsList2", result2.get("newsList"));
 
 
         return model;

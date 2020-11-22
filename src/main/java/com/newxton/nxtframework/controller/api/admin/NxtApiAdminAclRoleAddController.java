@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.newxton.nxtframework.component.NxtAclComponent;
 import com.newxton.nxtframework.entity.NxtAclRole;
 import com.newxton.nxtframework.entity.NxtAclRoleGroup;
-import com.newxton.nxtframework.model.struct.NxtStructAclRole;
+import com.newxton.nxtframework.struct.NxtStructAclRole;
 import com.newxton.nxtframework.service.NxtAclRoleGroupService;
 import com.newxton.nxtframework.service.NxtAclRoleService;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,9 +71,6 @@ public class NxtApiAdminAclRoleAddController {
             nxtAclRoleGroupAdd.setGroupId(groupId);
             nxtAclRoleGroupService.insert(nxtAclRoleGroupAdd);
         }
-
-        //提交cronjob任务，清除Acl缓存
-        nxtAclComponent.addJobForCleanCache();
 
         return result;
 
