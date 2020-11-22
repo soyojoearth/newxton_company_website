@@ -3,6 +3,7 @@ package com.newxton.nxtframework.controller.api.front;
 import com.newxton.nxtframework.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtContent;
 import com.newxton.nxtframework.service.NxtContentService;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,23 +31,15 @@ public class NxtApiNewsDetailController {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping(value = "/api/news/detail", method = RequestMethod.POST)
-    public Map<String, Object> exec(@RequestParam(value = "id", required=false) Long id) {
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("status", 0);
-        result.put("message", "");
+    public NxtStructApiResult exec(@RequestParam(value = "id", required=false) Long id) {
 
         if (id == null) {
-            result.put("status", 52);
-            result.put("message", "参数错误");
-            return result;
+            return new NxtStructApiResult(52,"参数错误");
         }
 
         NxtContent content = nxtContentService.queryById(id);
         if (content == null){
-            result.put("status", 49);
-            result.put("message", "对应的内容不存在");
-            return result;
+            return new NxtStructApiResult(49,"对应的内容不存在");
         }
 
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -62,9 +55,7 @@ public class NxtApiNewsDetailController {
         item.put("datelineCreateReadable",sdf.format(new Date(content.getDatelineCreate())));
         item.put("isRecommend",content.getDatelineCreate());
 
-        result.put("data",item);
-
-        return result;
+        return new NxtStructApiResult(item);
 
     }
 

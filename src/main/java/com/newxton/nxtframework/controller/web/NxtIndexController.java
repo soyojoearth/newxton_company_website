@@ -3,6 +3,7 @@ package com.newxton.nxtframework.controller.web;
 import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.controller.api.front.NxtApiBannerListController;
 import com.newxton.nxtframework.controller.api.front.NxtApiProductListRecommendController;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mobile.device.Device;
@@ -46,20 +47,20 @@ public class NxtIndexController {
          */
 
         //轮播广告
-        Map<String,Object> dataBanner = nxtApiBannerListController.exec("首页");
-        model.addObject("bannerList",dataBanner.get("data"));
+        NxtStructApiResult dataBanner = nxtApiBannerListController.exec("首页");
+        model.addObject("bannerList",dataBanner.getResult());
 
         //两款新品
         JSONObject jsonParamNewProduct = new JSONObject();
         jsonParamNewProduct.put("limit",2);
-        Map<String,Object> dataNewProduct = nxtApiProductListRecommendController.exec(jsonParamNewProduct);
-        model.addObject("productListNew",dataNewProduct.get("list"));
+        NxtStructApiResult dataNewProduct = nxtApiProductListRecommendController.exec(jsonParamNewProduct);
+        model.addObject("productListNew",dataNewProduct.getResult());
 
         //四款优选产品
         JSONObject jsonParamRecommendProduct = new JSONObject();
         jsonParamRecommendProduct.put("limit",4);
-        Map<String,Object> dataRecommendProduct = nxtApiProductListRecommendController.exec(jsonParamRecommendProduct);
-        model.addObject("productListRecommend",dataRecommendProduct.get("list"));
+        NxtStructApiResult dataRecommendProduct = nxtApiProductListRecommendController.exec(jsonParamRecommendProduct);
+        model.addObject("productListRecommend",dataRecommendProduct.getResult());
 
         return model;
 

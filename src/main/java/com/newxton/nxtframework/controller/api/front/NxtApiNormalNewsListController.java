@@ -5,6 +5,7 @@ import com.newxton.nxtframework.entity.NxtContent;
 import com.newxton.nxtframework.entity.NxtNewsCategory;
 import com.newxton.nxtframework.service.NxtContentService;
 import com.newxton.nxtframework.service.NxtNewsCategoryService;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -35,16 +36,14 @@ public class NxtApiNormalNewsListController {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/normal_news_list")
-    public Map<String,Object> exec(
+    public NxtStructApiResult exec(
             @RequestParam(value = "root_category_id",required = false) Long rootCategoryId,
             @RequestParam("limit") Integer limit,
             @RequestParam(value = "offset",required = false) Integer offset,
             @RequestParam(value = "show_pages",required = false) Integer show_pages
     ) {
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("status", 0);
-        result.put("message", "");
+        Map<String, Object> data = new HashMap<>();
 
         if (offset == null){
             offset = 0;
@@ -69,16 +68,16 @@ public class NxtApiNormalNewsListController {
         //获取这些子类的内容
         List<Map<String,Object>> newsList = getNewsList(offset,limit,categoryIdList, contentCategoryList);
 
-        result.put("data", newsList);
+        data.put("newsList", newsList);
 
         //显示页码
         if (show_pages != null && show_pages.equals(1)){
             Long count = this.getNewsCount(categoryIdList, contentCategoryList);
             int pages = (int) Math.ceil((float)count / limit);
-            result.put("pages", pages);
+            data.put("pages", pages);
         }
 
-        return result;
+        return new NxtStructApiResult(data);
 
     }
 

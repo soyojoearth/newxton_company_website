@@ -4,13 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.component.NxtUtilComponent;
 import com.newxton.nxtframework.entity.NxtUser;
 import com.newxton.nxtframework.service.NxtUserService;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author hexiao
@@ -28,11 +27,7 @@ public class NxtApiUserRegisterController {
     private NxtUtilComponent nxtUtilComponent;
 
     @RequestMapping(value = "/api/user/register", method = RequestMethod.POST)
-    public Map<String, Object> exec(@RequestBody JSONObject jsonParam) {
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("status", 0);
-        result.put("message", "");
+    public NxtStructApiResult exec(@RequestBody JSONObject jsonParam) {
 
         String username = jsonParam.getString("username");
         String password = jsonParam.getString("password");
@@ -41,14 +36,10 @@ public class NxtApiUserRegisterController {
         String email = jsonParam.getString("email");
 
         if (StringUtils.isBlank(username)) {
-            result.put("status",52);
-            result.put("message","请输入用户名");
-            return result;
+            return new NxtStructApiResult(52,"请输入用户名");
         }
         if (StringUtils.isBlank(password)) {
-            result.put("status",52);
-            result.put("message","请输入密码");
-            return result;
+            return new NxtStructApiResult(52,"请输入密码");
         }
         //暂时不需要手机号、邮箱
         /**
@@ -73,9 +64,7 @@ public class NxtApiUserRegisterController {
         //查询该用户是否已注册
         NxtUser nxtUser = nxtUserService.queryByUsername(username);
         if (nxtUser != null) {
-            result.put("status",52);
-            result.put("message","此账号已经注册");
-            return result;
+            return new NxtStructApiResult(52,"此账号已经注册");
         }
         NxtUser newNxtUser = new NxtUser();
         if (StringUtils.isNotBlank(inviterCode)) {
@@ -107,7 +96,7 @@ public class NxtApiUserRegisterController {
         newNxtUser.setStatus(0);
         nxtUserService.insert(newNxtUser);
 
-        return result;
+        return new NxtStructApiResult();
 
     }
 

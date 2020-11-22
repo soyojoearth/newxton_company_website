@@ -23,33 +23,36 @@ public class NxtStructShoppingCartProduct {
 	private String picUrl;
 	private String productName;
 
-	public boolean isSameProductWithSku(Object another){
+	/**
+	 * 比较是不是同一款产品且同样的sku
+	 * @param obj
+	 * @return
+	 */
+	public boolean isSameProductWithSku(Object obj){
 
 		//先判断是不是自己
-		if (this == another) {
+		if (this == obj) {
 			return true;
 		}
-		//再判断是不是NxtStructShoppingCartProduct类
-		if (another instanceof NxtStructShoppingCartProduct) {
-			NxtStructShoppingCartProduct anotherObject = (NxtStructShoppingCartProduct) another;
-			if (this.productId.equals(anotherObject.getProductId())){
-				if (this.sku.size() != anotherObject.getSku().size()){
-					return false;
-				}
-				Collections.sort(this.sku);
-				Collections.sort(anotherObject.getSku());
-				for (int i = 0; i < this.sku.size(); i++) {
-					NxtStructShoppingCartProductSku productSku1 = this.sku.get(i);
-					NxtStructShoppingCartProductSku productSku2 = this.sku.get(i);
-					if (!productSku1.equals(productSku2)){
-						return false;
-					}
-				}
-				return true;
-			}
-			else {
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NxtStructShoppingCartProduct another = (NxtStructShoppingCartProduct) obj;
+		if (this.productId.equals(another.getProductId())){
+			if (this.sku.size() != another.getSku().size()){
 				return false;
 			}
+			Collections.sort(this.sku);
+			Collections.sort(another.getSku());
+			for (int i = 0; i < this.sku.size(); i++) {
+				NxtStructShoppingCartProductSku productSku1 = this.sku.get(i);
+				NxtStructShoppingCartProductSku productSku2 = this.sku.get(i);
+				if (!productSku1.equals(productSku2)){
+					return false;
+				}
+			}
+			return true;
 		}
 		else {
 			return false;

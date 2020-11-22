@@ -5,12 +5,11 @@ import com.newxton.nxtframework.entity.NxtShoppingCart;
 import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.process.NxtProcessShoppingCart;
 import com.newxton.nxtframework.service.NxtShoppingCartService;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import com.newxton.nxtframework.struct.NxtStructShoppingCart;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author soyojo.earth@gmail.com
@@ -27,12 +26,8 @@ public class NxtApiShoppingCartDetailController {
     private NxtProcessShoppingCart nxtProcessShoppingCart;
 
     @RequestMapping("/api/shopping_cart/detail")
-    public Map<String, Object> exec(@RequestHeader(value = "user_id", required = false) Long userId,
-                                    @RequestBody JSONObject jsonParam) {
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("status", 0);
-        result.put("message", "");
+    public NxtStructApiResult exec(@RequestHeader(value = "user_id", required = false) Long userId,
+                                   @RequestBody JSONObject jsonParam) {
 
         NxtShoppingCart nxtShoppingCart;
 
@@ -46,23 +41,18 @@ public class NxtApiShoppingCartDetailController {
             nxtShoppingCart = nxtShoppingCartService.queryByToken(guestToken);
         }
 
-        //填坑（没有购物车的用户就直接返回空购物车）
-        result.put("detail",new NxtStructShoppingCart());
-
         if (nxtShoppingCart != null){
             try {
                 NxtStructShoppingCart nxtStructShoppingCart = nxtProcessShoppingCart.allDetail(nxtShoppingCart);
-                result.put("detail",nxtStructShoppingCart);
+                return new NxtStructApiResult(nxtStructShoppingCart);
             }
             catch (NxtException e){
-
-                result.put("status",54);
-                result.put("message",e.getNxtExecptionMessage());
-
+                return new NxtStructApiResult(54,e.getNxtExecptionMessage());
             }
         }
 
-        return result;
+        //没有购物车的用户就直接返回空购物车
+        return new NxtStructApiResult(new NxtStructShoppingCart());
 
     }
 

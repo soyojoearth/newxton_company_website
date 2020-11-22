@@ -8,6 +8,7 @@ import com.newxton.nxtframework.entity.NxtUploadfile;
 import com.newxton.nxtframework.service.NxtProductPictureService;
 import com.newxton.nxtframework.service.NxtProductService;
 import com.newxton.nxtframework.service.NxtUploadfileService;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,11 +35,7 @@ public class NxtApiProductListHotController {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/product_list/hot")
-    public Map<String, Object> exec(@RequestBody JSONObject jsonParam) {
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("status", 0);
-        result.put("message", "");
+    public NxtStructApiResult exec(@RequestBody JSONObject jsonParam) {
 
         Integer limit = jsonParam.getInteger("limit");
 
@@ -50,9 +47,7 @@ public class NxtApiProductListHotController {
 
         List<Map<String,Object>> listProduct = setProductListWithFirstPicture(list);
 
-        result.put("list",listProduct);
-
-        return result;
+        return new NxtStructApiResult(listProduct);
 
     }
 

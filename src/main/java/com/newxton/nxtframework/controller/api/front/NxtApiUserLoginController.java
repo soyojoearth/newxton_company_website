@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.component.NxtUtilComponent;
 import com.newxton.nxtframework.entity.NxtUser;
 import com.newxton.nxtframework.service.NxtUserService;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -32,28 +33,20 @@ public class NxtApiUserLoginController {
 
 
     @RequestMapping(value = "/api/user/login", method = RequestMethod.POST)
-    public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("status", 0);
-        result.put("message", "");
+    public NxtStructApiResult index(@RequestBody JSONObject jsonParam) {
 
         String username = jsonParam.getString("username");
         String password = jsonParam.getString("password");
 
         if (username == null || password == null) {
-            result.put("status",52);
-            result.put("message","参数错误");
-            return result;
+            return new NxtStructApiResult(52,"参数错误");
         }
 
         username = username.trim();
 
         NxtUser user = nxtUserService.queryByUsername(username);
         if (user == null) {
-            result.put("status",42);
-            result.put("message","用户不存在");
-            return result;
+            return new NxtStructApiResult(42,"用户不存在");
         }
 
         String salt = user.getSalt();
@@ -61,15 +54,11 @@ public class NxtApiUserLoginController {
         password = DigestUtils.md5Hex(pwdSalt).toLowerCase();
 
         if (user.getPassword() == null || !user.getPassword().equals(password)) {
-            result.put("status",42);
-            result.put("message","密码错误");
-            return result;
+            return new NxtStructApiResult(42,"密码错误");
         }
 
         if (user.getStatus().equals(-1)) {
-            result.put("status",-1);
-            result.put("message","禁止登录");
-            return result;
+            return new NxtStructApiResult(-1,"禁止登录");
         }
 
         Map<String,Object> detail = new HashMap<>();
@@ -92,9 +81,7 @@ public class NxtApiUserLoginController {
             detail.put("user_id", user.getId());
         }
 
-        result.put("detail",detail);
-
-        return result;
+        return new NxtStructApiResult(detail);
 
     }
 

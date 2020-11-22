@@ -5,6 +5,7 @@ import com.newxton.nxtframework.entity.NxtBanner;
 import com.newxton.nxtframework.entity.NxtUploadfile;
 import com.newxton.nxtframework.service.NxtBannerService;
 import com.newxton.nxtframework.service.NxtUploadfileService;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,11 +35,7 @@ public class NxtApiBannerListController {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/banner_list")
-    public Map<String,Object> exec(@RequestParam("location_name") String locationName) {
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("status", 0);
-        result.put("message", "");
+    public NxtStructApiResult exec(@RequestParam("location_name") String locationName) {
 
         //热门搜索
         NxtBanner nxtBannerCondition = new NxtBanner();
@@ -69,9 +66,7 @@ public class NxtApiBannerListController {
             }
         }
 
-        result.put("data",resultList);
-
-        return result;
+        return new NxtStructApiResult(resultList);
 
     }
 

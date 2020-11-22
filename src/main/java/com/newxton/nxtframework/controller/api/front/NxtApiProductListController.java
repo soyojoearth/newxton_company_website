@@ -10,6 +10,7 @@ import com.newxton.nxtframework.service.NxtProductCategoryService;
 import com.newxton.nxtframework.service.NxtProductPictureService;
 import com.newxton.nxtframework.service.NxtProductService;
 import com.newxton.nxtframework.service.NxtUploadfileService;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,11 +46,7 @@ public class NxtApiProductListController {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/product_list")
-    public Map<String, Object> exec(@RequestBody JSONObject jsonParam) {
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("status", 0);
-        result.put("message", "");
+    public NxtStructApiResult exec(@RequestBody JSONObject jsonParam) {
 
         String categoryName = jsonParam.getString("categoryName");
         Long rootCategoryId = jsonParam.getLong("rootCategoryId");
@@ -149,9 +146,8 @@ public class NxtApiProductListController {
 
         }
 
-        result.put("detail",data);
+        return new NxtStructApiResult(data);
 
-        return result;
     }
 
     /**
