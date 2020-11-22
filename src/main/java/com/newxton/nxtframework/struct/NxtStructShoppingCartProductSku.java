@@ -58,4 +58,34 @@ public class NxtStructShoppingCartProductSku implements Comparable<NxtStructShop
         this.skuValueName = skuValueName;
     }
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((skuKeyName == null) ? 0 : skuKeyName.hashCode());
+		result = prime * result + ((skuValueName == null) ? 0 : skuValueName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NxtStructShoppingCartProductSku other = (NxtStructShoppingCartProductSku) obj;
+		if (skuKeyName == null) {
+			if (other.skuKeyName != null)
+				return false;
+		} else if (!skuKeyName.equals(other.skuKeyName))
+			return false;
+		if (skuValueName == null) {
+			if (other.skuValueName != null)
+				return false;
+		} else if (!skuValueName.equals(other.skuValueName))
+			return false;
+		return true;
+	}
 }

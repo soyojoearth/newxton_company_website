@@ -2,7 +2,6 @@ package com.newxton.nxtframework.controller.api.front;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.newxton.nxtframework.entity.NxtShoppingCart;
 import com.newxton.nxtframework.entity.NxtShoppingCartProduct;
@@ -19,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -150,19 +151,23 @@ public class NxtApiShoppingCartAddController {
 			List<NxtShoppingCartProduct> shoppingCartProductList, NxtStructShoppingCartItem shoppingCartItem) {
 		NxtShoppingCartProduct dbNxtShoppingCartProduct = null;
 		NxtStructShoppingCartProduct shoppingCartProduct = shoppingCartItem.getProduct();
-		Gson gson1 = new Gson();
-		Gson gson2 = new Gson();
+		Gson gson = new Gson();
 		for (NxtShoppingCartProduct currShoppingCartProduct : shoppingCartProductList) {
 			// 对比sku
 			try {
-				List<NxtStructShoppingCartProductSku> skuList = gson1.fromJson(currShoppingCartProduct.getSku(),
+				List<NxtStructShoppingCartProductSku> dbSkuList = gson.fromJson(currShoppingCartProduct.getSku(),
 						new TypeToken<List<NxtStructShoppingCartProductSku>>() {
 						}.getType());
-
-				JsonElement e1 = gson1.toJsonTree(skuList);
-				JsonElement e2 = gson2.toJsonTree(shoppingCartProduct.getSku());
-
-				if (e1.equals(e2)) {
+				List<NxtStructShoppingCartProductSku> uiSkuList = shoppingCartProduct.getSku();
+				
+				if (dbSkuList.size() != uiSkuList.size()) {
+					throw new NxtException(prefixStatusMsg + "120070" + "购物车suk参数传入错误");
+				}
+				
+				dbSkuList = this.toSortedArray(dbSkuList);
+				uiSkuList = this.toSortedArray(uiSkuList);
+				
+				if (dbSkuList.equals(uiSkuList)) {
 					return currShoppingCartProduct;
 				}
 			} catch (Exception e) {
@@ -201,4 +206,14 @@ public class NxtApiShoppingCartAddController {
 
 		return result;
 	}
+    
+	// 比较sku前先将List<NxtStructShoppingCartProductSku>排序
+    private List<NxtStructShoppingCartProductSku> toSortedArray(List<NxtStructShoppingCartProductSku> arr) {
+    	Gson gson = new Gson();
+    	List<NxtStructShoppingCartProductSku> sortedList = new ArrayList<>();
+    	arr.forEach(sortedList::add);
+    	sortedList.sort(Comparator.comparing(gson::toJson));
+    	
+    	return sortedList;
+    }
 }
