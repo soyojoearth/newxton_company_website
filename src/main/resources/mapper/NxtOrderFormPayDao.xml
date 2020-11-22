@@ -13,7 +13,7 @@
     <select id="queryById" resultMap="NxtOrderFormPayMap">
         select
           id, order_form_id, price_deal, transaction_id
-        from nxtframework.nxt_order_form_pay
+        from nxt_order_form_pay
         where id = #{id}
     </select>
 
@@ -21,7 +21,7 @@
     <select id="queryAllByLimit" resultMap="NxtOrderFormPayMap">
         select
           id, order_form_id, price_deal, transaction_id
-        from nxtframework.nxt_order_form_pay
+        from nxt_order_form_pay
         limit #{offset}, #{limit}
     </select>
 
@@ -29,7 +29,7 @@
     <select id="queryAll" resultMap="NxtOrderFormPayMap">
         select
         id, order_form_id, price_deal, transaction_id
-        from nxtframework.nxt_order_form_pay
+        from nxt_order_form_pay
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -48,12 +48,12 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_order_form_pay(order_form_id, price_deal, transaction_id)
+        insert into nxt_order_form_pay(order_form_id, price_deal, transaction_id)
         values (#{orderFormId}, #{priceDeal}, #{transactionId})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_order_form_pay(order_form_id, price_deal, transaction_id)
+        insert into nxt_order_form_pay(order_form_id, price_deal, transaction_id)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.orderFormId}, #{entity.priceDeal}, #{entity.transactionId})
@@ -61,7 +61,7 @@
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_order_form_pay(order_form_id, price_deal, transaction_id)
+        insert into nxt_order_form_pay(order_form_id, price_deal, transaction_id)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.orderFormId}, #{entity.priceDeal}, #{entity.transactionId})
@@ -73,7 +73,7 @@
 
     <!--通过主键修改数据-->
     <update id="update">
-        update nxtframework.nxt_order_form_pay
+        update nxt_order_form_pay
         <set>
             <if test="orderFormId != null">
                 order_form_id = #{orderFormId},
@@ -90,7 +90,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxtframework.nxt_order_form_pay where id = #{id}
+        delete from nxt_order_form_pay where id = #{id}
     </delete>
 
 </mapper>

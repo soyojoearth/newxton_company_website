@@ -23,7 +23,7 @@
     <select id="queryById" resultMap="NxtWithdrawMap">
         select
           id, user_id, transaction_id, status, type, amount, dateline_create, dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin
-        from nxtframework.nxt_withdraw
+        from nxt_withdraw
         where id = #{id}
     </select>
 
@@ -31,7 +31,7 @@
     <select id="queryAllByLimit" resultMap="NxtWithdrawMap">
         select
           id, user_id, transaction_id, status, type, amount, dateline_create, dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin
-        from nxtframework.nxt_withdraw
+        from nxt_withdraw
         limit #{offset}, #{limit}
     </select>
 
@@ -40,7 +40,7 @@
         select
         id, user_id, transaction_id, status, type, amount, dateline_create, dateline_end, platform, platform_person,
         platform_account, platform_serial_num, remark_user, remark_admin
-        from nxtframework.nxt_withdraw
+        from nxt_withdraw
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -89,12 +89,12 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_withdraw(user_id, transaction_id, status, type, amount, dateline_create, dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin)
+        insert into nxt_withdraw(user_id, transaction_id, status, type, amount, dateline_create, dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin)
         values (#{userId}, #{transactionId}, #{status}, #{type}, #{amount}, #{datelineCreate}, #{datelineEnd}, #{platform}, #{platformPerson}, #{platformAccount}, #{platformSerialNum}, #{remarkUser}, #{remarkAdmin})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_withdraw(user_id, transaction_id, status, type, amount, dateline_create,
+        insert into nxt_withdraw(user_id, transaction_id, status, type, amount, dateline_create,
         dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin)
         values
         <foreach collection="entities" item="entity" separator=",">
@@ -105,7 +105,7 @@
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_withdraw(user_id, transaction_id, status, type, amount, dateline_create,
+        insert into nxt_withdraw(user_id, transaction_id, status, type, amount, dateline_create,
         dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin)
         values
         <foreach collection="entities" item="entity" separator=",">
@@ -123,7 +123,7 @@
 
     <!--通过主键修改数据-->
     <update id="update">
-        update nxtframework.nxt_withdraw
+        update nxt_withdraw
         <set>
             <if test="userId != null">
                 user_id = #{userId},
@@ -170,7 +170,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxtframework.nxt_withdraw where id = #{id}
+        delete from nxt_withdraw where id = #{id}
     </delete>
 
 </mapper>

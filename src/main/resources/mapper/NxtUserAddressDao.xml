@@ -20,7 +20,7 @@
     <select id="queryById" resultMap="NxtUserAddressMap">
         select
           id, user_id, region_level_0, region_level_1, region_level_2, region_level_3, region_level_4, region_address, delivery_person, delivery_phone, delivery_postcode
-        from nxtframework.nxt_user_address
+        from nxt_user_address
         where id = #{id}
     </select>
 
@@ -28,7 +28,7 @@
     <select id="queryAllByLimit" resultMap="NxtUserAddressMap">
         select
           id, user_id, region_level_0, region_level_1, region_level_2, region_level_3, region_level_4, region_address, delivery_person, delivery_phone, delivery_postcode
-        from nxtframework.nxt_user_address
+        from nxt_user_address
         limit #{offset}, #{limit}
     </select>
 
@@ -37,7 +37,7 @@
         select
         id, user_id, region_level_0, region_level_1, region_level_2, region_level_3, region_level_4, region_address,
         delivery_person, delivery_phone, delivery_postcode
-        from nxtframework.nxt_user_address
+        from nxt_user_address
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -77,12 +77,12 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_user_address(user_id, region_level_0, region_level_1, region_level_2, region_level_3, region_level_4, region_address, delivery_person, delivery_phone, delivery_postcode)
+        insert into nxt_user_address(user_id, region_level_0, region_level_1, region_level_2, region_level_3, region_level_4, region_address, delivery_person, delivery_phone, delivery_postcode)
         values (#{userId}, #{regionLevel0}, #{regionLevel1}, #{regionLevel2}, #{regionLevel3}, #{regionLevel4}, #{regionAddress}, #{deliveryPerson}, #{deliveryPhone}, #{deliveryPostcode})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_user_address(user_id, region_level_0, region_level_1, region_level_2,
+        insert into nxt_user_address(user_id, region_level_0, region_level_1, region_level_2,
         region_level_3, region_level_4, region_address, delivery_person, delivery_phone, delivery_postcode)
         values
         <foreach collection="entities" item="entity" separator=",">
@@ -93,7 +93,7 @@
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_user_address(user_id, region_level_0, region_level_1, region_level_2,
+        insert into nxt_user_address(user_id, region_level_0, region_level_1, region_level_2,
         region_level_3, region_level_4, region_address, delivery_person, delivery_phone, delivery_postcode)
         values
         <foreach collection="entities" item="entity" separator=",">
@@ -110,7 +110,7 @@
 
     <!--通过主键修改数据-->
     <update id="update">
-        update nxtframework.nxt_user_address
+        update nxt_user_address
         <set>
             <if test="userId != null">
                 user_id = #{userId},
@@ -148,7 +148,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxtframework.nxt_user_address where id = #{id}
+        delete from nxt_user_address where id = #{id}
     </delete>
 
 </mapper>

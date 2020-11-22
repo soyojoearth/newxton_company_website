@@ -19,7 +19,7 @@
     <select id="queryById" resultMap="NxtOrderFormLogMap">
         select
           id, order_form_id, user_id, is_admin, dateline, status_paid, status_delivery, status_refund, log_name, log_remark
-        from nxtframework.nxt_order_form_log
+        from nxt_order_form_log
         where id = #{id}
     </select>
 
@@ -27,7 +27,7 @@
     <select id="queryAllByLimit" resultMap="NxtOrderFormLogMap">
         select
           id, order_form_id, user_id, is_admin, dateline, status_paid, status_delivery, status_refund, log_name, log_remark
-        from nxtframework.nxt_order_form_log
+        from nxt_order_form_log
         limit #{offset}, #{limit}
     </select>
 
@@ -36,7 +36,7 @@
         select
         id, order_form_id, user_id, is_admin, dateline, status_paid, status_delivery, status_refund, log_name,
         log_remark
-        from nxtframework.nxt_order_form_log
+        from nxt_order_form_log
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -73,12 +73,12 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_order_form_log(order_form_id, user_id, is_admin, dateline, status_paid, status_delivery, status_refund, log_name, log_remark)
+        insert into nxt_order_form_log(order_form_id, user_id, is_admin, dateline, status_paid, status_delivery, status_refund, log_name, log_remark)
         values (#{orderFormId}, #{userId}, #{isAdmin}, #{dateline}, #{statusPaid}, #{statusDelivery}, #{statusRefund}, #{logName}, #{logRemark})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_order_form_log(order_form_id, user_id, is_admin, dateline, status_paid,
+        insert into nxt_order_form_log(order_form_id, user_id, is_admin, dateline, status_paid,
         status_delivery, status_refund, log_name, log_remark)
         values
         <foreach collection="entities" item="entity" separator=",">
@@ -88,7 +88,7 @@
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_order_form_log(order_form_id, user_id, is_admin, dateline, status_paid,
+        insert into nxt_order_form_log(order_form_id, user_id, is_admin, dateline, status_paid,
         status_delivery, status_refund, log_name, log_remark)
         values
         <foreach collection="entities" item="entity" separator=",">
@@ -103,7 +103,7 @@
 
     <!--通过主键修改数据-->
     <update id="update">
-        update nxtframework.nxt_order_form_log
+        update nxt_order_form_log
         <set>
             <if test="orderFormId != null">
                 order_form_id = #{orderFormId},
@@ -138,7 +138,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxtframework.nxt_order_form_log where id = #{id}
+        delete from nxt_order_form_log where id = #{id}
     </delete>
 
 </mapper>

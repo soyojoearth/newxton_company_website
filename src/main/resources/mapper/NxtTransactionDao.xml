@@ -15,7 +15,7 @@
     <select id="queryById" resultMap="NxtTransactionMap">
         select
           id, user_id, amount, dateline, type, outer_id
-        from nxtframework.nxt_transaction
+        from nxt_transaction
         where id = #{id}
     </select>
 
@@ -23,7 +23,7 @@
     <select id="queryAllByLimit" resultMap="NxtTransactionMap">
         select
           id, user_id, amount, dateline, type, outer_id
-        from nxtframework.nxt_transaction
+        from nxt_transaction
         limit #{offset}, #{limit}
     </select>
 
@@ -31,7 +31,7 @@
     <select id="queryAll" resultMap="NxtTransactionMap">
         select
         id, user_id, amount, dateline, type, outer_id
-        from nxtframework.nxt_transaction
+        from nxt_transaction
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -56,12 +56,12 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_transaction(user_id, amount, dateline, type, outer_id)
+        insert into nxt_transaction(user_id, amount, dateline, type, outer_id)
         values (#{userId}, #{amount}, #{dateline}, #{type}, #{outerId})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_transaction(user_id, amount, dateline, type, outer_id)
+        insert into nxt_transaction(user_id, amount, dateline, type, outer_id)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.userId}, #{entity.amount}, #{entity.dateline}, #{entity.type}, #{entity.outerId})
@@ -69,7 +69,7 @@
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_transaction(user_id, amount, dateline, type, outer_id)
+        insert into nxt_transaction(user_id, amount, dateline, type, outer_id)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.userId}, #{entity.amount}, #{entity.dateline}, #{entity.type}, #{entity.outerId})
@@ -81,7 +81,7 @@
 
     <!--通过主键修改数据-->
     <update id="update">
-        update nxtframework.nxt_transaction
+        update nxt_transaction
         <set>
             <if test="userId != null">
                 user_id = #{userId},
@@ -104,7 +104,16 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxtframework.nxt_transaction where id = #{id}
+        delete from nxt_transaction where id = #{id}
     </delete>
+
+
+    <!--查询单个用户的余额-->
+    <select id="queryAmountCountByUserId" resultType="Long">
+        select
+          sum(amount)
+        from nxt_transaction
+        where user_id = #{userId}
+    </select>
 
 </mapper>

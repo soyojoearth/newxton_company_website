@@ -32,7 +32,7 @@
     <select id="queryById" resultMap="BaseResultMap">
         select
           id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform
-        from nxtframework.nxt_order_form
+        from nxt_order_form
         where id = #{id}
     </select>
 
@@ -40,7 +40,7 @@
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
           id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform
-        from nxtframework.nxt_order_form
+        from nxt_order_form
         limit #{offset}, #{limit}
     </select>
 
@@ -48,7 +48,7 @@
     <select id="queryAll" resultMap="BaseResultMap">
         select
           id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform
-        from nxtframework.nxt_order_form
+        from nxt_order_form
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -121,13 +121,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_order_form(user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform)
+        insert into nxt_order_form(user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform)
         values (#{userId}, #{datelineCreate}, #{serialNum}, #{amountInitial}, #{amountDiscount}, #{amountFinally}, #{deliveryAddress}, #{deliveryPerson}, #{deliveryCountry}, #{deliveryProvince}, #{deliveryCity}, #{deliveryPhone}, #{deliveryPostcode}, #{deliveryRemark}, #{deliveryConfigName}, #{deliveryCost}, #{statusPaid}, #{statusDelivery}, #{statusReviews}, #{statusRefund}, #{dealPlatform})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update nxtframework.nxt_order_form
+        update nxt_order_form
         <set>
             <if test="userId != null">
                 user_id = #{userId},
@@ -198,7 +198,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxtframework.nxt_order_form where id = #{id}
+        delete from nxt_order_form where id = #{id}
     </delete>
 
 </mapper>

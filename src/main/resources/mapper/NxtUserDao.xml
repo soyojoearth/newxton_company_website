@@ -52,7 +52,7 @@
         select
         id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status,
         dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
-        from nxtframework.nxt_user
+        from nxt_user
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -110,12 +110,12 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_user(username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code)
+        insert into nxt_user(username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code)
         values (#{username}, #{password}, #{salt}, #{token}, #{phone}, #{email}, #{avatarId}, #{gender}, #{levelNum}, #{moneyBalance}, #{status}, #{datelineCreate}, #{inviterUserId}, #{canInvite}, #{inviteesCount}, #{inviteCode})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_user(username, password, salt, token, phone, email, avatar_id, gender, level_num,
+        insert into nxt_user(username, password, salt, token, phone, email, avatar_id, gender, level_num,
         money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code)
         values
         <foreach collection="entities" item="entity" separator=",">
@@ -128,7 +128,7 @@
 
     <!--通过主键修改数据-->
     <update id="update">
-        update nxtframework.nxt_user
+        update nxt_user
         <set>
             <if test="username != null and username != ''">
                 username = #{username},

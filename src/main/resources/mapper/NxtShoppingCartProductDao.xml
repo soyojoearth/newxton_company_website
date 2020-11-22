@@ -16,7 +16,7 @@
     <select id="queryByShoppingCartIdProductId" resultMap="NxtShoppingCartProductMap">
         select
           id, shopping_cart_id, product_id, quantity, sku, dateline, checked
-        from nxtframework.nxt_shopping_cart_product
+        from nxt_shopping_cart_product
         where shopping_cart_id = #{shoppingCartId} and product_id = #{productId}
     </select>
 
@@ -24,7 +24,7 @@
     <select id="queryById" resultMap="NxtShoppingCartProductMap">
         select
           id, shopping_cart_id, product_id, quantity, sku, dateline, checked
-        from nxtframework.nxt_shopping_cart_product
+        from nxt_shopping_cart_product
         where id = #{id}
     </select>
 
@@ -32,7 +32,7 @@
     <select id="queryAllCheckedProductByShoppingCartId" resultMap="NxtShoppingCartProductMap">
         select
           id, shopping_cart_id, product_id, quantity, sku, dateline, checked
-        from nxtframework.nxt_shopping_cart_product
+        from nxt_shopping_cart_product
         where shopping_cart_id = #{shopping_cart_id} and checked = 1
     </select>
 
@@ -40,7 +40,7 @@
     <select id="queryAllProductByShoppingCartId" resultMap="NxtShoppingCartProductMap">
         select
           id, shopping_cart_id, product_id, quantity, sku, dateline, checked
-        from nxtframework.nxt_shopping_cart_product
+        from nxt_shopping_cart_product
         where shopping_cart_id = #{shopping_cart_id}
     </select>
 
@@ -48,7 +48,7 @@
     <select id="queryAllByLimit" resultMap="NxtShoppingCartProductMap">
         select
           id, shopping_cart_id, product_id, quantity, sku, dateline, checked
-        from nxtframework.nxt_shopping_cart_product
+        from nxt_shopping_cart_product
         limit #{offset}, #{limit}
     </select>
 
@@ -56,7 +56,7 @@
     <select id="queryAll" resultMap="NxtShoppingCartProductMap">
         select
         id, shopping_cart_id, product_id, quantity, sku, dateline, checked
-        from nxtframework.nxt_shopping_cart_product
+        from nxt_shopping_cart_product
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -84,12 +84,12 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_shopping_cart_product(shopping_cart_id, product_id, quantity, sku, dateline, checked)
+        insert into nxt_shopping_cart_product(shopping_cart_id, product_id, quantity, sku, dateline, checked)
         values (#{shoppingCartId}, #{productId}, #{quantity}, #{sku}, #{dateline}, #{checked})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_shopping_cart_product(shopping_cart_id, product_id, quantity, sku, dateline, checked)
+        insert into nxt_shopping_cart_product(shopping_cart_id, product_id, quantity, sku, dateline, checked)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.shoppingCartId}, #{entity.productId}, #{entity.quantity}, #{entity.sku}, #{entity.dateline}, #{checked})
@@ -97,7 +97,7 @@
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_shopping_cart_product(shopping_cart_id, product_id, quantity, sku, dateline, checked)
+        insert into nxt_shopping_cart_product(shopping_cart_id, product_id, quantity, sku, dateline, checked)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.shoppingCartId}, #{entity.productId}, #{entity.quantity}, #{entity.sku}, #{entity.dateline}, #{checked})
@@ -109,7 +109,7 @@
 
     <!--通过主键修改数据-->
     <update id="update">
-        update nxtframework.nxt_shopping_cart_product
+        update nxt_shopping_cart_product
         <set>
             <if test="shoppingCartId != null">
                 shopping_cart_id = #{shoppingCartId},
@@ -135,7 +135,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxtframework.nxt_shopping_cart_product where id = #{id}
+        delete from nxt_shopping_cart_product where id = #{id}
     </delete>
 
 </mapper>

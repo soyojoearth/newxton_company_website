@@ -79,4 +79,12 @@ public interface NxtTransactionDao {
      */
     int deleteById(Long id);
 
+
+    /**
+     * 查询单个用户的余额
+     * @return Long
+     */
+    Long queryAmountCountByUserId(@Param("userId") Long userId);
+
+
 }

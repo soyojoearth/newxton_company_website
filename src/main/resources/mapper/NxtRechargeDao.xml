@@ -20,7 +20,7 @@
     <select id="queryById" resultMap="NxtRechargeMap">
         select
           id, user_id, transaction_id, status, platform, dateline, amount, notify_dateline, notify_serial_num, notify_data, remark
-        from nxtframework.nxt_recharge
+        from nxt_recharge
         where id = #{id}
     </select>
 
@@ -28,7 +28,7 @@
     <select id="queryAllByLimit" resultMap="NxtRechargeMap">
         select
           id, user_id, transaction_id, status, platform, dateline, amount, notify_dateline, notify_serial_num, notify_data, remark
-        from nxtframework.nxt_recharge
+        from nxt_recharge
         limit #{offset}, #{limit}
     </select>
 
@@ -37,7 +37,7 @@
         select
         id, user_id, transaction_id, status, platform, dateline, amount, notify_dateline, notify_serial_num,
         notify_data, remark
-        from nxtframework.nxt_recharge
+        from nxt_recharge
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -77,12 +77,12 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_recharge(user_id, transaction_id, status, platform, dateline, amount, notify_dateline, notify_serial_num, notify_data, remark)
+        insert into nxt_recharge(user_id, transaction_id, status, platform, dateline, amount, notify_dateline, notify_serial_num, notify_data, remark)
         values (#{userId}, #{transactionId}, #{status}, #{platform}, #{dateline}, #{amount}, #{notifyDateline}, #{notifySerialNum}, #{notifyData}, #{remark})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_recharge(user_id, transaction_id, status, platform, dateline, amount,
+        insert into nxt_recharge(user_id, transaction_id, status, platform, dateline, amount,
         notify_dateline, notify_serial_num, notify_data, remark)
         values
         <foreach collection="entities" item="entity" separator=",">
@@ -93,7 +93,7 @@
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_recharge(user_id, transaction_id, status, platform, dateline, amount,
+        insert into nxt_recharge(user_id, transaction_id, status, platform, dateline, amount,
         notify_dateline, notify_serial_num, notify_data, remark)
         values
         <foreach collection="entities" item="entity" separator=",">
@@ -110,7 +110,7 @@
 
     <!--通过主键修改数据-->
     <update id="update">
-        update nxtframework.nxt_recharge
+        update nxt_recharge
         <set>
             <if test="userId != null">
                 user_id = #{userId},
@@ -148,7 +148,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxtframework.nxt_recharge where id = #{id}
+        delete from nxt_recharge where id = #{id}
     </delete>
 
 </mapper>

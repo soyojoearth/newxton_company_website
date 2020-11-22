@@ -14,7 +14,7 @@
     <select id="queryById" resultMap="NxtUserLevelMap">
         select
           id, num, name, cost, discount
-        from nxtframework.nxt_user_level
+        from nxt_user_level
         where id = #{id}
     </select>
 
@@ -22,7 +22,7 @@
     <select id="queryByNum" resultMap="NxtUserLevelMap">
         select
           id, num, name, cost, discount
-        from nxtframework.nxt_user_level
+        from nxt_user_level
         where num = #{num}
     </select>
 
@@ -30,7 +30,7 @@
     <select id="queryAllByLimit" resultMap="NxtUserLevelMap">
         select
           id, num, name, cost, discount
-        from nxtframework.nxt_user_level
+        from nxt_user_level
         limit #{offset}, #{limit}
     </select>
 
@@ -38,7 +38,7 @@
     <select id="queryAll" resultMap="NxtUserLevelMap">
         select
         id, num, name, cost, discount
-        from nxtframework.nxt_user_level
+        from nxt_user_level
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -60,12 +60,12 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_user_level(num, name, cost, discount)
+        insert into nxt_user_level(num, name, cost, discount)
         values (#{num}, #{name}, #{cost}, #{discount})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_user_level(num, name, cost, discount)
+        insert into nxt_user_level(num, name, cost, discount)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.num}, #{entity.name}, #{entity.cost}, #{entity.discount})
@@ -73,7 +73,7 @@
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_user_level(num, name, cost, discount)
+        insert into nxt_user_level(num, name, cost, discount)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.num}, #{entity.name}, #{entity.cost}, #{entity.discount})
@@ -84,7 +84,7 @@
 
     <!--通过主键修改数据-->
     <update id="update">
-        update nxtframework.nxt_user_level
+        update nxt_user_level
         <set>
             <if test="num != null">
                 num = #{num},
@@ -104,7 +104,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxtframework.nxt_user_level where id = #{id}
+        delete from nxt_user_level where id = #{id}
     </delete>
 
 </mapper>

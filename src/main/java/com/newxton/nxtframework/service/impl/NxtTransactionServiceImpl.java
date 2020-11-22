@@ -3,6 +3,7 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.dao.NxtTransactionDao;
 import com.newxton.nxtframework.entity.NxtTransaction;
 import com.newxton.nxtframework.service.NxtTransactionService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -76,4 +77,13 @@ public class NxtTransactionServiceImpl implements NxtTransactionService {
     public boolean deleteById(Long id) {
         return this.nxtTransactionDao.deleteById(id) > 0;
     }
+
+    /**
+     * 查询单个用户的余额
+     * @return Long
+     */
+    public Long queryAmountCountByUserId(@Param("userId") Long userId){
+        return this.nxtTransactionDao.queryAmountCountByUserId(userId);
+    }
+
 }

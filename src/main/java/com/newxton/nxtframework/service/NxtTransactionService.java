@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtTransaction;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -52,5 +53,11 @@ public interface NxtTransactionService {
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    /**
+     * 查询单个用户的余额
+     * @return Long
+     */
+    Long queryAmountCountByUserId(@Param("userId") Long userId);
 
 }

@@ -7,13 +7,11 @@ package com.newxton.nxtframework.struct;
  */
 public class NxtStructApiResult {
 
-    private Integer code;
-    private String message;
-    private Object result;
+    private Integer code = 0;
+    private String message = "";
+    private Object result = null;
 
     public NxtStructApiResult(){
-        this.code = 0;
-        this.message = "";
         this.result = null;
     }
 
