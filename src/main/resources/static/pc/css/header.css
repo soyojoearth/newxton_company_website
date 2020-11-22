@@ -17,16 +17,20 @@ p {
 }
 
 #header {
-    height: 120px;
+    width: 960px;
+    height: 60px;
+    margin: 0 auto;
     background: #FFFFFF;
     opacity: 1;
-    margin: 0 auto;
 }
 
 #header ul a {
     color: black;
 }
 
+#header img{
+    vertical-align: middle;
+}
 
 .nav-l {
     float: left;
@@ -38,30 +42,23 @@ p {
 
 .nav-rec li, .nav-user-opt li {
     float: left;
-    width: 120px;
-    height: 120px;
-    font-size: 22px;
+    width: 90px;
+    height: 60px;
+    font-size: 11px;
     font-family: PingFang SC;
     font-weight: 400;
-    line-height: 120px;
+    line-height: 60px;
     color: #1B1B1B;
-    letter-spacing: 3px;
+    letter-spacing: 1px;
     opacity: 1;
-    margin-left: 100px;
     text-align: center;
 }
 
 .nav-rec .nav-logo {
-    width: 304px;
-    height: 120px;
-    font-size: 38px;
-    font-family: HYYaKuHeiW;
-    font-weight: 400;
-    line-height: 120px;
-    color: #014785;
-    letter-spacing: 2px;
-    opacity: 1;
-
+    width: 152px;
+    height: 60px;
+    line-height: 60px;
+    margin-left: 70px;
 }
 
 .nav-rec .nav-bar {
@@ -71,52 +68,53 @@ p {
 }
 
 .nav-rec .nav-bar .nav-bar-bd {
-    width: 81px;
-    height: 4px;
+    width: 50px;
+    height: 2px;
     background: #1B1B1B;
     opacity: 1;
     position: absolute;
-    left: -15px;
-    top: 115px;
+    left: 5px;
+    top: 57px;
     display: none;
 }
 
 .nav-rec .nav-about {
-    width: 180px;
-    height: 345px;
+    width: 90px;
+    height: 172px;
     background: #FFFFFF;
     opacity: 1;
     position: absolute;
-    top: 120px;
-    left: -60px;
+    top: 60px;
+    left: -15px;
     display: none;
 }
 
 .nav-rec .nav-about .nav-about-d {
     display: block;
-    height: 28px;
-    font-size: 20px;
+    height: 34px;
+    font-size: 10px;
     font-family: PingFang SC;
     font-weight: 400;
-    line-height: 29px;
+    line-height: 34px;
     color: #5F5F5F;
-    letter-spacing: 3px;
+    letter-spacing: 1px;
     opacity: 1;
     text-align: center;
-    margin-top: 34px;
 }
-
+.nav-user-opt .nav-user-buy{
+    width: 40px;
+}
 .nav-user-opt .nav-user-lr {
-    width: 120px;
-    height: 120px;
-    font-size: 22px;
+    width: 90px;
+    height: 60px;
+    font-size: 11px;
     font-family: PingFang SC;
     font-weight: 400;
-    line-height: 120px;
+    line-height: 60px;
     color: #1B1B1B;
-    letter-spacing: 3px;
+    letter-spacing: 1px;
     opacity: 1;
-    margin-right: 100px;
+    margin-right: 50px;
 }
 
 .nav-rec .active {
