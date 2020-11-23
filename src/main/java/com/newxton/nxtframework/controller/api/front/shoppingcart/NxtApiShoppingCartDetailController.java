@@ -37,7 +37,6 @@ public class NxtApiShoppingCartDetailController {
         } else {
             //查询匿名用户购物车
             String guestToken = jsonParam.getString("guestToken");
-            //根据guestToken获取购物车，guestToken错误就新建一个购物车
             nxtShoppingCart = nxtShoppingCartService.queryByToken(guestToken);
         }
 
