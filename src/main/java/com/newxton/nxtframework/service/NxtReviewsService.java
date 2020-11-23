@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtReviews;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -52,5 +53,29 @@ public interface NxtReviewsService {
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    /**
+     * 查询指定产品的评论列表-按时间倒序
+     * @param offset
+     * @param limit
+     * @param productId
+     * @return
+     */
+    List<NxtReviews> queryUserReviewsByProductId(@Param("offset") int offset, @Param("limit") int limit, @Param("productId") Long productId);
+
+    /**
+     * 查询指定产品的用户评论数量
+     * @param productId
+     * @return
+     */
+    Long queryUserReviewsCountByProductId(@Param("productId") Long productId);
+
+
+    /**
+     * 查询指定根评论的所有回复-按时间asc排序
+     * @param idList
+     * @return
+     */
+    List<NxtReviews> queryReviewsReplyByIdList(@Param("idList") List<Long> idList);
 
 }

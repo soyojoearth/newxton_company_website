@@ -79,4 +79,14 @@ public interface NxtUserDao {
      */
     NxtUser queryByInviteCode(String inviteCode);
 
+    /**
+     * 根据userId列表批量查询user
+     * @param offset
+     * @param limit
+     * @param idList
+     * @return
+     */
+    List<NxtUser> selectByIdSet(@Param("offset") int offset, @Param("limit") int limit, @Param("idList") List<Long> idList);
+
+
 }

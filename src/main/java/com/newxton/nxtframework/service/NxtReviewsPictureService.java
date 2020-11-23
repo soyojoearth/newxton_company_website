@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtReviewsPicture;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -52,5 +53,15 @@ public interface NxtReviewsPictureService {
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    /**
+     * 根据reviewsId列表批量查询
+     * @param offset
+     * @param limit
+     * @param idList
+     * @return
+     */
+    List<NxtReviewsPicture> selectByReviewsIdSet(@Param("offset") int offset, @Param("limit") int limit, @Param("idList") List<Long> idList);
+
 
 }

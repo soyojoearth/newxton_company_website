@@ -3,9 +3,11 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.dao.NxtReviewsDao;
 import com.newxton.nxtframework.entity.NxtReviews;
 import com.newxton.nxtframework.service.NxtReviewsService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,4 +78,39 @@ public class NxtReviewsServiceImpl implements NxtReviewsService {
     public boolean deleteById(Long id) {
         return this.nxtReviewsDao.deleteById(id) > 0;
     }
+
+    /**
+     * 查询指定产品的评论列表-按时间倒序
+     * @param offset
+     * @param limit
+     * @param productId
+     * @return
+     */
+    public List<NxtReviews> queryUserReviewsByProductId(@Param("offset") int offset, @Param("limit") int limit, @Param("productId") Long productId){
+        return this.nxtReviewsDao.queryUserReviewsByProductId(offset,limit,productId);
+    }
+
+    /**
+     * 查询指定产品的用户评论数量
+     * @param productId
+     * @return
+     */
+    public Long queryUserReviewsCountByProductId(@Param("productId") Long productId){
+        return this.nxtReviewsDao.queryUserReviewsCountByProductId(productId);
+    }
+
+
+    /**
+     * 查询指定根评论的所有回复-按时间asc排序
+     * @param idList
+     * @return
+     */
+    public List<NxtReviews> queryReviewsReplyByIdList(@Param("idList") List<Long> idList){
+        if (idList.size()==0){
+            return new ArrayList<>();
+        }
+        return this.nxtReviewsDao.queryReviewsReplyByIdList(idList);
+    }
+
+
 }

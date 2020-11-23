@@ -3,9 +3,11 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.dao.NxtReviewsPictureDao;
 import com.newxton.nxtframework.entity.NxtReviewsPicture;
 import com.newxton.nxtframework.service.NxtReviewsPictureService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,4 +78,20 @@ public class NxtReviewsPictureServiceImpl implements NxtReviewsPictureService {
     public boolean deleteById(Long id) {
         return this.nxtReviewsPictureDao.deleteById(id) > 0;
     }
+
+    /**
+     * 根据reviewsId列表批量查询
+     * @param offset
+     * @param limit
+     * @param idList
+     * @return
+     */
+    public List<NxtReviewsPicture> selectByReviewsIdSet(@Param("offset") int offset, @Param("limit") int limit, @Param("idList") List<Long> idList){
+        if (idList.size()==0){
+            return new ArrayList<>();
+        }
+        return this.nxtReviewsPictureDao.selectByReviewsIdSet(offset,limit,idList);
+    }
+
+
 }

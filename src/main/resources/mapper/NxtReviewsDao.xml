@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newxton.nxtframework.dao.NxtReviewsDao">
 
-    <resultMap type="com.newxton.nxtframework.entity.NxtReviews" id="NxtReviewsMap">
+    <resultMap id="BaseResultMap" type="com.newxton.nxtframework.entity.NxtReviews">
+        <!--@Table nxt_reviews-->
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="originType" column="origin_type" jdbcType="INTEGER"/>
         <result property="userId" column="user_id" jdbcType="INTEGER"/>
@@ -11,29 +12,30 @@
         <result property="orderFormProductId" column="order_form_product_id" jdbcType="INTEGER"/>
         <result property="dateline" column="dateline" jdbcType="INTEGER"/>
         <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="parentId" column="parent_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--查询单个-->
-    <select id="queryById" resultMap="NxtReviewsMap">
+    <select id="queryById" resultMap="BaseResultMap">
         select
-          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content
-        from nxt_reviews
+          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
+        from nxtframework.nxt_reviews
         where id = #{id}
     </select>
 
     <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="NxtReviewsMap">
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content
-        from nxt_reviews
+          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
+        from nxtframework.nxt_reviews
         limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
-    <select id="queryAll" resultMap="NxtReviewsMap">
+    <select id="queryAll" resultMap="BaseResultMap">
         select
-        id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content
-        from nxt_reviews
+          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
+        from nxtframework.nxt_reviews
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -59,42 +61,21 @@
             <if test="content != null and content != ''">
                 and content = #{content}
             </if>
+            <if test="parentId != null">
+                and parent_id = #{parentId}
+            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_reviews(origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content)
-        values (#{originType}, #{userId}, #{productId}, #{orderFormId}, #{orderFormProductId}, #{dateline}, #{content})
-    </insert>
-
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_reviews(origin_type, user_id, product_id, order_form_id, order_form_product_id,
-        dateline, content)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.originType}, #{entity.userId}, #{entity.productId}, #{entity.orderFormId},
-            #{entity.orderFormProductId}, #{entity.dateline}, #{entity.content})
-        </foreach>
-    </insert>
-
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_reviews(origin_type, user_id, product_id, order_form_id, order_form_product_id,
-        dateline, content)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.originType}, #{entity.userId}, #{entity.productId}, #{entity.orderFormId},
-            #{entity.orderFormProductId}, #{entity.dateline}, #{entity.content})
-        </foreach>
-        on duplicate key update
-        origin_type = values(origin_type) , user_id = values(user_id) , product_id = values(product_id) , order_form_id
-        = values(order_form_id) , order_form_product_id = values(order_form_product_id) , dateline = values(dateline) ,
-        content = values(content)
+        insert into nxtframework.nxt_reviews(origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id)
+        values (#{originType}, #{userId}, #{productId}, #{orderFormId}, #{orderFormProductId}, #{dateline}, #{content}, #{parentId})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update nxt_reviews
+        update nxtframework.nxt_reviews
         <set>
             <if test="originType != null">
                 origin_type = #{originType},
@@ -117,13 +98,47 @@
             <if test="content != null and content != ''">
                 content = #{content},
             </if>
+            <if test="parentId != null">
+                parent_id = #{parentId},
+            </if>
         </set>
         where id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_reviews where id = #{id}
+        delete from nxtframework.nxt_reviews where id = #{id}
     </delete>
+
+    <!--查询指定产品的所有用户评论列表(不含回复)-按时间倒序-->
+    <select id="queryUserReviewsByProductId" resultMap="BaseResultMap">
+        select
+          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
+        from nxt_reviews
+        where product_id = #{productId} and origin_type = 0 and parent_id = 0
+        order by dateline desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--查询指定产品的用户评论数量-->
+    <select id="queryUserReviewsCountByProductId" resultType="Long">
+        select
+          count(*)
+        from nxt_reviews
+        where product_id = #{productId} and origin_type = 0 and parent_id = 0
+        order by dateline desc
+    </select>
+
+    <!--查询指定根评论的所有回复-按时间asc排序-->
+    <select id="queryReviewsReplyByIdList" resultMap="BaseResultMap">
+        select
+          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
+        from nxt_reviews
+        WHERE parent_id IN
+        <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        order by dateline asc
+    </select>
 
 </mapper>

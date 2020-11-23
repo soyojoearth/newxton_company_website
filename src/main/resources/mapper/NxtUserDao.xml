@@ -195,4 +195,17 @@
         from nxt_user
         where invite_code = #{inviteCode}
     </select>
+
+    <!--根据userId列表批量查询user-->
+    <select id="selectByIdSet" resultMap="BaseResultMap">
+        SELECT
+        id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+        from nxt_user
+        WHERE id IN
+        <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        limit #{offset}, #{limit}
+    </select>
+
 </mapper>

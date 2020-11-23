@@ -3,9 +3,11 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.dao.NxtUserDao;
 import com.newxton.nxtframework.entity.NxtUser;
 import com.newxton.nxtframework.service.NxtUserService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -96,6 +98,20 @@ public class NxtUserServiceImpl implements NxtUserService {
     @Override
     public NxtUser queryByInviteCode(String inviteCode) {
         return this.nxtUserDao.queryByInviteCode(inviteCode);
+    }
+
+    /**
+     * 根据userId列表批量查询user
+     * @param offset
+     * @param limit
+     * @param idList
+     * @return
+     */
+    public List<NxtUser> selectByIdSet(@Param("offset") int offset, @Param("limit") int limit, @Param("idList") List<Long> idList){
+        if (idList.size()==0){
+            return new ArrayList<>();
+        }
+        return this.nxtUserDao.selectByIdSet(offset,limit,idList);
     }
 
 }
