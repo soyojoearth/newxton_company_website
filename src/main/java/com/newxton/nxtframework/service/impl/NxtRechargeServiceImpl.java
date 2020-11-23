@@ -1,7 +1,7 @@
 package com.newxton.nxtframework.service.impl;
 
-import com.newxton.nxtframework.dao.NxtRechargeDao;
 import com.newxton.nxtframework.entity.NxtRecharge;
+import com.newxton.nxtframework.dao.NxtRechargeDao;
 import com.newxton.nxtframework.service.NxtRechargeService;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * (NxtRecharge)表服务实现类
  *
  * @author makejava
- * @since 2020-11-14 21:45:44
+ * @since 2020-11-23 20:34:38
  */
 @Service("nxtRechargeService")
 public class NxtRechargeServiceImpl implements NxtRechargeService {
@@ -34,7 +34,7 @@ public class NxtRechargeServiceImpl implements NxtRechargeService {
      * 查询多条数据
      *
      * @param offset 查询起始位置
-     * @param limit  查询条数
+     * @param limit 查询条数
      * @return 对象列表
      */
     @Override
