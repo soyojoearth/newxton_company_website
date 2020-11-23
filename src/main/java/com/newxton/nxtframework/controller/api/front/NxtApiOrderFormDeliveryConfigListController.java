@@ -17,12 +17,12 @@ import java.util.List;
  * @address Shenzhen, China
  */
 @RestController
-public class NxtApiDeliveryConfigListSimpleController {
+public class NxtApiOrderFormDeliveryConfigListController {
 
     @Resource
     private NxtDeliveryConfigService nxtDeliveryConfigService;
 
-    @RequestMapping("/api/delivery_config/list_simple")
+    @RequestMapping("/api/order_form/delivery_config/list")
     public NxtStructApiResult exec() {
 
         List<NxtDeliveryConfig> nxtDeliveryConfigList = nxtDeliveryConfigService.queryAll(new NxtDeliveryConfig());
