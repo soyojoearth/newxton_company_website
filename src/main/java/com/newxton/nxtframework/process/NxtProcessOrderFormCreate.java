@@ -163,7 +163,7 @@ public class NxtProcessOrderFormCreate {
         nxtOrderForm.setDeliveryPhone(nxtStructOrderFromCreate.getDeliveryPhone());
         nxtOrderForm.setDeliveryPostcode(nxtStructOrderFromCreate.getDeliveryPostcode());
 
-        nxtOrderForm.setStatusPaid(0);//是否已经支付（0：未支付 1:已支付）（支付失败的还是0）
+        nxtOrderForm.setStatusPaid(0);//是否已经支付（0：未支付 1:已支付 -1:支付失败）
         nxtOrderForm.setStatusDelivery(0);//发货状态（0:未发货 1:已发货）
         nxtOrderForm.setStatusReviews(0);//0:未评价 1:已评价
         nxtOrderForm.setStatusRefund(0);//退货退款（0:未退货退款，1:出现退货退款情况）（情况具体要见order_form_refund表）
