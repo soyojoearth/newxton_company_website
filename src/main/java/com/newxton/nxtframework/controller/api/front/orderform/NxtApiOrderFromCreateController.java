@@ -1,4 +1,4 @@
-package com.newxton.nxtframework.controller.api.front;
+package com.newxton.nxtframework.controller.api.front.orderform;
 
 import com.google.gson.Gson;
 import com.newxton.nxtframework.exception.NxtException;

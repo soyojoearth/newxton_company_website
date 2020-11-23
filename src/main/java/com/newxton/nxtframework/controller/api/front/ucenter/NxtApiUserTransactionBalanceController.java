@@ -1,4 +1,4 @@
-package com.newxton.nxtframework.controller.api.front;
+package com.newxton.nxtframework.controller.api.front.ucenter;
 
 import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.service.NxtTransactionService;

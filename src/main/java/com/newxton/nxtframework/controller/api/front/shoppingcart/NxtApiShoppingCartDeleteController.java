@@ -1,4 +1,4 @@
-package com.newxton.nxtframework.controller.api.front;
+package com.newxton.nxtframework.controller.api.front.shoppingcart;
 
 import com.google.gson.Gson;
 import com.newxton.nxtframework.entity.NxtShoppingCart;
