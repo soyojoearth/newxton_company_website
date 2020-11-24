@@ -26,12 +26,16 @@
         <result property="statusReviews" column="status_reviews" jdbcType="INTEGER"/>
         <result property="statusRefund" column="status_refund" jdbcType="INTEGER"/>
         <result property="dealPlatform" column="deal_platform" jdbcType="INTEGER"/>
+        <result property="datelineDelivery" column="dateline_delivery" jdbcType="INTEGER"/>
+        <result property="datelinePaid" column="dateline_paid" jdbcType="INTEGER"/>
+        <result property="datelineReceived" column="dateline_received" jdbcType="INTEGER"/>
+
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform
+          id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform,dateline_delivery,dateline_paid,dateline_received
         from nxt_order_form
         where id = #{id}
     </select>
@@ -39,7 +43,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform
+          id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform,dateline_delivery,dateline_paid,dateline_received
         from nxt_order_form
         limit #{offset}, #{limit}
     </select>
@@ -47,7 +51,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform
+          id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform,dateline_delivery,dateline_paid,dateline_received
         from nxt_order_form
         <where>
             <if test="id != null">
@@ -116,13 +120,22 @@
             <if test="dealPlatform != null">
                 and deal_platform = #{dealPlatform}
             </if>
+            <if test="datelineDelivery != null">
+                and dateline_delivery = #{datelineDelivery}
+            </if>
+            <if test="datelinePaid != null">
+                and dateline_paid = #{datelinePaid}
+            </if>
+            <if test="datelineReceived != null">
+                and dateline_received = #{datelineReceived}
+            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form(user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform)
-        values (#{userId}, #{datelineCreate}, #{serialNum}, #{amountInitial}, #{amountDiscount}, #{amountFinally}, #{deliveryAddress}, #{deliveryPerson}, #{deliveryCountry}, #{deliveryProvince}, #{deliveryCity}, #{deliveryPhone}, #{deliveryPostcode}, #{deliveryRemark}, #{deliveryConfigName}, #{deliveryCost}, #{statusPaid}, #{statusDelivery}, #{statusReviews}, #{statusRefund}, #{dealPlatform})
+        insert into nxt_order_form(user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform,dateline_delivery,dateline_paid,dateline_received)
+        values (#{userId}, #{datelineCreate}, #{serialNum}, #{amountInitial}, #{amountDiscount}, #{amountFinally}, #{deliveryAddress}, #{deliveryPerson}, #{deliveryCountry}, #{deliveryProvince}, #{deliveryCity}, #{deliveryPhone}, #{deliveryPostcode}, #{deliveryRemark}, #{deliveryConfigName}, #{deliveryCost}, #{statusPaid}, #{statusDelivery}, #{statusReviews}, #{statusRefund}, #{dealPlatform},#{datelineDelivery},#{datelinePaid},#{datelineReceived})
     </insert>
 
     <!--通过主键修改数据-->
@@ -192,6 +205,15 @@
             <if test="dealPlatform != null">
                 deal_platform = #{dealPlatform},
             </if>
+            <if test="datelineDelivery != null">
+                dateline_delivery = #{datelineDelivery},
+            </if>
+            <if test="datelinePaid != null">
+                dateline_paid = #{datelinePaid},
+            </if>
+            <if test="datelineReceived != null">
+                dateline_received = #{datelineReceived},
+            </if>
         </set>
         where id = #{id}
     </update>
@@ -204,7 +226,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByUserIdAndLimit" resultMap="BaseResultMap">
         select
-          id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform
+          id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, status_paid, status_delivery, status_reviews, status_refund, deal_platform,dateline_delivery,dateline_paid,dateline_received
         from nxt_order_form
         <where>
                 and user_id = #{userId}

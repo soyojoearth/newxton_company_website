@@ -99,9 +99,37 @@ public class NxtStructOrderForm {
     private String dealPlatform;
 
     /**
+     * 发货时间
+     */
+    private Long datelineDelivery;
+    private String datelineDeliveryReadable;
+
+    /**
+     * 付款时间
+     */
+    private Long datelinePaid;
+    private String datelinePaidReadable;
+
+    /**
+     * 确认收货时间
+     */
+    private Long datelineReceived;
+    private String datelineReceivedReadable;
+
+    /**
+     * 发货后超过60天未退货，或者已经确认收货
+     */
+    private Boolean isDone;
+
+    /**
      * 订单物品列表
      */
     private List<NxtStructOrderFormProduct> orderFormProductList = new ArrayList<>();
+
+    /**
+     * 发货信息
+     */
+    private NxtStructOrderFormDelivery orderFormDelivery;
 
     public Long getId() {
         return id;
@@ -287,6 +315,62 @@ public class NxtStructOrderForm {
         this.dealPlatform = dealPlatform;
     }
 
+    public Long getDatelineDelivery() {
+        return datelineDelivery;
+    }
+
+    public void setDatelineDelivery(Long datelineDelivery) {
+        this.datelineDelivery = datelineDelivery;
+    }
+
+    public String getDatelineDeliveryReadable() {
+        return datelineDeliveryReadable;
+    }
+
+    public void setDatelineDeliveryReadable(String datelineDeliveryReadable) {
+        this.datelineDeliveryReadable = datelineDeliveryReadable;
+    }
+
+    public Long getDatelinePaid() {
+        return datelinePaid;
+    }
+
+    public void setDatelinePaid(Long datelinePaid) {
+        this.datelinePaid = datelinePaid;
+    }
+
+    public String getDatelinePaidReadable() {
+        return datelinePaidReadable;
+    }
+
+    public void setDatelinePaidReadable(String datelinePaidReadable) {
+        this.datelinePaidReadable = datelinePaidReadable;
+    }
+
+    public Long getDatelineReceived() {
+        return datelineReceived;
+    }
+
+    public void setDatelineReceived(Long datelineReceived) {
+        this.datelineReceived = datelineReceived;
+    }
+
+    public String getDatelineReceivedReadable() {
+        return datelineReceivedReadable;
+    }
+
+    public void setDatelineReceivedReadable(String datelineReceivedReadable) {
+        this.datelineReceivedReadable = datelineReceivedReadable;
+    }
+
+    public Boolean getDone() {
+        return isDone;
+    }
+
+    public void setDone(Boolean done) {
+        isDone = done;
+    }
+
     public List<NxtStructOrderFormProduct> getOrderFormProductList() {
         return orderFormProductList;
     }
@@ -295,4 +379,11 @@ public class NxtStructOrderForm {
         this.orderFormProductList = orderFormProductList;
     }
 
+    public NxtStructOrderFormDelivery getOrderFormDelivery() {
+        return orderFormDelivery;
+    }
+
+    public void setOrderFormDelivery(NxtStructOrderFormDelivery orderFormDelivery) {
+        this.orderFormDelivery = orderFormDelivery;
+    }
 }

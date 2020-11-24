@@ -137,6 +137,7 @@ public class NxtTestPayController {
 
         //标记付款完成
         nxtOrderForm.setStatusPaid(1);
+        nxtOrderForm.setDatelinePaid(nxtTransactionPay.getDateline());
 
         nxtOrderFormService.update(nxtOrderForm);
 

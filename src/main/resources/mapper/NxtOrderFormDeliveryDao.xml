@@ -111,4 +111,15 @@
         delete from nxt_order_form_delivery where id = #{id}
     </delete>
 
+    <!--根据orderFromId查询单个发货物流信息-->
+    <select id="queryShippingByOrderFormId" resultMap="NxtOrderFormDeliveryMap">
+        select
+          id, type, order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num
+        from nxt_order_form_delivery
+        where order_form_id = #{orderFormId} and type = 1
+        order by id desc
+        limit 1
+    </select>
+
+
 </mapper>
