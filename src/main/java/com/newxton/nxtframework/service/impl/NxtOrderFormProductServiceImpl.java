@@ -3,9 +3,11 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.entity.NxtOrderFormProduct;
 import com.newxton.nxtframework.dao.NxtOrderFormProductDao;
 import com.newxton.nxtframework.service.NxtOrderFormProductService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -86,4 +88,17 @@ public class NxtOrderFormProductServiceImpl implements NxtOrderFormProductServic
     public boolean deleteById(Long id) {
         return this.nxtOrderFormProductDao.deleteById(id) > 0;
     }
+
+    /**
+     * 根据orderFormId列表查询所有
+     * @param idList
+     * @return
+     */
+    public List<NxtOrderFormProduct> selectAllByOrderFormIdSet(@Param("idList") List<Long> idList){
+        if (idList.size() == 0){
+            return new ArrayList<>();
+        }
+        return this.nxtOrderFormProductDao.selectAllByOrderFormIdSet(idList);
+    }
+
 }

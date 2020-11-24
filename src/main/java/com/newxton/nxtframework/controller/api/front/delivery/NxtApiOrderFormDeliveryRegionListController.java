@@ -1,4 +1,4 @@
-package com.newxton.nxtframework.controller.api.front;
+package com.newxton.nxtframework.controller.api.front.delivery;
 
 import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.entity.NxtDeliveryRegion;

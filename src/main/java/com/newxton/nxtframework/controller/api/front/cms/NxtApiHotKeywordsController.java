@@ -1,4 +1,4 @@
-package com.newxton.nxtframework.controller.api.front;
+package com.newxton.nxtframework.controller.api.front.cms;
 
 import com.newxton.nxtframework.entity.NxtSetting;
 import com.newxton.nxtframework.service.NxtSettingService;

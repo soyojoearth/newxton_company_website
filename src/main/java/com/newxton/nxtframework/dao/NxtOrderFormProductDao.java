@@ -62,4 +62,11 @@ public interface NxtOrderFormProductDao {
      */
     int deleteById(Long id);
 
+    /**
+     * 根据orderFormId列表查询所有
+     * @param idList
+     * @return
+     */
+    List<NxtOrderFormProduct> selectAllByOrderFormIdSet(@Param("idList") List<Long> idList);
+
 }

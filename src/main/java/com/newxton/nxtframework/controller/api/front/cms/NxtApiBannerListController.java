@@ -1,4 +1,4 @@
-package com.newxton.nxtframework.controller.api.front;
+package com.newxton.nxtframework.controller.api.front.cms;
 
 import com.newxton.nxtframework.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtBanner;

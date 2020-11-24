@@ -1,7 +1,6 @@
 package com.newxton.nxtframework.controller.web;
 
-import com.newxton.nxtframework.controller.api.front.NxtApiProductListController;
-import com.newxton.nxtframework.struct.NxtStructApiResult;
+import com.newxton.nxtframework.controller.api.front.product.NxtApiProductListController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mobile.device.Device;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 /**
  * @author soyojo.earth@gmail.com

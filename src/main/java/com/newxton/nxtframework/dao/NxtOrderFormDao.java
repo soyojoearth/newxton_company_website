@@ -62,4 +62,13 @@ public interface NxtOrderFormDao {
      */
     int deleteById(Long id);
 
+    /**
+     * 用户中心，查询订单
+     * @param offset
+     * @param limit
+     * @param userId
+     * @return
+     */
+    List<NxtOrderForm> queryAllByUserIdAndLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("userId") Long userId, @Param("isPaid") Boolean isPaid, @Param("isDelivery") Boolean isDelivery, @Param("isReviews") Boolean isReviews);
+
 }

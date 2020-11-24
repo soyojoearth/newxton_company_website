@@ -1,6 +1,6 @@
 package com.newxton.nxtframework.controller.web;
 
-import com.newxton.nxtframework.controller.api.front.NxtApiProductDetailController;
+import com.newxton.nxtframework.controller.api.front.product.NxtApiProductDetailController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mobile.device.Device;

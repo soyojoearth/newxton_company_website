@@ -3,6 +3,7 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.entity.NxtOrderForm;
 import com.newxton.nxtframework.dao.NxtOrderFormDao;
 import com.newxton.nxtframework.service.NxtOrderFormService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -76,4 +77,16 @@ public class NxtOrderFormServiceImpl implements NxtOrderFormService {
     public boolean deleteById(Long id) {
         return this.nxtOrderFormDao.deleteById(id) > 0;
     }
+
+    /**
+     * 用户中心，查询订单
+     * @param offset
+     * @param limit
+     * @param userId
+     * @return
+     */
+    public List<NxtOrderForm> queryAllByUserIdAndLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("userId") Long userId, @Param("isPaid") Boolean isPaid, @Param("isDelivery") Boolean isDelivery, @Param("isReviews") Boolean isReviews){
+        return this.nxtOrderFormDao.queryAllByUserIdAndLimit(offset,limit,userId,isPaid,isDelivery,isReviews);
+    }
+
 }

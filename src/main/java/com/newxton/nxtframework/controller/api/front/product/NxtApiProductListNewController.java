@@ -1,4 +1,4 @@
-package com.newxton.nxtframework.controller.api.front;
+package com.newxton.nxtframework.controller.api.front.product;
 
 import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.component.NxtUploadImageComponent;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class NxtApiProductListRecommendController {
+public class NxtApiProductListNewController {
 
     @Resource
     private NxtProductService nxtProductService;
@@ -34,7 +34,7 @@ public class NxtApiProductListRecommendController {
     @Resource
     private NxtUploadImageComponent nxtUploadImageComponent;
 
-    @RequestMapping("/api/product_list/recommend")
+    @RequestMapping("/api/product_list/new")
     public NxtStructApiResult exec(@RequestBody JSONObject jsonParam) {
 
         Integer limit = jsonParam.getInteger("limit");
@@ -43,7 +43,7 @@ public class NxtApiProductListRecommendController {
             limit = 4;
         }
 
-        List<NxtProduct> list = this.nxtProductService.queryAllRecommend(limit);
+        List<NxtProduct> list = this.nxtProductService.queryAllNew(limit);
 
         List<Map<String,Object>> listProduct = setProductListWithFirstPicture(list);
 

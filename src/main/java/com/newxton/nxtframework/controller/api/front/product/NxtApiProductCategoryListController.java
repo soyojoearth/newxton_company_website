@@ -1,7 +1,7 @@
-package com.newxton.nxtframework.controller.api.front;
+package com.newxton.nxtframework.controller.api.front.product;
 
-import com.newxton.nxtframework.entity.NxtNewsCategory;
-import com.newxton.nxtframework.service.NxtNewsCategoryService;
+import com.newxton.nxtframework.entity.NxtProductCategory;
+import com.newxton.nxtframework.service.NxtProductCategoryService;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,24 +19,23 @@ import java.util.Map;
  * @address Shenzhen, China
  */
 @RestController
-public class NxtApiNewsCategoryListController {
+public class NxtApiProductCategoryListController {
 
     @Resource
-    private NxtNewsCategoryService nxtNewsCategoryService;
+    private NxtProductCategoryService nxtProductCategoryService;
 
-    @RequestMapping(value = "/api/news_category/list", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/product_category/list", method = RequestMethod.POST)
     public NxtStructApiResult index() {
 
-        List<NxtNewsCategory> list = nxtNewsCategoryService.queryAll(new NxtNewsCategory());
+        List<NxtProductCategory> list = nxtProductCategoryService.queryAll(new NxtProductCategory());
 
         List<Map<String,Object>> listResult = new ArrayList<>();
 
         List<Map<String,Object>> listSimpleResult = new ArrayList<>();
 
-
         for (int i = 0; i < list.size(); i++) {
 
-            NxtNewsCategory category = list.get(i);
+            NxtProductCategory category = list.get(i);
 
             if (category.getCategoryPid().equals(0L)){
                 Map<String, Object> item = new HashMap<>();
@@ -79,12 +78,12 @@ public class NxtApiNewsCategoryListController {
      * @param list
      * @return
      */
-    private List<Map<String,Object>> findSubCategory(NxtNewsCategory categoryParent,List<NxtNewsCategory> list){
+    private List<Map<String,Object>> findSubCategory(NxtProductCategory categoryParent, List<NxtProductCategory> list){
 
         List<Map<String,Object>> listResult = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i++) {
-            NxtNewsCategory category = list.get(i);
+            NxtProductCategory category = list.get(i);
             if (category.getCategoryPid().equals(categoryParent.getId())){
 
                 Map<String, Object> item = new HashMap<>();
@@ -100,7 +99,6 @@ public class NxtApiNewsCategoryListController {
 
     }
 
-
     /**
      * 照顾前端开发工程师，增加这样的显示
      * 分类
@@ -115,7 +113,7 @@ public class NxtApiNewsCategoryListController {
     private void addSubCategoryListToSimpleList(List<Map<String,Object>> subCategoryList, List<Map<String,Object>> listSimpleResult,String preStr){
         for (int i = 0; i < subCategoryList.size(); i++) {
             Map<String, Object> item = subCategoryList.get(i);
-            NxtNewsCategory category = (NxtNewsCategory)item.get("category");
+            NxtProductCategory category = (NxtProductCategory)item.get("category");
             List<Map<String,Object>> sub_category_list = (List<Map<String,Object>>)item.get("sub_category_list");
 
             Map<String, Object> simpleItem = new HashMap<>();
