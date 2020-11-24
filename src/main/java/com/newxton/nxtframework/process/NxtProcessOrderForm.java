@@ -30,7 +30,7 @@ public class NxtProcessOrderForm {
     @Resource
     private NxtOrderFormProductService nxtOrderFormProductService;
 
-    public List<NxtStructOrderForm> userOrderFormList(Long userId,Long offset,Long limit,Boolean isPaid,Boolean isDelivery,Boolean isReviews){
+    public List<NxtStructOrderForm> userOrderFormList(Long userId,Long offset,Long limit,Boolean isPaid,Boolean isDelivery,Boolean isReviews) throws NxtException{
 
         List<NxtStructOrderForm> nxtStructOrderFormList = new ArrayList<>();
 
