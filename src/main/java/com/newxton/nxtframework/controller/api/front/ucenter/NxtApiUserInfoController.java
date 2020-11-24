@@ -1,7 +1,5 @@
 package com.newxton.nxtframework.controller.api.front.ucenter;
 
-import com.alibaba.fastjson.JSONObject;
-import com.newxton.nxtframework.component.NxtUtilComponent;
 import com.newxton.nxtframework.component.NxtWebUtilComponent;
 import com.newxton.nxtframework.entity.NxtUploadfile;
 import com.newxton.nxtframework.entity.NxtUser;
@@ -9,13 +7,9 @@ import com.newxton.nxtframework.service.NxtUploadfileService;
 import com.newxton.nxtframework.service.NxtUserService;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
 import com.newxton.nxtframework.struct.NxtStructUserInfo;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -73,7 +67,7 @@ public class NxtApiUserInfoController {
         nxtStructUserInfo.setInviteUrlQrImageUrl(inviteQrCodePicUrl);
 
         if (user.getAvatarId() != null){
-            NxtUploadfile nxtUploadfile = nxtUploadfileService.queryById(user.getInviterUserId());
+            NxtUploadfile nxtUploadfile = nxtUploadfileService.queryById(user.getAvatarId());
             nxtStructUserInfo.setAvatarPicUrl(nxtUploadfile.getUrlpath());
         }
 
