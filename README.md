@@ -73,7 +73,7 @@ typora-copy-images-to: ./gitbook_resource
 
 #### 技术架构图：
 
-![image-20201101104755959](gitbook_resource/image-20201101104755959.png)
+![image-20201124140216583](gitbook_resource/image-20201124140216583.png)
 
 
 
@@ -134,4 +134,20 @@ docker-compose -f docker-compose-quickstart-with-db.yml up
 2、部署完成^_^。
 
 本项目已经充分考虑过集群多实例部署的情况，已针对性优化过。
+
+
+
+
+
+#### 开发团队成员：
+
+Leader & PM：soyojo
+
+UI设计：Rong Kai
+
+架构：soyojo
+
+后端开发：soyojo、hexiao、youjian
+
+前端开发：soyojo、ieyieyss、阿 Fa、hexiao、Remondcl、youjian
 
