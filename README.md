@@ -147,7 +147,7 @@ UI设计：Rong Kai
 
 架构：soyojo
 
-后端开发：soyojo、hexiao、youjian
+后端开发：soyojo、hexiao、yunian
 
-前端开发：soyojo、ieyieyss、阿 Fa、hexiao、Remondcl、youjian
+前端开发：soyojo、ieyieyss、阿 Fa、hexiao、Remondcl、yunian
 
