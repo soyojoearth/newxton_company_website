@@ -1,15 +1,20 @@
 package com.newxton.nxtframework.process;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.newxton.nxtframework.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.service.*;
-import com.newxton.nxtframework.struct.NxtStructOrderFormRefundCreate;
-import com.newxton.nxtframework.struct.NxtStructOrderFormRefundProduct;
+import com.newxton.nxtframework.struct.*;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author soyojo.earth@gmail.com
@@ -18,6 +23,12 @@ import java.util.List;
  */
 @Component
 public class NxtProcessOrderFormRefund {
+
+    @Resource
+    private NxtProductPictureService nxtProductPictureService;
+
+    @Resource
+    private NxtUploadfileService nxtUploadfileService;
 
     @Resource
     private NxtOrderFormService nxtOrderFormService;
@@ -37,9 +48,17 @@ public class NxtProcessOrderFormRefund {
     @Resource
     private NxtOrderFormRefundLogService nxtOrderFormRefundLogService;
 
+    @Resource
+    private NxtUploadImageComponent nxtUploadImageComponent;
 
+    /**
+     * 创建订单退款申请
+     * @param userId
+     * @param nxtStructOrderFormRefundCreate
+     * @throws NxtException
+     */
     @Transactional
-    public void exec(Long userId, NxtStructOrderFormRefundCreate nxtStructOrderFormRefundCreate) throws NxtException {
+    public void create(Long userId, NxtStructOrderFormRefundCreate nxtStructOrderFormRefundCreate) throws NxtException {
 
         if (nxtStructOrderFormRefundCreate.getId() == null){
             throw new NxtException("缺少订单id");
@@ -71,9 +90,9 @@ public class NxtProcessOrderFormRefund {
 
 
         //先检查退货物品
-        List<NxtStructOrderFormRefundProduct> orderFormProductIdList = nxtStructOrderFormRefundCreate.getOrderFormProductList();
+        List<NxtStructOrderFormRefundProduct> orderFormProductList = nxtStructOrderFormRefundCreate.getOrderFormProductList();
         for (NxtStructOrderFormRefundProduct nxtStructOrderFormRefundProduct :
-                orderFormProductIdList) {
+                orderFormProductList) {
             //检查orderFormProductId归属正确后记录物品
             NxtOrderFormProduct nxtOrderFormProduct = nxtOrderFormProductService.queryById(nxtStructOrderFormRefundProduct.getOrderFormProductId());
             if (!(nxtOrderFormProduct != null && nxtOrderFormProduct.getOrderFormId().equals(nxtOrderForm.getId()))){
@@ -101,7 +120,7 @@ public class NxtProcessOrderFormRefund {
 
         //插入退货物品
         for (NxtStructOrderFormRefundProduct nxtStructOrderFormRefundProduct :
-                orderFormProductIdList) {
+                orderFormProductList) {
             //检查orderFormProductId归属正确后记录物品
             NxtOrderFormProduct nxtOrderFormProduct = nxtOrderFormProductService.queryById(nxtStructOrderFormRefundProduct.getOrderFormProductId());
             if (nxtOrderFormProduct != null && nxtOrderFormProduct.getOrderFormId().equals(nxtOrderForm.getId())){
@@ -148,6 +167,84 @@ public class NxtProcessOrderFormRefund {
         nxtOrderFormRefundLog.setStatusPaid(nxtOrderForm.getStatusPaid());
         nxtOrderFormRefundLog.setStatusDelivery(nxtOrderForm.getStatusDelivery());
         nxtOrderFormRefundLogService.insert(nxtOrderFormRefundLog);
+
+    }
+
+    /**
+     * 订单中可退款物品列表
+     * @param nxtOrderForm
+     */
+    public List<NxtStructOrderFormRefundProductAllowItem> productAllowList(NxtOrderForm nxtOrderForm) throws NxtException{
+
+        if (nxtOrderForm == null){
+            throw new NxtException("请提供订单");
+        }
+
+        Gson gson = new Gson();
+
+        List<NxtStructOrderFormRefundProductAllowItem> nxtStructOrderFormRefundProductAllowItemList = new ArrayList<>();
+
+        Map<Long,Long> orderFormProductIdToProductId = new HashMap();
+        //查询订单物品
+        List<Long> orderFormIdList = new ArrayList<>();
+        orderFormIdList.add(nxtOrderForm.getId());
+        List<NxtOrderFormProduct> orderFormProductList = nxtOrderFormProductService.selectAllByOrderFormIdSet(orderFormIdList);
+        for (NxtOrderFormProduct nxtOrderFormProduct :
+                orderFormProductList) {
+
+            orderFormProductIdToProductId.put(nxtOrderFormProduct.getId(),nxtOrderFormProduct.getProductId());
+
+            NxtStructOrderFormRefundProductAllowItem nxtStructOrderFormRefundProductAllowItem = new NxtStructOrderFormRefundProductAllowItem();
+            nxtStructOrderFormRefundProductAllowItem.setOrderFormProductId(nxtOrderFormProduct.getId());
+            //检查可退货数量
+            Long quantityAllowRefund = nxtOrderFormProduct.getQuantity() - nxtOrderFormProduct.getQuantityRefund();
+            nxtStructOrderFormRefundProductAllowItem.setQuantityAllowRefund(quantityAllowRefund);
+            nxtStructOrderFormRefundProductAllowItem.setQuantityAll(nxtOrderFormProduct.getQuantity());
+            nxtStructOrderFormRefundProductAllowItem.setQuantityIsRefund(nxtOrderFormProduct.getQuantityRefund());
+            nxtStructOrderFormRefundProductAllowItem.setAllowRefund(quantityAllowRefund > 0);
+
+            nxtStructOrderFormRefundProductAllowItem.setProductName(nxtOrderFormProduct.getProductName());
+            nxtStructOrderFormRefundProductAllowItem.setProductPriceDeal(nxtOrderFormProduct.getProductPriceDeal()/100F);
+
+            try {
+                if (nxtOrderFormProduct.getProductSku() != null) {
+                    List<NxtStructOrderFormProductSku> skuList = gson.fromJson(nxtOrderFormProduct.getProductSku(), new TypeToken<List<NxtStructOrderFormProductSku>>() {
+                    }.getType());
+                    nxtStructOrderFormRefundProductAllowItem.setSku(skuList);
+                }
+            }
+            catch (Exception e){
+                throw new NxtException("订单物品suk解析错误");
+            }
+
+            nxtStructOrderFormRefundProductAllowItemList.add(nxtStructOrderFormRefundProductAllowItem);
+
+        }
+
+        //批量查主图
+        List<Long> productIdList = new ArrayList<>();
+        productIdList.addAll(orderFormProductIdToProductId.values());
+        Map<Long,Long> mapUploadFileIdToProductId = new HashMap<>();
+        List<NxtProductPicture> productPictureList =  nxtProductPictureService.selectByProductIdSet(0,Integer.MAX_VALUE,productIdList);
+        for (NxtProductPicture item : productPictureList) {
+            mapUploadFileIdToProductId.put(item.getUploadfileId(),item.getProductId());
+        }
+        List<Long> uploadFileId = new ArrayList<>();
+        uploadFileId.addAll(mapUploadFileIdToProductId.keySet());
+        List<NxtUploadfile> uploadfileList = nxtUploadfileService.selectByIdSet(0,Integer.MAX_VALUE,uploadFileId);
+
+        Map<Long,String> mapProductIdToPicUrl = new HashMap<>();
+        for (NxtUploadfile nxtUploadfile : uploadfileList) {
+            Long productId = mapUploadFileIdToProductId.get(nxtUploadfile.getId());
+            mapProductIdToPicUrl.put(productId,nxtUploadImageComponent.convertImagePathToDomainImagePath(nxtUploadfile.getUrlpath()));
+        }
+
+        for (NxtStructOrderFormRefundProductAllowItem nxtStructOrderFormRefundProductAllowItem : nxtStructOrderFormRefundProductAllowItemList){
+            Long productId = orderFormProductIdToProductId.get(nxtStructOrderFormRefundProductAllowItem.getOrderFormProductId());
+            nxtStructOrderFormRefundProductAllowItem.setPicUrl(mapProductIdToPicUrl.getOrDefault(productId,"/common/images/empty.png"));
+        }
+
+        return nxtStructOrderFormRefundProductAllowItemList;
 
     }
 

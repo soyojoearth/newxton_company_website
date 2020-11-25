@@ -16,6 +16,7 @@ import javax.annotation.Resource;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/24
  * @address Shenzhen, China
+ * 提交售后申请
  */
 @RestController
 public class NxtApiOrderFormRefundCreateController {
@@ -38,7 +39,7 @@ public class NxtApiOrderFormRefundCreateController {
         }
 
         try {
-            nxtProcessOrderFormRefund.exec(userId,nxtStructOrderFormRefundCreate);
+            nxtProcessOrderFormRefund.create(userId,nxtStructOrderFormRefundCreate);
         }
         catch (NxtException e){
             return new NxtStructApiResult(54,e.getNxtExecptionMessage());

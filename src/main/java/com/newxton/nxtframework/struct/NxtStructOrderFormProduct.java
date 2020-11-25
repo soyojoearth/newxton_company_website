@@ -29,6 +29,10 @@ public class NxtStructOrderFormProduct {
      */
     private String productName;
     /**
+     * 产品主图地址
+     */
+    private String picUrl;
+    /**
      * 单位（千克）
      */
     private Float unitWeight;
@@ -101,6 +105,14 @@ public class NxtStructOrderFormProduct {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 
     public Float getUnitWeight() {

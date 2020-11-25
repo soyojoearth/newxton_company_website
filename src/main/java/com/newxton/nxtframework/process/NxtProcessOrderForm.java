@@ -2,13 +2,10 @@ package com.newxton.nxtframework.process;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.newxton.nxtframework.entity.NxtOrderForm;
-import com.newxton.nxtframework.entity.NxtOrderFormDelivery;
-import com.newxton.nxtframework.entity.NxtOrderFormProduct;
+import com.newxton.nxtframework.component.NxtUploadImageComponent;
+import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.exception.NxtException;
-import com.newxton.nxtframework.service.NxtOrderFormDeliveryService;
-import com.newxton.nxtframework.service.NxtOrderFormProductService;
-import com.newxton.nxtframework.service.NxtOrderFormService;
+import com.newxton.nxtframework.service.*;
 import com.newxton.nxtframework.struct.NxtStructOrderForm;
 import com.newxton.nxtframework.struct.NxtStructOrderFormDelivery;
 import com.newxton.nxtframework.struct.NxtStructOrderFormProduct;
@@ -28,6 +25,12 @@ import java.util.*;
 public class NxtProcessOrderForm {
 
     @Resource
+    private NxtProductPictureService nxtProductPictureService;
+
+    @Resource
+    private NxtUploadfileService nxtUploadfileService;
+
+    @Resource
     private NxtOrderFormService nxtOrderFormService;
 
     @Resource
@@ -35,6 +38,9 @@ public class NxtProcessOrderForm {
 
     @Resource
     private NxtOrderFormDeliveryService nxtOrderFormDeliveryService;
+
+    @Resource
+    private NxtUploadImageComponent nxtUploadImageComponent;
 
     public List<NxtStructOrderForm> userOrderFormList(Long userId,Long offset,Long limit,Boolean isPaid,Boolean isDelivery,Boolean isReviews) throws NxtException{
 
@@ -249,14 +255,19 @@ public class NxtProcessOrderForm {
         List<Long> orderFormIdList = new ArrayList<>();
         orderFormIdList.add(id);
 
+        Map<Long,Long> orderFormProductIdToProductId = new HashMap<>();
+
         List<NxtOrderFormProduct> nxtOrderFormProductList = nxtOrderFormProductService.selectAllByOrderFormIdSet(orderFormIdList);
 
         for (NxtOrderFormProduct nxtOrderFormProduct : nxtOrderFormProductList) {
+
+            orderFormProductIdToProductId.put(nxtOrderFormProduct.getId(),nxtOrderFormProduct.getProductId());
 
             NxtStructOrderFormProduct nxtStructOrderFormProduct = new NxtStructOrderFormProduct();
 
             nxtStructOrderFormProduct.setId(nxtOrderFormProduct.getId());
             nxtStructOrderFormProduct.setOrderFormId(nxtOrderFormProduct.getOrderFormId());
+            nxtStructOrderFormProduct.setProductId(nxtOrderFormProduct.getProductId());
             nxtStructOrderFormProduct.setQuantity(nxtOrderFormProduct.getQuantity());
             nxtStructOrderFormProduct.setProductName(nxtOrderFormProduct.getProductName());
             nxtStructOrderFormProduct.setUnitWeight(nxtOrderFormProduct.getUnitWeight()/1000F);
@@ -295,6 +306,28 @@ public class NxtProcessOrderForm {
             nxtStructOrderFormDelivery.setDeliverySerialNum(nxtOrderFormDelivery.getDeliverySerialNum());
 
             nxtStructOrderForm.setOrderFormDelivery(nxtStructOrderFormDelivery);
+        }
+
+        //批量查主图
+        List<Long> productIdList = new ArrayList<>();
+        productIdList.addAll(orderFormProductIdToProductId.values());
+        Map<Long,Long> mapUploadFileIdToProductId = new HashMap<>();
+        List<NxtProductPicture> productPictureList =  nxtProductPictureService.selectByProductIdSet(0,Integer.MAX_VALUE,productIdList);
+        for (NxtProductPicture item : productPictureList) {
+            mapUploadFileIdToProductId.put(item.getUploadfileId(),item.getProductId());
+        }
+        List<Long> uploadFileId = new ArrayList<>();
+        uploadFileId.addAll(mapUploadFileIdToProductId.keySet());
+        List<NxtUploadfile> uploadfileList = nxtUploadfileService.selectByIdSet(0,Integer.MAX_VALUE,uploadFileId);
+
+        Map<Long,String> mapProductIdToPicUrl = new HashMap<>();
+        for (NxtUploadfile nxtUploadfile : uploadfileList) {
+            Long productId = mapUploadFileIdToProductId.get(nxtUploadfile.getId());
+            mapProductIdToPicUrl.put(productId,nxtUploadImageComponent.convertImagePathToDomainImagePath(nxtUploadfile.getUrlpath()));
+        }
+
+        for (NxtStructOrderFormProduct nxtStructOrderFormProduct : nxtStructOrderForm.getOrderFormProductList()){
+            nxtStructOrderFormProduct.setPicUrl(mapProductIdToPicUrl.getOrDefault(nxtStructOrderFormProduct.getProductId(),"/common/images/empty.png"));
         }
 
         return nxtStructOrderForm;
