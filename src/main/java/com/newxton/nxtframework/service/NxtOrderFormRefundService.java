@@ -53,4 +53,10 @@ public interface NxtOrderFormRefundService {
      */
     boolean deleteById(Long id);
 
+    /**
+     * 查询用户的售后服务单
+     * @return
+     */
+    List<NxtOrderFormRefund> queryAllByUserIdAndLimit(Long offset,Long limit,Long userId,Boolean isDone,Boolean isShipped,Boolean isApplied);
+
 }

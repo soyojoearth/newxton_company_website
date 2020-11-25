@@ -11,10 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author soyojo.earth@gmail.com
@@ -52,7 +50,7 @@ public class NxtProcessOrderFormRefund {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     /**
-     * 创建订单退款申请
+     * 用户创建订单退款申请
      * @param userId
      * @param nxtStructOrderFormRefundCreate
      * @throws NxtException
@@ -116,6 +114,7 @@ public class NxtProcessOrderFormRefund {
         nxtOrderFormRefund.setReasonType(nxtStructOrderFormRefundCreate.getReasonType());
         nxtOrderFormRefund.setReasionDescription(nxtStructOrderFormRefundCreate.getReasionDescription());
         nxtOrderFormRefund.setStatus(0);//状态（-1:拒绝退款 0:已申请 1:完成 2:等用户发货 3:收到货退款 4:收到货有问题，请修改金额）
+        nxtOrderFormRefund.setDatelineCreate(System.currentTimeMillis());
         nxtOrderFormRefundService.insert(nxtOrderFormRefund);
 
         //插入退货物品
@@ -246,6 +245,190 @@ public class NxtProcessOrderFormRefund {
 
         return nxtStructOrderFormRefundProductAllowItemList;
 
+    }
+
+    /**
+     * 用户售后单列表
+     * @param userId
+     * @param offset
+     * @param limit
+     * @param isDone
+     * @param isShipped
+     * @param isApplied
+     * @return
+     */
+    public List<NxtStructOrderFormRefund> userOrderFormRefundList(Long userId, Long offset, Long limit,Boolean isDone, Boolean isShipped, Boolean isApplied){
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Gson gson = new Gson();
+
+        List<NxtStructOrderFormRefund> nxtStructOrderFormRefundList = new ArrayList<>();
+
+        List<NxtOrderFormRefund> nxtOrderFormRefundList = nxtOrderFormRefundService.queryAllByUserIdAndLimit(offset,limit,userId,isDone,isShipped,isApplied);
+
+        Map<Long,NxtStructOrderFormRefund> mapIdToNxtStructOrderFormRefund = new HashMap<>();
+
+        Set<Long> productIdSet = new HashSet<>();
+        List<Long> orderFormIdList = new ArrayList<>();
+
+
+        for (NxtOrderFormRefund nxtOrderFormRefund : nxtOrderFormRefundList) {
+
+            NxtStructOrderFormRefund nxtStructOrderFormRefund = new NxtStructOrderFormRefund();
+            nxtStructOrderFormRefund.setId(nxtOrderFormRefund.getId());
+            nxtStructOrderFormRefund.setOrderFormId(nxtOrderFormRefund.getOrderFormId());
+            nxtStructOrderFormRefund.setReasonType(nxtOrderFormRefund.getReasonType());
+
+            if (nxtOrderFormRefund.getReasonType().equals(0)) {
+                nxtStructOrderFormRefund.setReasonTypeText("无理由");
+            }
+            else if (nxtOrderFormRefund.getReasonType().equals(1)) {
+                nxtStructOrderFormRefund.setReasonTypeText("质量问题");
+            }
+            nxtStructOrderFormRefund.setStatus(nxtOrderFormRefund.getStatus());
+            nxtStructOrderFormRefund.setStatusText(this.getStatusText(nxtOrderFormRefund.getStatus()));
+            nxtStructOrderFormRefund.setReasionDescription(nxtOrderFormRefund.getReasionDescription());
+
+            nxtStructOrderFormRefund.setDatelineCreate(nxtOrderFormRefund.getDatelineCreate());
+            nxtStructOrderFormRefund.setDatelineCreateReadable(sdf.format(new Date(nxtOrderFormRefund.getDatelineCreate())));
+
+            if (nxtOrderFormRefund.getDatelineEnd() != null){
+                nxtStructOrderFormRefund.setDatelineEnd(nxtOrderFormRefund.getDatelineEnd());
+                nxtStructOrderFormRefund.setDatelineEndReadable(sdf.format(new Date(nxtOrderFormRefund.getDatelineEnd())));
+            }
+
+            //列表
+            nxtStructOrderFormRefundList.add(nxtStructOrderFormRefund);
+
+            //备用map
+            mapIdToNxtStructOrderFormRefund.put(nxtOrderFormRefund.getId(),nxtStructOrderFormRefund);
+
+            orderFormIdList.add(nxtOrderFormRefund.getOrderFormId());
+
+        }
+
+
+        //取订单编号
+        Map<Long,String> mapOrderFormIdToSerialNum = new HashMap<>();
+        List<NxtOrderForm> nxtOrderFormList = nxtOrderFormService.selectByIdSet(orderFormIdList);
+        for (NxtOrderForm nxtOrderForm :
+                nxtOrderFormList) {
+            mapOrderFormIdToSerialNum.put(nxtOrderForm.getId(),nxtOrderForm.getSerialNum());
+        }
+
+        //批量取sku 、productName
+        Map<Long,Long> orderFormProductIdToProductId = new HashMap<>();
+        Map<Long,String> mapOrderFormProductIdToProductName = new HashMap<>();
+        Map<Long,List<NxtStructOrderFormProductSku>> mapOrderFormProductSku = new HashMap<>();
+        List<NxtOrderFormProduct> orderFormProductList = nxtOrderFormProductService.selectAllByOrderFormIdSet(orderFormIdList);
+        for (NxtOrderFormProduct nxtOrderFormProduct : orderFormProductList) {
+            mapOrderFormProductIdToProductName.put(nxtOrderFormProduct.getId(),nxtOrderFormProduct.getProductName());
+            try {
+                if (nxtOrderFormProduct.getProductSku() != null) {
+                    List<NxtStructOrderFormProductSku> skuList = gson.fromJson(nxtOrderFormProduct.getProductSku(), new TypeToken<List<NxtStructOrderFormProductSku>>() {
+                    }.getType());
+                    mapOrderFormProductSku.put(nxtOrderFormProduct.getId(),skuList);
+                }
+            }
+            catch (Exception e){
+                throw new NxtException("订单物品suk解析错误");
+            }
+            orderFormProductIdToProductId.put(nxtOrderFormProduct.getId(),nxtOrderFormProduct.getProductId());
+        }
+
+        //批量查主图
+        List<Long> productIdList = new ArrayList<>();
+        productIdList.addAll(orderFormProductIdToProductId.values());
+        Map<Long,Long> mapUploadFileIdToProductId = new HashMap<>();
+        List<NxtProductPicture> productPictureList =  nxtProductPictureService.selectByProductIdSet(0,Integer.MAX_VALUE,productIdList);
+        for (NxtProductPicture item : productPictureList) {
+            mapUploadFileIdToProductId.put(item.getUploadfileId(),item.getProductId());
+        }
+        List<Long> uploadFileId = new ArrayList<>();
+        uploadFileId.addAll(mapUploadFileIdToProductId.keySet());
+        List<NxtUploadfile> uploadfileList = nxtUploadfileService.selectByIdSet(0,Integer.MAX_VALUE,uploadFileId);
+
+        Map<Long,String> mapProductIdToPicUrl = new HashMap<>();
+        for (NxtUploadfile nxtUploadfile : uploadfileList) {
+            Long productId = mapUploadFileIdToProductId.get(nxtUploadfile.getId());
+            mapProductIdToPicUrl.put(productId,nxtUploadImageComponent.convertImagePathToDomainImagePath(nxtUploadfile.getUrlpath()));
+        }
+
+
+        //取退货物品列表
+        Map<Long,Long> orderFormRefundProductIdToOrderFormProductId = new HashMap();
+        List<Long> orderFormRefundIdList = new ArrayList<>();
+        orderFormRefundIdList.addAll(mapIdToNxtStructOrderFormRefund.keySet());
+
+        List<NxtOrderFormRefundProduct> orderFormRefundProductList = nxtOrderFormRefundProductService.selectAllByOrderFormRefundIdSet(orderFormRefundIdList);
+        for (NxtOrderFormRefundProduct nxtOrderFormRefundProduct :
+                orderFormRefundProductList) {
+
+            orderFormRefundProductIdToOrderFormProductId.put(nxtOrderFormRefundProduct.getId(),nxtOrderFormRefundProduct.getOrderFormProductId());
+
+            NxtStructOrderFormRefundProduct nxtStructOrderFormRefundProduct = new NxtStructOrderFormRefundProduct();
+            nxtStructOrderFormRefundProduct.setId(nxtOrderFormRefundProduct.getId());
+            nxtStructOrderFormRefundProduct.setOrderFormProductId(nxtOrderFormRefundProduct.getId());
+            nxtStructOrderFormRefundProduct.setQuantity(nxtOrderFormRefundProduct.getQuantity());
+            nxtStructOrderFormRefundProduct.setProductPriceDeal(nxtOrderFormRefundProduct.getPriceDeal()/100F);
+            nxtStructOrderFormRefundProduct.setAmountRefund(nxtOrderFormRefundProduct.getAmountRefund()/100F);
+
+            //productName
+            if (mapOrderFormProductIdToProductName.containsKey(nxtOrderFormRefundProduct.getOrderFormProductId())){
+                nxtStructOrderFormRefundProduct.setProductName(mapOrderFormProductIdToProductName.get(nxtOrderFormRefundProduct.getOrderFormProductId()));
+            }
+
+            //sku
+            if (mapOrderFormProductSku.containsKey(nxtOrderFormRefundProduct.getOrderFormProductId())){
+                nxtStructOrderFormRefundProduct.setSku(mapOrderFormProductSku.get(nxtOrderFormRefundProduct.getOrderFormProductId()));
+            }
+
+            //主图
+            nxtStructOrderFormRefundProduct.setPicUrl("/common/images/empty.png");//默认主图
+            Long productId = orderFormProductIdToProductId.get(nxtOrderFormRefundProduct.getOrderFormProductId());
+            if (productId != null && mapProductIdToPicUrl.containsKey(productId)){
+                nxtStructOrderFormRefundProduct.setPicUrl(mapProductIdToPicUrl.get(productId));
+            }
+
+            //把物品塞到对应的退款单
+            mapIdToNxtStructOrderFormRefund.get(nxtOrderFormRefundProduct.getOrderFormRefundId()).getOrderFormRefundProductList().add(nxtStructOrderFormRefundProduct);
+
+        }
+
+        for (NxtStructOrderFormRefund item : nxtStructOrderFormRefundList) {
+            //订单编号
+            if (mapOrderFormIdToSerialNum.containsKey(item.getOrderFormId())) {
+                item.setOrderFormSerialNum(mapOrderFormIdToSerialNum.get(item.getOrderFormId()));
+            }
+        }
+
+        return nxtStructOrderFormRefundList;
+    }
+
+    public String getStatusText(Integer status){
+        //-1:拒绝退款 0:已申请 1:完成 2:等用户发货 3:收到货退款 4:收到货有问题，请修改金额
+        if (status.equals(-1)){
+            return "拒绝退款";
+        }
+        else if (status.equals(0)){
+            return "已申请";
+        }
+        else if (status.equals(1)){
+            return "完成";
+        }
+        else if (status.equals(2)){
+            return "等用户发货";
+        }
+        else if (status.equals(3)){
+            return "收到货退款";
+        }
+        else if (status.equals(4)){
+            return "收到货有问题，请修改金额";
+        }
+        else {
+            return null;
+        }
     }
 
 }

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -87,6 +88,17 @@ public class NxtOrderFormServiceImpl implements NxtOrderFormService {
      */
     public List<NxtOrderForm> queryAllByUserIdAndLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("userId") Long userId, @Param("isPaid") Boolean isPaid, @Param("isDelivery") Boolean isDelivery, @Param("isReviews") Boolean isReviews){
         return this.nxtOrderFormDao.queryAllByUserIdAndLimit(offset,limit,userId,isPaid,isDelivery,isReviews);
+    }
+
+    /**
+     * 根据id列表查询指定行数据
+     * @return
+     */
+    public List<NxtOrderForm> selectByIdSet(@Param("idList") List<Long> idList){
+        if (idList.size() == 0){
+            return new ArrayList<>();
+        }
+        return this.nxtOrderFormDao.selectByIdSet(idList);
     }
 
 }

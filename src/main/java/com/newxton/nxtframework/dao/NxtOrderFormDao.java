@@ -71,4 +71,10 @@ public interface NxtOrderFormDao {
      */
     List<NxtOrderForm> queryAllByUserIdAndLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("userId") Long userId, @Param("isPaid") Boolean isPaid, @Param("isDelivery") Boolean isDelivery, @Param("isReviews") Boolean isReviews);
 
+    /**
+     * 根据id列表查询指定行数据
+     * @return
+     */
+    List<NxtOrderForm> selectByIdSet(@Param("idList") List<Long> idList);
+
 }

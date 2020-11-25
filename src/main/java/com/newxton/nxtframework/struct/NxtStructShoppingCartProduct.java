@@ -23,6 +23,8 @@ public class NxtStructShoppingCartProduct {
 	private String picUrl;
 	private String productName;
 
+	private Float productPrice;
+
 	/**
 	 * 比较是不是同一款产品且同样的sku
 	 * @param obj
@@ -106,5 +108,13 @@ public class NxtStructShoppingCartProduct {
 
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+
+	public Float getProductPrice() {
+		return productPrice;
+	}
+
+	public void setProductPrice(Float productPrice) {
+		this.productPrice = productPrice;
 	}
 }

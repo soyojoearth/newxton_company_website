@@ -2,39 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newxton.nxtframework.dao.NxtOrderFormRefundDao">
 
-    <resultMap type="com.newxton.nxtframework.entity.NxtOrderFormRefund" id="NxtOrderFormRefundMap">
+    <resultMap id="BaseResultMap" type="com.newxton.nxtframework.entity.NxtOrderFormRefund">
+        <!--@Table nxt_order_form_refund-->
         <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
         <result property="orderFormId" column="order_form_id" jdbcType="INTEGER"/>
         <result property="reasonType" column="reason_type" jdbcType="INTEGER"/>
         <result property="reasionDescription" column="reasion_description" jdbcType="VARCHAR"/>
         <result property="transactionId" column="transaction_id" jdbcType="INTEGER"/>
         <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="datelineCreate" column="dateline_create" jdbcType="INTEGER"/>
+        <result property="datelineEnd" column="dateline_end" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--查询单个-->
-    <select id="queryById" resultMap="NxtOrderFormRefundMap">
+    <select id="queryById" resultMap="BaseResultMap">
         select
-          id, order_form_id, reason_type, reasion_description, transaction_id, status
+          id, user_id, order_form_id, reason_type, reasion_description, transaction_id, status, dateline_create, dateline_end
         from nxt_order_form_refund
         where id = #{id}
     </select>
 
     <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="NxtOrderFormRefundMap">
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, order_form_id, reason_type, reasion_description, transaction_id, status
+          id, user_id, order_form_id, reason_type, reasion_description, transaction_id, status, dateline_create, dateline_end
         from nxt_order_form_refund
         limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
-    <select id="queryAll" resultMap="NxtOrderFormRefundMap">
+    <select id="queryAll" resultMap="BaseResultMap">
         select
-        id, order_form_id, reason_type, reasion_description, transaction_id, status
+          id, user_id, order_form_id, reason_type, reasion_description, transaction_id, status, dateline_create, dateline_end
         from nxt_order_form_refund
         <where>
             <if test="id != null">
                 and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
             </if>
             <if test="orderFormId != null">
                 and order_form_id = #{orderFormId}
@@ -51,42 +58,28 @@
             <if test="status != null">
                 and status = #{status}
             </if>
+            <if test="datelineCreate != null">
+                and dateline_create = #{datelineCreate}
+            </if>
+            <if test="datelineEnd != null">
+                and dateline_end = #{datelineEnd}
+            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_refund(order_form_id, reason_type, reasion_description, transaction_id, status)
-        values (#{orderFormId}, #{reasonType}, #{reasionDescription}, #{transactionId}, #{status})
-    </insert>
-
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_refund(order_form_id, reason_type, reasion_description, transaction_id,
-        status)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.orderFormId}, #{entity.reasonType}, #{entity.reasionDescription}, #{entity.transactionId},
-            #{entity.status})
-        </foreach>
-    </insert>
-
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_refund(order_form_id, reason_type, reasion_description, transaction_id,
-        status)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.orderFormId}, #{entity.reasonType}, #{entity.reasionDescription}, #{entity.transactionId},
-            #{entity.status})
-        </foreach>
-        on duplicate key update
-        order_form_id = values(order_form_id) , reason_type = values(reason_type) , reasion_description =
-        values(reasion_description) , transaction_id = values(transaction_id) , status = values(status)
+        insert into nxt_order_form_refund(user_id, order_form_id, reason_type, reasion_description, transaction_id, status, dateline_create, dateline_end)
+        values (#{userId}, #{orderFormId}, #{reasonType}, #{reasionDescription}, #{transactionId}, #{status}, #{datelineCreate}, #{datelineEnd})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
         update nxt_order_form_refund
         <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
             <if test="orderFormId != null">
                 order_form_id = #{orderFormId},
             </if>
@@ -102,6 +95,12 @@
             <if test="status != null">
                 status = #{status},
             </if>
+            <if test="datelineCreate != null">
+                dateline_create = #{datelineCreate},
+            </if>
+            <if test="datelineEnd != null">
+                dateline_end = #{datelineEnd},
+            </if>
         </set>
         where id = #{id}
     </update>
@@ -110,5 +109,41 @@
     <delete id="deleteById">
         delete from nxt_order_form_refund where id = #{id}
     </delete>
+
+    <!--查询用户的售后服务单-->
+    <select id="queryAllByUserIdAndLimit" resultMap="BaseResultMap">
+        select
+        id, order_form_id, reason_type, reasion_description, transaction_id, status, dateline_create, dateline_end
+        from nxt_order_form_refund
+        <where>
+            and user_id = #{userId}
+            <if test="isDone != null and isDone == true">
+                <if test="isDone">
+                    and status = 1
+                </if>
+                <if test="!isDone">
+                    and status &lt;&gt; 1
+                </if>
+            </if>
+            <if test="isShipped != null">
+                <if test="isShipped">
+                    and status = 5
+                </if>
+                <if test="!isShipped">
+                    and status &lt;&gt; 5
+                </if>
+            </if>
+            <if test="isApplied != null">
+                <if test="isApplied">
+                    and status = 0
+                </if>
+                <if test="!isApplied">
+                    and status &lt;&gt; 0
+                </if>
+            </if>
+        </where>
+        order by dateline_create desc , id desc
+        limit #{offset}, #{limit}
+    </select>
 
 </mapper>

@@ -80,11 +80,13 @@ public class NxtProcessShoppingCart {
 
         Map<Long,String> mapProductPic = new HashMap<>();
         Map<Long,String> mapProductName = new HashMap<>();
+        Map<Long,Float> mapProductPrice = new HashMap<>();
 
-        //批量 查产品名称
+        //批量 查产品名称 & 价格
         List<NxtProduct> productList = nxtProductService.selectByIdSet(0,Integer.MAX_VALUE,productIdList);
         for (NxtProduct nxtProduct : productList) {
             mapProductName.put(nxtProduct.getId(),nxtProduct.getProductName());
+            mapProductPrice.put(nxtProduct.getId(),(nxtProduct.getPrice() - nxtProduct.getPriceDiscount())/100F);
         }
 
         //批量查主图
@@ -116,13 +118,18 @@ public class NxtProcessShoppingCart {
         List<NxtStructShoppingCartProduct> nxtStructShoppingCartProductList = nxtStructShoppingCart.getItemList();
 
         for (NxtStructShoppingCartProduct nxtStructShoppingCartProduct : nxtStructShoppingCartProductList) {
-            String productName = mapProductName.get(nxtStructShoppingCartProduct.getId());
+            Long productId = nxtStructShoppingCartProduct.getProductId();
+            String productName = mapProductName.get(productId);
             if (productName != null) {
                 nxtStructShoppingCartProduct.setProductName(productName);
             }
-            String picUrl = mapProductPic.get(nxtStructShoppingCartProduct.getId());
+            String picUrl = mapProductPic.get(productId);
             if (picUrl != null) {
                 nxtStructShoppingCartProduct.setPicUrl(picUrl);
+            }
+            Float productPrice = mapProductPrice.get(productId);
+            if (productPrice != null) {
+                nxtStructShoppingCartProduct.setProductPrice(productPrice);
             }
         }
 

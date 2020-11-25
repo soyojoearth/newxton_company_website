@@ -76,4 +76,13 @@ public class NxtOrderFormRefundServiceImpl implements NxtOrderFormRefundService 
     public boolean deleteById(Long id) {
         return this.nxtOrderFormRefundDao.deleteById(id) > 0;
     }
+
+    /**
+     * 查询用户的售后服务单
+     * @return
+     */
+    public List<NxtOrderFormRefund> queryAllByUserIdAndLimit(Long offset,Long limit,Long userId,Boolean isDone,Boolean isShipped,Boolean isApplied){
+        return this.nxtOrderFormRefundDao.queryAllByUserIdAndLimit(offset,limit,userId,isDone,isShipped,isApplied);
+    }
+
 }

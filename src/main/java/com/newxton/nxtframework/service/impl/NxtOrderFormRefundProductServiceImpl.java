@@ -3,9 +3,11 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.dao.NxtOrderFormRefundProductDao;
 import com.newxton.nxtframework.entity.NxtOrderFormRefundProduct;
 import com.newxton.nxtframework.service.NxtOrderFormRefundProductService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,4 +78,17 @@ public class NxtOrderFormRefundProductServiceImpl implements NxtOrderFormRefundP
     public boolean deleteById(Long id) {
         return this.nxtOrderFormRefundProductDao.deleteById(id) > 0;
     }
+
+    /**
+     * 根据退款服务单id列表查询指定行数据
+     * @param idList
+     * @return
+     */
+    public List<NxtOrderFormRefundProduct> selectAllByOrderFormRefundIdSet(@Param("idList") List<Long> idList){
+        if (idList.size() == 0){
+            return new ArrayList<>();
+        }
+        return this.nxtOrderFormRefundProductDao.selectAllByOrderFormRefundIdSet(idList);
+    }
+
 }

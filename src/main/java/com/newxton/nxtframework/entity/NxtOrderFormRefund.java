@@ -6,12 +6,14 @@ import java.io.Serializable;
  * (NxtOrderFormRefund)实体类
  *
  * @author makejava
- * @since 2020-11-25 09:39:26
+ * @since 2020-11-25 17:25:07
  */
 public class NxtOrderFormRefund implements Serializable {
-    private static final long serialVersionUID = -41963705689974347L;
+    private static final long serialVersionUID = -29733876956351333L;
     
     private Long id;
+    
+    private Long userId;
     
     private Long orderFormId;
     /**
@@ -28,6 +30,10 @@ public class NxtOrderFormRefund implements Serializable {
     * 状态（-1:拒绝退款 0:已申请 1:完成 2:等用户发货 3:收到货退款 4:收到货有问题，请修改金额）
     */
     private Integer status;
+    
+    private Long datelineCreate;
+    
+    private Long datelineEnd;
 
 
     public Long getId() {
@@ -36,6 +42,14 @@ public class NxtOrderFormRefund implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Long getOrderFormId() {
@@ -76,6 +90,22 @@ public class NxtOrderFormRefund implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Long getDatelineCreate() {
+        return datelineCreate;
+    }
+
+    public void setDatelineCreate(Long datelineCreate) {
+        this.datelineCreate = datelineCreate;
+    }
+
+    public Long getDatelineEnd() {
+        return datelineEnd;
+    }
+
+    public void setDatelineEnd(Long datelineEnd) {
+        this.datelineEnd = datelineEnd;
     }
 
 }
