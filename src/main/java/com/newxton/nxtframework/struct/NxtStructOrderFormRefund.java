@@ -33,7 +33,7 @@ public class NxtStructOrderFormRefund {
      */
     private String reasionDescription;
     /**
-     * 售后状态 数字）状态（-1:拒绝退款 0:已申请 1:完成 2:等用户发货 3:收到货退款 4:收到货有问题，请修改金额）
+     * 售后状态 数字）状态（-1:拒绝退款 0:已申请 1:完成 2:等用户发货 3:收到货退款 4:收到货有问题，请修改金额 5:用户已寄出物品）
      */
     private Integer status;
     /**

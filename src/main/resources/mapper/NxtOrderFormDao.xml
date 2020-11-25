@@ -230,7 +230,7 @@
         from nxt_order_form
         <where>
                 and user_id = #{userId}
-            <if test="isPaid != null and isPaid == true">
+            <if test="isPaid != null">
                 <if test="isPaid">
                     and status_paid = 1
                 </if>

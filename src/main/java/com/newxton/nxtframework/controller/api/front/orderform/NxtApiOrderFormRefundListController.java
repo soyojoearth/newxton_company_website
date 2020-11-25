@@ -29,7 +29,7 @@ public class NxtApiOrderFormRefundListController {
         Long offset = jsonParam.getLong("offset");
         Long limit = jsonParam.getLong("limit");
         Boolean isDone = jsonParam.getBoolean("isDone");
-        Boolean isShipped = jsonParam.getBoolean("isShipped");
+        Boolean isShippedOrWaitShipping = jsonParam.getBoolean("isShippedOrWaitShipping");
         Boolean isApplied = jsonParam.getBoolean("isApplied");
 
         if (offset == null || limit == null){
@@ -37,7 +37,7 @@ public class NxtApiOrderFormRefundListController {
         }
 
         try {
-            List<NxtStructOrderFormRefund> nxtStructOrderFormRefundList = nxtProcessOrderFormRefund.userOrderFormRefundList(userId,offset,limit,isDone,isShipped,isApplied);
+            List<NxtStructOrderFormRefund> nxtStructOrderFormRefundList = nxtProcessOrderFormRefund.userOrderFormRefundList(userId,offset,limit,isDone,isShippedOrWaitShipping,isApplied);
             return new NxtStructApiResult(nxtStructOrderFormRefundList);
         }
         catch (NxtException e){

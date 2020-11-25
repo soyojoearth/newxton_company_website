@@ -257,7 +257,7 @@ public class NxtProcessOrderFormRefund {
      * @param isApplied
      * @return
      */
-    public List<NxtStructOrderFormRefund> userOrderFormRefundList(Long userId, Long offset, Long limit,Boolean isDone, Boolean isShipped, Boolean isApplied){
+    public List<NxtStructOrderFormRefund> userOrderFormRefundList(Long userId, Long offset, Long limit,Boolean isDone, Boolean isShippedOrWaitShipping, Boolean isApplied){
 
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -265,7 +265,7 @@ public class NxtProcessOrderFormRefund {
 
         List<NxtStructOrderFormRefund> nxtStructOrderFormRefundList = new ArrayList<>();
 
-        List<NxtOrderFormRefund> nxtOrderFormRefundList = nxtOrderFormRefundService.queryAllByUserIdAndLimit(offset,limit,userId,isDone,isShipped,isApplied);
+        List<NxtOrderFormRefund> nxtOrderFormRefundList = nxtOrderFormRefundService.queryAllByUserIdAndLimit(offset,limit,userId,isDone,isShippedOrWaitShipping,isApplied);
 
         Map<Long,NxtStructOrderFormRefund> mapIdToNxtStructOrderFormRefund = new HashMap<>();
 
@@ -425,6 +425,9 @@ public class NxtProcessOrderFormRefund {
         }
         else if (status.equals(4)){
             return "收到货有问题，请修改金额";
+        }
+        else if (status.equals(5)){
+            return "用户已经寄出物品";
         }
         else {
             return null;

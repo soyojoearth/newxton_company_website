@@ -27,7 +27,7 @@ public class NxtOrderFormRefund implements Serializable {
     
     private Long transactionId;
     /**
-    * 状态（-1:拒绝退款 0:已申请 1:完成 2:等用户发货 3:收到货退款 4:收到货有问题，请修改金额）
+    * 状态（-1:拒绝退款 0:已申请 1:完成 2:等用户发货 3:收到货退款 4:收到货有问题，请修改金额 5:用户已寄出物品）
     */
     private Integer status;
     

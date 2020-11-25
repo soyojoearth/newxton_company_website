@@ -117,28 +117,28 @@
         from nxt_order_form_refund
         <where>
             and user_id = #{userId}
-            <if test="isDone != null and isDone == true">
+            <if test="isDone != null">
                 <if test="isDone">
-                    and status = 1
+                    and (status = 1 || status = -1)
                 </if>
                 <if test="!isDone">
-                    and status &lt;&gt; 1
+                    and status &lt;&gt; 1 and status &lt;&gt; -1
                 </if>
             </if>
-            <if test="isShipped != null">
-                <if test="isShipped">
-                    and status = 5
+            <if test="isShippedOrWaitShipping != null">
+                <if test="isShippedOrWaitShipping">
+                    and (status = 5 || status = 2)
                 </if>
-                <if test="!isShipped">
-                    and status &lt;&gt; 5
+                <if test="!isShippedOrWaitShipping">
+                    and status &lt;&gt; 5 and status &lt;&gt; 2
                 </if>
             </if>
             <if test="isApplied != null">
                 <if test="isApplied">
-                    and status = 0
+                    and (status = 0 || status = 3 || status = 4)
                 </if>
                 <if test="!isApplied">
-                    and status &lt;&gt; 0
+                    and status &lt;&gt; 0 and status &lt;&gt; 3 and status &lt;&gt; 4
                 </if>
             </if>
         </where>
