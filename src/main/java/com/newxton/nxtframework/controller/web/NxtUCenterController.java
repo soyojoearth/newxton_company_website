@@ -17,7 +17,7 @@ public class NxtUCenterController {
 
     private Logger logger = LoggerFactory.getLogger(NxtUCenterController.class);
 
-    @RequestMapping("/ucenter")
+    @RequestMapping("/ucenter/")
     public ModelAndView index(Device device, ModelAndView model) {
 
         if (device.isMobile()){

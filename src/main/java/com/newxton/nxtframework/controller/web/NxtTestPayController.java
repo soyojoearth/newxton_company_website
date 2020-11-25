@@ -95,7 +95,7 @@ public class NxtTestPayController {
         nxtRecharge.setStatus(1);//状态（0:正在充值 1:成功 -1:失败）
         nxtRecharge.setPlatform(platform);//平台（0:银行 1:微信 2:支付宝 3:paypal 888:现金）
         nxtRecharge.setDateline(System.currentTimeMillis());
-        nxtRecharge.setAmount(nxtOrderForm.getAmountFinally());
+        nxtRecharge.setAmount(nxtOrderForm.getAmountFinally()+nxtOrderForm.getDeliveryCost());
         nxtRecharge.setRemark("测试自动充值");
 
         nxtRechargeService.insert(nxtRecharge);
@@ -118,7 +118,7 @@ public class NxtTestPayController {
 
         NxtTransaction nxtTransactionPay = new NxtTransaction();
         nxtTransactionPay.setUserId(nxtOrderForm.getUserId());
-        nxtTransactionPay.setAmount(-nxtOrderForm.getAmountFinally());//消费记负数
+        nxtTransactionPay.setAmount(-(nxtOrderForm.getAmountFinally()+nxtOrderForm.getDeliveryCost()));//消费记负数
         nxtTransactionPay.setDateline(System.currentTimeMillis());
         nxtTransactionPay.setType(2);//交易类型（1:充值 2:消费 3:退款 4:提现 5:撤销提现 6:佣金结算收入）
         nxtTransactionService.insert(nxtTransactionPay);
@@ -126,7 +126,7 @@ public class NxtTestPayController {
 
         NxtOrderFormPay nxtOrderFormPay = new NxtOrderFormPay();
         nxtOrderFormPay.setOrderFormId(nxtOrderForm.getId());
-        nxtOrderFormPay.setPriceDeal(nxtOrderForm.getAmountFinally());
+        nxtOrderFormPay.setPriceDeal(nxtOrderForm.getAmountFinally()+nxtOrderForm.getDeliveryCost());
         nxtOrderFormPay.setTransactionId(nxtTransactionPay.getId());
 
         nxtOrderFormPayService.insert(nxtOrderFormPay);

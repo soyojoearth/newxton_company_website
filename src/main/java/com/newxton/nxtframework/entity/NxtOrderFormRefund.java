@@ -6,28 +6,28 @@ import java.io.Serializable;
  * (NxtOrderFormRefund)实体类
  *
  * @author makejava
- * @since 2020-11-14 21:41:54
+ * @since 2020-11-25 09:39:26
  */
 public class NxtOrderFormRefund implements Serializable {
-    private static final long serialVersionUID = -25295182803915545L;
-
+    private static final long serialVersionUID = -41963705689974347L;
+    
     private Long id;
-
+    
     private Long orderFormId;
     /**
-     * 0:无理由 1:质量问题
-     */
+    * 0:无理由 1:质量问题
+    */
     private Integer reasonType;
     /**
-     * 退货原因描述
-     */
+    * 退货原因描述
+    */
     private String reasionDescription;
-
+    
     private Long transactionId;
     /**
-     * 状态（-1:拒绝退款 0:已申请 1:完成 2:等用户发货 3:收到货退款 4:收到货有问题，请修改金额）
-     */
-    private Long status;
+    * 状态（-1:拒绝退款 0:已申请 1:完成 2:等用户发货 3:收到货退款 4:收到货有问题，请修改金额）
+    */
+    private Integer status;
 
 
     public Long getId() {
@@ -70,11 +70,11 @@ public class NxtOrderFormRefund implements Serializable {
         this.transactionId = transactionId;
     }
 
-    public Long getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

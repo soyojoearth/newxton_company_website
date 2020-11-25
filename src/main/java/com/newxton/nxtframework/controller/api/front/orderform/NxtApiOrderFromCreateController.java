@@ -26,7 +26,13 @@ public class NxtApiOrderFromCreateController {
     public NxtStructApiResult exec(@RequestHeader("user_id") Long userId, @RequestBody String json) {
 
         Gson gson = new Gson();
-        NxtStructOrderFromCreate nxtStructOrderFromCreate = gson.fromJson(json, NxtStructOrderFromCreate.class);
+        NxtStructOrderFromCreate nxtStructOrderFromCreate;
+        try {
+             nxtStructOrderFromCreate = gson.fromJson(json, NxtStructOrderFromCreate.class);
+        }
+        catch (Exception e){
+            return new NxtStructApiResult(54,"json数据不对");
+        }
 
         try {
             nxtProcessOrderFormCreate.exec(nxtStructOrderFromCreate,userId);
