@@ -5,6 +5,7 @@ import com.newxton.nxtframework.entity.NxtShoppingCart;
 import com.newxton.nxtframework.entity.NxtShoppingCartProduct;
 import com.newxton.nxtframework.service.NxtShoppingCartProductService;
 import com.newxton.nxtframework.service.NxtShoppingCartService;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import com.newxton.nxtframework.struct.NxtStructShoppingCartItem;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,13 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
 /**
- * @author youjian163mail@163.com
+ * @author youjian163mail@163.com、soyojo.earth@gmail.com
  * @time 2020/11/17
  * @address Suzhou, China
  * @copyright NxtFramework
@@ -36,76 +35,60 @@ public class NxtApiShoppingCartDeleteController {
 	private NxtShoppingCartProductService nxtShoppingCartProductService;
 
 	@RequestMapping(value = "/api/shopping_cart/del_product", method = RequestMethod.POST)
-	public Map<String, Object> index(@RequestHeader(value = "user_id", required = false) Long userId,
-			@RequestBody String json) {
-		Map<String, Object> result = new HashMap<>();
+	public NxtStructApiResult index(@RequestHeader(value = "user_id", required = false) Long userId, @RequestBody String json) {
+
+		Gson gson = new Gson();
+		NxtStructShoppingCartItem shoppingCartItem;
+
+		try {
+			shoppingCartItem = gson.fromJson(json, NxtStructShoppingCartItem.class);
+		}
+		catch (Exception e){
+			return new NxtStructApiResult(53,"json格式不正确");
+		}
+
+		if (userId == null && (shoppingCartItem.getGuestToken() == null || shoppingCartItem.getGuestToken().isEmpty())) {
+			return new NxtStructApiResult(54,"缺少user_id或guestToken");
+		}
+
+		NxtShoppingCart shoppingCart;
 
 		// 检查条件user_id有值，还是guestToken有值，如果都有值以user_id为主
-		Gson gson = new Gson();
-		NxtStructShoppingCartItem shoppingCartItem = gson.fromJson(json, NxtStructShoppingCartItem.class);
-		if (userId == null
-				&& (shoppingCartItem.getGuestToken() == null || shoppingCartItem.getGuestToken().equals(""))) {
-			return this.fail(result, 100001, "user_id、guestToken没传入参数值");
-		}
-
 		if (userId != null) {
-			// 已登录用户流程
-			return this.processUserShoppingCartDelProduct(result, userId, shoppingCartItem);
+			// 已登录用户 购物车
+			shoppingCart = nxtShoppingCartService.queryByUserId(userId);
 		} else {
-			// 匿名用户流程
-			return this.processGuestShoppingCartDelProduct(result, shoppingCartItem);
+			// 匿名用户流程 购物车
+			String token = shoppingCartItem.getGuestToken();
+			shoppingCart = nxtShoppingCartService.queryByToken(token);
 		}
-	}
 
-	// 处理已登录用户 移除产品
-	private Map<String, Object> processUserShoppingCartDelProduct(Map<String, Object> result, Long userId,
-			NxtStructShoppingCartItem shoppingCartItem) {
-		// 查询购物车
-		NxtShoppingCart shoppingCart = nxtShoppingCartService.queryByUserId(userId);
-		String prefixStatusMsg = "当前登录用户user_id:" + userId + ",";
-
-		return this.processShoppingCartDelProduct(result, prefixStatusMsg, shoppingCartItem, shoppingCart);
-	}
-	
-	// 处理匿名购物车 移除产品
-	private Map<String, Object> processGuestShoppingCartDelProduct(Map<String, Object> result,
-			NxtStructShoppingCartItem shoppingCartItem) {
-		// 查询购物车
-		String token = shoppingCartItem.getGuestToken();
-		NxtShoppingCart shoppingCart = nxtShoppingCartService.queryByToken(token);
-		String prefixStatusMsg = "当前匿名用户token:" + token + ",";
-
-		return this.processShoppingCartDelProduct(result, prefixStatusMsg, shoppingCartItem, shoppingCart);
-	}
-
-	private Map<String, Object> processShoppingCartDelProduct(Map<String, Object> result, String prefixStatusMsg,
-			NxtStructShoppingCartItem shoppingCartItem, NxtShoppingCart shoppingCart) {
-		// 查询购物车
-		if (shoppingCart == null) {
-			return this.fail(result, 100010, prefixStatusMsg + "无购物车记录");
+		if (shoppingCart == null){
+			return new NxtStructApiResult(34,"没找到购物车，请检查上传参数");
 		}
+
+		Long shoppingCartItemId = shoppingCartItem.getProduct().getId();
 
 		// 购物车物品id
-		Long shoppingCartItemId = null;
-		try {
-			shoppingCartItemId = shoppingCartItem.getProduct().getId();
-			if (shoppingCartItemId == null) {
-				return this.fail(result, 100030, prefixStatusMsg + "传入购物车物品id为空");
-			}
-		} catch (Exception ex) {
-			return this.fail(result, 100020, prefixStatusMsg + "传入产品信息有误");
+		if (shoppingCartItemId == null) {
+			return new NxtStructApiResult(34,"传入购物车物品id为空");
 		}
 
 		// 查询当前用户当前购物车物品信息
 		NxtShoppingCartProduct shoppingCartProduct = nxtShoppingCartProductService.queryById(shoppingCartItemId);
-		if (shoppingCartProduct == null) {
-			return this.fail(result, 100040, prefixStatusMsg + "无此购物车物品id:" + shoppingCartItemId + "记录");
+
+		if (shoppingCartProduct == null){
+			return new NxtStructApiResult(34,"购物车里没有该物品");
+		}
+
+		if (!shoppingCartProduct.getShoppingCartId().equals(shoppingCart.getId())){
+			return new NxtStructApiResult(34,"购物车里没有该物品");
 		}
 
 		// 判读移除产品数量是否合法
 		Long quantity = shoppingCartItem.getProduct().getQuantity();
 		if (quantity == null) {
-			return this.fail(result, 100050, prefixStatusMsg + "购物车物品id:" + shoppingCartItemId + "移除数量:传入参数为空");
+			return new NxtStructApiResult(34,"缺少quantity");
 		}
 
 		// 如果大于数据库的数量则删除此记录
@@ -117,21 +100,8 @@ public class NxtApiShoppingCartDeleteController {
 			nxtShoppingCartProductService.update(shoppingCartProduct);
 		}
 
-		return this.success(result);
-	}
+		return new NxtStructApiResult();
 
-	private Map<String, Object> success(Map<String, Object> result) {
-		result.put("status", 0);
-		result.put("message", "");
-
-		return result;
-	}
-
-	private Map<String, Object> fail(Map<String, Object> result, int statusCode, String statusMsg) {
-		result.put("status", statusCode);
-		result.put("message", statusMsg);
-
-		return result;
 	}
 
 }

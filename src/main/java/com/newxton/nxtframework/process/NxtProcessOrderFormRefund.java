@@ -253,7 +253,7 @@ public class NxtProcessOrderFormRefund {
      * @param offset
      * @param limit
      * @param isDone
-     * @param isShipped
+     * @param isShippedOrWaitShipping
      * @param isApplied
      * @return
      */

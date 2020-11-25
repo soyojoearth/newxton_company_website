@@ -49,7 +49,7 @@ public class NxtStructShoppingCartProduct {
 			Collections.sort(another.getSku());
 			for (int i = 0; i < this.sku.size(); i++) {
 				NxtStructShoppingCartProductSku productSku1 = this.sku.get(i);
-				NxtStructShoppingCartProductSku productSku2 = this.sku.get(i);
+				NxtStructShoppingCartProductSku productSku2 = another.getSku().get(i);
 				if (!productSku1.equals(productSku2)){
 					return false;
 				}
