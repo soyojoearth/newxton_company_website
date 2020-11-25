@@ -26,18 +26,13 @@ import java.util.Map;
 public class NxtApiUserUploadimageController {
 
     @Resource
-    private NxtUserService nxtUserService;
-
-    @Resource
     private HttpServletRequest request;
 
     @Resource
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping(value = "/api/user/uploadimage", method = RequestMethod.POST)
-    public NxtStructApiResult index(@RequestHeader("user_id") Long userId) throws IOException {
-
-        NxtUser user = nxtUserService.queryById(userId);
+    public NxtStructApiResult index() throws IOException {
 
         ServletInputStream inputStream = request.getInputStream();
 
