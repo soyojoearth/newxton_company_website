@@ -2,7 +2,6 @@ package com.newxton.nxtframework.controller.api.front.shoppingcart;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.newxton.nxtframework.component.NxtUtilComponent;
 import com.newxton.nxtframework.entity.NxtShoppingCart;
 import com.newxton.nxtframework.entity.NxtShoppingCartProduct;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,9 +51,9 @@ public class NxtApiShoppingCartAddController {
 
 		// 检查条件user_id有值，还是guestToken有值，如果都有值以user_id为主
 		Gson gson = new Gson();
-		NxtStructShoppingCartItem shoppingCartItem;
+		NxtStructShoppingCartPOST shoppingCartPOST;
 		try {
-			shoppingCartItem = gson.fromJson(json, NxtStructShoppingCartItem.class);
+			shoppingCartPOST = gson.fromJson(json, NxtStructShoppingCartPOST.class);
 		}
 		catch (Exception e){
 			return new NxtStructApiResult(53,"json格式不正确");
@@ -76,7 +73,7 @@ public class NxtApiShoppingCartAddController {
 
 		} else {
 			// 匿名用户 购物车
-			String guestToken = shoppingCartItem.getGuestToken();
+			String guestToken = shoppingCartPOST.getGuestToken();
 			shoppingCart = nxtShoppingCartService.queryByToken(guestToken);
 			if (shoppingCart == null) {
 				NxtShoppingCart newNxtShoppingCart = new NxtShoppingCart();
@@ -88,7 +85,7 @@ public class NxtApiShoppingCartAddController {
 
 		//执行添加
 		try {
-			this.processShoppingCartAddProduct(shoppingCartItem,shoppingCart);
+			this.processShoppingCartAddProduct(shoppingCartPOST,shoppingCart);
 			Map<String,Object> data = new HashMap<>();
 			data.put("guestToken",shoppingCart.getToken());
 			return new NxtStructApiResult(data);
@@ -104,7 +101,7 @@ public class NxtApiShoppingCartAddController {
 	 * @param shoppingCart
 	 * @throws NxtException
 	 */
-	private void processShoppingCartAddProduct(NxtStructShoppingCartItem shoppingCartItem, NxtShoppingCart shoppingCart) throws NxtException {
+	private void processShoppingCartAddProduct(NxtStructShoppingCartPOST shoppingCartItem, NxtShoppingCart shoppingCart) throws NxtException {
 
 		NxtStructShoppingCartProduct nxtStructShoppingCartProduct = shoppingCartItem.getProduct();
 
@@ -131,7 +128,7 @@ public class NxtApiShoppingCartAddController {
 		newNxtShoppingCartProduct.setQuantity(shoppingCartItem.getProduct().getQuantity());
 		String skuJsonStr = JSONObject.toJSONString(shoppingCartItem.getProduct().getSku());
 		newNxtShoppingCartProduct.setSku(skuJsonStr);
-		newNxtShoppingCartProduct.setChecked(1);
+		newNxtShoppingCartProduct.setSelected(1);
 
 		nxtShoppingCartProductService.insert(newNxtShoppingCartProduct);
 

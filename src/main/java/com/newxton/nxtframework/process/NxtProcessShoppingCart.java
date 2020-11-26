@@ -62,6 +62,7 @@ public class NxtProcessShoppingCart {
             nxtStructShoppingCartProduct.setId(nxtShoppingCartProduct.getId());
             nxtStructShoppingCartProduct.setQuantity(nxtShoppingCartProduct.getQuantity());
             nxtStructShoppingCartProduct.setProductId(nxtShoppingCartProduct.getProductId());
+            nxtStructShoppingCartProduct.setSelected(nxtShoppingCartProduct.getSelected() > 0);
 
             try {
                 List<NxtStructShoppingCartProductSku> skuList = gson.fromJson(nxtShoppingCartProduct.getSku(),new TypeToken<List<NxtStructShoppingCartProductSku>>(){}.getType());

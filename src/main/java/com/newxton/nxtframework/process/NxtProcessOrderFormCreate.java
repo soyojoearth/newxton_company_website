@@ -116,7 +116,7 @@ public class NxtProcessOrderFormCreate {
         }
 
         //购物车内的已选中产品列表
-        List<NxtShoppingCartProduct> nxtShoppingCartProductList = nxtShoppingCartProductService.queryAllCheckedProductByShoppingCartId(nxtShoppingCart.getId());
+        List<NxtShoppingCartProduct> nxtShoppingCartProductList = nxtShoppingCartProductService.queryAllSelectedProductByShoppingCartId(nxtShoppingCart.getId());
 
         if (nxtShoppingCartProductList.size() == 0){
             throw new NxtException("购物车内没有选中的产品");
@@ -479,7 +479,7 @@ public class NxtProcessOrderFormCreate {
         NxtStructDeliveryConfig nxtStructDeliveryConfig = nxtProcessDeliveryConfig.getDeliveryConfigAllDetail(nxtDeliveryConfig);
 
         //购物车内的已选中产品列表
-        List<NxtShoppingCartProduct> nxtShoppingCartProductList = nxtShoppingCartProductService.queryAllCheckedProductByShoppingCartId(nxtShoppingCart.getId());
+        List<NxtShoppingCartProduct> nxtShoppingCartProductList = nxtShoppingCartProductService.queryAllSelectedProductByShoppingCartId(nxtShoppingCart.getId());
 
         Long countQuantity = 0L;
         Long countWeight = 0L;

@@ -9,7 +9,7 @@ package com.newxton.nxtframework.struct;
  * Api接口数据结构：购物车添加每个产品信息
  * 
  */
-public class NxtStructShoppingCartItem {
+public class NxtStructShoppingCartPOST {
 	private String guestToken; // 匿名用户token
     private NxtStructShoppingCartProduct product; // 加入产品
     

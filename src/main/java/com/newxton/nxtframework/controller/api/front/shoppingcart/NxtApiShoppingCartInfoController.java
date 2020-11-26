@@ -42,7 +42,7 @@ public class NxtApiShoppingCartInfoController {
             nxtShoppingCart = nxtShoppingCartService.queryByToken(guestToken);
         }
 
-        Long countChecked = 0L;
+        Long countSelected = 0L;
         Long countAll = 0L;
 
         //查询购物车
@@ -50,15 +50,15 @@ public class NxtApiShoppingCartInfoController {
             List<NxtShoppingCartProduct> nxtShoppingCartProductList = nxtShoppingCartProductService.queryAllProductByShoppingCartId(nxtShoppingCart.getId());
             for (NxtShoppingCartProduct item :
                     nxtShoppingCartProductList) {
-                if (item.getChecked() > 0){
-                    countChecked += item.getQuantity();
+                if (item.getSelected() > 0){
+                    countSelected += item.getQuantity();
                 }
                 countAll += item.getQuantity();
             }
         }
 
         Map<String,Object> data = new HashMap<>();
-        data.put("countChecked",countChecked);
+        data.put("countChecked",countSelected);
         data.put("countAll",countAll);
 
         return new NxtStructApiResult(data);

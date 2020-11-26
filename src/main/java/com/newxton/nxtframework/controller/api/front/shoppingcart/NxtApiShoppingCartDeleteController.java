@@ -6,7 +6,7 @@ import com.newxton.nxtframework.entity.NxtShoppingCartProduct;
 import com.newxton.nxtframework.service.NxtShoppingCartProductService;
 import com.newxton.nxtframework.service.NxtShoppingCartService;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
-import com.newxton.nxtframework.struct.NxtStructShoppingCartItem;
+import com.newxton.nxtframework.struct.NxtStructShoppingCartPOST;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -38,10 +38,10 @@ public class NxtApiShoppingCartDeleteController {
 	public NxtStructApiResult index(@RequestHeader(value = "user_id", required = false) Long userId, @RequestBody String json) {
 
 		Gson gson = new Gson();
-		NxtStructShoppingCartItem shoppingCartItem;
+		NxtStructShoppingCartPOST shoppingCartItem;
 
 		try {
-			shoppingCartItem = gson.fromJson(json, NxtStructShoppingCartItem.class);
+			shoppingCartItem = gson.fromJson(json, NxtStructShoppingCartPOST.class);
 		}
 		catch (Exception e){
 			return new NxtStructApiResult(53,"json格式不正确");

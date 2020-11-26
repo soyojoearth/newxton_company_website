@@ -25,6 +25,8 @@ public class NxtStructShoppingCartProduct {
 
 	private Float productPrice;
 
+	private Boolean selected = true;
+
 	/**
 	 * 比较是不是同一款产品且同样的sku
 	 * @param obj
@@ -117,4 +119,13 @@ public class NxtStructShoppingCartProduct {
 	public void setProductPrice(Float productPrice) {
 		this.productPrice = productPrice;
 	}
+
+	public Boolean getSelected() {
+		return selected;
+	}
+
+	public void setSelected(Boolean selected) {
+		this.selected = selected;
+	}
+
 }
