@@ -17,6 +17,10 @@ public class NxtStructOrderFormRefund {
      */
     private Long id;
     /**
+     * 用户id
+     */
+    private Long userId;
+    /**
      * 订单id
      */
     private Long orderFormId;
@@ -64,6 +68,14 @@ public class NxtStructOrderFormRefund {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Long getOrderFormId() {
