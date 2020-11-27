@@ -93,5 +93,14 @@ public class NxtReviewsPictureServiceImpl implements NxtReviewsPictureService {
         return this.nxtReviewsPictureDao.selectByReviewsIdSet(offset,limit,idList);
     }
 
+    /**
+     * 通过uploadFileId查询单条数据
+     *
+     * @param uploadFileId
+     * @return 实例对象
+     */
+    public NxtReviewsPicture queryByUploadFileId(@Param("uploadFileId") Long uploadFileId){
+        return this.nxtReviewsPictureDao.queryByUploadFileId(uploadFileId);
+    }
 
 }

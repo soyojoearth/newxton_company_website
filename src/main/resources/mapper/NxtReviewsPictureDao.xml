@@ -97,4 +97,13 @@
         limit #{offset}, #{limit}
     </select>
 
+    <!--根据uploadFileId查询单个-->
+    <select id="queryByUploadFileId" resultMap="NxtReviewsPictureMap">
+        select
+        id, reviews_id, uploadfile_id
+        from nxt_reviews_picture
+        where uploadfile_id = #{uploadFileId}
+        limit 1
+    </select>
+
 </mapper>

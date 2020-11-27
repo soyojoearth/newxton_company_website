@@ -85,4 +85,11 @@ public interface NxtReviewsService {
      */
     List<NxtReviews> queryUserReviewsByOrderFormId(@Param("orderFormId") Long orderFormId);
 
+    /**
+     * 查询指定订单物品的根评论
+     * @param orderFormProductId
+     * @return
+     */
+    NxtReviews queryRootReviewsByOrderFormProductId(@Param("orderFormProductId") Long orderFormProductId);
+
 }

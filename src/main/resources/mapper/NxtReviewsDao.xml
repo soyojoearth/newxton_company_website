@@ -19,7 +19,7 @@
     <select id="queryById" resultMap="BaseResultMap">
         select
           id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
-        from nxtframework.nxt_reviews
+        from nxt_reviews
         where id = #{id}
     </select>
 
@@ -27,7 +27,7 @@
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
           id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
-        from nxtframework.nxt_reviews
+        from nxt_reviews
         limit #{offset}, #{limit}
     </select>
 
@@ -35,7 +35,7 @@
     <select id="queryAll" resultMap="BaseResultMap">
         select
           id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
-        from nxtframework.nxt_reviews
+        from nxt_reviews
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -69,13 +69,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_reviews(origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id)
+        insert into nxt_reviews(origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id)
         values (#{originType}, #{userId}, #{productId}, #{orderFormId}, #{orderFormProductId}, #{dateline}, #{content}, #{parentId})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update nxtframework.nxt_reviews
+        update nxt_reviews
         <set>
             <if test="originType != null">
                 origin_type = #{originType},
@@ -107,7 +107,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxtframework.nxt_reviews where id = #{id}
+        delete from nxt_reviews where id = #{id}
     </delete>
 
     <!--查询指定产品的所有用户评论列表(不含回复)-按时间倒序-->
@@ -148,6 +148,15 @@
         from nxt_reviews
         where order_form_id = #{orderFormId} and origin_type = 0 and parent_id = 0
         order by dateline desc
+    </select>
+
+    <!--查询指定订单物品的根评论-->
+    <select id="queryRootReviewsByOrderFormProductId" resultMap="BaseResultMap">
+        select
+          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
+        from nxt_reviews
+        where order_form_product_id = #{orderFormProductId} and origin_type = 0 and parent_id = 0
+        order by id limit 1
     </select>
 
 </mapper>

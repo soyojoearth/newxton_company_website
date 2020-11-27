@@ -88,5 +88,12 @@ public interface NxtReviewsPictureDao {
      */
     List<NxtReviewsPicture> selectByReviewsIdSet(@Param("offset") int offset, @Param("limit") int limit, @Param("idList") List<Long> idList);
 
+    /**
+     * 通过uploadFileId查询单条数据
+     *
+     * @param uploadFileId
+     * @return 实例对象
+     */
+    NxtReviewsPicture queryByUploadFileId(@Param("uploadFileId") Long uploadFileId);
 
 }

@@ -1,18 +1,12 @@
 package com.newxton.nxtframework.process;
 
 import com.newxton.nxtframework.component.NxtUploadImageComponent;
-import com.newxton.nxtframework.entity.NxtReviews;
-import com.newxton.nxtframework.entity.NxtReviewsPicture;
-import com.newxton.nxtframework.entity.NxtUploadfile;
-import com.newxton.nxtframework.entity.NxtUser;
-import com.newxton.nxtframework.service.NxtReviewsPictureService;
-import com.newxton.nxtframework.service.NxtReviewsService;
-import com.newxton.nxtframework.service.NxtUploadfileService;
-import com.newxton.nxtframework.service.NxtUserService;
-import com.newxton.nxtframework.struct.NxtStructOrderForm;
-import com.newxton.nxtframework.struct.NxtStructOrderFormProduct;
-import com.newxton.nxtframework.struct.NxtStructProductReviewsItem;
+import com.newxton.nxtframework.entity.*;
+import com.newxton.nxtframework.exception.NxtException;
+import com.newxton.nxtframework.service.*;
+import com.newxton.nxtframework.struct.*;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -40,6 +34,12 @@ public class NxtProcessReviews {
 
     @Resource
     private NxtUploadImageComponent nxtUploadImageComponent;
+
+    @Resource
+    private NxtOrderFormService nxtOrderFormService;
+
+    @Resource
+    private NxtOrderFormProductService nxtOrderFormProductService;
 
     /**
      * 获取某个产品的评论列表详情，包含该评论的回复
@@ -324,6 +324,104 @@ public class NxtProcessReviews {
             //附加图片
             if (mapReviewsIdToPicList.containsKey(structItem.getId())){
                 structItem.setPicUrlList(mapReviewsIdToPicList.get(structItem.getId()));
+            }
+        }
+
+    }
+
+    /**
+     * 用户创建订单评论
+     * @param userId
+     */
+    @Transactional
+    public void create(Long userId, NxtStructOrderFormReivewsCreate nxtStructOrderFormReivewsCreate){
+
+        Long orderFormId = nxtStructOrderFormReivewsCreate.getOrderFormId();
+        Long orderFormProductId = nxtStructOrderFormReivewsCreate.getOrderFormProductId();
+        String content = nxtStructOrderFormReivewsCreate.getContent();
+
+        if (orderFormId == null){
+            throw new NxtException("请提供订单号");
+        }
+        if (orderFormProductId == null){
+            throw new NxtException("请提供订单物品号");
+        }
+        if (content == null || content.isEmpty()){
+            throw new NxtException("请填写内容");
+        }
+
+        NxtOrderForm nxtOrderForm = nxtOrderFormService.queryById(orderFormId);
+
+        if (nxtOrderForm == null){
+            throw new NxtException("找不到该订单");
+        }
+        if (!nxtOrderForm.getUserId().equals(userId)){
+            throw new NxtException("该订单不属于该用户");
+        }
+
+        NxtOrderFormProduct nxtOrderFormProduct = nxtOrderFormProductService.queryById(orderFormProductId);
+
+        if (nxtOrderFormProduct == null){
+            throw new NxtException("找不到该订单物品");
+        }
+        if (!nxtOrderFormProduct.getOrderFormId().equals(nxtOrderForm.getId())){
+            throw new NxtException("该订单物品不属于该订单");
+        }
+
+        //查询有没有根评论
+        NxtReviews rootReviews = nxtReviewsService.queryRootReviewsByOrderFormProductId(orderFormProductId);
+
+        if (rootReviews != null) {
+            Integer countUserReply = 0;//用户追评数量
+            //查询所有回复
+            List<Long> rootReviewsIdList = new ArrayList<>();
+            rootReviewsIdList.add(rootReviews.getId());
+            List<NxtReviews> userReplayReviews = nxtReviewsService.queryReviewsReplyByIdList(rootReviewsIdList);
+            for (NxtReviews item :
+                    userReplayReviews) {
+                if (item.getOriginType().equals(0) && item.getParentId().equals(rootReviews.getId())) {
+                    countUserReply++;
+                }
+            }
+            if (countUserReply > 0){
+                throw new NxtException("该订单物品已经追评过一次，不能再评");
+            }
+        }
+
+        NxtReviews nxtReviews = new NxtReviews();
+        nxtReviews.setOriginType(0);//0:用户评 1:管理员回复
+        nxtReviews.setUserId(userId);
+        nxtReviews.setProductId(nxtOrderFormProduct.getProductId());
+        nxtReviews.setOrderFormId(orderFormId);
+        nxtReviews.setOrderFormProductId(orderFormProductId);
+        nxtReviews.setDateline(System.currentTimeMillis());
+        nxtReviews.setContent(content);
+        nxtReviews.setParentId(0L);
+
+        if (rootReviews != null){
+            nxtReviews.setParentId(rootReviews.getId());
+        }
+
+        nxtReviewsService.insert(nxtReviews);
+
+        //图片id关联
+        List<Long> imageIdList = nxtStructOrderFormReivewsCreate.getImageIdList();
+        if (imageIdList != null) {
+            for (Long uploadFileId : imageIdList) {
+                NxtReviewsPicture nxtReviewsPicture = nxtReviewsPictureService.queryByUploadFileId(uploadFileId);
+                if (nxtReviewsPicture != null){
+                    throw new NxtException("其中一张图片已经被评论用过");
+                }
+                NxtUploadfile nxtUploadfile = nxtUploadfileService.queryById(uploadFileId);
+                if (nxtUploadfile == null){
+                    throw new NxtException("其中一张图片id无效");
+                }
+            }
+            for (Long uploadFileId : imageIdList) {
+                NxtReviewsPicture nxtReviewsPicture = new NxtReviewsPicture();
+                nxtReviewsPicture.setReviewsId(nxtReviews.getId());
+                nxtReviewsPicture.setUploadfileId(uploadFileId);
+                nxtReviewsPictureService.insert(nxtReviewsPicture);
             }
         }
 

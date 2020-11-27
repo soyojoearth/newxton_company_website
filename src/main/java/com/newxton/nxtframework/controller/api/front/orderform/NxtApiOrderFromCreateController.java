@@ -35,13 +35,12 @@ public class NxtApiOrderFromCreateController {
         }
 
         try {
-            nxtProcessOrderFormCreate.exec(nxtStructOrderFromCreate,userId);
+            Long orderFormId = nxtProcessOrderFormCreate.exec(nxtStructOrderFromCreate,userId);
+            return new NxtStructApiResult(orderFormId);
         }
         catch (NxtException e){
             return new NxtStructApiResult(54,e.getNxtExecptionMessage());
         }
-
-        return new NxtStructApiResult();
 
     }
 

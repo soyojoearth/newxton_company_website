@@ -68,7 +68,7 @@ public class NxtProcessOrderFormCreate {
     private NxtProcessDeliveryConfig nxtProcessDeliveryConfig;
 
     @Transactional
-    public void exec(NxtStructOrderFromCreate nxtStructOrderFromCreate, Long userId) throws NxtException{
+    public Long exec(NxtStructOrderFromCreate nxtStructOrderFromCreate, Long userId) throws NxtException{
 
         if (nxtStructOrderFromCreate.deliveryCountry == null){
             throw new NxtException("缺少国家");
@@ -400,6 +400,7 @@ public class NxtProcessOrderFormCreate {
 //            nxtShoppingCartProductService.deleteById(nxtShoppingCartProduct.getId());
 //        }
 
+        return nxtOrderForm.getId();
     }
 
     /**

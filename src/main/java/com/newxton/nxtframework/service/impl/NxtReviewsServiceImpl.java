@@ -121,4 +121,13 @@ public class NxtReviewsServiceImpl implements NxtReviewsService {
         return this.nxtReviewsDao.queryUserReviewsByOrderFormId(orderFormId);
     }
 
+    /**
+     * 查询指定订单物品的根评论
+     * @param orderFormProductId
+     * @return
+     */
+    public NxtReviews queryRootReviewsByOrderFormProductId(@Param("orderFormProductId") Long orderFormProductId){
+        return this.nxtReviewsDao.queryRootReviewsByOrderFormProductId(orderFormProductId);
+    }
+
 }
