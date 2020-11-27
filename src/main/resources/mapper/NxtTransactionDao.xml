@@ -109,11 +109,21 @@
 
 
     <!--查询单个用户的余额-->
-    <select id="queryBalanceCountByUserId" resultType="Long">
+    <select id="queryBalanceSumByUserId" resultType="Long">
         select
           sum(amount)
         from nxt_transaction
         where user_id = #{userId}
+    </select>
+
+    <!--查询用户余额变动明细-->
+    <select id="queryAllByUserIdLimit" resultMap="NxtTransactionMap">
+        select
+          id, user_id, amount, dateline, type, outer_id
+        from nxt_transaction
+        where user_id = #{userId}
+        order by id desc
+        limit #{offset}, #{limit}
     </select>
 
 </mapper>
