@@ -19,12 +19,12 @@ import java.util.Map;
  * @address Shenzhen, China
  */
 @RestController
-public class NxtApiUserCommissionBalanceController {
+public class NxtApiUserCommissionBalanceDetailController {
 
     @Resource
     private NxtCommissionService nxtCommissionService;
 
-    @RequestMapping(value = "/api/user/commission/balance", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/user/commission/balance_detail", method = RequestMethod.POST)
     public NxtStructApiResult exec(@RequestHeader(value = "user_id", required = true) Long userId) {
 
 
