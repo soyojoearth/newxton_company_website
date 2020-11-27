@@ -141,4 +141,13 @@
         order by dateline asc
     </select>
 
+    <!--查询指定订单的所有评论列表(不含回复)-按时间倒序-->
+    <select id="queryUserReviewsByOrderFormId" resultMap="BaseResultMap">
+        select
+          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
+        from nxt_reviews
+        where order_form_id = #{orderFormId} and origin_type = 0 and parent_id = 0
+        order by dateline desc
+    </select>
+
 </mapper>

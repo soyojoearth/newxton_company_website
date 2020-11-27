@@ -112,5 +112,13 @@ public class NxtReviewsServiceImpl implements NxtReviewsService {
         return this.nxtReviewsDao.queryReviewsReplyByIdList(idList);
     }
 
+    /**
+     * 查询指定订单的所有评论列表(不含回复)-按时间倒序
+     * @param orderFormId
+     * @return
+     */
+    public List<NxtReviews> queryUserReviewsByOrderFormId(@Param("orderFormId") Long orderFormId){
+        return this.nxtReviewsDao.queryUserReviewsByOrderFormId(orderFormId);
+    }
 
 }

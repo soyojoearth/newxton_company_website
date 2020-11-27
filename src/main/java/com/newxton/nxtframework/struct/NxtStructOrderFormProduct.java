@@ -67,6 +67,11 @@ public class NxtStructOrderFormProduct {
      */
     private Long quantityRefund;
 
+    /**
+     * 评论（在订单查看功能中，这里可忽略，只是在查看订单评论时，这里才需要赋值）
+     */
+    private NxtStructProductReviewsItem reviewsItem = null;
+
     public Long getId() {
         return id;
     }
@@ -185,6 +190,14 @@ public class NxtStructOrderFormProduct {
 
     public void setQuantityRefund(Long quantityRefund) {
         this.quantityRefund = quantityRefund;
+    }
+
+    public NxtStructProductReviewsItem getReviewsItem() {
+        return reviewsItem;
+    }
+
+    public void setReviewsItem(NxtStructProductReviewsItem reviewsItem) {
+        this.reviewsItem = reviewsItem;
     }
 
 }

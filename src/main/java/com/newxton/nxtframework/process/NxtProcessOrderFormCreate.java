@@ -224,11 +224,16 @@ public class NxtProcessOrderFormCreate {
                     //查询sku对应的产品价格、折扣
                     if (nxtShoppingCartProduct.getSku() != null){
                         NxtProductSkuValuePriceEtc skuValuePriceEtc = this.querySkuValuePriceEtc(nxtShoppingCartProduct);
-                        nxtOrderFormProduct.setProductPrice(skuValuePriceEtc.getSkuValuePrice());
-                        nxtOrderFormProduct.setProductPriceDiscount(skuValuePriceEtc.getSkuValuePriceDiscount());
+                        if (skuValuePriceEtc != null) {
+                            nxtOrderFormProduct.setProductPrice(skuValuePriceEtc.getSkuValuePrice());
+                            nxtOrderFormProduct.setProductPriceDiscount(skuValuePriceEtc.getSkuValuePriceDiscount());
+                        }
+                        else {
+                            throw new NxtException("购物车物品sku与当前产品最新的sku不一致，请移除购物车物品后重新添加");
+                        }
                     }
                     else {
-                        throw new NxtException("购物车的产品缺少sku信息");
+                        throw new NxtException("购物车的物品缺少sku信息");
                     }
                     nxtOrderFormProduct.setProductSku(nxtShoppingCartProduct.getSku());//json
                 }
@@ -402,7 +407,7 @@ public class NxtProcessOrderFormCreate {
      * @param nxtShoppingCartProduct
      * @return
      */
-    private NxtProductSkuValuePriceEtc querySkuValuePriceEtc(NxtShoppingCartProduct nxtShoppingCartProduct) throws NxtException{
+    private NxtProductSkuValuePriceEtc querySkuValuePriceEtc(NxtShoppingCartProduct nxtShoppingCartProduct) {
 
         Long skuValueId1 = null;//第1个sku值id
         Long skuValueId2 = null;//第2个sku值id
@@ -452,6 +457,11 @@ public class NxtProcessOrderFormCreate {
             nxtProductSkuValuePriceEtcCondition.setSkuValueId1(skuValueId1);
             nxtProductSkuValuePriceEtcCondition.setSkuValueId2(skuValueId2);
             List<NxtProductSkuValuePriceEtc> nxtProductSkuValuePriceEtcList =nxtProductSkuValuePriceEtcService.queryAll(nxtProductSkuValuePriceEtcCondition);
+            if (nxtProductSkuValuePriceEtcList.size() == 0) {
+                nxtProductSkuValuePriceEtcCondition.setSkuValueId1(skuValueId2);
+                nxtProductSkuValuePriceEtcCondition.setSkuValueId2(skuValueId1);
+                nxtProductSkuValuePriceEtcList = nxtProductSkuValuePriceEtcService.queryAll(nxtProductSkuValuePriceEtcCondition);
+            }
             //第一条就是了
             if (nxtProductSkuValuePriceEtcList.size() > 0){
                 NxtProductSkuValuePriceEtc nxtProductSkuValuePriceEtc = nxtProductSkuValuePriceEtcList.get(0);
@@ -459,7 +469,7 @@ public class NxtProcessOrderFormCreate {
             }
         }
 
-        throw new NxtException("购物车的产品sku信息查询核对出错");
+        return null;
 
     }
 
