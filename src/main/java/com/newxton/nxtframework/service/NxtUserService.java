@@ -14,6 +14,22 @@ import java.util.List;
 public interface NxtUserService {
 
     /**
+     * 通过email查询
+     *
+     * @param email 用户名
+     * @return 实例对象
+     */
+    NxtUser queryByEmail(String email);
+
+    /**
+     * 通过phone查询
+     *
+     * @param phone 用户名
+     * @return 实例对象
+     */
+    NxtUser queryByPhone(String phone);
+
+    /**
      * 通过username查询
      *
      * @param username 用户名

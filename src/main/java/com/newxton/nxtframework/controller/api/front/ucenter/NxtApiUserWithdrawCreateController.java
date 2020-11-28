@@ -2,13 +2,11 @@ package com.newxton.nxtframework.controller.api.front.ucenter;
 
 import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.entity.NxtUser;
-import com.newxton.nxtframework.entity.NxtUserVerifiy;
-import com.newxton.nxtframework.entity.NxtWithdraw;
+import com.newxton.nxtframework.entity.NxtUserVerify;
 import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.process.NxtProcessWithdraw;
 import com.newxton.nxtframework.service.NxtUserService;
-import com.newxton.nxtframework.service.NxtUserVerifiyService;
-import com.newxton.nxtframework.service.NxtWithdrawService;
+import com.newxton.nxtframework.service.NxtUserVerifyService;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +21,7 @@ import javax.annotation.Resource;
 public class NxtApiUserWithdrawCreateController {
 
     @Resource
-    private NxtUserVerifiyService nxtUserVerifiyService;
+    private NxtUserVerifyService nxtUserVerifyService;
 
     @Resource
     private NxtUserService nxtUserService;
@@ -35,8 +33,8 @@ public class NxtApiUserWithdrawCreateController {
     public NxtStructApiResult index(@RequestHeader("user_id") Long userId, @RequestBody JSONObject jsonParam) {
 
         Float amount = jsonParam.getFloat("amount");
-        Long verifiyCode = jsonParam.getLong("verifiyCode");
-        Integer verifiyCodeType = jsonParam.getInteger("verifiyCodeType");
+        Long verifyCode = jsonParam.getLong("verifyCode");
+        Integer verifyCodeType = jsonParam.getInteger("verifyCodeType");
 
         String platform = jsonParam.getString("platform");
         String platformAccount = jsonParam.getString("platformAccount");
@@ -45,10 +43,10 @@ public class NxtApiUserWithdrawCreateController {
         if (amount == null){
             return new NxtStructApiResult(54,"请提供金额");
         }
-        if (verifiyCode == null){
+        if (verifyCode == null){
             return new NxtStructApiResult(54,"请提供验证码");
         }
-        if (verifiyCodeType == null){
+        if (verifyCodeType == null){
             return new NxtStructApiResult(54,"请选择验证类型：手机、邮箱");
         }
         if (platformAccount == null || platformAccount.isEmpty()){
@@ -63,14 +61,14 @@ public class NxtApiUserWithdrawCreateController {
 
         String phoneOrEmail = null;
 
-        if (verifiyCodeType.equals(1)){
+        if (verifyCodeType.equals(1)){
             //邮箱
             if (user.getEmail() == null || user.getEmail().isEmpty()){
                 return new NxtStructApiResult(54,"尚未绑定邮箱，请先绑定邮箱");
             }
             phoneOrEmail = user.getEmail();
         }
-        else if (verifiyCodeType.equals(2)){
+        else if (verifyCodeType.equals(2)){
             //手机
             if (user.getPhone() == null || user.getPhone().isEmpty()){
                 return new NxtStructApiResult(54,"尚未绑定手机，请先绑定手机");
@@ -82,23 +80,23 @@ public class NxtApiUserWithdrawCreateController {
         }
 
         //查询验证码
-        NxtUserVerifiy nxtUserVerifiy = nxtUserVerifiyService.queryLastByPhoneOrEmail(phoneOrEmail);
-        if (nxtUserVerifiy == null){
+        NxtUserVerify nxtUserVerify = nxtUserVerifyService.queryLastByPhoneOrEmail(phoneOrEmail);
+        if (nxtUserVerify == null){
             return new NxtStructApiResult(54,"没有发送验证码的记录");
         }
 
         //验证
         if (!(
-                nxtUserVerifiy.getStatus().equals(0) && nxtUserVerifiy.getType().equals(3) &&
-                nxtUserVerifiy.getDateline() + 1800000 > System.currentTimeMillis() &&
-                nxtUserVerifiy.getCode().equals(verifiyCode)
+                nxtUserVerify.getStatus().equals(0) && nxtUserVerify.getType().equals(3) &&
+                nxtUserVerify.getDateline() + 1800000 > System.currentTimeMillis() &&
+                nxtUserVerify.getCode().equals(verifyCode)
         )){
             //验证不通过
             return new NxtStructApiResult(34,"验证码无效");
         }
 
-        nxtUserVerifiy.setStatus(1);
-        nxtUserVerifiyService.update(nxtUserVerifiy);
+        nxtUserVerify.setStatus(1);
+        nxtUserVerifyService.update(nxtUserVerify);
 
         //创建提现申请
         try {

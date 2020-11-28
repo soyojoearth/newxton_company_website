@@ -22,6 +22,26 @@ public class NxtUserServiceImpl implements NxtUserService {
     private NxtUserDao nxtUserDao;
 
     /**
+     * 通过email查询
+     *
+     * @param email 用户名
+     * @return 实例对象
+     */
+    public NxtUser queryByEmail(String email){
+        return this.nxtUserDao.queryByEmail(email);
+    }
+
+    /**
+     * 通过phone查询
+     *
+     * @param phone 用户名
+     * @return 实例对象
+     */
+    public NxtUser queryByPhone(String phone){
+        return this.nxtUserDao.queryByPhone(phone);
+    }
+
+    /**
      * 通过username查询单条数据
      *
      * @param username 用户名

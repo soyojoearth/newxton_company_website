@@ -3,12 +3,12 @@ package com.newxton.nxtframework.entity;
 import java.io.Serializable;
 
 /**
- * (NxtUserVerifiy)实体类
+ * (NxtUserVerify)实体类
  *
  * @author makejava
  * @since 2020-11-28 11:29:47
  */
-public class NxtUserVerifiy implements Serializable {
+public class NxtUserVerify implements Serializable {
     private static final long serialVersionUID = -73590992075675281L;
     
     private Long id;

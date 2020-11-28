@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.newxton.nxtframework.dao.NxtUserVerifiyDao">
+<mapper namespace="com.newxton.nxtframework.dao.NxtUserVerifyDao">
 
-    <resultMap id="BaseResultMap" type="com.newxton.nxtframework.entity.NxtUserVerifiy">
-        <!--@Table nxt_user_verifiy-->
+    <resultMap id="BaseResultMap" type="com.newxton.nxtframework.entity.NxtUserVerify">
+        <!--@Table nxt_user_verify-->
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="type" column="type" jdbcType="INTEGER"/>
         <result property="phoneOrEmail" column="phone_or_email" jdbcType="VARCHAR"/>
@@ -16,7 +16,7 @@
     <select id="queryById" resultMap="BaseResultMap">
         select
           id, type, phone_or_email, code, dateline, status
-        from nxt_user_verifiy
+        from nxt_user_verify
         where id = #{id}
     </select>
 
@@ -24,7 +24,7 @@
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
           id, type, phone_or_email, code, dateline, status
-        from nxt_user_verifiy
+        from nxt_user_verify
         limit #{offset}, #{limit}
     </select>
 
@@ -32,7 +32,7 @@
     <select id="queryAll" resultMap="BaseResultMap">
         select
           id, type, phone_or_email, code, dateline, status
-        from nxt_user_verifiy
+        from nxt_user_verify
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -57,13 +57,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_user_verifiy(type, phone_or_email, code, dateline, status)
+        insert into nxt_user_verify(type, phone_or_email, code, dateline, status)
         values (#{type}, #{phoneOrEmail}, #{code}, #{dateline}, #{status})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update nxt_user_verifiy
+        update nxt_user_verify
         <set>
             <if test="type != null">
                 type = #{type},
@@ -86,14 +86,14 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_user_verifiy where id = #{id}
+        delete from nxt_user_verify where id = #{id}
     </delete>
 
     <!--根据phoneOrEmail查询最近的那个验证码-->
     <select id="queryLastByPhoneOrEmail" resultMap="BaseResultMap">
         select
           id, type, phone_or_email, code, dateline, status
-        from nxt_user_verifiy
+        from nxt_user_verify
         where phone_or_email = #{phoneOrEmail}
         order by id desc limit 1
     </select>
