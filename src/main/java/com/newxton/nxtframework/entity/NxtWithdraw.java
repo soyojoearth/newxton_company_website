@@ -19,15 +19,11 @@ public class NxtWithdraw implements Serializable {
 
     private Long transactionId;
     /**
-     * 状态（0:已申请 1:已批准 2:已拒绝&退还 3:已汇款）
+     * 状态（0:已申请 1:已批准 2:已拒绝 3:已汇款）
      */
     private Integer status;
     /**
-     * 提现类型（1:提现 -1:拒绝后撤销提现）
-     */
-    private Integer type;
-    /**
-     * 正数：提现 负数：撤销提现
+     * 正数：提现
      */
     private Long amount;
 
@@ -90,14 +86,6 @@ public class NxtWithdraw implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
     }
 
     public Long getAmount() {

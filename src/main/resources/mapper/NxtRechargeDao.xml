@@ -124,4 +124,12 @@
         delete from nxt_recharge where id = #{id}
     </delete>
 
+    <!--查询某用户充值成功的总额-->
+    <select id="queryTotalRechargeSuccessByUserId" resultType="Long">
+        select
+            sum(amount)
+        from nxt_recharge
+        where user_id = #{userId} and status = 1
+    </select>
+
 </mapper>

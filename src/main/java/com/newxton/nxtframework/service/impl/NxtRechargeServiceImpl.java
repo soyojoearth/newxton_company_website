@@ -3,6 +3,7 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.entity.NxtRecharge;
 import com.newxton.nxtframework.dao.NxtRechargeDao;
 import com.newxton.nxtframework.service.NxtRechargeService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -76,4 +77,14 @@ public class NxtRechargeServiceImpl implements NxtRechargeService {
     public boolean deleteById(Long id) {
         return this.nxtRechargeDao.deleteById(id) > 0;
     }
+
+    /**
+     * 查询某用户充值成功的总额
+     * @param userId
+     * @return
+     */
+    public Long queryTotalRechargeSuccessByUserId(@Param("userId") Long userId){
+        return this.nxtRechargeDao.queryTotalRechargeSuccessByUserId(userId);
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtRecharge;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -51,5 +53,12 @@ public interface NxtRechargeService {
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    /**
+     * 查询某用户充值成功的总额
+     * @param userId
+     * @return
+     */
+    Long queryTotalRechargeSuccessByUserId(@Param("userId") Long userId);
 
 }

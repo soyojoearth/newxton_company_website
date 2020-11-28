@@ -62,4 +62,11 @@ public interface NxtRechargeDao {
      */
     int deleteById(Long id);
 
+    /**
+     * 查询某用户充值成功的总额
+     * @param userId
+     * @return
+     */
+    Long queryTotalRechargeSuccessByUserId(@Param("userId") Long userId);
+
 }
