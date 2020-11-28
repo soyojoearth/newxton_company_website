@@ -3,15 +3,19 @@ package com.newxton.nxtframework.process;
 import com.newxton.nxtframework.entity.NxtUserVerify;
 import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.service.NxtUserVerifyService;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author soyojo.earth@gmail.com
  * @time 2020/11/28
  * @address Shenzhen, China
  */
+@Component
 public class NxtProcessVerifyCode {
 
     @Resource
@@ -26,11 +30,34 @@ public class NxtProcessVerifyCode {
     public Long createAndSendPhoneOrEmailVerifyCode(String phoneOrEmail,Integer type) throws NxtException {
 
         //检查格式
-
+        if (phoneOrEmail.contains("@")){
+            //检查email格式
+            String regEmail = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";//邮箱校验
+            Pattern pattern = Pattern.compile(regEmail);
+            Matcher matcher = pattern.matcher(phoneOrEmail);
+            if (!matcher.matches()) {
+                throw new NxtException("请输入正确的邮箱");
+            }
+        }
+        else {
+            //检查手机格式
+            String regPhone = "^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\\d{8}$";//手机号校验
+            Pattern pattern = Pattern.compile(regPhone);
+            Matcher matcher = pattern.matcher(phoneOrEmail);
+            if (!matcher.matches()) {
+                throw new NxtException("请输入正确的手机号");
+            }
+        }
 
         //判断频率限制
-
-        //撤销前面的验证码
+        NxtUserVerify nxtUserVerifyLast = nxtUserVerifyService.queryLastByPhoneOrEmail(phoneOrEmail);
+        if (nxtUserVerifyLast != null){
+            if (nxtUserVerifyLast.getStatus().equals(0)){
+                if (nxtUserVerifyLast.getDateline() + 60000L > System.currentTimeMillis()){
+                    throw new NxtException("1分钟内只能发送一次，请稍后再发");
+                }
+            }
+        }
 
         //新手机号验证码
         Long code = this.randomCode();

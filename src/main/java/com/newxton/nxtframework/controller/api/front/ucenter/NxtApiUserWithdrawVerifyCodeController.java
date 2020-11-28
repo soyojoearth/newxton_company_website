@@ -47,10 +47,13 @@ public class NxtApiUserWithdrawVerifyCodeController {
                 code = nxtProcessVerifyCode.createAndSendPhoneOrEmailVerifyCode(user.getEmail(), 3);
             }
             else if (verifyCodeType.equals(2)){//手机
-                if (user.getEmail() == null || user.getEmail().isEmpty()){
+                if (user.getPhone() == null || user.getPhone().isEmpty()){
                     return new NxtStructApiResult(54,"尚未绑定手机");
                 }
                 code = nxtProcessVerifyCode.createAndSendPhoneOrEmailVerifyCode(user.getPhone(), 3);
+            }
+            else {
+                return new NxtStructApiResult(54,"请选择正确的验证方式");
             }
 
             return new NxtStructApiResult("开发调试阶段直接告诉你验证码：code:"+code.toString());

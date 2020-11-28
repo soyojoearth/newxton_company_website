@@ -42,9 +42,10 @@ public class NxtApiUserEmailUpdateController {
         //查询用户
         NxtUser user = nxtUserService.queryById(userId);
 
+        NxtUserVerify nxtUserVerifyPrevEmail = null;
         if (user.getEmail() != null && !user.getEmail().isEmpty()){
             //旧邮箱验证码
-            NxtUserVerify nxtUserVerifyPrevEmail = nxtUserVerifyService.queryLastByPhoneOrEmail(user.getEmail());
+            nxtUserVerifyPrevEmail = nxtUserVerifyService.queryLastByPhoneOrEmail(user.getEmail());
             if (nxtUserVerifyPrevEmail == null){
                 return new NxtStructApiResult(54,"没有发送原绑定邮箱验证码");
             }
@@ -82,6 +83,13 @@ public class NxtApiUserEmailUpdateController {
         user.setEmail(email);
         nxtUserService.update(user);
 
+        //验证码标记已使用
+        if (nxtUserVerifyPrevEmail != null){
+            nxtUserVerifyPrevEmail.setStatus(1);
+            nxtUserVerifyService.update(nxtUserVerifyPrevEmail);
+        }
+        nxtUserVerify.setStatus(1);
+        nxtUserVerifyService.update(nxtUserVerify);
 
         return new NxtStructApiResult();
 

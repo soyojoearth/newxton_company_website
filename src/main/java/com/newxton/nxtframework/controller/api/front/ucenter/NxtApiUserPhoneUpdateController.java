@@ -42,9 +42,10 @@ public class NxtApiUserPhoneUpdateController {
         //查询用户
         NxtUser user = nxtUserService.queryById(userId);
 
+        NxtUserVerify nxtUserVerifyPrevPhone = null;
         if (user.getPhone() != null && !user.getPhone().isEmpty()){
             //旧手机号验证码
-            NxtUserVerify nxtUserVerifyPrevPhone = nxtUserVerifyService.queryLastByPhoneOrEmail(user.getPhone());
+            nxtUserVerifyPrevPhone = nxtUserVerifyService.queryLastByPhoneOrEmail(user.getPhone());
             if (nxtUserVerifyPrevPhone == null){
                 return new NxtStructApiResult(54,"没有发送原绑定手机号验证码");
             }
@@ -81,6 +82,14 @@ public class NxtApiUserPhoneUpdateController {
         //验证完成，修改手机号
         user.setPhone(phone);
         nxtUserService.update(user);
+
+        //验证码标记已使用
+        if (nxtUserVerifyPrevPhone != null){
+            nxtUserVerifyPrevPhone.setStatus(1);
+            nxtUserVerifyService.update(nxtUserVerifyPrevPhone);
+        }
+        nxtUserVerify.setStatus(1);
+        nxtUserVerifyService.update(nxtUserVerify);
 
         return new NxtStructApiResult();
 
