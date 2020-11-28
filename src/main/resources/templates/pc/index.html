@@ -6,44 +6,12 @@
     <title>Title</title>
     <link rel="stylesheet" type="text/css" th:href="@{/pc/css/main.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/pc/css/index.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/header.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/pc/css/content.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/footer.css}">
     <script  th:src="@{/pc/js/jquery-1.8.2.min.js}" ></script>
-    <script  th:src="@{/pc/js/header.js}" ></script>
     <script  th:src="@{/pc/js/content.js}" ></script>
 </head>
 <body>
-    <div id="header">
-        <div class="nav-l">
-            <ul class="nav-rec">
-                <li class="nav-logo"><a href=""><img th:src="@{/pc/img/logo.jpg}" alt=""></a></li>
-                <li class="nav-title"><a href="">首页</a></li>
-                <li class="nav-title"><a href="">产品</a></li>
-                <li class="nav-title"><a href="">资讯</a></li>
-                <li class="nav-bar nav-title">
-                    <div>
-                        <a href="">关于</a>
-                        <img th:src="@{/pc/img/icon-down.jpg}" alt="">
-                        <div class="nav-bar-bd"></div>
-                    </div>
-                    <div class="nav-about">
-                        <a href="#" class="nav-about-d">关于我们</a>
-                        <a href="#" class="nav-about-d">联系我们</a>
-                        <a href="#" class="nav-about-d">购买指南</a>
-                        <a href="#" class="nav-about-d">条款声明</a>
-                        <a href="#" class="nav-about-d">隐私政策</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="nav-r">
-            <ul class="nav-user-opt">
-                <li class="nav-user-buy"><img th:src="@{/pc/img/icon-buycart.jpg}" alt=""></li>
-                <li class="nav-user-lr"><a href="">登录/注册</a></li>
-            </ul>
-        </div>
-    </div>
+    <div th:replace="pc/common/header :: header"></div>
     <div id="content">
         <div class="slider-banner">
             <div class="slider-banner-pic">
@@ -52,15 +20,23 @@
                 </a>
             </div>
             <div class="slider-banner-dot">
-                <a th:each="b ,bStat: ${bannerList}" href="#"   class="dot-item"></a>
+                <a th:each="b ,bStat: ${bannerList}" href="javascript:void(0)"   class="dot-item"></a>
             </div>
         </div>
         <div class="special-goods">
             <ul class="goods-item" th:each="p : ${productListNew}">
-                <li class="goods-item-title" th:text="${p.productName}"></li>
-                <li class="goods-item-desc"  th:text="${p.productSubtitle}">省时/省力/省电/省人</li>
-                <li><a href="#" class="goods-item-view">查看详情</a></li>
-                <li><img th:src="${p.picUrl + '?imageView2/1/w/100/h/100/q/75'}" alt="" class="goods-item-pic"></li>
+                <li class="goods-item-title">
+                    <a th:href="${'/product/detail?productId=' + p.id}" th:text="${p.productName}"></a>
+                </li>
+                <li class="goods-item-desc">
+                    <a th:href="${'/product/detail?productId=' + p.id}" th:text="${p.productSubtitle}"></a>
+                </li>
+                <li>
+                    <a th:href="${'/product/detail?productId=' + p.id}" class="goods-item-view">查看详情</a>
+                </li>
+                <li>
+                    <a th:href="${'/product/detail?productId=' + p.id}"><img th:src="${p.picUrl + '?imageView2/1/w/100/h/100/q/75'}" alt="" class="goods-item-pic"></a>
+                </li>
             </ul>
         </div>
         <div class="about-us">
@@ -80,12 +56,12 @@
             </div>
             <div class="product-list">
                 <ul class="product-item" th:each="p : ${productListRecommend}">
-                    <li class="product-item-pic"><img th:src="${p.picUrl + '?imageView2/1/w/190/h/190/q/75'}" alt=""></li>
-                    <li class="product-item-title" th:text="${p.productName}"></li>
+                    <li class="product-item-pic"><a th:href="${'/product/detail?productId=' + p.id}"><img th:src="${p.picUrl + '?imageView2/1/w/190/h/190/q/75'}" alt=""></a></li>
+                    <li class="product-item-title"><a th:href="${'/product/detail?productId=' + p.id}" th:text="${p.productName}"></a></li>
                     <li class="product-item-price">
-                        <a href="" class="sell-price">¥89.09</a>
-                        <a href="" class="orig-price">¥89.09</a>
-                        <a href="" class="shop-cart"><img th:src="@{/pc/img/buycart-small.png}" alt=""></a>
+                        <a th:href="${'/product/detail?productId=' + p.id}"><span href="" class="sell-price">¥89.09</span></a>
+                        <a th:href="${'/product/detail?productId=' + p.id}"><span href="" class="orig-price">¥89.09</span></a>
+                        <a href="" class="shop-cart"><img th:src="@{/pc/img/buycart-small.png}" alt="" class="shop-cart"></a>
                     </li>
                 </ul>
             </div>
@@ -124,19 +100,7 @@
 
         </div>
     </div>
-    <div id="footer">
-        <div class="footer-hd">
-            <span>联系我们</span>
-            <span>关于我们</span>
-            <span>条款声明</span>
-        </div>
-        <div class="footer-bd">
-            <span>Copyright © 2020. NxtFramework.com All Rights Reserved.</span>
-        </div>
-        <div class="footer-ft">
-            <span>备案号 88888888</span>
-        </div>
-    </div>
+    <div th:replace="pc/common/footer :: footer"></div>
 
 
 </body>

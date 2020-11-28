@@ -1,0 +1,758 @@
+#content {
+    clear: both;
+    width: 960px;
+    margin: 0 auto;
+}
+
+dl dd {
+    margin: 0;
+}
+
+.tempWrap {
+    float: left;
+}
+
+.product-property {
+    margin: 38px 70px 35px 70px;
+    height: 374px;
+}
+
+.product-property .product-gallery,
+.product-property .product-wrap {
+    float: left;
+}
+
+.product-property .product-gallery {
+    margin-right: 54px;
+}
+
+.product-booth {
+    position: relative;
+    width: 310px;
+    height: 310px;
+    margin-bottom: 24px;
+}
+
+.product-booth .booth-small,
+.product-booth .booth-big {
+    width: 310px;
+    height: 310px;
+    float: left;
+    overflow: hidden;
+}
+
+.product-booth .booth-big {
+    display: none;
+    position: absolute;
+    z-index: 999;
+    left: 320px;
+}
+
+.product-booth .small-pic {
+    width: 310px;
+    height: 310px;
+    background: rgba(0, 0, 0, 0);
+    opacity: 1;
+}
+
+.product-booth .big-pic {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 2000px;
+}
+
+.product-booth .mouse-bg {
+    display: none;
+    cursor: move;
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, .7);
+    top: 0;
+    left: 0;
+}
+
+.product-thumb .thumb-pic img {
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0);
+    opacity: 1;
+}
+
+.product-thumb .thumb-pic .active {
+    border: 2px solid #014785;
+}
+
+.product-thumb .thumb-pic li {
+    float: left;
+    margin-right: 6px;
+    border: 2px solid #FFFFFF;
+    width: 40px;
+    height: 40px;
+}
+
+.product-thumb .thumb-pic li:last-child {
+    margin-right: 0;
+}
+
+.product-thumb .thumb-left {
+    margin-right: 18px;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    float: left;
+}
+
+.product-thumb .thumb-right {
+    margin-left: 13px;
+    height: 40px;
+    line-height: 40px;
+    float: left;
+}
+
+.product-thumb .thumb-left img,
+.product-thumb .thumb-right img {
+    width: 15px;
+    height: 28px;
+    vertical-align: middle;
+}
+
+.product-title .main-title {
+    height: 30px;
+    font-size: 21px;
+    font-family: PingFang SC;
+    font-weight: 800;
+    line-height: 30px;
+    color: #1B1B1B;
+    letter-spacing: 1px;
+    opacity: 1;
+}
+
+.product-wrap {
+    width: 431px;
+}
+
+.product-desc .desc-info {
+    height: 20px;
+    font-size: 10px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 20px;
+    color: #F3664B;
+    opacity: 1;
+}
+
+.product-promo {
+    height: 65px;
+    background: #F8F8F8;
+    opacity: 1;
+    margin: 16px 0 19px 0;
+    padding-left: 11px;
+}
+
+.product-promo .product-price .sell-price {
+    height: 26px;
+    font-size: 21px;
+    font-family: DIN;
+    font-weight: bold;
+    line-height: 26px;
+    color: #F3664B;
+    letter-spacing: 1px;
+    opacity: 1;
+    display: inline-block;
+    margin: 10px 15px 0 0;
+    vertical-align: middle;
+}
+
+.product-promo .product-price .orig-price {
+    height: 12px;
+    font-size: 10px;
+    font-family: DIN;
+    font-weight: 400;
+    line-height: 12px;
+    color: #5F5F5F;
+    letter-spacing: 1px;
+    opacity: 1;
+    display: inline-block;
+    text-decoration: line-through;
+    margin-top: 10px;
+    vertical-align: middle;
+}
+
+.product-promo .product-stock .stock-title,
+.product-promo .product-stock .stock-num {
+    height: 14px;
+    font-size: 10px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 14px;
+    color: #1B1B1B;
+    opacity: 1;
+}
+
+.spec-info .spec-frame {
+    margin-left: 55px;
+    margin-bottom: 14px;
+    width: 352px;
+}
+
+.spec-info .spec-attr .attr-pic {
+    width: 24px;
+    height: 24px;
+    background: rgba(0, 0, 0, 0);
+    opacity: 1;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+
+.spec-info .spec-attr .attr-name {
+    height: 30px;
+    font-size: 11px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 30px;
+    color: #1B1B1B;
+    letter-spacing: 1px;
+    opacity: 1;
+    text-align: center;
+    display: block;
+    cursor:default
+}
+
+.spec-info .spec-attr li:nth-child(4) {
+    margin-right: 0;
+}
+
+.spec-info .spec-attr li {
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    background: #FFFFFF;
+    border: 1px solid rgba(95, 95, 95, 0.2);
+    opacity: 1;
+    float: left;
+    margin: 0 8px 8px 0;
+}
+
+.spec-info .spec-attr .active {
+    border: 1px solid #014785;
+}
+
+.spec-info .spec-title,
+.spec-num .num-title {
+    height: 15px;
+    font-size: 11px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 15px;
+    color: #1B1B1B;
+    opacity: 1;
+}
+
+.product-spec .spec-num {
+    height: 30px;
+    clear: both;
+}
+
+.product-spec dd, .product-spec dt {
+    float: left;
+}
+
+.spec-num .num-btn {
+    margin-left: 55px;
+}
+
+.spec-num .add-num img {
+    width: 13px;
+    height: 13px;
+}
+
+.spec-num .reduce-num img {
+    width: 13px;
+    height: 2px;
+    vertical-align: middle;
+    margin-top: -3px;
+}
+
+.spec-num .num-value {
+    float: left;
+    width: 108px;
+    height: 30px;
+    background: #FFFFFF;
+    border: 1px solid rgba(95, 95, 95, 0.5019607843137255);
+    opacity: 1;
+    padding: 0;
+    border-left: 0;
+    border-right: 0;
+    text-align: center;
+}
+
+.spec-num .reduce-num,
+.spec-num .add-num {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    border: 1px solid rgba(95, 95, 95, 0.5019607843137255);
+    float: left;
+    line-height: 30px;
+    text-align: center;
+}
+
+
+.product-buy {
+    clear: both;
+    margin-left: 79px;
+    margin-top: 48px;
+}
+
+.product-buy .buy-car {
+    width: 117px;
+    height: 30px;
+    line-height: 30px;
+    background: #014785;
+    opacity: 1;
+    font-size: 11px;
+    font-family: PingFang SC;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    display: inline-block;
+    text-align: center;
+}
+
+.product-detail {
+    width: 822px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.product-detail .detail-left,
+.product-detail .detail-right {
+    float: left;
+}
+
+.product-detail .detail-right {
+    margin-left: 9px;
+}
+
+.detail-desc .detail-title {
+    width: 631px;
+    height: 28px;
+    background: #F8F8F8;
+    opacity: 1;
+    margin-bottom: 8px;
+}
+
+.detail-title .type-info li {
+    float: left;
+    height: 28px;
+    font-size: 10px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 28px;
+    color: #5F5F5F;
+    opacity: 1;
+    margin-right: 32px;
+    position: relative;
+}
+
+.detail-title .type-info a{
+    color: #5F5F5F;
+}
+
+.detail-title .type-info li:first-child {
+    margin-left: 23px;
+}
+
+.detail-title .type-info img {
+    width: 11px;
+    height: 11px;
+    vertical-align: middle;
+    margin-right: 4px;
+    margin-top: -2px;
+}
+
+.detail-cont img {
+    width: 631px;
+}
+
+
+.product-list .product-item {
+    width: 166px;
+    height: 218px;
+    background: #FFFFFF;
+    border: 1px solid rgba(95, 95, 95, 0.2);
+    opacity: 1;
+    padding: 6px 7px 8px 7px;
+    margin: 8px 0 9px 0;
+}
+
+.product-item .item-pic img {
+    width: 166px;
+    height: 166px;
+    background: rgba(0, 0, 0, 0);
+    opacity: 1;
+    margin-bottom: 8px;
+}
+
+.product-item:last-child {
+    margin-right: 0;
+}
+
+.product-item .item-title a{
+    height: 15px;
+    font-size: 11px;
+    font-family: PingFang SC;
+    font-weight: 300;
+    line-height: 15px;
+    color: #1B1B1B;
+    letter-spacing: 1px;
+    opacity: 1;
+    display: block;
+
+}
+
+.product-item .sell-price {
+    height: 13px;
+    font-size: 11px;
+    font-family: DIN;
+    font-weight: bold;
+    line-height: 13px;
+    color: #1B1B1B;
+    letter-spacing: 1px;
+    opacity: 1;
+    margin-right: 6px;
+
+}
+
+.product-item .orig-price {
+    height: 10px;
+    font-size: 8px;
+    font-family: DIN;
+    font-weight: 400;
+    line-height: 10px;
+    color: #5F5F5F;
+    letter-spacing: 1px;
+    opacity: 1;
+    text-decoration: line-through;
+
+}
+
+
+.detail-right .head-title,
+.detail-left .head-title {
+    width: 180px;
+    height: 28px;
+    line-height: 28px;
+    background: #FFFFFF;
+    border: 1px solid rgba(95, 95, 95, 0.2);
+    font-family: PingFang SC;
+    font-size: 10px;
+    font-weight: 400;
+    color: #5F5F5F;
+    opacity: 1;
+    position: relative;
+}
+
+.product-detail .head-title img {
+    width: 11px;
+    height: 11px;
+    vertical-align: middle;
+    margin: -2px 4px 0 16px;
+}
+
+.product-detail .title-wd {
+    color: #014785;
+}
+
+.product-detail .title-bar {
+    width: 66px;
+    height: 2px;
+    background: #014785;
+    opacity: 1;
+    position: absolute;
+    left: 16px;
+    top: 27px;
+}
+
+.intro-item .title-bar{
+    left:0 !important;
+}
+
+.detail-left .spec-desc,
+.detail-left .safe-desc,
+.detail-left .comment-desc {
+    margin: 20px 0;
+}
+
+.detail-left .comment-desc {
+    margin-bottom: 0;
+}
+
+.spec-desc .head-title,
+.safe-desc .head-title,
+.comment-desc .head-title {
+    width: 629px;
+    margin-bottom: 9px;
+}
+
+.spec-desc .title-bar {
+    width: 78px !important;
+}
+
+.spec-desc .spec-cont {
+    width: 631px;
+    height: 207px;
+    background: #F8F8F8;
+    opacity: 1;
+}
+
+.safe-desc .safe-cont {
+    width: 631px;
+    height: 185px;
+    background: #F8F8F8;
+    opacity: 1;
+}
+
+.comment-desc {
+    width: 631px;
+}
+
+.comment-desc .title-bar {
+    width: 43px !important;
+}
+
+.comment-item .comment-user {
+    height: 30px;
+    margin-bottom: 5px;
+}
+
+.comment-user .user-info li {
+    height: 30px;
+    line-height: 30px;
+}
+
+.comment-user .head-port {
+    float: left;
+}
+
+.comment-user .head-port img {
+    width: 30px;
+    height: 30px;
+    background: rgba(0, 0, 0, 0);
+    border-radius: 50%;
+    opacity: 1;
+    margin-right: 13px;
+}
+
+.comment-user .user-name {
+    height: 15px;
+    font-size: 11px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 15px;
+    color: #1B1B1B;
+    opacity: 1;
+    float: left;
+}
+
+.comment-user .create-time {
+    height: 12px;
+    font-size: 9px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 12px;
+    color: #5F5F5F;
+    opacity: 1;
+    float: right;
+}
+
+.comment-item .comment-cont {
+    margin-left: 86px;
+    position: relative;
+}
+
+.comment-cont .comment-wd {
+    clear: both;
+    font-size: 10px;
+    font-family: PingFang SC;
+    font-weight: 300;
+    color: #5F5F5F;
+    letter-spacing: 1px;
+    opacity: 1;
+    margin-bottom: 21px;
+}
+
+.comment-cont .comment-pic {
+    height: 55px;
+    margin-bottom: 31px;
+}
+
+.comment-cont .comment-pic li {
+    height: 55px;
+    float: left;
+}
+
+.comment-cont .comment-pic img {
+    width: 100px;
+    height: 55px;
+    background: rgba(0, 0, 0, 0);
+    opacity: 1;
+    margin-right: 6px;
+}
+
+.comment-cont .merch-reply {
+    clear: both;
+    text-align: right;
+    margin-bottom: 24px;
+}
+
+.comment-cont .booth-large {
+    position: absolute;
+    top: -80px;
+    left: 0;
+    display: none;
+}
+
+.comment-cont .booth-large img {
+    width: 310px;
+    height: 175px;
+}
+
+.merch-reply .reply-source {
+    height: 15px;
+    font-size: 9px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 15px;
+    color: #5F5F5F;
+    opacity: 1;
+    margin-bottom: 13px;
+}
+
+.reply-source .reply-time {
+    margin-right: 16px;
+}
+
+.merch-reply .reply-cont {
+    height: 15px;
+    font-size: 9px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 15px;
+    color: #5F5F5F;
+    opacity: 1;
+    margin-right: 69px;
+    text-align: right;
+}
+
+.comment-cont .reply-item {
+    text-align: left;
+    width: 100%;
+}
+
+.reply-item .user-reply {
+    margin-bottom: 4px;
+}
+
+.user-reply .user-time {
+    height: 15px;
+    font-size: 9px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 15px;
+    color: #5F5F5F;
+    opacity: 1;
+    margin-bottom: 13px;
+}
+
+.user-reply .user-cont {
+    height: 15px;
+    font-size: 10px;
+    font-family: PingFang SC;
+    font-weight: 300;
+    line-height: 15px;
+    color: #5F5F5F;
+    letter-spacing: 1px;
+    opacity: 1;
+}
+
+.comment-info .comment-page {
+    margin-top: 46px;
+    text-align: right;
+}
+
+.comment-page .prev-page,
+.comment-page .next-page,
+.comment-page .page-num {
+    width: 65px;
+    border: 1px solid #1B1B1B;
+    height: 21px;
+    font-size: 10px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 21px;
+    color: #1B1B1B;
+    letter-spacing: 1px;
+    opacity: 1;
+    display: inline-block;
+    margin-left: 6px;
+    text-align: center;
+}
+
+.comment-page .next-page {
+    margin-left: 0;
+}
+
+.comment-page .page-num {
+    background: #014785;
+    color: #FFFFFF;
+}
+
+.product-service {
+    clear: both;
+    width: 960px;
+    height: 91px;
+    background: #F8F8F8;
+    opacity: 1;
+    margin-top: 35px;
+}
+
+.product-service .service-item {
+    height: 40px;
+    float: left;
+    margin: 26px 132px 25px 0;
+}
+
+.product-service .service-item:first-child {
+    margin-left: 70px;
+}
+
+.product-service .service-item:last-child {
+    margin-right: 0;
+}
+
+.product-service .service-item li {
+    float: left;
+    height: 40px;
+    line-height: 40px;
+}
+
+.service-item .service-pic img {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+    margin-right: 20px;
+}
+
+.service-item .service-title {
+    height: 20px;
+    font-size: 14px;
+    font-family: PingFang SC;
+    font-weight: bold;
+    line-height: 20px;
+    color: #014785;
+    opacity: 1;
+}

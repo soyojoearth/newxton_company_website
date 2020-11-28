@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/product_list.css}">
+    <script th:src="@{/pc/js/jquery-1.8.2.min.js}"></script>
+    <script th:src="@{/pc/js/product_list.js}"></script>
+</head>
+<body>
+<div th:replace="pc/common/header :: header"></div>
+<div id="content">
+    <div class="list-left">
+        <div class="cate-item">
+            <div class="cate-title">
+                <div class="title-bar">&nbsp;</div>
+                <div class="title-wd">所有分类</div>
+            </div>
+            <div class="cate-search">
+                <form action="/product/list" id="search-form" method="get">
+                    <input type="text" class="search-val" name="searchKeyword" value="搜索产品">
+                </form>
+                <a href="javascript:void(0)" onclick="searchForm()"><img th:src="@{/pc/img/search.png}" alt="" class="search-pic"></a>
+            </div>
+            <dl class="cate-type" th:each="p : ${productCategoryList.list}">
+                <dt class="cate-first">
+                    <a th:href="${'?categoryId=' + p.category.id}" class="one-level">
+                        <img th:src="@{/pc/img/cate-big.png}" alt="" class="cate-big">
+                        <span class="first-title" th:text="${p.category.categoryName}"></span>
+                        <img th:src="@{/pc/img/cate-down.png}" alt="" class="down-big">
+                    </a>
+                </dt>
+                <dd class="cate-child">
+                    <dl class="cate-level" th:each="c : ${p.sub_category_list}">
+                        <dt class="cate-second">
+                            <a th:href="${'?categoryId=' + c.category.id}" class="two-level">
+                                <img th:src="@{/pc/img/cate-small.png}" alt="" class="cate-small">
+                                <span class="second-title" th:text="${c.category.categoryName}"></span>
+                                <img th:src="@{/pc/img/cate-down-small.png}" alt="" class="down-small">
+                            </a>
+                        </dt>
+                        <div class="cate-third">
+                            <dd class="third-wd" th:each="t : ${c.sub_category_list}">
+                                <a th:href="${'?categoryId=' + t.category.id}" th:text="${t.category.categoryName}"></a>
+                            </dd>
+                        </div>
+                    </dl>
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="list-right">
+        <div class="list-title">
+            <ul class="list-opt">
+                <li>
+                    <a href="javascript:void(0)" class="opt-wd active">默认排序</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="opt-wd">按价格从低到高</a>
+                    <img th:src="@{/pc/img/sort-up.png}" alt="" class="sort-up">
+                    <img th:src="@{/pc/img/sort-down.png}" alt="" class="sort-down">
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="opt-wd">按时间从近到远</a>
+                    <img th:src="@{/pc/img/sort-up.png}" alt="" class="sort-up">
+                    <img th:src="@{/pc/img/sort-down.png}" alt="" class="sort-down">
+                </li>
+            </ul>
+        </div>
+        <div class="product-list">
+            <ul class="product-item" th:each="p : ${productList.productList}">
+                <a th:href="${'/product/detail?productId=' + p.id}">
+                    <li class="item-pic">
+                        <a th:href="${'/product/detail?productId=' + p.id}"><img th:src="${p.picUrl}" alt=""></a>
+                    </li>
+                    <li class="item-title">
+                        <a th:href="${'/product/detail?productId=' + p.id}"  th:text="${p.productName}"></a>
+                    </li>
+                    <li class="item-price">
+                        <a th:href="${'/product/detail?productId=' + p.id}" class="sell-price">¥89.09</a>
+                        <a th:href="${'/product/detail?productId=' + p.id}" class="orig-price">¥89.09</a>
+                        <a href="javascript:void(0)" class="shop-cart">
+                            <img th:src="@{/pc/img/buycart-small.png}" alt="" >
+                        </a>
+                    </li>
+                </a>
+            </ul>
+        </div>
+
+
+
+        <div class="list-page">
+            <a th:if="${page > 1}" th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&page=' + (page-1)}" class="prev-page">上一页</a>
+            <a th:if="${page <= 1}" href="javascript:void(0)" class="prev-page">上一页</a>
+            <span class="page-num" th:text="${page + '/' + productList.pages}"></span>
+            <a th:if="${page <  productList.pages}" th:href="${'?categoryId=' + categoryId + '&searchKeyword='+ searchKeyword + '&page=' + (page+1)}" class="next-page">下一页</a>
+            <a th:if="${page >= productList.pages}" href="javascript:void(0)" class="next-page">下一页</a>
+        </div>
+    </div>
+</div>
+<div th:replace="pc/common/footer :: footer"></div>
+</body>
+</html>
