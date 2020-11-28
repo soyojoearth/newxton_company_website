@@ -82,7 +82,7 @@
     opacity: 1;
 }
 
-.goods-item .goods-item-title {
+.goods-item .goods-item-title a{
     height: 30px;
     font-size: 21px;
     font-family: PingFang SC;
@@ -91,9 +91,10 @@
     color: #1B1B1B;
     letter-spacing: 1px;
     margin-top: 31px;
+    display: block;
 }
 
-.goods-item .goods-item-desc {
+.goods-item .goods-item-desc a{
     height: 15px;
     font-size: 11px;
     font-family: PingFang SC;
@@ -102,6 +103,7 @@
     color: #1B1B1B;
     letter-spacing: 1px;
     margin-top: 7px;
+    display: block;
 }
 
 .goods-item .goods-item-view {
@@ -247,7 +249,7 @@
     margin-right: 0;
 }
 
-.product-item .product-item-title {
+.product-item .product-item-title a{
     height: 15px;
     font-size: 11px;
     font-family: PingFang SC;
@@ -256,6 +258,7 @@
     color: #1B1B1B;
     letter-spacing: 1px;
     opacity: 1;
+    display: block;
 }
 
 .product-item .sell-price {

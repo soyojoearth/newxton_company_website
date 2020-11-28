@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div id="header" th:fragment="header">
+    <div class="nav-l">
+        <ul class="nav-rec">
+            <li class="nav-logo"><a href="/"><img th:src="@{/pc/img/logo.jpg}" alt=""></a></li>
+            <li class="nav-title"><a href="/">首页</a></li>
+            <li class="nav-title"><a href="/product/list">产品</a></li>
+            <li class="nav-title"><a href="">资讯</a></li>
+            <li class="nav-bar nav-title">
+                <div>
+                    <a href="">关于</a>
+                    <img th:src="@{/pc/img/icon-down.jpg}" alt="">
+                    <div class="nav-bar-bd"></div>
+                </div>
+                <div class="nav-about">
+                    <a href="#" class="nav-about-d">关于我们</a>
+                    <a href="#" class="nav-about-d">联系我们</a>
+                    <a href="#" class="nav-about-d">购买指南</a>
+                    <a href="#" class="nav-about-d">条款声明</a>
+                    <a href="#" class="nav-about-d">隐私政策</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="nav-r">
+        <ul class="nav-user-opt">
+            <li class="nav-user-buy"><img th:src="@{/pc/img/icon-buycart.jpg}" alt=""></li>
+            <li class="nav-user-lr"><a href="">登录/注册</a></li>
+        </ul>
+    </div>
+    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/header.css}">
+    <script  th:src="@{/pc/js/header.js}" ></script>
+</div>
+</html>

@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/product_detail.css}">
+    <script  th:src="@{/pc/js/jquery-1.8.2.min.js}" ></script>
+    <script  th:src="@{/pc/js/zoom.js}" ></script>
+    <script  th:src="@{/pc/js/slide.js}" ></script>
+    <script  th:src="@{/pc/js/product_detail.js}" ></script>
+</head>
+<body>
+    <div th:replace="pc/common/header :: header"></div>
+    <div id="content">
+        <div class="product-property">
+            <div class="product-gallery">
+                <div class="product-booth" id="product-booth">
+                    <div class="booth-small" id="booth-small">
+                        <img th:each="p,pStat : ${productDetail.pictureList}" th:if="${pStat.index == 0}" th:src="${p.url}" alt="" class="small-pic" id="small-pic">
+                        <div id="mouse-bg" class="mouse-bg"></div>
+                    </div>
+                    <div class="booth-big" id="booth-big">
+                        <img th:each="p,pStat : ${productDetail.pictureList}" th:if="${pStat.index == 0}" th:src="${p.url}" alt="" class="big-pic" id="big-pic">
+                    </div>
+                </div>
+                <div class="product-thumb">
+                    <a href="javascript:void(0)" class="thumb-left prev">
+                        <img th:src="@{/pc/img/icon-left.png}"  alt="">
+                    </a>
+                    <ul class="thumb-pic">
+                        <li th:each="p : ${productDetail.pictureList}"><img th:src="${p.url + '?imageView2/1/w/40/h/40/q/75'}" th:data-url="${p.url}" alt=""></li>
+                    </ul>
+                    <a href="javascript:void(0)" class="thumb-right next">
+                        <img th:src="@{/pc/img/icon-right.png}"  alt="">
+                    </a>
+                </div>
+            </div>
+            <div class="product-wrap">
+                <div class="product-title">
+                    <div class="main-title" th:text="${productDetail.productName}"></div>
+                </div>
+                <div class="product-desc">
+                    <div class="desc-info" th:text="${productDetail.productSubtitle}"></div>
+                </div>
+                <div class="product-promo">
+                    <div class="product-price">
+                        <span class="sell-price" th:if="${productDetail.priceDiscount} != null" th:text="${'¥' + productDetail.priceDiscount*productDetail.price}"></span>
+                        <span class="sell-price" th:if="${productDetail.priceDiscount} == null" th:text="${'¥' + productDetail.price}"></span>
+                        <span class="orig-price" th:text="${'¥' + productDetail.price}"></span>
+                    </div>
+                    <div class="product-stock">
+                        <span class="stock-title">库存：</span>
+                        <span class="stock-num" th:text="${productDetail.inventoryQuantity}"></span>
+                    </div>
+                </div>
+                <div class="product-spec">
+                    <dl class="spec-info" th:if="${not #lists.isEmpty(productDetail.skuValuePriceEtcList)}">
+                        <dt class="spec-title">颜色</dt>
+                        <dd class="spec-frame">
+                            <ul class="spec-attr">
+                                <li th:each="s : ${productDetail.skuValuePriceEtcList}">
+                                    <!--<img th:src="@{/pc/img/product.jpg}" alt="" class="attr-pic">-->
+                                    <input type="text" class="attr-data" th:data-price="${s.skuValuePrice}"
+                                           th:data-discount="${s.skuValuePriceDiscount}"
+                                          th:data-stock="${s.skuValueInventoryQuantity}" hidden>
+                                    <span class="attr-name" th:text="${s.skuValueName1 + ',' + s.skuValueName2}"></span>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <dl class="spec-num">
+                        <dt class="num-title">数量</dt>
+                        <dd class="num-btn">
+                            <a href="javascript:void(0)" class="reduce-num">
+                                <img th:src="@{/pc/img/icon-reduce.png}" alt="">
+                            </a>
+                            <input type="text" class="num-value" th:value="${productDetail.dealQuantityMin}" th:min-num="${productDetail.dealQuantityMin}" th:max-num="${productDetail.dealQuantityMax}">
+                            <a href="javascript:void(0)" class="add-num">
+                                <img th:src="@{/pc/img/icon-add.png}" alt="">
+                            </a>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="product-buy">
+                    <a href="" class="buy-car">加入购物车</a>
+                </div>
+            </div>
+        </div>
+        <div class="product-detail">
+           <div class="detail-left">
+               <div class="detail-desc">
+                   <div class="detail-title">
+                       <ul class="type-info">
+                           <li class="intro-item">
+                               <a href="#info">
+                                   <img th:src="@{/pc/img/pro-intro.png}" alt="">
+                                   <span class="title-wd">产品介绍</span>
+                                   <span class="title-bar"></span>
+                               </a>
+                           </li>
+                           <li>
+                               <a href="#spec">
+                                   <img th:src="@{/pc/img/spec-pack.png}" alt="">
+                                   <span>规格与包装</span>
+                               </a>
+                           </li>
+                           <li>
+                               <a href="#safe">
+                                   <img th:src="@{/pc/img/sale-secu.png}" alt="">
+                                   <span>售后保障</span>
+                               </a>
+                           </li>
+                           <li>
+                               <a href="#comment">
+                                   <img th:src="@{/pc/img/pro-com.png}" alt="">
+                                   <span>商品评价</span>
+                               </a>
+                           </li>
+                       </ul>
+                   </div>
+                   <div class="detail-cont" id="info" th:utext="${productDetail.productDescription}"></div>
+               </div>
+
+               <div class="spec-desc" id="spec">
+                   <div class="head-title">
+                       <img th:src="@{/pc/img/spec-pack-active.png}" alt="">
+                       <span class="title-wd">规格与包装</span>
+                       <span class="title-bar"></span>
+                   </div>
+                   <div class="spec-cont">
+
+                   </div>
+               </div>
+               <div class="safe-desc" id="safe">
+                   <div class="head-title">
+                       <img th:src="@{/pc/img/sale-secu-active.png}" alt="">
+                       <span class="title-wd">售后保障</span>
+                       <span class="title-bar"></span>
+                   </div>
+                   <div class="safe-cont">
+
+                   </div>
+               </div>
+               <div class="comment-desc" id="comment">
+                    <div>
+                        <div class="head-title">
+                            <img th:src="@{/pc/img/pro-com-active.png}" alt="">
+                            <span class="title-wd">评价</span>
+                            <span class="title-bar"></span>
+                        </div>
+                    </div>
+                    <div class="comment-info">
+                        <div class="comment-item" th:each="p : ${productReviews.list}">
+                            <div class="comment-user">
+                                <ul class="user-info">
+                                    <li class="head-port">
+                                        <img th:src="${p.avatar}" alt="">
+                                    </li>
+                                    <li class="user-name" th:text="${p.username}"></li>
+                                    <li class="create-time" th:text="${p.date}"></li>
+                                </ul>
+                            </div>
+                            <div class="comment-cont">
+                                <div class="comment-wd" th:text="${p.content}"></div>
+                                <ul class="comment-pic">
+                                    <li th:each="pic : ${p.picUrlList}">
+                                        <img th:src="${pic + '?imageView2/1/w/100/h/55/q/75'}" th:data-url="${pic}" alt="">
+                                    </li>
+                                </ul>
+                                <div class="booth-large">
+                                    <img src="" alt="">
+                                </div>
+                                <div class="reply" th:each="r : ${p.replyList}">
+                                    <div class="merch-reply" th:if="${r.userId != p.userId}">
+                                        <div class="reply-source">
+                                            <span class="reply-time" th:text="${r.date}"></span>
+                                            <span class="reply-name" th:text="${r.username}"></span>
+                                        </div>
+                                        <div class="reply-cont" th:text="${r.content}"></div>
+                                    </div>
+                                    <div class="reply-item" th:if="${r.userId == p.userId}">
+                                        <div class="user-reply">
+                                            <div class="user-time" th:text="${r.date}"></div>
+                                            <div class="user-cont" th:text="${r.content}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="comment-page" th:if="${productReviews.pageCount != 0 }">
+                            <a th:if="${productReviews.page > 1}" th:href="${'?productId=' + productDetail.id + '&page=' + (productReviews.page-1)}" class="prev-page">上一页</a>
+                            <a th:if="${productReviews.page <= 1}" href="javascript:void(0)" class="prev-page">上一页</a>
+                            <span class="page-num" th:text="${productReviews.page + '/' + productReviews.pageCount}"></span>
+                            <a th:if="${productReviews.page < productReviews.pageCount}" th:href="${'?productId=' + productDetail.id + '&page=' + (productReviews.page+1)}" class="next-page">下一页</a>
+                            <a th:if="${productReviews.page >= productReviews.pageCount}" href="javascript:void(0)" class="next-page">下一页</a>
+                        </div>
+                    </div>
+               </div>
+           </div>
+           <div class="detail-right">
+               <div class="rcm-info">
+                   <div class="head-title">
+                       <img th:src="@{/pc/img/rcm-pro.png}" alt="">
+                       <span class="title-wd">推荐产品</span>
+                       <span class="title-bar"></span>
+                   </div>
+                   <div class="product-list">
+                       <ul class="product-item" th:each="p : ${productListRecommend}">
+                               <li class="item-pic">
+                                   <a th:href="'?productId='+ ${p.id}"><img th:src="${p.picUrl}" alt=""></a>
+                               </li>
+                               <li class="item-title">
+                                   <a th:href="'?productId='+ ${p.id}" th:text="${p.productName}"></a>
+                               </li>
+                               <li class="item-price">
+                                   <a th:href="'?productId='+ ${p.id}" class="sell-price">¥89.09</a>
+                                   <a th:href="'?productId='+ ${p.id}" class="orig-price">¥89.09</a>
+                               </li>
+                       </ul>
+                   </div>
+               </div>
+               <div class="new-info">
+                   <div class="head-title">
+                       <img th:src="@{/pc/img/new-pro.jpg}" alt="">
+                       <span class="title-wd">最新上架</span>
+                       <span class="title-bar"></span>
+                   </div>
+                   <div class="product-list">
+                       <ul class="product-item" th:each="p : ${productListNew}">
+                           <li class="item-pic">
+                               <a th:href="'?productId='+ ${p.id}"><img th:src="${p.picUrl}" alt=""></a>
+                           </li>
+                           <li class="item-title">
+                               <a th:href="'?productId='+ ${p.id}" th:text="${p.productName}"></a>
+                           </li>
+                           <li class="item-price">
+                               <a th:href="'?productId='+ ${p.id}" class="sell-price">¥89.09</a>
+                               <a th:href="'?productId='+ ${p.id}" class="orig-price">¥89.09</a>
+                           </li>
+                       </ul>
+                   </div>
+               </div>
+           </div>
+        </div>
+        <div class="product-service">
+            <ul class="service-item">
+                <li class="service-pic">
+                    <img th:src="@{/pc/img/icon-logistic.png}" alt="">
+                </li>
+                <li class="service-title">多仓直发，极速配送</li>
+            </ul>
+            <ul class="service-item">
+                <li class="service-pic">
+                    <img th:src="@{/pc/img/icon-assure.png}" alt="">
+                </li>
+                <li class="service-title">正品低价，质量保证</li>
+            </ul>
+            <ul class="service-item">
+                <li class="service-pic">
+                    <img th:src="@{/pc/img/icon-sale.png}" alt="">
+                </li>
+                <li class="service-title">优质售后，放心下单</li>
+            </ul>
+        </div>
+    </div>
+    <div th:replace="pc/common/footer :: footer"></div>
+</body>
+</html>
