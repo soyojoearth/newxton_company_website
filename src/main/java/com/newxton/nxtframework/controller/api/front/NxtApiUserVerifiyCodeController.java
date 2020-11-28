@@ -35,6 +35,23 @@ public class NxtApiUserVerifiyCodeController {
             return new NxtStructApiResult(54,"缺少参数：验证码类型");
         }
 
+        //判断频率限制
+
+
+
+
+
+
+
+        //撤销前面的验证码
+
+
+
+
+
+
+        //新验证码
+
         int max=999999;
         int min=111111;
         Random random = new Random();
@@ -47,6 +64,14 @@ public class NxtApiUserVerifiyCodeController {
         nxtUserVerifiy.setType(type);
         nxtUserVerifiy.setCode(code);
         nxtUserVerifiyService.insert(nxtUserVerifiy);
+
+
+        //发送
+
+
+
+
+
 
         return new NxtStructApiResult("开发调试阶段直接告诉你验证码："+code);
 

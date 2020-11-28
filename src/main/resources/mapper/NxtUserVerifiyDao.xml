@@ -89,4 +89,13 @@
         delete from nxt_user_verifiy where id = #{id}
     </delete>
 
+    <!--根据phoneOrEmail查询最近的那个验证码-->
+    <select id="queryLastByPhoneOrEmail" resultMap="BaseResultMap">
+        select
+          id, type, phone_or_email, code, dateline, status
+        from nxt_user_verifiy
+        where phone_or_email = #{phoneOrEmail}
+        order by id desc limit 1
+    </select>
+
 </mapper>

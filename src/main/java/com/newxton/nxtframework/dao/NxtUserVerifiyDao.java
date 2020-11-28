@@ -62,4 +62,11 @@ public interface NxtUserVerifiyDao {
      */
     int deleteById(Long id);
 
+    /**
+     * 根据phoneOrEmail查询最近的那个验证码
+     * @param phoneOrEmail
+     * @return
+     */
+    NxtUserVerifiy queryLastByPhoneOrEmail(@Param("phoneOrEmail") String phoneOrEmail);
+
 }

@@ -3,6 +3,7 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.entity.NxtUserVerifiy;
 import com.newxton.nxtframework.dao.NxtUserVerifiyDao;
 import com.newxton.nxtframework.service.NxtUserVerifiyService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -76,4 +77,14 @@ public class NxtUserVerifiyServiceImpl implements NxtUserVerifiyService {
     public boolean deleteById(Long id) {
         return this.nxtUserVerifiyDao.deleteById(id) > 0;
     }
+
+    /**
+     * 根据phoneOrEmail查询最近的那个验证码
+     * @param phoneOrEmail
+     * @return
+     */
+    public NxtUserVerifiy queryLastByPhoneOrEmail(@Param("phoneOrEmail") String phoneOrEmail){
+        return this.nxtUserVerifiyDao.queryLastByPhoneOrEmail(phoneOrEmail);
+    }
+
 }

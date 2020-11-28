@@ -1,6 +1,8 @@
 package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtUserVerifiy;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -51,5 +53,12 @@ public interface NxtUserVerifiyService {
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    /**
+     * 根据phoneOrEmail查询最近的那个验证码
+     * @param phoneOrEmail
+     * @return
+     */
+    NxtUserVerifiy queryLastByPhoneOrEmail(@Param("phoneOrEmail") String phoneOrEmail);
 
 }
