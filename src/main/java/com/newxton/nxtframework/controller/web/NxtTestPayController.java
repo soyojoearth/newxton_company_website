@@ -41,7 +41,7 @@ public class NxtTestPayController {
          * 开发期间自动付款成功
          */
 
-        model.setViewName("pc/testpay");
+        model.setViewName("pc/test_pay");
 
         new Thread(new Runnable() {
             @Override
