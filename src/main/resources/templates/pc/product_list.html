@@ -74,7 +74,7 @@
             <ul class="product-item" th:each="p : ${productList.productList}">
                 <a th:href="${'/product/detail?productId=' + p.id}">
                     <li class="item-pic">
-                        <a th:href="${'/product/detail?productId=' + p.id}"><img th:src="${p.picUrl}" alt=""></a>
+                        <a th:href="${'/product/detail?productId=' + p.id}"><img th:src="${p.picUrl+'?imageView2/1/w/190/h/190/q/75'}" alt=""></a>
                     </li>
                     <li class="item-title">
                         <a th:href="${'/product/detail?productId=' + p.id}"  th:text="${p.productName}"></a>

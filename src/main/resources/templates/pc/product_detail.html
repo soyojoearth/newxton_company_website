@@ -19,11 +19,11 @@
             <div class="product-gallery">
                 <div class="product-booth" id="product-booth">
                     <div class="booth-small" id="booth-small">
-                        <img th:each="p,pStat : ${productDetail.pictureList}" th:if="${pStat.index == 0}" th:src="${p.url}" alt="" class="small-pic" id="small-pic">
+                        <img th:each="p,pStat : ${productDetail.pictureList}" th:if="${pStat.index == 0}" th:src="${p.url+'?imageView2/1/w/512/h/512/q/75'}" alt="" class="small-pic" id="small-pic">
                         <div id="mouse-bg" class="mouse-bg"></div>
                     </div>
                     <div class="booth-big" id="booth-big">
-                        <img th:each="p,pStat : ${productDetail.pictureList}" th:if="${pStat.index == 0}" th:src="${p.url}" alt="" class="big-pic" id="big-pic">
+                        <img th:each="p,pStat : ${productDetail.pictureList}" th:if="${pStat.index == 0}" th:src="${p.url+'?imageView2/1/w/512/h/512/q/75'}" alt="" class="big-pic" id="big-pic">
                     </div>
                 </div>
                 <div class="product-thumb">
@@ -31,7 +31,7 @@
                         <img th:src="@{/pc/img/icon-left.png}"  alt="">
                     </a>
                     <ul class="thumb-pic">
-                        <li th:each="p : ${productDetail.pictureList}"><img th:src="${p.url + '?imageView2/1/w/40/h/40/q/75'}" th:data-url="${p.url}" alt=""></li>
+                        <li th:each="p : ${productDetail.pictureList}"><img th:src="${p.url + '?imageView2/1/w/40/h/40/q/75'}" th:data-url="${p.url+'?imageView2/1/w/512/h/512/q/75'}" alt=""></li>
                     </ul>
                     <a href="javascript:void(0)" class="thumb-right next">
                         <img th:src="@{/pc/img/icon-right.png}"  alt="">
@@ -210,7 +210,7 @@
                    <div class="product-list">
                        <ul class="product-item" th:each="p : ${productListRecommend}">
                                <li class="item-pic">
-                                   <a th:href="'?productId='+ ${p.id}"><img th:src="${p.picUrl}" alt=""></a>
+                                   <a th:href="'?productId='+ ${p.id}"><img th:src="${p.picUrl+'?imageView2/1/w/166/h/166/q/75'}" alt=""></a>
                                </li>
                                <li class="item-title">
                                    <a th:href="'?productId='+ ${p.id}" th:text="${p.productName}"></a>
@@ -231,7 +231,7 @@
                    <div class="product-list">
                        <ul class="product-item" th:each="p : ${productListNew}">
                            <li class="item-pic">
-                               <a th:href="'?productId='+ ${p.id}"><img th:src="${p.picUrl}" alt=""></a>
+                               <a th:href="'?productId='+ ${p.id}"><img th:src="${p.picUrl+'?imageView2/1/w/166/h/166/q/75'}" alt=""></a>
                            </li>
                            <li class="item-title">
                                <a th:href="'?productId='+ ${p.id}" th:text="${p.productName}"></a>
