@@ -62,4 +62,13 @@ public interface NxtCommissionDao {
      */
     int deleteById(Long id);
 
+    /**
+     * 根据userId查询指定行数据
+     * @param offset
+     * @param limit
+     * @param userId
+     * @return
+     */
+    List<NxtCommission> queryAllByUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("userId") Long userId);
+
 }

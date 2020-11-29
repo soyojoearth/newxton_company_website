@@ -163,4 +163,15 @@
         </foreach>
     </select>
 
+    <!--根据Id列表查询所有-->
+    <select id="selectAllByIdSet" resultMap="BaseResultMap">
+        select
+        id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
+        from nxt_order_form_product
+        WHERE id IN
+        <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
 </mapper>

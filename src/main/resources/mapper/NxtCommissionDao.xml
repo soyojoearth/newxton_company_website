@@ -146,5 +146,15 @@
         delete from nxt_commission where id = #{id}
     </delete>
 
+    <!--根据userId查询指定行数据-->
+    <select id="queryAllByUserIdLimit" resultMap="BaseResultMap">
+        select
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
+        from nxt_commission
+        where user_id = #{userId}
+        order by id desc
+        limit #{offset}, #{limit}
+    </select>
+
 
 </mapper>

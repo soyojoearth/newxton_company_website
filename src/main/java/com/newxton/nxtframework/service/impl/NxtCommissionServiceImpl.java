@@ -3,6 +3,7 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.entity.NxtCommission;
 import com.newxton.nxtframework.dao.NxtCommissionDao;
 import com.newxton.nxtframework.service.NxtCommissionService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -86,4 +87,16 @@ public class NxtCommissionServiceImpl implements NxtCommissionService {
     public boolean deleteById(Long id) {
         return this.nxtCommissionDao.deleteById(id) > 0;
     }
+
+    /**
+     * 根据userId查询指定行数据
+     * @param offset
+     * @param limit
+     * @param userId
+     * @return
+     */
+    public List<NxtCommission> queryAllByUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("userId") Long userId){
+        return this.nxtCommissionDao.queryAllByUserIdLimit(offset,limit,userId);
+    }
+
 }
