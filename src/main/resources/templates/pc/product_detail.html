@@ -11,6 +11,7 @@
     <script  th:src="@{/pc/js/zoom.js}" ></script>
     <script  th:src="@{/pc/js/slide.js}" ></script>
     <script  th:src="@{/pc/js/product_detail.js}" ></script>
+    <script th:src="@{/pc/js/jquery.cookie.js}"></script>
 </head>
 <body>
     <div th:replace="pc/common/header :: header"></div>
@@ -47,9 +48,8 @@
                 </div>
                 <div class="product-promo">
                     <div class="product-price">
-                        <span class="sell-price" th:if="${productDetail.priceDiscount} != null" th:text="${'¥' + productDetail.priceDiscount*productDetail.price}"></span>
-                        <span class="sell-price" th:if="${productDetail.priceDiscount} == null" th:text="${'¥' + productDetail.price}"></span>
-                        <span class="orig-price" th:text="${'¥' + productDetail.price}"></span>
+                        <span class="sell-price" th:text="${'¥' + #numbers.formatDecimal(productDetail.priceDiscount*productDetail.price,1,'COMMA',2,'POINT')}"></span>
+                        <span class="orig-price" th:text="${'¥' + #numbers.formatDecimal(productDetail.price,1,'COMMA',2,'POINT')}"></span>
                     </div>
                     <div class="product-stock">
                         <span class="stock-title">库存：</span>
@@ -57,19 +57,25 @@
                     </div>
                 </div>
                 <div class="product-spec">
-                    <dl class="spec-info" th:if="${not #lists.isEmpty(productDetail.skuValuePriceEtcList)}">
-                        <dt class="spec-title">颜色</dt>
+                    <dl class="spec-info" th:if="${not #lists.isEmpty(productDetail.skuList)}" th:each="s : ${productDetail.skuList}">
+                        <dt class="spec-title" th:text="${s.skuKeyName}">颜色</dt>
                         <dd class="spec-frame">
                             <ul class="spec-attr">
-                                <li th:each="s : ${productDetail.skuValuePriceEtcList}">
+                                <li th:each="c : ${s.skuValueList}">
                                     <!--<img th:src="@{/pc/img/product.jpg}" alt="" class="attr-pic">-->
-                                    <input type="text" class="attr-data" th:data-price="${s.skuValuePrice}"
-                                           th:data-discount="${s.skuValuePriceDiscount}"
-                                          th:data-stock="${s.skuValueInventoryQuantity}" hidden>
-                                    <span class="attr-name" th:text="${s.skuValueName1 + ',' + s.skuValueName2}"></span>
+                                    <span class="attr-name" th:text="${c.skuValueName}"></span>
                                 </li>
                             </ul>
                         </dd>
+                    </dl>
+                    <dl class="sku-info" th:if="${not #lists.isEmpty(productDetail.skuValuePriceEtcList)}">
+                        <dt>
+                            <input th:each="s : ${productDetail.skuValuePriceEtcList}" type="text" class="attr-data"
+                                   th:data-name="${s.skuValueName1+','+s.skuValueName2}"
+                                   th:data-price="${s.skuValuePrice}"
+                                   th:data-discount="${s.skuValuePriceDiscount}"
+                                   th:data-stock="${s.skuValueInventoryQuantity}" hidden>
+                        </dt>
                     </dl>
                     <dl class="spec-num">
                         <dt class="num-title">数量</dt>
@@ -85,7 +91,7 @@
                     </dl>
                 </div>
                 <div class="product-buy">
-                    <a href="" class="buy-car">加入购物车</a>
+                    <a href="javascript:void(0)" th:onclick="|addShoppingCart(${productDetail.id})|" class="buy-car">加入购物车</a>
                 </div>
             </div>
         </div>
@@ -153,7 +159,7 @@
                         </div>
                     </div>
                     <div class="comment-info">
-                        <div class="comment-item" th:each="p : ${productReviews.list}">
+                       <!-- <div class="comment-item" th:each="p : ${productReviews.list}">
                             <div class="comment-user">
                                 <ul class="user-info">
                                     <li class="head-port">
@@ -190,13 +196,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="comment-page" th:if="${productReviews.pageCount != 0 }">
-                            <a th:if="${productReviews.page > 1}" th:href="${'?productId=' + productDetail.id + '&page=' + (productReviews.page-1)}" class="prev-page">上一页</a>
-                            <a th:if="${productReviews.page <= 1}" href="javascript:void(0)" class="prev-page">上一页</a>
-                            <span class="page-num" th:text="${productReviews.page + '/' + productReviews.pageCount}"></span>
-                            <a th:if="${productReviews.page < productReviews.pageCount}" th:href="${'?productId=' + productDetail.id + '&page=' + (productReviews.page+1)}" class="next-page">下一页</a>
-                            <a th:if="${productReviews.page >= productReviews.pageCount}" href="javascript:void(0)" class="next-page">下一页</a>
-                        </div>
+                        <div class="comment-page" th:if="${productReviews.pages != 0 }">
+                            <a th:if="${page > 1}" th:href="${'?productId=' + productDetail.id + '&page=' + (page-1)}" class="prev-page">上一页</a>
+                            <a th:if="${page <= 1}" href="javascript:void(0)" class="prev-page">上一页</a>
+                            <span class="page-num" th:text="${page + '/' + productReviews.pages}"></span>
+                            <a th:if="${page < productReviews.pages}" th:href="${'?productId=' + productDetail.id + '&page=' + (page+1)}" class="next-page">下一页</a>
+                            <a th:if="${page >= productReviews.pages}" href="javascript:void(0)" class="next-page">下一页</a>
+                        </div>-->
                     </div>
                </div>
            </div>
@@ -267,5 +273,106 @@
         </div>
     </div>
     <div th:replace="pc/common/footer :: footer"></div>
+    <script th:inline="javascript">
+       var product_id = [[${productDetail.id}]];
+       var page_no = 1;
+       var page_total = 2;
+       var limit = 3;
+       $(function (){
+           commentPage(page_no);
+       })
+
+       function commentPage(page){
+           if((page > page_total) || page < page_no){
+               return false;
+           }
+           var param = {
+               productId: product_id,
+               offset: (page-1)*limit,
+               limit: limit,
+               requirePages: 1
+           }
+           $.ajax({
+               type: "post",
+               url: "/api/product_reviews/list",
+               data: JSON.stringify(param),
+               async: false,
+               contentType:"application/json;charset=utf-8",
+               dataType: "json",
+               success: function (data) {
+                   if (data.status == 0) {
+                       var list = data.result.list;
+                       var pages = data.result.pages;
+                       page_total = pages;
+                       var comment_html = '';
+                       if(list.length > 0){
+                           var data_value = {
+                               list: list,
+                               pages: pages,
+                               page: page
+                           };
+                           comment_html = $("#commentTemp").render(data_value);
+                       }
+                       $(".comment-info").html(comment_html);
+
+                   }
+               }
+           });
+       }
+    </script>
+    <script type="text/x-jsrender" id="commentTemp">
+         {{for list}}
+             <div class="comment-item">
+                    <div class="comment-user">
+                        <ul class="user-info">
+                            <li class="head-port">
+                                <img src="{{:avatar}}" alt="">
+                            </li>
+                            <li class="user-name">{{:username}}</li>
+                            <li class="create-time">{{:date}}</li>
+                        </ul>
+                    </div>
+                    <div class="comment-cont">
+                        <div class="comment-wd">{{:content}}</div>
+                        <ul class="comment-pic">
+                           {{for picUrlList}}
+                               <li>
+                                 <img src="{{:#data}}?imageView2/1/w/100/h/55/q/75" data-url="{{:#data}}" alt="">
+                               </li>
+                           {{/for}}
+                        </ul>
+                        <div class="booth-large">
+                            <img src="" alt="">
+                        </div>
+                        {{for replyList}}
+                              {{if userId != #parent.parent.data.userId}}
+                                 <div class="merch-reply">
+                                    <div class="reply-source">
+                                        <span class="reply-time">{{:date}}</span>
+                                        <span class="reply-name">{{:username}}</span>
+                                    </div>
+                                    <div class="reply-cont">{{:content}}</div>
+                                  </div>
+                              {{/if}}
+                              {{if userId == #parent.parent.data.userId}}
+                                <div class="reply-item">
+                                    <div class="user-reply">
+                                        <div class="user-time">{{:date}}</div>
+                                        <div class="user-cont">{{:content}}</div>
+                                    </div>
+                                </div>
+                              {{/if}}
+                        {{/for}}
+                    </div>
+            </div>
+        {{/for}}
+        {{if list.length > 0}}
+            <div class="comment-page">
+                 <a  href="javascript:void(0)" onclick="commentPage({{:page-1}})" class="prev-page">上一页</a>
+                 <span class="page-num">{{:page}}/{{:pages}}</span>
+                 <a  href="javascript:void(0)" onclick="commentPage({{:page+1}})" class="next-page">下一页</a>
+            </div>
+        {{/if}}
+    </script>
 </body>
 </html>

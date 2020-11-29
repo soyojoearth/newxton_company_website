@@ -83,6 +83,7 @@ dl dd {
 
 .product-thumb .thumb-pic .active {
     border: 2px solid #014785;
+
 }
 
 .product-thumb .thumb-pic li {
@@ -117,9 +118,11 @@ dl dd {
     width: 15px;
     height: 28px;
     vertical-align: middle;
+    border: 0;
 }
 
 .product-title .main-title {
+    width: 431px;
     height: 30px;
     font-size: 21px;
     font-family: PingFang SC;
@@ -128,6 +131,9 @@ dl dd {
     color: #1B1B1B;
     letter-spacing: 1px;
     opacity: 1;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 
 .product-wrap {
@@ -135,6 +141,7 @@ dl dd {
 }
 
 .product-desc .desc-info {
+    width: 431px;
     height: 20px;
     font-size: 10px;
     font-family: PingFang SC;
@@ -142,6 +149,9 @@ dl dd {
     line-height: 20px;
     color: #F3664B;
     opacity: 1;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 
 .product-promo {
@@ -268,6 +278,7 @@ dl dd {
 .spec-num .add-num img {
     width: 13px;
     height: 13px;
+    border: 0;
 }
 
 .spec-num .reduce-num img {
@@ -275,6 +286,7 @@ dl dd {
     height: 2px;
     vertical-align: middle;
     margin-top: -3px;
+    border: 0;
 }
 
 .spec-num .num-value {
@@ -372,6 +384,7 @@ dl dd {
     vertical-align: middle;
     margin-right: 4px;
     margin-top: -2px;
+    border: 0;
 }
 
 .detail-cont img {
@@ -395,6 +408,7 @@ dl dd {
     background: rgba(0, 0, 0, 0);
     opacity: 1;
     margin-bottom: 8px;
+    border: 0;
 }
 
 .product-item:last-child {
@@ -402,6 +416,7 @@ dl dd {
 }
 
 .product-item .item-title a{
+    width: 166px;
     height: 15px;
     font-size: 11px;
     font-family: PingFang SC;
@@ -411,7 +426,9 @@ dl dd {
     letter-spacing: 1px;
     opacity: 1;
     display: block;
-
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 
 .product-item .sell-price {
@@ -424,7 +441,6 @@ dl dd {
     letter-spacing: 1px;
     opacity: 1;
     margin-right: 6px;
-
 }
 
 .product-item .orig-price {
