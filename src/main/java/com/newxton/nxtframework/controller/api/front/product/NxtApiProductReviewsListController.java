@@ -30,22 +30,24 @@ public class NxtApiProductReviewsListController {
     public NxtStructApiResult exec(@RequestBody JSONObject jsonParam) {
 
         Long productId = jsonParam.getLong("productId");
-        Integer page = jsonParam.getInteger("page");
-        if (page == null || page < 1){
-            page = 1;
+        Integer offset = jsonParam.getInteger("offset");
+        Integer limit = jsonParam.getInteger("limit");
+        Integer requirePages = jsonParam.getInteger("requirePages");
+
+        if (offset == null || limit == null){
+            return new NxtStructApiResult(54,"缺少：offset、limit");
         }
-
-        int limit = 5;
-        int offset = (page-1)*limit;
-
-        Long count = nxtReviewsService.queryUserReviewsCountByProductId(productId);
 
         List<NxtStructProductReviewsItem> list = nxtProcessReviews.productReviewsItemList(offset,limit,productId);
 
         Map<String,Object> data = new HashMap<>();
+
         data.put("list",list);
-        data.put("page",page);
-        data.put("pageCount",(long)Math.ceil(count / (float)limit));
+
+        if (requirePages != null && requirePages.equals(1)) {
+            Long count = nxtReviewsService.queryUserReviewsCountByProductId(productId);
+            data.put("pages",(long)Math.ceil(count / (float)limit));
+        }
 
         return new NxtStructApiResult(data);
 
