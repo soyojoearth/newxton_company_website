@@ -33,7 +33,7 @@ public class NxtUserCheckTokenAspect {
     @Resource
     private HttpServletRequest request;
 
-    @Pointcut("execution(public * com.newxton.nxtframework.controller.api.front.ucenter..*.*(..)) || execution(public * com.newxton.nxtframework.controller.api.front.orderform..*.*(..))")
+    @Pointcut("execution(public * com.newxton.nxtframework.controller.api.front.ucenter..*.*(..)) || execution(public * com.newxton.nxtframework.controller.api.front.orderform..*.*(..))  || execution(public * com.newxton.nxtframework.controller.api.front.commission..*.*(..))")
     public void pointcut() {
         //这个pointcut里面的Class都需要已登录才能执行
     }

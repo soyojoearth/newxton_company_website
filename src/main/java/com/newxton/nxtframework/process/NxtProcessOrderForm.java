@@ -109,19 +109,12 @@ public class NxtProcessOrderForm {
                 nxtStructOrderForm.setDatelineReceived(orderForm.getDatelineReceived());
                 nxtStructOrderForm.setDatelineReceivedReadable(sdf.format(new Date(orderForm.getDatelineReceived())));
             }
-            //发货后超过60天未退货，或者已经确认收货：Done=true
+            //已经确认收货：Done=true
             if (orderForm.getDatelineReceived() != null){
                 nxtStructOrderForm.setDone(true);
             }
             else {
-                if (!(orderForm.getStatusRefund() > 0) && orderForm.getDatelineDelivery() != null &&
-                        (System.currentTimeMillis() - orderForm.getDatelineDelivery() > 5184000000L)
-                ){//60天
-                    nxtStructOrderForm.setDone(true);
-                }
-                else {
-                    nxtStructOrderForm.setDone(false);
-                }
+                nxtStructOrderForm.setDone(false);
             }
             nxtStructOrderFormList.add(nxtStructOrderForm);
             mapIdToNxtStructOrderForm.put(nxtStructOrderForm.getId(),nxtStructOrderForm);

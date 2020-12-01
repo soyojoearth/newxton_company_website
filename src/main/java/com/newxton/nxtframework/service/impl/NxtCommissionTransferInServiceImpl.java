@@ -3,6 +3,7 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.dao.NxtCommissionTransferInDao;
 import com.newxton.nxtframework.entity.NxtCommissionTransferIn;
 import com.newxton.nxtframework.service.NxtCommissionTransferInService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -76,4 +77,23 @@ public class NxtCommissionTransferInServiceImpl implements NxtCommissionTransfer
     public boolean deleteById(Long id) {
         return this.nxtCommissionTransferInDao.deleteById(id) > 0;
     }
+
+    /**
+     * 根据UserId查询结转中的收益统计（已提交结转申请，等待审核）
+     * @param userId
+     * @return
+     */
+    public Long querySumIsTransferingByUserId(@Param("userId") Long userId){
+        return this.nxtCommissionTransferInDao.querySumIsTransferingByUserId(userId);
+    }
+
+    /**
+     * 根据UserId查询结转被拒绝的的收益统计（已提交结转申请，审核被拒绝）
+     * @param userId
+     * @return
+     */
+    public Long querySumIsTransferRejectedByUserId(@Param("userId") Long userId){
+        return this.nxtCommissionTransferInDao.querySumIsTransferRejectedByUserId(userId);
+    }
+
 }

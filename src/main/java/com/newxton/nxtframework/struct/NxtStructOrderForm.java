@@ -117,7 +117,7 @@ public class NxtStructOrderForm {
     private String datelineReceivedReadable;
 
     /**
-     * 发货后超过60天未退货，或者已经确认收货
+     * 已经确认收货
      */
     private Boolean isDone;
 

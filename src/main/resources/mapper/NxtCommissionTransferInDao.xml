@@ -118,4 +118,20 @@
         delete from nxt_commission_transfer_in where id = #{id}
     </delete>
 
+    <!--根据UserId查询结转中的收益统计（已提交结转申请，等待审核）-->
+    <select id="querySumIsTransferingByUserId" resultType="Long">
+        select
+          sum(amount)
+        from nxt_commission_transfer_in
+        where user_id = #{userId} and status = 0
+    </select>
+
+    <!--根据UserId查询结转被拒绝的的收益统计（已提交结转申请，审核被拒绝）-->
+    <select id="querySumIsTransferRejectedByUserId" resultType="Long">
+        select
+          sum(amount)
+        from nxt_commission_transfer_in
+        where user_id = #{userId} and status = -1
+    </select>
+
 </mapper>

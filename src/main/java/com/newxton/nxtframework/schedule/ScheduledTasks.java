@@ -89,4 +89,42 @@ public class ScheduledTasks {
         nxtAclComponent.cleanCache();
     }
 
+
+    /**
+     * TODO
+     * 订单扫描，自动确认收货
+     */
+    @Scheduled(fixedDelay = 3600000)
+    public void autoConfirmOrderFormReceive() {
+
+        /**
+         * TODO
+         */
+
+        /**
+         * 发货超过这个天数后，自动确认收货
+         */
+        Integer days = 15;
+
+        //1、确认订单
+        //已发货，
+
+    }
+
+    /**
+     * TODO
+     * 佣金检查，自动确认佣金完成
+     */
+    @Scheduled(fixedDelay = 3600000)
+    public void autoConfirmCommissionCompleted() {
+
+        /**
+         * TODO
+         */
+        /**
+         * 确认收货15天后，没有交易纠纷，佣金设置"可结算"
+         */
+
+    }
+
 }

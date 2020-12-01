@@ -1,11 +1,16 @@
 package com.newxton.nxtframework.process;
 
 import com.newxton.nxtframework.entity.NxtCommission;
+import com.newxton.nxtframework.entity.NxtCommissionTransferIn;
 import com.newxton.nxtframework.entity.NxtOrderFormProduct;
+import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.service.NxtCommissionService;
+import com.newxton.nxtframework.service.NxtCommissionTransferInService;
 import com.newxton.nxtframework.service.NxtOrderFormProductService;
+import com.newxton.nxtframework.service.NxtTransactionService;
 import com.newxton.nxtframework.struct.NxtStructUserCommission;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -24,6 +29,62 @@ public class NxtProcessCommission {
 
     @Resource
     private NxtOrderFormProductService nxtOrderFormProductService;
+
+    @Resource
+    private NxtCommissionTransferInService nxtCommissionTransferInService;
+
+    @Resource
+    private NxtTransactionService nxtTransactionService;
+
+    /**
+     * 个人中心--申请结转全部佣金到余额
+     * @param userId
+     */
+    @Transactional
+    public void userCashOut(Long userId) throws NxtException {
+
+        //查询所有已完成交易、且未结转的佣金记录
+        List<NxtCommission> nxtCommissionList = nxtCommissionService.queryAllAllowTransferByUserId(userId);
+
+        //可结转收益总额
+        Long balanceAllowTransfer = 0L;
+        for (NxtCommission nxtCommission : nxtCommissionList) {
+            //未退货退款数量
+            Long quantityNotRefund = nxtCommission.getQuantityDeal() - nxtCommission.getQuantityRefund();
+            //可结转收益
+            balanceAllowTransfer += nxtCommission.getCommissionAmount() * quantityNotRefund;
+            if (quantityNotRefund > 0 && nxtCommission.getCommissionAmount() > 0) {
+                //结转标记
+                nxtCommission.setIsTransfer(1);
+                nxtCommissionService.update(nxtCommission);
+            }
+        }
+
+        if (balanceAllowTransfer <= 0L){
+            throw new NxtException("可结转金额不足");
+        }
+
+        //创建结转记录（然后等待后台管理员审核）
+        NxtCommissionTransferIn nxtCommissionTransferIn = new NxtCommissionTransferIn();
+        nxtCommissionTransferIn.setUserId(userId);
+        nxtCommissionTransferIn.setAmount(balanceAllowTransfer);
+        nxtCommissionTransferIn.setDatelineCreate(System.currentTimeMillis());
+        nxtCommissionTransferIn.setStatus(0);//状态（0等待审核 1通过 -1驳回）
+
+        nxtCommissionTransferInService.insert(nxtCommissionTransferIn);
+
+        //结转id记录
+        for (NxtCommission nxtCommission : nxtCommissionList) {
+            //未退货退款数量
+            Long quantityNotRefund = nxtCommission.getQuantityDeal() - nxtCommission.getQuantityRefund();
+            if (quantityNotRefund > 0 && nxtCommission.getCommissionAmount() > 0) {
+                //结转id
+                nxtCommission.setCommissionTransferInId(nxtCommissionTransferIn.getId());
+                nxtCommissionService.update(nxtCommission);
+            }
+        }
+
+    }
 
     /**
      * 获取用户的收益列表

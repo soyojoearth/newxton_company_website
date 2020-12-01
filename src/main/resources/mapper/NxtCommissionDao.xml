@@ -156,5 +156,20 @@
         limit #{offset}, #{limit}
     </select>
 
+    <!--根据userId查询所有已完成交易、未结转数据-->
+    <select id="queryAllAllowTransferByUserId" resultMap="BaseResultMap">
+        select
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
+        from nxt_commission
+        where user_id = #{userId} and is_transfer = 0 and is_paid = 1 and dateline_end > 0 and (quantity_deal > quantity_refund)
+    </select>
+
+    <!--根据userId查询所有已付款、等待交易完成的佣金记录-->
+    <select id="queryAllWaitDealCompleateByUserId" resultMap="BaseResultMap">
+        select
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
+        from nxt_commission
+        where user_id = #{userId} and is_transfer = 0 and is_paid = 1 and (dateline_end is NULL or dateline_end = 0) and (quantity_deal > quantity_refund)
+    </select>
 
 </mapper>

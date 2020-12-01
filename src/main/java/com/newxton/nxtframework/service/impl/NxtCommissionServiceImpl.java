@@ -99,4 +99,22 @@ public class NxtCommissionServiceImpl implements NxtCommissionService {
         return this.nxtCommissionDao.queryAllByUserIdLimit(offset,limit,userId);
     }
 
+    /**
+     * 根据userId查询所有已完成交易、未结转数据
+     * @param userId
+     * @return
+     */
+    public List<NxtCommission> queryAllAllowTransferByUserId(@Param("userId") Long userId){
+        return this.nxtCommissionDao.queryAllAllowTransferByUserId(userId);
+    }
+
+    /**
+     * 根据userId查询所有已付款、等待交易完成的佣金记录
+     * @param userId
+     * @return
+     */
+    public List<NxtCommission> queryAllWaitDealCompleateByUserId(@Param("userId") Long userId){
+        return this.nxtCommissionDao.queryAllWaitDealCompleateByUserId(userId);
+    }
+
 }
