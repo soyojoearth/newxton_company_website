@@ -25,13 +25,10 @@ import javax.annotation.Resource;
 public class NxtProductDetailController {
 
 
-    private Logger logger = LoggerFactory.getLogger(NxtProductListController.class);
+    private Logger logger = LoggerFactory.getLogger(NxtProductDetailController.class);
 
     @Resource
     NxtApiProductDetailController nxtApiProductDetailController;
-
-    @Resource
-    NxtApiProductReviewsListController nxtApiProductReviewsListController;
 
     @Resource
     NxtApiProductListRecommendController nxtApiProductListRecommendController;
@@ -47,13 +44,6 @@ public class NxtProductDetailController {
         jsonParamProductDetail.put("product_id", productId);
         NxtStructApiResult dataProductDetail = nxtApiProductDetailController.exec(jsonParamProductDetail);
 
-
-        //产品评论
-        JSONObject jsonParamProductReview = new JSONObject();
-        jsonParamProductReview.put("productId", productId);
-        jsonParamProductReview.put("page", page);
-        NxtStructApiResult dataProductReview = nxtApiProductReviewsListController.exec(jsonParamProductReview);
-
         //三款推荐产品
         JSONObject jsonParamRecommendProduct = new JSONObject();
         jsonParamRecommendProduct.put("limit", 3);
@@ -65,9 +55,9 @@ public class NxtProductDetailController {
         NxtStructApiResult dataNewProduct = nxtApiProductListNewController.exec(jsonParamRecommendProduct);
 
         model.addObject("productDetail", dataProductDetail.getResult());
-        model.addObject("productReviews", dataProductReview.getResult());
         model.addObject("productListRecommend", dataRecommendProduct.getResult());
         model.addObject("productListNew", dataNewProduct.getResult());
+        model.addObject("page",page);
 
         if (device.isMobile()) {
             model.setViewName("mobile/product_list");

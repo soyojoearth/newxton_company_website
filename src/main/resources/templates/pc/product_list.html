@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/pc/css/product_list.css}">
     <script th:src="@{/pc/js/jquery-1.8.2.min.js}"></script>
     <script th:src="@{/pc/js/product_list.js}"></script>
+    <script th:src="@{/pc/js/jquery.cookie.js}"></script>
 </head>
 <body>
 <div th:replace="pc/common/header :: header"></div>
@@ -21,7 +22,7 @@
             </div>
             <div class="cate-search">
                 <form action="/product/list" id="search-form" method="get">
-                    <input type="text" class="search-val" name="searchKeyword" value="搜索产品">
+                    <input type="text" class="search-val"  name="searchKeyword" placeholder="搜索产品">
                 </form>
                 <a href="javascript:void(0)" onclick="searchForm()"><img th:src="@{/pc/img/search.png}" alt="" class="search-pic"></a>
             </div>
@@ -82,7 +83,7 @@
                     <li class="item-price">
                         <a th:href="${'/product/detail?productId=' + p.id}" class="sell-price">¥89.09</a>
                         <a th:href="${'/product/detail?productId=' + p.id}" class="orig-price">¥89.09</a>
-                        <a href="javascript:void(0)" class="shop-cart">
+                        <a href="javascript:void(0)" th:onclick="|addShoppingCart(${p.id})|" class="shop-cart">
                             <img th:src="@{/pc/img/buycart-small.png}" alt="" >
                         </a>
                     </li>

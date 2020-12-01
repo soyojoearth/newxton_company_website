@@ -35,3 +35,35 @@ $(document).ready(function () {
 function searchForm(){
     $('#search-form').submit();
 }
+
+function addShoppingCart(product_id){
+    var guest_token = $.cookie('guestToken');
+    var product = {
+        productId:product_id,
+        quantity:1
+    }
+    var param = {
+        product: product,
+        guestToken:guest_token
+    }
+    $.ajax({
+        type: "post",
+        /*headers: {user_id: null,token: null},*/
+        url: "/api/shopping_cart/add_product",
+        data: JSON.stringify(param),
+        contentType:"application/json;charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            if (data.status == 0) {
+                $.cookie('guestToken', data.result.guestToken);
+                alert('添加购物车成功')
+                findUserCart();
+            } else {
+               alert(data.message);
+            }
+        },
+        error: function (data) {
+            alert('系统繁忙，请稍后再试');
+        }
+    });
+}
