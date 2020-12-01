@@ -1,38 +1,57 @@
-package com.newxton.nxtframework.entity;
-
-import java.io.Serializable;
+package com.newxton.nxtframework.struct;
 
 /**
- * (NxtUserAddress)实体类
- *
- * @author makejava
- * @since 2020-12-01 14:53:02
+ * @author soyojo.earth@gmail.com
+ * @time 2020/12/1
+ * @address Shenzhen, China
  */
-public class NxtUserAddress implements Serializable {
-    private static final long serialVersionUID = -47559102538199585L;
-    /**
-    * 收货地址
-    */
-    private Long id;
-    
-    private Long userId;
-    
-    private Long regionCountry;
-    
-    private Long regionProvince;
-    
-    private Long regionCity;
-    
-    private String deliveryAddress;
-    
-    private String deliveryPerson;
-    
-    private String deliveryPhone;
-    
-    private String deliveryPostcode;
-    
-    private Integer isDefault;
+public class NxtStructUserAddress {
 
+    private Long id;
+    /**
+     * 国家id
+     */
+    private Long regionCountry;
+    /**
+     * 国家名字
+     */
+    private String regionCountryName;
+    /**
+     * 省份id
+     */
+    private Long regionProvince;
+    /**
+     * 省份名字
+     */
+    private String regionProvinceName;
+    /**
+     * 城市id
+     */
+    private Long regionCity;
+    /**
+     * 城市名字
+     */
+    private String regionCityName;
+    /**
+     * 详细地址
+     */
+    private String deliveryAddress;
+    /**
+     * 收货人
+     */
+    private String deliveryPerson;
+    /**
+     * 收货人电话
+     */
+    private String deliveryPhone;
+    /**
+     * 邮编
+     */
+    private String deliveryPostcode;
+    /**
+     * 是否默认收货地址
+     */
+    private Boolean isDefault = false;
 
     public Long getId() {
         return id;
@@ -40,14 +59,6 @@ public class NxtUserAddress implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Long getRegionCountry() {
@@ -58,6 +69,14 @@ public class NxtUserAddress implements Serializable {
         this.regionCountry = regionCountry;
     }
 
+    public String getRegionCountryName() {
+        return regionCountryName;
+    }
+
+    public void setRegionCountryName(String regionCountryName) {
+        this.regionCountryName = regionCountryName;
+    }
+
     public Long getRegionProvince() {
         return regionProvince;
     }
@@ -66,12 +85,28 @@ public class NxtUserAddress implements Serializable {
         this.regionProvince = regionProvince;
     }
 
+    public String getRegionProvinceName() {
+        return regionProvinceName;
+    }
+
+    public void setRegionProvinceName(String regionProvinceName) {
+        this.regionProvinceName = regionProvinceName;
+    }
+
     public Long getRegionCity() {
         return regionCity;
     }
 
     public void setRegionCity(Long regionCity) {
         this.regionCity = regionCity;
+    }
+
+    public String getRegionCityName() {
+        return regionCityName;
+    }
+
+    public void setRegionCityName(String regionCityName) {
+        this.regionCityName = regionCityName;
     }
 
     public String getDeliveryAddress() {
@@ -106,12 +141,11 @@ public class NxtUserAddress implements Serializable {
         this.deliveryPostcode = deliveryPostcode;
     }
 
-    public Integer getIsDefault() {
+    public Boolean getIsDefault() {
         return isDefault;
     }
 
-    public void setIsDefault(Integer isDefault) {
+    public void setIsDefault(Boolean isDefault) {
         this.isDefault = isDefault;
     }
-
 }

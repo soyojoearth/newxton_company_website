@@ -1,31 +1,76 @@
-package com.newxton.nxtframework.schedule.task;
+package com.newxton.nxtframework.schedule;
 
 import com.newxton.nxtframework.component.NxtImageTransferComponent;
 import com.newxton.nxtframework.entity.NxtCronjob;
 import com.newxton.nxtframework.service.NxtCronjobService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * @author soyojo.earth@gmail.com
- * @time 2020/10/23
+ * @time 2020/10/8
  * @address Shenzhen, China
+ * Cronjob 自动图片搬运
  */
 @Component
-public class NxtTaskMoveImage {
+public class ScheduledMoveImage {
 
-    private Logger logger = LoggerFactory.getLogger(NxtTaskMoveImage.class);
+    private Logger logger = LoggerFactory.getLogger(ScheduledMoveImage.class);
+
+    private Map<String,Long> lastJobStatusDatelineMap = new HashMap<>();
 
     @Resource
     private NxtCronjobService nxtCronjobService;
 
     @Resource
     private NxtImageTransferComponent nxtImageTransferComponent;
+
+    @Scheduled(fixedDelay = 5000)
+    public void checkCronJob() {
+        //仅查询10分钟之内更新过status的任务
+        NxtCronjob nxtCronjobCondition = new NxtCronjob();
+        nxtCronjobCondition.setJobStatusDateline(System.currentTimeMillis()-600000);
+        List<NxtCronjob> list = nxtCronjobService.queryAllGreaterThanStatusDateline(nxtCronjobCondition);
+        for (NxtCronjob nxtCronjob : list) {
+            //检查、执行Job(阻塞式)
+            this.checkAndRunTask(nxtCronjob);
+        }
+    }
+
+    /**
+     * 检查、执行Job(阻塞式)
+     * @param nxtCronjob
+     */
+    private void checkAndRunTask(NxtCronjob nxtCronjob){
+        String jobKey = nxtCronjob.getJobKey();
+        Integer jobStatus = nxtCronjob.getJobStatus();
+        Long jobStatusDatelne = nxtCronjob.getJobStatusDateline();
+        if (jobKey == null){
+            return;
+        }
+        else {
+            //分发任务
+            if (jobKey.equals("moveLocalImageToQiniu") && jobStatus.equals(1)){
+                //把本地图片移动到七牛云
+                this.moveLocalImageToQiniu();
+            }
+            else if (jobKey.equals("moveQiniuImageToLocal") && jobStatus.equals(1)){
+                //把七牛云图片搬到本地
+                this.moveQiniuImageToLocal();
+            }
+        }
+    }
+
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void moveQiniuImageToLocal() {
@@ -95,6 +140,7 @@ public class NxtTaskMoveImage {
             nxtCronjob.setJobStatusDateline(System.currentTimeMillis());
         }
         else {
+            nxtCronjob.setJobStatus(1);//改回1，下一轮再抢坑
             nxtCronjob.setJobStatusDescription("移动了"+count+"张");
             nxtCronjob.setJobStatusDateline(System.currentTimeMillis());
         }
@@ -102,6 +148,5 @@ public class NxtTaskMoveImage {
         logger.info("moveLocalImageToQiniu Result:"+nxtCronjob.getJobStatusDescription());
 
     }
-
 
 }
