@@ -20,7 +20,7 @@
     <select id="queryById" resultMap="BaseResultMap">
         select
           id, user_id, region_country, region_province, region_city, delivery_address, delivery_person, delivery_phone, delivery_postcode, is_default
-        from nxtframework.nxt_user_address
+        from nxt_user_address
         where id = #{id}
     </select>
 
@@ -28,7 +28,7 @@
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
           id, user_id, region_country, region_province, region_city, delivery_address, delivery_person, delivery_phone, delivery_postcode, is_default
-        from nxtframework.nxt_user_address
+        from nxt_user_address
         limit #{offset}, #{limit}
     </select>
 
@@ -36,7 +36,7 @@
     <select id="queryAll" resultMap="BaseResultMap">
         select
           id, user_id, region_country, region_province, region_city, delivery_address, delivery_person, delivery_phone, delivery_postcode, is_default
-        from nxtframework.nxt_user_address
+        from nxt_user_address
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -73,13 +73,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_user_address(user_id, region_country, region_province, region_city, delivery_address, delivery_person, delivery_phone, delivery_postcode, is_default)
+        insert into nxt_user_address(user_id, region_country, region_province, region_city, delivery_address, delivery_person, delivery_phone, delivery_postcode, is_default)
         values (#{userId}, #{regionCountry}, #{regionProvince}, #{regionCity}, #{deliveryAddress}, #{deliveryPerson}, #{deliveryPhone}, #{deliveryPostcode}, #{isDefault})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update nxtframework.nxt_user_address
+        update nxt_user_address
         <set>
             <if test="userId != null">
                 user_id = #{userId},
@@ -114,14 +114,14 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxtframework.nxt_user_address where id = #{id}
+        delete from nxt_user_address where id = #{id}
     </delete>
 
     <!--根据UserId查询指定行数据-->
     <select id="queryAllByUserIdLimit" resultMap="BaseResultMap">
         select
           id, user_id, region_country, region_province, region_city, delivery_address, delivery_person, delivery_phone, delivery_postcode, is_default
-        from nxtframework.nxt_user_address
+        from nxt_user_address
         where user_id = #{userId}
         order by is_default desc , id desc
         limit #{offset}, #{limit}

@@ -134,4 +134,37 @@ public class NxtUserServiceImpl implements NxtUserService {
         return this.nxtUserDao.selectByIdSet(offset,limit,idList);
     }
 
+    /**
+     * 查询某用户的1级下家列表
+     * @param offset
+     * @param limit
+     * @param inviterUserId
+     * @return
+     */
+    public List<NxtUser> queryAllLevelOneInviteesUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("inviterUserId") Long inviterUserId){
+        return this.nxtUserDao.queryAllLevelOneInviteesUserIdLimit(offset,limit,inviterUserId);
+    }
+
+    /**
+     * 查询某用户的2级下家列表
+     * @param offset
+     * @param limit
+     * @param inviterUserId
+     * @return
+     */
+    public List<NxtUser> queryAllLevelTwoInviteesUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("inviterUserId") Long inviterUserId){
+        return this.nxtUserDao.queryAllLevelTwoInviteesUserIdLimit(offset,limit,inviterUserId);
+    }
+
+    /**
+     * 查询某用户的3级下家列表
+     * @param offset
+     * @param limit
+     * @param inviterUserId
+     * @return
+     */
+    public List<NxtUser> queryAllLevelThreeInviteesUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("inviterUserId") Long inviterUserId){
+        return this.nxtUserDao.queryAllLevelThreeInviteesUserIdLimit(offset,limit,inviterUserId);
+    }
+
 }

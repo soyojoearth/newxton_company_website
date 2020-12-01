@@ -104,5 +104,31 @@ public interface NxtUserDao {
      */
     List<NxtUser> selectByIdSet(@Param("offset") int offset, @Param("limit") int limit, @Param("idList") List<Long> idList);
 
+    /**
+     * 查询某用户的1级下家列表
+     * @param offset
+     * @param limit
+     * @param inviterUserId
+     * @return
+     */
+    List<NxtUser> queryAllLevelOneInviteesUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("inviterUserId") Long inviterUserId);
+
+    /**
+     * 查询某用户的2级下家列表
+     * @param offset
+     * @param limit
+     * @param inviterUserId
+     * @return
+     */
+    List<NxtUser> queryAllLevelTwoInviteesUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("inviterUserId") Long inviterUserId);
+
+    /**
+     * 查询某用户的3级下家列表
+     * @param offset
+     * @param limit
+     * @param inviterUserId
+     * @return
+     */
+    List<NxtUser> queryAllLevelThreeInviteesUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("inviterUserId") Long inviterUserId);
 
 }

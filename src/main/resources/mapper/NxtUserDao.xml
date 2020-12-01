@@ -224,4 +224,31 @@
         limit #{offset}, #{limit}
     </select>
 
+    <!--查询某用户的1级下家列表-->
+    <select id="queryAllLevelOneInviteesUserIdLimit" resultMap="BaseResultMap">
+        select
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+        from nxt_user
+        where inviter_user_id = #{inviterUserId}
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--查询某用户的2级下家列表-->
+    <select id="queryAllLevelTwoInviteesUserIdLimit" resultMap="BaseResultMap">
+        select
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+        from nxt_user
+        where inviter_user_id IN (select id from nxt_user where inviter_user_id = #{inviterUserId})
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--查询某用户的3级下家列表-->
+    <select id="queryAllLevelThreeInviteesUserIdLimit" resultMap="BaseResultMap">
+        select
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+        from nxt_user
+        where inviter_user_id IN (select id from nxt_user where inviter_user_id IN (select id from nxt_user where inviter_user_id = #{inviterUserId}))
+        limit #{offset}, #{limit}
+    </select>
+
 </mapper>
