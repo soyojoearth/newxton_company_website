@@ -3,9 +3,11 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.dao.NxtUserDao;
 import com.newxton.nxtframework.entity.NxtUser;
 import com.newxton.nxtframework.service.NxtUserService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +20,26 @@ import java.util.List;
 public class NxtUserServiceImpl implements NxtUserService {
     @Resource
     private NxtUserDao nxtUserDao;
+
+    /**
+     * 通过email查询
+     *
+     * @param email 用户名
+     * @return 实例对象
+     */
+    public NxtUser queryByEmail(String email){
+        return this.nxtUserDao.queryByEmail(email);
+    }
+
+    /**
+     * 通过phone查询
+     *
+     * @param phone 用户名
+     * @return 实例对象
+     */
+    public NxtUser queryByPhone(String phone){
+        return this.nxtUserDao.queryByPhone(phone);
+    }
 
     /**
      * 通过username查询单条数据
@@ -96,6 +118,53 @@ public class NxtUserServiceImpl implements NxtUserService {
     @Override
     public NxtUser queryByInviteCode(String inviteCode) {
         return this.nxtUserDao.queryByInviteCode(inviteCode);
+    }
+
+    /**
+     * 根据userId列表批量查询user
+     * @param offset
+     * @param limit
+     * @param idList
+     * @return
+     */
+    public List<NxtUser> selectByIdSet(@Param("offset") int offset, @Param("limit") int limit, @Param("idList") List<Long> idList){
+        if (idList.size()==0){
+            return new ArrayList<>();
+        }
+        return this.nxtUserDao.selectByIdSet(offset,limit,idList);
+    }
+
+    /**
+     * 查询某用户的1级下家列表
+     * @param offset
+     * @param limit
+     * @param inviterUserId
+     * @return
+     */
+    public List<NxtUser> queryAllLevelOneInviteesUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("inviterUserId") Long inviterUserId){
+        return this.nxtUserDao.queryAllLevelOneInviteesUserIdLimit(offset,limit,inviterUserId);
+    }
+
+    /**
+     * 查询某用户的2级下家列表
+     * @param offset
+     * @param limit
+     * @param inviterUserId
+     * @return
+     */
+    public List<NxtUser> queryAllLevelTwoInviteesUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("inviterUserId") Long inviterUserId){
+        return this.nxtUserDao.queryAllLevelTwoInviteesUserIdLimit(offset,limit,inviterUserId);
+    }
+
+    /**
+     * 查询某用户的3级下家列表
+     * @param offset
+     * @param limit
+     * @param inviterUserId
+     * @return
+     */
+    public List<NxtUser> queryAllLevelThreeInviteesUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("inviterUserId") Long inviterUserId){
+        return this.nxtUserDao.queryAllLevelThreeInviteesUserIdLimit(offset,limit,inviterUserId);
     }
 
 }

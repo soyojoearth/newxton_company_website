@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtShoppingCartProduct)实体类
  *
  * @author makejava
- * @since 2020-11-20 15:50:04
+ * @since 2020-11-25 21:21:28
  */
 public class NxtShoppingCartProduct implements Serializable {
-    private static final long serialVersionUID = -17603808961619819L;
+    private static final long serialVersionUID = 606728126788431069L;
     /**
     * 购物车里的东西
     */
@@ -31,7 +31,7 @@ public class NxtShoppingCartProduct implements Serializable {
     /**
     * 是否选中（0:否 1:是）
     */
-    private Integer checked;
+    private Integer selected;
 
 
     public Long getId() {
@@ -82,12 +82,12 @@ public class NxtShoppingCartProduct implements Serializable {
         this.dateline = dateline;
     }
 
-    public Integer getChecked() {
-        return checked;
+    public Integer getSelected() {
+        return selected;
     }
 
-    public void setChecked(Integer checked) {
-        this.checked = checked;
+    public void setSelected(Integer selected) {
+        this.selected = selected;
     }
 
 }

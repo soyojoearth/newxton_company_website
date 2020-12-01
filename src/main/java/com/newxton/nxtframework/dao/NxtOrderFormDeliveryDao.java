@@ -79,4 +79,11 @@ public interface NxtOrderFormDeliveryDao {
      */
     int deleteById(Long id);
 
+    /**
+     * 通过orderFormId查询单条
+     * @param orderFormId
+     * @return
+     */
+    NxtOrderFormDelivery queryShippingByOrderFormId(@Param("orderFormId") Long orderFormId);
+
 }

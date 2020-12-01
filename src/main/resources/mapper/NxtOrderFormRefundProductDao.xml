@@ -111,4 +111,16 @@
         delete from nxt_order_form_refund_product where id = #{id}
     </delete>
 
+    <!--根据退款服务单id列表查询指定行数据-->
+    <select id="selectAllByOrderFormRefundIdSet" resultMap="NxtOrderFormRefundProductMap">
+        select
+          id, order_form_product_id, order_form_refund_id, quantity, price_deal, amount_refund
+        from nxt_order_form_refund_product
+        WHERE order_form_refund_id IN
+        <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+
 </mapper>

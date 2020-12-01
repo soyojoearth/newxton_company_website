@@ -58,8 +58,8 @@ public class NxtShoppingCartProductServiceImpl implements NxtShoppingCartProduct
      * @param shoppingCartId
      * @return
      */
-    public List<NxtShoppingCartProduct> queryAllCheckedProductByShoppingCartId(Long shoppingCartId){
-        return this.nxtShoppingCartProductDao.queryAllCheckedProductByShoppingCartId(shoppingCartId);
+    public List<NxtShoppingCartProduct> queryAllSelectedProductByShoppingCartId(Long shoppingCartId){
+        return this.nxtShoppingCartProductDao.queryAllSelectedProductByShoppingCartId(shoppingCartId);
     }
 
     /**

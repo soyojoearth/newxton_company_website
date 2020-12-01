@@ -79,4 +79,25 @@ public interface NxtWithdrawDao {
      */
     int deleteById(Long id);
 
+    /**
+     * 查询某用户已经提现成功的总额
+     * @param userId
+     * @return
+     */
+    Long queryTotalWithdrawSuccessByUserId(@Param("userId") Long userId);
+
+    /**
+     * 查询某用户正在提现的总额
+     * @param userId
+     * @return
+     */
+    Long queryTotalWithdrawingByUserId(@Param("userId") Long userId);
+
+    /**
+     * 查询某用户被拒绝提现的总额
+     * @param userId
+     * @return
+     */
+    Long queryTotalWithdrawRejectedByUserId(@Param("userId") Long userId);
+
 }

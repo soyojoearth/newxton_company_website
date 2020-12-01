@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtOrderFormDelivery;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -52,5 +53,12 @@ public interface NxtOrderFormDeliveryService {
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    /**
+     * 通过orderFormId查询单条
+     * @param orderFormId
+     * @return
+     */
+    NxtOrderFormDelivery queryShippingByOrderFormId(@Param("orderFormId") Long orderFormId);
 
 }

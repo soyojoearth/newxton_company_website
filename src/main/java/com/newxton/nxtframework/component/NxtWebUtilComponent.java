@@ -52,4 +52,24 @@ public class NxtWebUtilComponent {
         return false;
     }
 
+
+    /**
+     * 获取当前域名地址
+     * @return
+     */
+    public String getDomainPath(){
+        String url = "";
+        if (request.getServerPort() != 80 && request.getServerPort() != 443){
+            url = request.getScheme()
+                +"://" + request.getServerName()
+                + ":" +request.getServerPort();
+        }
+        else {
+            url = request.getScheme()
+                    +"://" + request.getServerName();
+        }
+        return url;
+    }
+
+
 }

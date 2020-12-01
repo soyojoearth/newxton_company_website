@@ -6,47 +6,47 @@ import java.io.Serializable;
  * (NxtRecharge)实体类
  *
  * @author makejava
- * @since 2020-11-14 21:45:44
+ * @since 2020-11-23 20:34:35
  */
 public class NxtRecharge implements Serializable {
-    private static final long serialVersionUID = 594562861879043247L;
+    private static final long serialVersionUID = 698842583411524433L;
     /**
-     * 充值表
-     */
+    * 充值表
+    */
     private Long id;
-
+    
     private Long userId;
-
+    
     private Long transactionId;
     /**
-     * 状态（0:正在充值 1:成功 -1:失败）
-     */
+    * 状态（0:正在充值 1:成功 -1:失败）
+    */
     private Integer status;
     /**
-     * 平台（0:银行 1:微信 2:支付宝 3:paypal 888:现金）
-     */
+    * 平台（0:银行 1:微信 2:支付宝 3:paypal 888:现金）
+    */
     private Integer platform;
     /**
-     * 时间
-     */
-    private String dateline;
+    * 时间
+    */
+    private Long dateline;
     /**
-     * 金额（放大100倍）
-     */
+    * 金额（放大100倍）
+    */
     private Long amount;
     /**
-     * 接口通知时间
-     */
+    * 接口通知时间
+    */
     private Long notifyDateline;
     /**
-     * 编号
-     */
+    * 编号
+    */
     private String notifySerialNum;
     /**
-     * 通知数据（json、xml等原始数据）
-     */
+    * 通知数据（json、xml等原始数据）
+    */
     private String notifyData;
-
+    
     private String remark;
 
 
@@ -90,11 +90,11 @@ public class NxtRecharge implements Serializable {
         this.platform = platform;
     }
 
-    public String getDateline() {
+    public Long getDateline() {
         return dateline;
     }
 
-    public void setDateline(String dateline) {
+    public void setDateline(Long dateline) {
         this.dateline = dateline;
     }
 

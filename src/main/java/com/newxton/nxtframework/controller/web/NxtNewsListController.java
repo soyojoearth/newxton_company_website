@@ -1,6 +1,6 @@
 package com.newxton.nxtframework.controller.web;
 
-import com.newxton.nxtframework.controller.api.front.NxtApiNormalNewsListController;
+import com.newxton.nxtframework.controller.api.front.cms.NxtApiNormalNewsListController;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Map;
 
 @Controller

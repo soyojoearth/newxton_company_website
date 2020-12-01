@@ -79,4 +79,11 @@ public interface NxtOrderFormRefundProductDao {
      */
     int deleteById(Long id);
 
+    /**
+     * 根据退款服务单id列表查询指定行数据
+     * @param idList
+     * @return
+     */
+    List<NxtOrderFormRefundProduct> selectAllByOrderFormRefundIdSet(@Param("idList") List<Long> idList);
+
 }

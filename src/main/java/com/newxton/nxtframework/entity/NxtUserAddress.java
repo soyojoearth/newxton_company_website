@@ -6,34 +6,32 @@ import java.io.Serializable;
  * (NxtUserAddress)实体类
  *
  * @author makejava
- * @since 2020-11-14 21:45:49
+ * @since 2020-12-01 14:53:02
  */
 public class NxtUserAddress implements Serializable {
-    private static final long serialVersionUID = -43041326929736589L;
+    private static final long serialVersionUID = -47559102538199585L;
     /**
-     * 收货地址
-     */
+    * 收货地址
+    */
     private Long id;
-
+    
     private Long userId;
-
-    private Long regionLevel0;
-
-    private Long regionLevel1;
-
-    private Long regionLevel2;
-
-    private Long regionLevel3;
-
-    private Long regionLevel4;
-
-    private String regionAddress;
-
+    
+    private Long regionCountry;
+    
+    private Long regionProvince;
+    
+    private Long regionCity;
+    
+    private String deliveryAddress;
+    
     private String deliveryPerson;
-
+    
     private String deliveryPhone;
-
+    
     private String deliveryPostcode;
+    
+    private Integer isDefault;
 
 
     public Long getId() {
@@ -52,52 +50,36 @@ public class NxtUserAddress implements Serializable {
         this.userId = userId;
     }
 
-    public Long getRegionLevel0() {
-        return regionLevel0;
+    public Long getRegionCountry() {
+        return regionCountry;
     }
 
-    public void setRegionLevel0(Long regionLevel0) {
-        this.regionLevel0 = regionLevel0;
+    public void setRegionCountry(Long regionCountry) {
+        this.regionCountry = regionCountry;
     }
 
-    public Long getRegionLevel1() {
-        return regionLevel1;
+    public Long getRegionProvince() {
+        return regionProvince;
     }
 
-    public void setRegionLevel1(Long regionLevel1) {
-        this.regionLevel1 = regionLevel1;
+    public void setRegionProvince(Long regionProvince) {
+        this.regionProvince = regionProvince;
     }
 
-    public Long getRegionLevel2() {
-        return regionLevel2;
+    public Long getRegionCity() {
+        return regionCity;
     }
 
-    public void setRegionLevel2(Long regionLevel2) {
-        this.regionLevel2 = regionLevel2;
+    public void setRegionCity(Long regionCity) {
+        this.regionCity = regionCity;
     }
 
-    public Long getRegionLevel3() {
-        return regionLevel3;
+    public String getDeliveryAddress() {
+        return deliveryAddress;
     }
 
-    public void setRegionLevel3(Long regionLevel3) {
-        this.regionLevel3 = regionLevel3;
-    }
-
-    public Long getRegionLevel4() {
-        return regionLevel4;
-    }
-
-    public void setRegionLevel4(Long regionLevel4) {
-        this.regionLevel4 = regionLevel4;
-    }
-
-    public String getRegionAddress() {
-        return regionAddress;
-    }
-
-    public void setRegionAddress(String regionAddress) {
-        this.regionAddress = regionAddress;
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
     }
 
     public String getDeliveryPerson() {
@@ -122,6 +104,14 @@ public class NxtUserAddress implements Serializable {
 
     public void setDeliveryPostcode(String deliveryPostcode) {
         this.deliveryPostcode = deliveryPostcode;
+    }
+
+    public Integer getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(Integer isDefault) {
+        this.isDefault = isDefault;
     }
 
 }

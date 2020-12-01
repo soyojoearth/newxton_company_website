@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtOrderFormRefundProduct;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -52,5 +53,12 @@ public interface NxtOrderFormRefundProductService {
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    /**
+     * 根据退款服务单id列表查询指定行数据
+     * @param idList
+     * @return
+     */
+    List<NxtOrderFormRefundProduct> selectAllByOrderFormRefundIdSet(@Param("idList") List<Long> idList);
 
 }

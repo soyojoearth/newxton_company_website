@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtOrderForm)实体类
  *
  * @author makejava
- * @since 2020-11-19 11:11:03
+ * @since 2020-11-24 16:19:32
  */
 public class NxtOrderForm implements Serializable {
-    private static final long serialVersionUID = -82365161402288726L;
+    private static final long serialVersionUID = -54942619259008455L;
     /**
     * 订单表
     */
@@ -39,10 +39,6 @@ public class NxtOrderForm implements Serializable {
     */
     private Long amountFinally;
     /**
-    * 收货人地址
-    */
-    private String deliveryAddress;
-    /**
     * 收货人名字
     */
     private String deliveryPerson;
@@ -52,6 +48,10 @@ public class NxtOrderForm implements Serializable {
     private String deliveryProvince;
     
     private String deliveryCity;
+    /**
+    * 收货人地址
+    */
+    private String deliveryAddress;
     /**
     * 收货人联系电话
     */
@@ -73,7 +73,15 @@ public class NxtOrderForm implements Serializable {
     */
     private Long deliveryCost;
     /**
-    * 是否已经支付（0：未支付 1:已支付）（支付失败的还是0）
+    * 单位（千克）放大1000倍
+    */
+    private Long countWeight;
+    /**
+    * 单位（立方米）放大100万倍
+    */
+    private Long countVolume;
+    /**
+    * 是否已经支付（0：未支付 1:已支付 -1:支付失败）
     */
     private Integer statusPaid;
     /**
@@ -92,6 +100,12 @@ public class NxtOrderForm implements Serializable {
     * 成交平台（0:web 1:ios 2:android 3:wx ）可扩展其它数字
     */
     private Integer dealPlatform;
+    
+    private Long datelineDelivery;
+    
+    private Long datelinePaid;
+    
+    private Long datelineReceived;
 
 
     public Long getId() {
@@ -150,14 +164,6 @@ public class NxtOrderForm implements Serializable {
         this.amountFinally = amountFinally;
     }
 
-    public String getDeliveryAddress() {
-        return deliveryAddress;
-    }
-
-    public void setDeliveryAddress(String deliveryAddress) {
-        this.deliveryAddress = deliveryAddress;
-    }
-
     public String getDeliveryPerson() {
         return deliveryPerson;
     }
@@ -188,6 +194,14 @@ public class NxtOrderForm implements Serializable {
 
     public void setDeliveryCity(String deliveryCity) {
         this.deliveryCity = deliveryCity;
+    }
+
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
     }
 
     public String getDeliveryPhone() {
@@ -230,6 +244,22 @@ public class NxtOrderForm implements Serializable {
         this.deliveryCost = deliveryCost;
     }
 
+    public Long getCountWeight() {
+        return countWeight;
+    }
+
+    public void setCountWeight(Long countWeight) {
+        this.countWeight = countWeight;
+    }
+
+    public Long getCountVolume() {
+        return countVolume;
+    }
+
+    public void setCountVolume(Long countVolume) {
+        this.countVolume = countVolume;
+    }
+
     public Integer getStatusPaid() {
         return statusPaid;
     }
@@ -268,6 +298,30 @@ public class NxtOrderForm implements Serializable {
 
     public void setDealPlatform(Integer dealPlatform) {
         this.dealPlatform = dealPlatform;
+    }
+
+    public Long getDatelineDelivery() {
+        return datelineDelivery;
+    }
+
+    public void setDatelineDelivery(Long datelineDelivery) {
+        this.datelineDelivery = datelineDelivery;
+    }
+
+    public Long getDatelinePaid() {
+        return datelinePaid;
+    }
+
+    public void setDatelinePaid(Long datelinePaid) {
+        this.datelinePaid = datelinePaid;
+    }
+
+    public Long getDatelineReceived() {
+        return datelineReceived;
+    }
+
+    public void setDatelineReceived(Long datelineReceived) {
+        this.datelineReceived = datelineReceived;
     }
 
 }

@@ -23,6 +23,10 @@ public class NxtStructShoppingCartProduct {
 	private String picUrl;
 	private String productName;
 
+	private Float productPrice;
+
+	private Boolean selected = true;
+
 	/**
 	 * 比较是不是同一款产品且同样的sku
 	 * @param obj
@@ -47,7 +51,7 @@ public class NxtStructShoppingCartProduct {
 			Collections.sort(another.getSku());
 			for (int i = 0; i < this.sku.size(); i++) {
 				NxtStructShoppingCartProductSku productSku1 = this.sku.get(i);
-				NxtStructShoppingCartProductSku productSku2 = this.sku.get(i);
+				NxtStructShoppingCartProductSku productSku2 = another.getSku().get(i);
 				if (!productSku1.equals(productSku2)){
 					return false;
 				}
@@ -107,4 +111,21 @@ public class NxtStructShoppingCartProduct {
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
+
+	public Float getProductPrice() {
+		return productPrice;
+	}
+
+	public void setProductPrice(Float productPrice) {
+		this.productPrice = productPrice;
+	}
+
+	public Boolean getSelected() {
+		return selected;
+	}
+
+	public void setSelected(Boolean selected) {
+		this.selected = selected;
+	}
+
 }

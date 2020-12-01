@@ -1,6 +1,8 @@
 package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtOrderFormProduct;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -59,5 +61,19 @@ public interface NxtOrderFormProductService {
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    /**
+     * 根据orderFormId列表查询所有
+     * @param idList
+     * @return
+     */
+    List<NxtOrderFormProduct> selectAllByOrderFormIdSet(@Param("idList") List<Long> idList);
+
+    /**
+     * 根据Id列表查询所有
+     * @param idList
+     * @return
+     */
+    List<NxtOrderFormProduct> selectAllByIdSet(@Param("idList") List<Long> idList);
 
 }

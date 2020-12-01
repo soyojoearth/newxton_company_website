@@ -44,7 +44,7 @@ public interface NxtShoppingCartProductDao {
      * @param shoppingCartId
      * @return
      */
-    List<NxtShoppingCartProduct> queryAllCheckedProductByShoppingCartId(Long shoppingCartId);
+    List<NxtShoppingCartProduct> queryAllSelectedProductByShoppingCartId(Long shoppingCartId);
 
     /**
      * 查询指定购物车内所有选中的产品

@@ -183,6 +183,83 @@ public class NxtUploadImageComponent {
         }
     }
 
+    /**
+     * 保存流上传图片
+     * @param bytes
+     * @param fileExt
+     * @return
+     */
+    public Map<String, Object> saveUploadImage(byte[] bytes, String fileExt){
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", 0);
+        result.put("message", "");
+
+        String url_path = null;
+
+        try {
+            if (this.getOssLocation().equals("local")){
+                url_path = this.saveUploadFileLocal(bytes,fileExt);
+            }
+            else if (this.getOssLocation().equals("qiniu")){
+                url_path = this.uploadFileToQiniuYun(bytes,fileExt);
+            }
+        }
+        catch (Exception e){
+            System.out.println("Exception: " + e);
+        }
+
+        /*通常方式：上传文件*/
+        if (url_path == null) {
+            result.put("status", 31);
+            result.put("message", "上传失败");
+            return result;
+        }
+        else {
+
+            String uploadResultFilename = url_path.substring(url_path.lastIndexOf("/") + 1).toLowerCase();
+            String originalFilename = uploadResultFilename;
+
+            String suffix = url_path.substring(url_path.lastIndexOf(".") + 1).toLowerCase();
+
+            NxtUploadfile nxtUploadfile = new NxtUploadfile();
+
+            if (this.getOssLocation().equals("local")){
+                nxtUploadfile.setFileLocation(3);//本地
+            }
+            else if (this.getOssLocation().equals("qiniu")) {
+                nxtUploadfile.setFileLocation(1);//七牛云
+            }
+
+            nxtUploadfile.setCategoryId(0L);
+            nxtUploadfile.setDatelineUpdate(System.currentTimeMillis());
+            nxtUploadfile.setFilenameSaved(uploadResultFilename);
+            nxtUploadfile.setFilenameSource(originalFilename);
+            nxtUploadfile.setFileExt(suffix);
+            nxtUploadfile.setUrlpath(url_path);
+            nxtUploadfile.setFilepath(url_path);
+            nxtUploadfile.setFilesize((long)bytes.length);
+
+            //增加记录
+            NxtUploadfile userCreated = nxtUploadfileService.insert(nxtUploadfile);
+            if (userCreated.getId() == null) {
+                result.put("status", 50);
+                result.put("message", "系统错误");
+            }
+            else {
+                if (this.getOssLocation().equals("qiniu")) {
+                    result.put("url", this.getOssQiniuDomain() + url_path);
+                }
+                else {
+                    result.put("url", url_path);
+                }
+                result.put("id",nxtUploadfile.getId());
+            }
+        }
+        return result;
+    }
+
+
 
     /**
      * 保存Form上传图片

@@ -24,10 +24,6 @@ p {
     opacity: 1;
 }
 
-#header ul a {
-    color: black;
-}
-
 #header img {
     vertical-align: middle;
     border: 0 !important;
@@ -41,7 +37,7 @@ p {
     float: right;
 }
 
-.nav-rec li, .nav-user-opt li {
+.nav-rec > li, .nav-user-opt > li {
     float: left;
     width: 90px;
     height: 60px;
@@ -53,6 +49,10 @@ p {
     letter-spacing: 1px;
     opacity: 1;
     text-align: center;
+}
+
+.nav-rec > li a, .nav-user-opt > li a{
+    color: #1B1B1B;
 }
 
 .nav-rec .nav-logo {
@@ -105,6 +105,27 @@ p {
 
 .nav-user-opt .nav-user-buy {
     width: 40px;
+    position: relative;
+}
+
+.nav-user-opt .nav-user-buy .nav-cart-num{
+    min-width: 13px;
+    height: 13px;
+    line-height: 13px;
+    background: #F3664B;
+    border-radius: 50%;
+    opacity: 1;
+    display: inline-block;
+    position: absolute;
+    left: 21px;
+    top: 17px;
+    color: #FFFFFF;
+    font-family: PingFang SC;
+    font-size: 10px;
+    font-weight: 400;
+    text-align: center;
+    -webkit-transform: scale(0.8);
+    padding: 3px;
 }
 
 .nav-user-opt .nav-user-lr {
@@ -122,4 +143,86 @@ p {
 
 .nav-rec .active {
     display: block !important;
+}
+
+
+.nav-user-buy .nav-cart-list{
+    position: absolute;
+    width: 210px;
+    background: #FFFFFF;
+    border: 1px solid rgba(95, 95, 95, 0.2);
+    opacity: 1;
+    left: -100px;
+    display: none;
+    z-index: 10;
+}
+
+.nav-user-buy .active-cart{
+    display: block;
+}
+
+.nav-cart-list .item-pic img{
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 0, 0, 0);
+    opacity: 1;
+    margin-right: 10px;
+    border: 0;
+}
+
+.nav-cart-list .more-item{
+    margin:12px 8px 13px 8px;
+    clear: both;
+    overflow: hidden;
+}
+
+.nav-cart-list .more-item .item-pic,
+.nav-cart-list .more-item .item-info{
+    float: left;
+}
+
+.nav-cart-list .item-info{
+    width: 124px;
+}
+
+.nav-cart-list .item-info .item-title{
+    height: 14px;
+    font-size: 10px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 14px;
+    color: #1B1B1B;
+    opacity: 1;
+    margin-bottom: 6px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.nav-cart-list .item-info .item-sale{
+    text-align: left;
+    height: 14px;
+    font-size: 10px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 14px;
+    color: #1B1B1B;
+    opacity: 1;
+}
+
+
+.nav-cart-list .nav-look-cart a{
+    width: 65px;
+    height: 21px;
+    background: #014785;
+    line-height: 21px;
+    display: inline-block;
+    font-size: 10px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    opacity: 1;
+    padding:3px 6px;
 }

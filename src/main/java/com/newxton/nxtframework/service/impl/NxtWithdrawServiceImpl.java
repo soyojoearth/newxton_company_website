@@ -3,6 +3,7 @@ package com.newxton.nxtframework.service.impl;
 import com.newxton.nxtframework.dao.NxtWithdrawDao;
 import com.newxton.nxtframework.entity.NxtWithdraw;
 import com.newxton.nxtframework.service.NxtWithdrawService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -76,4 +77,32 @@ public class NxtWithdrawServiceImpl implements NxtWithdrawService {
     public boolean deleteById(Long id) {
         return this.nxtWithdrawDao.deleteById(id) > 0;
     }
+
+    /**
+     * 查询某用户已经提现成功的总额
+     * @param userId
+     * @return
+     */
+    public Long queryTotalWithdrawSuccessByUserId(@Param("userId") Long userId){
+        return this.nxtWithdrawDao.queryTotalWithdrawSuccessByUserId(userId);
+    }
+
+    /**
+     * 查询某用户正在提现的总额
+     * @param userId
+     * @return
+     */
+    public Long queryTotalWithdrawingByUserId(@Param("userId") Long userId){
+        return this.nxtWithdrawDao.queryTotalWithdrawingByUserId(userId);
+    }
+
+    /**
+     * 查询某用户被拒绝提现的总额
+     * @param userId
+     * @return
+     */
+    public Long queryTotalWithdrawRejectedByUserId(@Param("userId") Long userId){
+        return this.nxtWithdrawDao.queryTotalWithdrawRejectedByUserId(userId);
+    }
+
 }

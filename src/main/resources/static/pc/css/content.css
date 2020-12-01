@@ -82,7 +82,8 @@
     opacity: 1;
 }
 
-.goods-item .goods-item-title {
+.goods-item .goods-item-title a{
+    width:248px;
     height: 30px;
     font-size: 21px;
     font-family: PingFang SC;
@@ -91,9 +92,14 @@
     color: #1B1B1B;
     letter-spacing: 1px;
     margin-top: 31px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 
-.goods-item .goods-item-desc {
+.goods-item .goods-item-desc a{
+    width:248px;
     height: 15px;
     font-size: 11px;
     font-family: PingFang SC;
@@ -102,6 +108,10 @@
     color: #1B1B1B;
     letter-spacing: 1px;
     margin-top: 7px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 
 .goods-item .goods-item-view {
@@ -121,6 +131,7 @@
     height: 225px;
     background: rgba(0, 0, 0, 0);
     margin: 26px 0 22px 0;
+    border: 0;
 }
 
 .about-us {
@@ -241,13 +252,15 @@
     background: rgba(0, 0, 0, 0);
     opacity: 1;
     margin-bottom: 16px;
+    border: 0;
 }
 
 .product-item:last-child {
     margin-right: 0;
 }
 
-.product-item .product-item-title {
+.product-item .product-item-title a{
+    width: 190px;
     height: 15px;
     font-size: 11px;
     font-family: PingFang SC;
@@ -256,6 +269,10 @@
     color: #1B1B1B;
     letter-spacing: 1px;
     opacity: 1;
+    display: block;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 
 .product-item .sell-price {
@@ -288,6 +305,7 @@
 .product-item .shop-cart img {
     width: 18px;
     height: 18px;
+    border: 0;
 }
 
 

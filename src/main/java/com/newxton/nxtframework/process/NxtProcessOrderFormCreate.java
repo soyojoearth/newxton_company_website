@@ -68,7 +68,7 @@ public class NxtProcessOrderFormCreate {
     private NxtProcessDeliveryConfig nxtProcessDeliveryConfig;
 
     @Transactional
-    public void exec(NxtStructOrderFromCreate nxtStructOrderFromCreate, Long userId) throws NxtException{
+    public Long exec(NxtStructOrderFromCreate nxtStructOrderFromCreate, Long userId) throws NxtException{
 
         if (nxtStructOrderFromCreate.deliveryCountry == null){
             throw new NxtException("缺少国家");
@@ -116,7 +116,7 @@ public class NxtProcessOrderFormCreate {
         }
 
         //购物车内的已选中产品列表
-        List<NxtShoppingCartProduct> nxtShoppingCartProductList = nxtShoppingCartProductService.queryAllCheckedProductByShoppingCartId(nxtShoppingCart.getId());
+        List<NxtShoppingCartProduct> nxtShoppingCartProductList = nxtShoppingCartProductService.queryAllSelectedProductByShoppingCartId(nxtShoppingCart.getId());
 
         if (nxtShoppingCartProductList.size() == 0){
             throw new NxtException("购物车内没有选中的产品");
@@ -163,7 +163,7 @@ public class NxtProcessOrderFormCreate {
         nxtOrderForm.setDeliveryPhone(nxtStructOrderFromCreate.getDeliveryPhone());
         nxtOrderForm.setDeliveryPostcode(nxtStructOrderFromCreate.getDeliveryPostcode());
 
-        nxtOrderForm.setStatusPaid(0);//是否已经支付（0：未支付 1:已支付）（支付失败的还是0）
+        nxtOrderForm.setStatusPaid(0);//是否已经支付（0：未支付 1:已支付 -1:支付失败）
         nxtOrderForm.setStatusDelivery(0);//发货状态（0:未发货 1:已发货）
         nxtOrderForm.setStatusReviews(0);//0:未评价 1:已评价
         nxtOrderForm.setStatusRefund(0);//退货退款（0:未退货退款，1:出现退货退款情况）（情况具体要见order_form_refund表）
@@ -224,11 +224,16 @@ public class NxtProcessOrderFormCreate {
                     //查询sku对应的产品价格、折扣
                     if (nxtShoppingCartProduct.getSku() != null){
                         NxtProductSkuValuePriceEtc skuValuePriceEtc = this.querySkuValuePriceEtc(nxtShoppingCartProduct);
-                        nxtOrderFormProduct.setProductPrice(skuValuePriceEtc.getSkuValuePrice());
-                        nxtOrderFormProduct.setProductPriceDiscount(skuValuePriceEtc.getSkuValuePriceDiscount());
+                        if (skuValuePriceEtc != null) {
+                            nxtOrderFormProduct.setProductPrice(skuValuePriceEtc.getSkuValuePrice());
+                            nxtOrderFormProduct.setProductPriceDiscount(skuValuePriceEtc.getSkuValuePriceDiscount());
+                        }
+                        else {
+                            throw new NxtException("购物车物品sku与当前产品最新的sku不一致，请移除购物车物品后重新添加");
+                        }
                     }
                     else {
-                        throw new NxtException("购物车的产品缺少sku信息");
+                        throw new NxtException("购物车的物品缺少sku信息");
                     }
                     nxtOrderFormProduct.setProductSku(nxtShoppingCartProduct.getSku());//json
                 }
@@ -395,6 +400,7 @@ public class NxtProcessOrderFormCreate {
 //            nxtShoppingCartProductService.deleteById(nxtShoppingCartProduct.getId());
 //        }
 
+        return nxtOrderForm.getId();
     }
 
     /**
@@ -402,7 +408,7 @@ public class NxtProcessOrderFormCreate {
      * @param nxtShoppingCartProduct
      * @return
      */
-    private NxtProductSkuValuePriceEtc querySkuValuePriceEtc(NxtShoppingCartProduct nxtShoppingCartProduct) throws NxtException{
+    private NxtProductSkuValuePriceEtc querySkuValuePriceEtc(NxtShoppingCartProduct nxtShoppingCartProduct) {
 
         Long skuValueId1 = null;//第1个sku值id
         Long skuValueId2 = null;//第2个sku值id
@@ -452,6 +458,11 @@ public class NxtProcessOrderFormCreate {
             nxtProductSkuValuePriceEtcCondition.setSkuValueId1(skuValueId1);
             nxtProductSkuValuePriceEtcCondition.setSkuValueId2(skuValueId2);
             List<NxtProductSkuValuePriceEtc> nxtProductSkuValuePriceEtcList =nxtProductSkuValuePriceEtcService.queryAll(nxtProductSkuValuePriceEtcCondition);
+            if (nxtProductSkuValuePriceEtcList.size() == 0) {
+                nxtProductSkuValuePriceEtcCondition.setSkuValueId1(skuValueId2);
+                nxtProductSkuValuePriceEtcCondition.setSkuValueId2(skuValueId1);
+                nxtProductSkuValuePriceEtcList = nxtProductSkuValuePriceEtcService.queryAll(nxtProductSkuValuePriceEtcCondition);
+            }
             //第一条就是了
             if (nxtProductSkuValuePriceEtcList.size() > 0){
                 NxtProductSkuValuePriceEtc nxtProductSkuValuePriceEtc = nxtProductSkuValuePriceEtcList.get(0);
@@ -459,7 +470,7 @@ public class NxtProcessOrderFormCreate {
             }
         }
 
-        throw new NxtException("购物车的产品sku信息查询核对出错");
+        return null;
 
     }
 
@@ -479,7 +490,7 @@ public class NxtProcessOrderFormCreate {
         NxtStructDeliveryConfig nxtStructDeliveryConfig = nxtProcessDeliveryConfig.getDeliveryConfigAllDetail(nxtDeliveryConfig);
 
         //购物车内的已选中产品列表
-        List<NxtShoppingCartProduct> nxtShoppingCartProductList = nxtShoppingCartProductService.queryAllCheckedProductByShoppingCartId(nxtShoppingCart.getId());
+        List<NxtShoppingCartProduct> nxtShoppingCartProductList = nxtShoppingCartProductService.queryAllSelectedProductByShoppingCartId(nxtShoppingCart.getId());
 
         Long countQuantity = 0L;
         Long countWeight = 0L;
