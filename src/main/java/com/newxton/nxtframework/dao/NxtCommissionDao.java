@@ -62,4 +62,27 @@ public interface NxtCommissionDao {
      */
     int deleteById(Long id);
 
+    /**
+     * 根据userId查询指定行数据
+     * @param offset
+     * @param limit
+     * @param userId
+     * @return
+     */
+    List<NxtCommission> queryAllByUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("userId") Long userId);
+
+    /**
+     * 根据userId查询所有已完成交易、未结转数据
+     * @param userId
+     * @return
+     */
+    List<NxtCommission> queryAllAllowTransferByUserId(@Param("userId") Long userId);
+
+    /**
+     * 根据userId查询所有已付款、等待交易完成的佣金记录
+     * @param userId
+     * @return
+     */
+    List<NxtCommission> queryAllWaitDealCompleateByUserId(@Param("userId") Long userId);
+
 }

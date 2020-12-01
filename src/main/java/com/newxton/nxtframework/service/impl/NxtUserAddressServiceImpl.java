@@ -1,8 +1,9 @@
 package com.newxton.nxtframework.service.impl;
 
-import com.newxton.nxtframework.dao.NxtUserAddressDao;
 import com.newxton.nxtframework.entity.NxtUserAddress;
+import com.newxton.nxtframework.dao.NxtUserAddressDao;
 import com.newxton.nxtframework.service.NxtUserAddressService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -12,7 +13,7 @@ import java.util.List;
  * (NxtUserAddress)表服务实现类
  *
  * @author makejava
- * @since 2020-11-14 21:45:49
+ * @since 2020-12-01 14:53:05
  */
 @Service("nxtUserAddressService")
 public class NxtUserAddressServiceImpl implements NxtUserAddressService {
@@ -34,7 +35,7 @@ public class NxtUserAddressServiceImpl implements NxtUserAddressService {
      * 查询多条数据
      *
      * @param offset 查询起始位置
-     * @param limit  查询条数
+     * @param limit 查询条数
      * @return 对象列表
      */
     @Override
@@ -76,4 +77,16 @@ public class NxtUserAddressServiceImpl implements NxtUserAddressService {
     public boolean deleteById(Long id) {
         return this.nxtUserAddressDao.deleteById(id) > 0;
     }
+
+    /**
+     * 根据UserId查询指定行数据
+     * @param offset
+     * @param limit
+     * @param userId
+     * @return
+     */
+    public List<NxtUserAddress> queryAllByUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("userId") Long userId){
+        return this.nxtUserAddressDao.queryAllByUserIdLimit(offset,limit,userId);
+    }
+
 }

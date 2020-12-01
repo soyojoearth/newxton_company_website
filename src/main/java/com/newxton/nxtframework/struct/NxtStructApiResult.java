@@ -7,7 +7,7 @@ package com.newxton.nxtframework.struct;
  */
 public class NxtStructApiResult {
 
-    private Integer code = 0;
+    private Integer status = 0;
     private String message = "";
     private Object result = null;
 
@@ -19,17 +19,17 @@ public class NxtStructApiResult {
         this.result = obj;
     }
 
-    public NxtStructApiResult(Integer code, String message){
-        this.code = code;
+    public NxtStructApiResult(Integer status, String message){
+        this.status = status;
         this.message = message;
     }
 
-    public Integer getCode() {
-        return code;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getMessage() {

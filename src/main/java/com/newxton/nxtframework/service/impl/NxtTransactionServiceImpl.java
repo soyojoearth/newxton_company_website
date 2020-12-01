@@ -82,8 +82,20 @@ public class NxtTransactionServiceImpl implements NxtTransactionService {
      * 查询单个用户的余额
      * @return Long
      */
-    public Long queryBalanceCountByUserId(@Param("userId") Long userId){
-        return this.nxtTransactionDao.queryBalanceCountByUserId(userId);
+    public Long queryBalanceSumByUserId(@Param("userId") Long userId){
+        return this.nxtTransactionDao.queryBalanceSumByUserId(userId);
     }
+
+    /**
+     * 查询用户余额变动明细
+     * @param offset
+     * @param limit
+     * @param userId
+     * @return
+     */
+    public List<NxtTransaction> queryAllByUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("userId") Long userId){
+        return this.nxtTransactionDao.queryAllByUserIdLimit(offset,limit,userId);
+    }
+
 
 }

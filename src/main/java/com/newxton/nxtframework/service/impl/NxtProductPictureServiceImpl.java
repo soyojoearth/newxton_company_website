@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,6 +52,9 @@ public class NxtProductPictureServiceImpl implements NxtProductPictureService {
      */
     public List<NxtProductPicture> selectByProductIdSet(@Param("offset") int offset, @Param("limit") int limit,
                                                   @Param("productIdList") List<Long> productIdList){
+        if (productIdList.size() == 0){
+            return new ArrayList<>();
+        }
         return this.nxtProductPictureDao.selectByProductIdSet(offset, limit, productIdList);
     }
 

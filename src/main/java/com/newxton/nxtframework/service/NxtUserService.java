@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtUser;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,6 +12,22 @@ import java.util.List;
  * @since 2020-07-23 09:25:55
  */
 public interface NxtUserService {
+
+    /**
+     * 通过email查询
+     *
+     * @param email 用户名
+     * @return 实例对象
+     */
+    NxtUser queryByEmail(String email);
+
+    /**
+     * 通过phone查询
+     *
+     * @param phone 用户名
+     * @return 实例对象
+     */
+    NxtUser queryByPhone(String phone);
 
     /**
      * 通过username查询
@@ -68,4 +85,41 @@ public interface NxtUserService {
      * @return 实例对象
      */
     NxtUser queryByInviteCode(String inviteCode);
+
+    /**
+     * 根据userId列表批量查询user
+     * @param offset
+     * @param limit
+     * @param idList
+     * @return
+     */
+    List<NxtUser> selectByIdSet(@Param("offset") int offset, @Param("limit") int limit, @Param("idList") List<Long> idList);
+
+    /**
+     * 查询某用户的1级下家列表
+     * @param offset
+     * @param limit
+     * @param inviterUserId
+     * @return
+     */
+    List<NxtUser> queryAllLevelOneInviteesUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("inviterUserId") Long inviterUserId);
+
+    /**
+     * 查询某用户的2级下家列表
+     * @param offset
+     * @param limit
+     * @param inviterUserId
+     * @return
+     */
+    List<NxtUser> queryAllLevelTwoInviteesUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("inviterUserId") Long inviterUserId);
+
+    /**
+     * 查询某用户的3级下家列表
+     * @param offset
+     * @param limit
+     * @param inviterUserId
+     * @return
+     */
+    List<NxtUser> queryAllLevelThreeInviteesUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("inviterUserId") Long inviterUserId);
+
 }

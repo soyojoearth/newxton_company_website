@@ -107,9 +107,8 @@
         delete from nxt_transaction where id = #{id}
     </delete>
 
-
     <!--查询单个用户的余额-->
-    <select id="queryBalanceCountByUserId" resultType="Long">
+    <select id="queryBalanceSumByUserId" resultType="Long">
         select
           sum(amount)
         from nxt_transaction

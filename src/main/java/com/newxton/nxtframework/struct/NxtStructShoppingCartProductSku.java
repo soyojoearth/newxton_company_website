@@ -12,9 +12,19 @@ public class NxtStructShoppingCartProductSku implements Comparable<NxtStructShop
 
     @Override
     public int compareTo(NxtStructShoppingCartProductSku productSku) {
-        char a = this.skuKeyName == null ? 0 : this.skuKeyName.toCharArray()[0];
-        char b = productSku.getSkuKeyName() == null ? 0 : productSku.getSkuKeyName().toCharArray()[0];
-        return  a - b;
+    	int c1 = 0;
+    	if (this.skuKeyName != null){
+			for (char c : this.skuKeyName.toCharArray()) {
+				c1 += c;
+			}
+		}
+		int c2 = 0;
+		if (productSku.getSkuKeyName() != null) {
+			for (char c : productSku.getSkuKeyName().toCharArray()) {
+				c2 += c;
+			}
+		}
+        return  c1 - c2;
     }
 
     public String getSkuKeyName() {

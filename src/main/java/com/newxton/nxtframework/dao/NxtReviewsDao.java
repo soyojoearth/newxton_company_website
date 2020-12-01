@@ -79,4 +79,41 @@ public interface NxtReviewsDao {
      */
     int deleteById(Long id);
 
+    /**
+     * 查询指定产品的评论列表-按时间倒序
+     * @param offset
+     * @param limit
+     * @param productId
+     * @return
+     */
+    List<NxtReviews> queryUserReviewsByProductId(@Param("offset") int offset, @Param("limit") int limit, @Param("productId") Long productId);
+
+    /**
+     * 查询指定产品的用户评论数量
+     * @param productId
+     * @return
+     */
+    Long queryUserReviewsCountByProductId(@Param("productId") Long productId);
+
+    /**
+     * 查询指定根评论的所有回复-按时间asc排序
+     * @param idList
+     * @return
+     */
+    List<NxtReviews> queryReviewsReplyByIdList(@Param("idList") List<Long> idList);
+
+    /**
+     * 查询指定订单的所有评论列表(不含回复)-按时间倒序
+     * @param orderFormId
+     * @return
+     */
+    List<NxtReviews> queryUserReviewsByOrderFormId(@Param("orderFormId") Long orderFormId);
+
+    /**
+     * 查询指定订单物品的根评论
+     * @param orderFormProductId
+     * @return
+     */
+    NxtReviews queryRootReviewsByOrderFormProductId(@Param("orderFormProductId") Long orderFormProductId);
+
 }

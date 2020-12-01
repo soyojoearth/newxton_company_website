@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newxton.nxtframework.dao.NxtUserVerifyDao">
+
+    <resultMap id="BaseResultMap" type="com.newxton.nxtframework.entity.NxtUserVerify">
+        <!--@Table nxt_user_verify-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="phoneOrEmail" column="phone_or_email" jdbcType="VARCHAR"/>
+        <result property="code" column="code" jdbcType="INTEGER"/>
+        <result property="dateline" column="dateline" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, type, phone_or_email, code, dateline, status
+        from nxt_user_verify
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, type, phone_or_email, code, dateline, status
+        from nxt_user_verify
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, type, phone_or_email, code, dateline, status
+        from nxt_user_verify
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="phoneOrEmail != null and phoneOrEmail != ''">
+                and phone_or_email = #{phoneOrEmail}
+            </if>
+            <if test="code != null">
+                and code = #{code}
+            </if>
+            <if test="dateline != null">
+                and dateline = #{dateline}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into nxt_user_verify(type, phone_or_email, code, dateline, status)
+        values (#{type}, #{phoneOrEmail}, #{code}, #{dateline}, #{status})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update nxt_user_verify
+        <set>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="phoneOrEmail != null and phoneOrEmail != ''">
+                phone_or_email = #{phoneOrEmail},
+            </if>
+            <if test="code != null">
+                code = #{code},
+            </if>
+            <if test="dateline != null">
+                dateline = #{dateline},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from nxt_user_verify where id = #{id}
+    </delete>
+
+    <!--根据phoneOrEmail查询最近的那个验证码-->
+    <select id="queryLastByPhoneOrEmail" resultMap="BaseResultMap">
+        select
+          id, type, phone_or_email, code, dateline, status
+        from nxt_user_verify
+        where phone_or_email = #{phoneOrEmail}
+        order by id desc limit 1
+    </select>
+
+</mapper>

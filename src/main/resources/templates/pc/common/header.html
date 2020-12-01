@@ -1,0 +1,67 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div id="header" th:fragment="header">
+    <div class="nav-l">
+        <ul class="nav-rec">
+            <li class="nav-logo"><a href="/"><img th:src="@{/pc/img/logo.jpg}" alt=""></a></li>
+            <li class="nav-title"><a href="/">首页</a></li>
+            <li class="nav-title"><a href="/product/list">产品</a></li>
+            <li class="nav-title"><a href="">资讯</a></li>
+            <li class="nav-bar nav-title">
+                <div>
+                    <a href="">关于</a>
+                    <img th:src="@{/pc/img/icon-down.jpg}" alt="">
+                    <div class="nav-bar-bd"></div>
+                </div>
+                <div class="nav-about">
+                    <a href="#" class="nav-about-d">关于我们</a>
+                    <a href="#" class="nav-about-d">联系我们</a>
+                    <a href="#" class="nav-about-d">购买指南</a>
+                    <a href="#" class="nav-about-d">条款声明</a>
+                    <a href="#" class="nav-about-d">隐私政策</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="nav-r">
+        <ul class="nav-user-opt">
+            <li class="nav-user-buy">
+                <div class="nav-cart-msg">
+                    <a href="/ucenter/#/cart">
+                        <img th:src="@{/pc/img/icon-buycart.jpg}" alt="">
+                        <span class="nav-cart-num">0</span>
+                    </a>
+                </div>
+                <div class="nav-cart-list"></div>
+            </li>
+            <li class="nav-user-lr"><a href="">登录/注册</a></li>
+        </ul>
+    </div>
+    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/header.css}">
+    <script  th:src="@{/pc/js/header.js}" ></script>
+    <script  th:src="@{/pc/js/jsrender.js}" ></script>
+
+    <script type="text/x-jsrender" id="cartTemp">
+        <ul class="nav-more-list">
+            {{for data}}
+                <li class="more-item">
+                    <a href="/product/detail?productId={{:productId}}">
+                        <div class="item-pic">
+                            <img src="{{:picUrl}}?imageView2/1/w/60/h/60/q/75" alt="">
+                        </div>
+                        <div class="item-info">
+                            <p class="item-title">{{:productName}}</p>
+                            <p class="item-sale">
+                                <span class="item-price">¥{{:productPrice}}</span>
+                                <span class="item-num">（{{:quantity}}件）</span>
+                            </p>
+                        </div>
+                    </a>
+               </li>
+            {{/for}}
+        </ul>
+        <div class="nav-look-cart">
+           <a href="/ucenter/#/cart">查看购物车</a>
+        </div>
+    </script>
+</div>
+</html>

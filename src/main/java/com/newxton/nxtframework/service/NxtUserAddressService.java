@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtUserAddress;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * (NxtUserAddress)表服务接口
  *
  * @author makejava
- * @since 2020-11-14 21:45:49
+ * @since 2020-12-01 14:53:04
  */
 public interface NxtUserAddressService {
 
@@ -24,7 +25,7 @@ public interface NxtUserAddressService {
      * 查询多条数据
      *
      * @param offset 查询起始位置
-     * @param limit  查询条数
+     * @param limit 查询条数
      * @return 对象列表
      */
     List<NxtUserAddress> queryAllByLimit(int offset, int limit);
@@ -52,5 +53,15 @@ public interface NxtUserAddressService {
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    /**
+     * 根据UserId查询指定行数据
+     * @param offset
+     * @param limit
+     * @param userId
+     * @return
+     */
+    List<NxtUserAddress> queryAllByUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("userId") Long userId);
+
 
 }

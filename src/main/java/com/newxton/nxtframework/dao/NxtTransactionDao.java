@@ -84,7 +84,15 @@ public interface NxtTransactionDao {
      * 查询单个用户的余额
      * @return Long
      */
-    Long queryBalanceCountByUserId(@Param("userId") Long userId);
+    Long queryBalanceSumByUserId(@Param("userId") Long userId);
 
+    /**
+     * 查询用户余额变动明细
+     * @param offset
+     * @param limit
+     * @param userId
+     * @return
+     */
+    List<NxtTransaction> queryAllByUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("userId") Long userId);
 
 }

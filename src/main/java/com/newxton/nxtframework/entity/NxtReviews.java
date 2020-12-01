@@ -6,32 +6,36 @@ import java.io.Serializable;
  * (NxtReviews)实体类
  *
  * @author makejava
- * @since 2020-11-14 21:45:45
+ * @since 2020-11-23 10:43:37
  */
 public class NxtReviews implements Serializable {
-    private static final long serialVersionUID = 588829151304728628L;
+    private static final long serialVersionUID = -77735876525324745L;
     /**
-     * 购买评论
-     */
+    * 购买评论
+    */
     private Long id;
     /**
-     * 0:用户评 1:管理员回复
-     */
+    * 0:用户评 1:管理员回复
+    */
     private Integer originType;
     /**
-     * 用户或管理员id
-     */
+    * 用户或管理员id
+    */
     private Long userId;
-
+    
     private Long productId;
-
+    
     private Long orderFormId;
-
+    
     private Long orderFormProductId;
-
+    
     private Long dateline;
-
+    
     private String content;
+    /**
+    * 根评论id
+    */
+    private Long parentId;
 
 
     public Long getId() {
@@ -96,6 +100,14 @@ public class NxtReviews implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
 }

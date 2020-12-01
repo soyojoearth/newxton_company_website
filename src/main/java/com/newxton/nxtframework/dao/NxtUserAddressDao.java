@@ -2,14 +2,13 @@ package com.newxton.nxtframework.dao;
 
 import com.newxton.nxtframework.entity.NxtUserAddress;
 import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 
 /**
  * (NxtUserAddress)表数据库访问层
  *
  * @author makejava
- * @since 2020-11-14 21:45:49
+ * @since 2020-12-01 14:53:03
  */
 public interface NxtUserAddressDao {
 
@@ -25,7 +24,7 @@ public interface NxtUserAddressDao {
      * 查询指定行数据
      *
      * @param offset 查询起始位置
-     * @param limit  查询条数
+     * @param limit 查询条数
      * @return 对象列表
      */
     List<NxtUserAddress> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
@@ -48,22 +47,6 @@ public interface NxtUserAddressDao {
     int insert(NxtUserAddress nxtUserAddress);
 
     /**
-     * 批量新增数据（MyBatis原生foreach方法）
-     *
-     * @param entities List<NxtUserAddress> 实例对象列表
-     * @return 影响行数
-     */
-    int insertBatch(@Param("entities") List<NxtUserAddress> entities);
-
-    /**
-     * 批量新增或按主键更新数据（MyBatis原生foreach方法）
-     *
-     * @param entities List<NxtUserAddress> 实例对象列表
-     * @return 影响行数
-     */
-    int insertOrUpdateBatch(@Param("entities") List<NxtUserAddress> entities);
-
-    /**
      * 修改数据
      *
      * @param nxtUserAddress 实例对象
@@ -78,5 +61,14 @@ public interface NxtUserAddressDao {
      * @return 影响行数
      */
     int deleteById(Long id);
+
+    /**
+     * 根据UserId查询指定行数据
+     * @param offset
+     * @param limit
+     * @param userId
+     * @return
+     */
+    List<NxtUserAddress> queryAllByUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("userId") Long userId);
 
 }

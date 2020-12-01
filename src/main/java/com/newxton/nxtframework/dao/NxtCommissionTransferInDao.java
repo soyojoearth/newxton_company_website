@@ -79,4 +79,18 @@ public interface NxtCommissionTransferInDao {
      */
     int deleteById(Long id);
 
+    /**
+     * 根据UserId查询结转中的收益统计（已提交结转申请，等待审核）
+     * @param userId
+     * @return
+     */
+    Long querySumIsTransferingByUserId(@Param("userId") Long userId);
+
+    /**
+     * 根据UserId查询结转被拒绝的的收益统计（已提交结转申请，审核被拒绝）
+     * @param userId
+     * @return
+     */
+    Long querySumIsTransferRejectedByUserId(@Param("userId") Long userId);
+
 }

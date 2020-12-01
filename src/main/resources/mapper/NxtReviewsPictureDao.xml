@@ -85,4 +85,25 @@
         delete from nxt_reviews_picture where id = #{id}
     </delete>
 
+    <!--根据reviewsId列表批量查询-->
+    <select id="selectByReviewsIdSet" resultMap="NxtReviewsPictureMap">
+        SELECT
+        id, reviews_id, uploadfile_id
+        from nxt_reviews_picture
+        WHERE reviews_id IN
+        <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--根据uploadFileId查询单个-->
+    <select id="queryByUploadFileId" resultMap="NxtReviewsPictureMap">
+        select
+        id, reviews_id, uploadfile_id
+        from nxt_reviews_picture
+        where uploadfile_id = #{uploadFileId}
+        limit 1
+    </select>
+
 </mapper>
