@@ -23,9 +23,9 @@ import java.util.*;
  * Cronjob 系统初始化，检查默认配置
  */
 @Component
-public class ScheduledSystemInit {
+public class CronInitConfig {
 
-    private Logger logger = LoggerFactory.getLogger(ScheduledSystemInit.class);
+    private Logger logger = LoggerFactory.getLogger(CronInitConfig.class);
 
     @Resource
     private NxtUtilComponent nxtUtilComponent;
@@ -40,32 +40,16 @@ public class ScheduledSystemInit {
     private NxtAclUserActionService nxtAclUserActionService;
 
     @Resource
-    private NxtSettingService nxtSettingService;
-
-    @Resource
     private NxtWebPageService nxtWebPageService;
-
-    @Resource
-    private NxtBannerService nxtBannerService;
-
-    @Resource
-    private NxtGlobalSettingComponent nxtGlobalSettingComponent;
 
     @Scheduled(initialDelay = 1000, fixedRate = Long.MAX_VALUE)
     public void exec() {
-
-        //检查acl_action
+        //检查&初始化acl_action
         this.checkAndInitAclAction();
-
         //检查&创建 admin 账户 & 赋予 所有管理权限
         this.checkAndInitAdminUser();
-
         //检查&初始化默认系统配置
         this.checkAndInitSystemConfig();
-
-        //检查&初始化默认系统配置
-        this.checkAndInitBannerData();
-
     }
 
     /**
@@ -157,46 +141,28 @@ public class ScheduledSystemInit {
      */
     private void checkAndInitSystemConfig(){
 
-        NxtWebPage nxtWebPage1 = nxtWebPageService.queryByKey("about_us");
-        if (nxtWebPage1 == null){
-            nxtWebPage1 = new NxtWebPage();
-            nxtWebPage1.setDatelineUpdate(System.currentTimeMillis());
-            nxtWebPage1.setWebKey("about_us");
-            nxtWebPage1.setWebTitle("关于我们");
-            nxtWebPage1.setContentTitle("关于我们");
-            nxtWebPage1.setContentDetail("");
-            nxtWebPageService.insert(nxtWebPage1);
+        NxtWebPage nxtWebPageAboutUs = nxtWebPageService.queryByKey("about_us");
+        if (nxtWebPageAboutUs == null){
+            nxtWebPageAboutUs = new NxtWebPage();
+            nxtWebPageAboutUs.setDatelineUpdate(System.currentTimeMillis());
+            nxtWebPageAboutUs.setWebKey("about_us");
+            nxtWebPageAboutUs.setWebTitle("关于我们");
+            nxtWebPageAboutUs.setContentTitle("关于我们");
+            nxtWebPageAboutUs.setContentDetail("");
+            nxtWebPageService.insert(nxtWebPageAboutUs);
         }
 
-        NxtWebPage nxtWebPage2 = nxtWebPageService.queryByKey("join_us");
-        if (nxtWebPage2 == null){
-            nxtWebPage2 = new NxtWebPage();
-            nxtWebPage2.setDatelineUpdate(System.currentTimeMillis());
-            nxtWebPage2.setWebKey("join_us");
-            nxtWebPage2.setWebTitle("加入我们");
-            nxtWebPage2.setContentTitle("加入我们");
-            nxtWebPage2.setContentDetail("");
-            nxtWebPageService.insert(nxtWebPage2);
+        NxtWebPage nxtWebPageJoinUs = nxtWebPageService.queryByKey("join_us");
+        if (nxtWebPageJoinUs == null){
+            nxtWebPageJoinUs = new NxtWebPage();
+            nxtWebPageJoinUs.setDatelineUpdate(System.currentTimeMillis());
+            nxtWebPageJoinUs.setWebKey("join_us");
+            nxtWebPageJoinUs.setWebTitle("加入我们");
+            nxtWebPageJoinUs.setContentTitle("加入我们");
+            nxtWebPageJoinUs.setContentDetail("");
+            nxtWebPageService.insert(nxtWebPageJoinUs);
         }
 
     }
-
-    private void checkAndInitBannerData(){
-
-       List<NxtBanner> nxtBannerList = nxtBannerService.queryAll(new NxtBanner());
-
-       if (nxtBannerList.size() == 0){
-
-           NxtBanner nxtBanner = new NxtBanner();
-           nxtBanner.setLocationName("首页");
-           nxtBanner.setClickUrl("#");
-           nxtBanner.setUploadfileId(1L);
-
-           nxtBannerService.insert(nxtBanner);
-
-       }
-
-    }
-
 
 }

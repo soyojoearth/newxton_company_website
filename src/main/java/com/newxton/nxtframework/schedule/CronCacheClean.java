@@ -1,5 +1,6 @@
 package com.newxton.nxtframework.schedule;
 
+import com.newxton.nxtframework.component.NxtAclComponent;
 import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
 import com.newxton.nxtframework.service.NxtCronjobService;
 import org.slf4j.Logger;
@@ -16,12 +17,12 @@ import java.util.Map;
  * @author soyojo.earth@gmail.com
  * @time 2020/10/8
  * @address Shenzhen, China
- * Cronjob 分销佣金
+ * Cronjob 缓存清理
  */
 @Component
-public class ScheduledCommission {
+public class CronCacheClean {
 
-    private Logger logger = LoggerFactory.getLogger(ScheduledCommission.class);
+    private Logger logger = LoggerFactory.getLogger(CronCacheClean.class);
 
     private Map<String,Long> lastJobStatusDatelineMap = new HashMap<>();
 
@@ -31,20 +32,19 @@ public class ScheduledCommission {
     @Resource
     private NxtGlobalSettingComponent nxtGlobalSettingComponent;
 
-    /**
-     * TODO
-     * 佣金检查，自动确认佣金完成
-     */
-    @Scheduled(fixedDelay = 3600000)
-    public void autoConfirmCommissionCompleted() {
+    @Resource
+    private NxtAclComponent nxtAclComponent;
 
-        /**
-         * TODO
-         */
-        /**
-         * 确认收货15天后，没有交易纠纷，佣金设置"可结算"
-         */
+    @Scheduled(fixedDelay = 15000)
+    public void cleanSettingCache() {
+        //15秒清理一次Setting缓存
+        nxtGlobalSettingComponent.cleanCache();
+    }
 
+    @Scheduled(fixedDelay = 15000)
+    public void cleanAclCache() {
+        //15秒清理一次ACL缓存
+        nxtAclComponent.cleanCache();
     }
 
 }
