@@ -40,7 +40,7 @@ public class NxtApiUserEmailUpdateVerifyCodeController {
             return new NxtStructApiResult(54,"请提供email");
         }
 
-        //-1：修改绑定 1：绑定账户 2：找回密码 3：提现验证
+        //-1：解除绑定 1：绑定账户 2：找回密码 3：提现验证
 
         try {
             //发送新email验证码

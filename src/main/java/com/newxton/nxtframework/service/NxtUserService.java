@@ -122,4 +122,18 @@ public interface NxtUserService {
      */
     List<NxtUser> queryAllLevelThreeInviteesUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("inviterUserId") Long inviterUserId);
 
+    /**
+     * 解绑用户手机号
+     * @param id
+     * @return NxtUser
+     */
+    NxtUser removePhoneById(@Param("id") Long id);
+
+    /**
+     * 解绑用户Email
+     * @param id
+     * @return NxtUser
+     */
+    NxtUser removeEmailById(@Param("id") Long id);
+
 }

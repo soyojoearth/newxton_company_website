@@ -53,7 +53,7 @@ public class NxtApiUserPhoneUpdateController {
         }
         if (!(
                 nxtUserVerify.getStatus().equals(0) &&
-                nxtUserVerify.getType().equals(1) && //-1：修改绑定 1：绑定账户 2：找回密码 3：提现验证
+                nxtUserVerify.getType().equals(1) && //-1：解除绑定 1：绑定账户 2：找回密码 3：提现验证
                 nxtUserVerify.getCode().equals(verifyCode) &&
                 nxtUserVerify.getDateline() + 1800000 > System.currentTimeMillis()
         )){

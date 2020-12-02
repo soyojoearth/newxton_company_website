@@ -167,4 +167,24 @@ public class NxtUserServiceImpl implements NxtUserService {
         return this.nxtUserDao.queryAllLevelThreeInviteesUserIdLimit(offset,limit,inviterUserId);
     }
 
+    /**
+     * 解绑用户手机号
+     * @param id
+     * @return NxtUser
+     */
+    public NxtUser removePhoneById(@Param("id") Long id){
+        this.nxtUserDao.removePhoneById(id);
+        return this.queryById(id);
+    }
+
+    /**
+     * 解绑用户Email
+     * @param id
+     * @return NxtUser
+     */
+    public NxtUser removeEmailById(@Param("id") Long id){
+        this.nxtUserDao.removeEmailById(id);
+        return this.queryById(id);
+    }
+
 }
