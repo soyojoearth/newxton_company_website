@@ -29,14 +29,20 @@ public class NxtApiShoppingCartDetailController {
     public NxtStructApiResult exec(@RequestHeader(value = "user_id", required = false) Long userId,
                                    @RequestBody JSONObject jsonParam) {
 
+        String guestToken = jsonParam.getString("guestToken");
+
         NxtShoppingCart nxtShoppingCart;
 
         if (userId != null) {
             //查询已登录用户购物车
             nxtShoppingCart = nxtShoppingCartService.queryByUserId(userId);
+            //检查合并购物车
+            if (guestToken != null){
+                nxtProcessShoppingCart.mergeGuestShoppingCartToUser(guestToken,userId);
+                nxtShoppingCart = nxtShoppingCartService.queryByUserId(userId);
+            }
         } else {
             //查询匿名用户购物车
-            String guestToken = jsonParam.getString("guestToken");
             nxtShoppingCart = nxtShoppingCartService.queryByToken(guestToken);
         }
 

@@ -16,12 +16,12 @@ import java.util.Map;
  * @author soyojo.earth@gmail.com
  * @time 2020/10/8
  * @address Shenzhen, China
- * Cronjob 订单
+ * Cronjob 分销佣金
  */
 @Component
-public class ScheduledOrderForm {
+public class CronCommission {
 
-    private Logger logger = LoggerFactory.getLogger(ScheduledOrderForm.class);
+    private Logger logger = LoggerFactory.getLogger(CronCommission.class);
 
     private Map<String,Long> lastJobStatusDatelineMap = new HashMap<>();
 
@@ -31,25 +31,19 @@ public class ScheduledOrderForm {
     @Resource
     private NxtGlobalSettingComponent nxtGlobalSettingComponent;
 
-
     /**
      * TODO
-     * 订单扫描，自动确认收货（每隔3600秒执行一次）
+     * 佣金检查，自动确认佣金完成
      */
     @Scheduled(fixedDelay = 3600000)
-    public void autoConfirmOrderFormReceive() {
+    public void autoConfirmCommissionCompleted() {
 
         /**
          * TODO
          */
-
         /**
-         * 发货超过这个天数后，自动确认收货
+         * 确认收货15天后，没有交易纠纷，佣金设置"可结算"
          */
-        Integer days = 15;
-
-        //1、确认订单
-        //已发货，
 
     }
 

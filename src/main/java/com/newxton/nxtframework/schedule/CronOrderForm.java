@@ -1,6 +1,5 @@
 package com.newxton.nxtframework.schedule;
 
-import com.newxton.nxtframework.component.NxtAclComponent;
 import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
 import com.newxton.nxtframework.service.NxtCronjobService;
 import org.slf4j.Logger;
@@ -17,12 +16,12 @@ import java.util.Map;
  * @author soyojo.earth@gmail.com
  * @time 2020/10/8
  * @address Shenzhen, China
- * Cronjob 缓存清理
+ * Cronjob 订单
  */
 @Component
-public class ScheduledCacheClean {
+public class CronOrderForm {
 
-    private Logger logger = LoggerFactory.getLogger(ScheduledCacheClean.class);
+    private Logger logger = LoggerFactory.getLogger(CronOrderForm.class);
 
     private Map<String,Long> lastJobStatusDatelineMap = new HashMap<>();
 
@@ -32,19 +31,26 @@ public class ScheduledCacheClean {
     @Resource
     private NxtGlobalSettingComponent nxtGlobalSettingComponent;
 
-    @Resource
-    private NxtAclComponent nxtAclComponent;
 
-    @Scheduled(fixedDelay = 15000)
-    public void cleanSettingCache() {
-        //15秒清理一次Setting缓存
-        nxtGlobalSettingComponent.cleanCache();
-    }
+    /**
+     * TODO
+     * 订单扫描，自动确认收货（每隔3600秒执行一次）
+     */
+    @Scheduled(fixedDelay = 3600000)
+    public void autoConfirmOrderFormReceive() {
 
-    @Scheduled(fixedDelay = 15000)
-    public void cleanAclCache() {
-        //15秒清理一次ACL缓存
-        nxtAclComponent.cleanCache();
+        /**
+         * TODO
+         */
+
+        /**
+         * 发货超过这个天数后，自动确认收货
+         */
+        Integer days = 15;
+
+        //1、确认订单
+        //已发货，
+
     }
 
 }

@@ -1,20 +1,19 @@
 package com.newxton.nxtframework.process;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.service.*;
 import com.newxton.nxtframework.struct.NxtStructShoppingCart;
+import com.newxton.nxtframework.struct.NxtStructShoppingCartPOST;
 import com.newxton.nxtframework.struct.NxtStructShoppingCartProduct;
 import com.newxton.nxtframework.struct.NxtStructShoppingCartProductSku;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author soyojo.earth@gmail.com
@@ -23,6 +22,9 @@ import java.util.Map;
  */
 @Component
 public class NxtProcessShoppingCart {
+
+    @Resource
+    private NxtShoppingCartService nxtShoppingCartService;
 
     @Resource
     private NxtShoppingCartProductService nxtShoppingCartProductService;
@@ -39,8 +41,6 @@ public class NxtProcessShoppingCart {
     public NxtStructShoppingCart allDetail(NxtShoppingCart nxtShoppingCart) throws NxtException{
 
         Gson gson = new Gson();
-
-
 
         // 查询当前用户当前购物车产品信息
         NxtStructShoppingCart nxtStructShoppingCart = new NxtStructShoppingCart();
@@ -136,6 +136,94 @@ public class NxtProcessShoppingCart {
 
 
         return nxtStructShoppingCart;
+
+    }
+
+    /**
+     * 检查、合并匿名购物车到已登录用户
+     */
+    public void mergeGuestShoppingCartToUser(String guestToken,Long userId){
+
+        //查询匿名用户购物车
+        NxtShoppingCart nxtShoppingCartGuest = nxtShoppingCartService.queryByToken(guestToken);
+        if (nxtShoppingCartGuest.getUserId() != null){
+            return;
+        }
+
+        Gson gson = new Gson();
+
+        //查询已登录用户购物车
+        NxtShoppingCart nxtShoppingCart = nxtShoppingCartService.queryByUserId(userId);
+
+        if (nxtShoppingCart == null){
+            //直接把匿名购物车给这个登录用户
+            nxtShoppingCartGuest.setUserId(userId);
+            nxtShoppingCartService.update(nxtShoppingCartGuest);
+            return;
+        }
+
+        //将匿名购物车里的东西，都合并到已登录购物车中
+        List<NxtShoppingCartProduct> nxtShoppingCartProductListGuest = nxtShoppingCartProductService.queryAllProductByShoppingCartId(nxtShoppingCartGuest.getId());
+        List<NxtShoppingCartProduct> nxtShoppingCartProductList = nxtShoppingCartProductService.queryAllProductByShoppingCartId(nxtShoppingCart.getId());
+
+        //合并之前先把已登录购物车全部取消勾选
+        for (NxtShoppingCartProduct item : nxtShoppingCartProductList) {
+            if (item.getSelected().equals(1)) {
+                item.setSelected(0);
+                nxtShoppingCartProductService.update(item);
+            }
+        }
+
+        //开始合并，合并后只勾选匿名购物车已勾选的物品
+        for (NxtShoppingCartProduct itemGuest : nxtShoppingCartProductListGuest) {
+
+            NxtStructShoppingCartProduct cartProductGuest = new NxtStructShoppingCartProduct();
+            cartProductGuest.setProductId(itemGuest.getProductId());
+            try {
+                List<NxtStructShoppingCartProductSku> skuList = gson.fromJson(itemGuest.getSku(),new TypeToken<List<NxtStructShoppingCartProductSku>>(){}.getType());
+                cartProductGuest.setSku(skuList);
+            }
+            catch (Exception e){
+                throw new NxtException("merge匿名购物车suk查询解析错误");
+            }
+
+            //在已登录购物车里面找找有没有物品和该匿名购物车物品一样
+            NxtShoppingCartProduct sameProduct = null;
+            for (NxtShoppingCartProduct item : nxtShoppingCartProductList) {
+                NxtStructShoppingCartProduct cartProduct = new NxtStructShoppingCartProduct();
+                cartProduct.setProductId(item.getProductId());
+                try {
+                    List<NxtStructShoppingCartProductSku> skuList = gson.fromJson(item.getSku(),new TypeToken<List<NxtStructShoppingCartProductSku>>(){}.getType());
+                    cartProduct.setSku(skuList);
+                }
+                catch (Exception e){
+                    throw new NxtException("merge匿名购物车suk查询解析错误");
+                }
+                if (cartProduct.isSameProductWithSku(cartProductGuest)){
+                    sameProduct = item;
+                }
+            }
+
+            if (sameProduct != null){
+                //判断数量是不是需要更新
+                if (sameProduct.getQuantity() < itemGuest.getQuantity()){
+                    sameProduct.setQuantity(itemGuest.getQuantity());
+                }
+                sameProduct.setSelected(itemGuest.getSelected());
+                nxtShoppingCartProductService.update(sameProduct);
+            }
+            else {
+                //添加产品到已登录购物车
+                NxtShoppingCartProduct newNxtShoppingCartProduct = new NxtShoppingCartProduct();
+                newNxtShoppingCartProduct.setDateline(System.currentTimeMillis());
+                newNxtShoppingCartProduct.setShoppingCartId(nxtShoppingCart.getId());//已登录购物车id
+                newNxtShoppingCartProduct.setProductId(itemGuest.getProductId());
+                newNxtShoppingCartProduct.setQuantity(itemGuest.getQuantity());
+                newNxtShoppingCartProduct.setSku(itemGuest.getSku());
+                newNxtShoppingCartProduct.setSelected(itemGuest.getSelected());
+                nxtShoppingCartProductService.insert(newNxtShoppingCartProduct);
+            }
+        }
 
     }
 
