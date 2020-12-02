@@ -64,6 +64,13 @@ public class NxtApiUserLoginController {
         Map<String,Object> detail = new HashMap<>();
         if (multiDeviceLogin) {
             //允许多设备登录
+            if (user.getToken() == null){
+                //更新token
+                String newToken = nxtUtilComponent.getRandomString(32);
+                newToken = DigestUtils.md5Hex(newToken).toLowerCase();
+                user.setToken(newToken);
+                nxtUserService.update(user);
+            }
             detail.put("token", user.getToken());
             detail.put("user_id", user.getId());
         }
