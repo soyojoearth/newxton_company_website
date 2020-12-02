@@ -23,9 +23,9 @@ import java.util.Map;
  * Cronjob 自动图片搬运
  */
 @Component
-public class ScheduledMoveImage {
+public class CronMoveImage {
 
-    private Logger logger = LoggerFactory.getLogger(ScheduledMoveImage.class);
+    private Logger logger = LoggerFactory.getLogger(CronMoveImage.class);
 
     private Map<String,Long> lastJobStatusDatelineMap = new HashMap<>();
 

@@ -100,6 +100,9 @@ public class NxtProductServiceImpl implements NxtProductService {
      * @return 对象列表
      */
     public Long countByCategoryIdSet(@Param("categoryIdList") List<Long> categoryIdList){
+        if (categoryIdList.size() == 0){
+            return 0L;
+        }
         return this.nxtProductDao.countByCategoryIdSet(categoryIdList);
     }
 

@@ -45,7 +45,7 @@
                 and sort_id = #{sortId}
             </if>
         </where>
-        order by sort_id desc
+        order by sort_id asc
     </select>
 
     <select id="selectByIdSet" resultMap="BaseResultMap">
