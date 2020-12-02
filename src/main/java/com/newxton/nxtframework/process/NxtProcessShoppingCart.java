@@ -146,6 +146,9 @@ public class NxtProcessShoppingCart {
 
         //查询匿名用户购物车
         NxtShoppingCart nxtShoppingCartGuest = nxtShoppingCartService.queryByToken(guestToken);
+        if (nxtShoppingCartGuest == null){
+            return;
+        }
         if (nxtShoppingCartGuest.getUserId() != null){
             return;
         }
