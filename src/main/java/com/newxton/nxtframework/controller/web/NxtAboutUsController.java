@@ -34,7 +34,7 @@ public class NxtAboutUsController {
 
         //关于我们
         JSONObject jsonParam = new JSONObject();
-        jsonParam.put("id",5);
+        jsonParam.put("key","about_us");
         NxtStructApiResult webPageDetail = nxtApiWebPageDetailController.exec(jsonParam);
         model.addObject("webPageDetail",webPageDetail.getResult());
 

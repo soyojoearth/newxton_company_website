@@ -163,6 +163,39 @@ public class CronInitConfig {
             nxtWebPageService.insert(nxtWebPageJoinUs);
         }
 
+        NxtWebPage nxtWebPagePrivacyPolicy = nxtWebPageService.queryByKey("privacy_policy");
+        if (nxtWebPagePrivacyPolicy == null){
+            nxtWebPagePrivacyPolicy = new NxtWebPage();
+            nxtWebPagePrivacyPolicy.setDatelineUpdate(System.currentTimeMillis());
+            nxtWebPagePrivacyPolicy.setWebKey("privacy_policy");
+            nxtWebPagePrivacyPolicy.setWebTitle("隐私政策");
+            nxtWebPagePrivacyPolicy.setContentTitle("隐私政策");
+            nxtWebPagePrivacyPolicy.setContentDetail("");
+            nxtWebPageService.insert(nxtWebPagePrivacyPolicy);
+        }
+
+        NxtWebPage nxtWebPageTermsState = nxtWebPageService.queryByKey("terms_state");
+        if (nxtWebPageTermsState == null){
+            nxtWebPageTermsState = new NxtWebPage();
+            nxtWebPageTermsState.setDatelineUpdate(System.currentTimeMillis());
+            nxtWebPageTermsState.setWebKey("terms_state");
+            nxtWebPageTermsState.setWebTitle("条款声明");
+            nxtWebPageTermsState.setContentTitle("条款声明");
+            nxtWebPageTermsState.setContentDetail("");
+            nxtWebPageService.insert(nxtWebPageTermsState);
+        }
+
+        NxtWebPage nxtWebPageBuyGuide = nxtWebPageService.queryByKey("buy_guide");
+        if (nxtWebPageBuyGuide == null){
+            nxtWebPageBuyGuide = new NxtWebPage();
+            nxtWebPageBuyGuide.setDatelineUpdate(System.currentTimeMillis());
+            nxtWebPageBuyGuide.setWebKey("buy_guide");
+            nxtWebPageBuyGuide.setWebTitle("购买指南");
+            nxtWebPageBuyGuide.setContentTitle("购买指南");
+            nxtWebPageBuyGuide.setContentDetail("");
+            nxtWebPageService.insert(nxtWebPageBuyGuide);
+        }
+
     }
 
 }

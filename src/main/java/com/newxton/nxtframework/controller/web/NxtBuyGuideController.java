@@ -34,7 +34,7 @@ public class NxtBuyGuideController {
 
         //购买指南
         JSONObject jsonParam = new JSONObject();
-        jsonParam.put("id",6);
+        jsonParam.put("key","buy_guide");
         NxtStructApiResult webPageDetail = nxtApiWebPageDetailController.exec(jsonParam);
         model.addObject("webPageDetail",webPageDetail.getResult());
 

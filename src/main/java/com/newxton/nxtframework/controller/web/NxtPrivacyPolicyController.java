@@ -34,7 +34,7 @@ public class NxtPrivacyPolicyController {
 
         //隐私政策
         JSONObject jsonParam = new JSONObject();
-        jsonParam.put("id",8);
+        jsonParam.put("key","privacy_policy");
         NxtStructApiResult webPageDetail = nxtApiWebPageDetailController.exec(jsonParam);
         model.addObject("webPageDetail",webPageDetail.getResult());
 

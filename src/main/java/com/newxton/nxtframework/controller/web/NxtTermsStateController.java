@@ -34,7 +34,7 @@ public class NxtTermsStateController {
 
         //条款声明
         JSONObject jsonParam = new JSONObject();
-        jsonParam.put("id",7);
+        jsonParam.put("key","terms_state");
         NxtStructApiResult webPageDetail = nxtApiWebPageDetailController.exec(jsonParam);
         model.addObject("webPageDetail",webPageDetail.getResult());
 

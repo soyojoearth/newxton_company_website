@@ -32,13 +32,13 @@ public class NxtApiWebPageDetailController {
     @RequestMapping("/api/web_content/detail")
     public NxtStructApiResult exec(@RequestBody JSONObject jsonParam) {
 
-        Long id = jsonParam.getLong("id");
+        String key = jsonParam.getString("key");
 
-        if (id == null) {
-            return new NxtStructApiResult(52,"缺少id");
+        if (key == null) {
+            return new NxtStructApiResult(52,"缺少key");
         }
 
-        NxtWebPage nxtWebPage = nxtWebPageService.queryById(id);
+        NxtWebPage nxtWebPage = nxtWebPageService.queryByKey(key);
         if (nxtWebPage == null){
             return new NxtStructApiResult(49,"对应的内容不存在");
         }
