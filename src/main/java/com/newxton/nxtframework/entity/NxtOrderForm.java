@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtOrderForm)实体类
  *
  * @author makejava
- * @since 2020-11-24 16:19:32
+ * @since 2020-12-03 10:41:45
  */
 public class NxtOrderForm implements Serializable {
-    private static final long serialVersionUID = -54942619259008455L;
+    private static final long serialVersionUID = -47959913067327264L;
     /**
     * 订单表
     */
@@ -73,6 +73,10 @@ public class NxtOrderForm implements Serializable {
     */
     private Long deliveryCost;
     /**
+    * 运费调整（正数加、负数减）
+    */
+    private Long manualDeliveryCostDiscount;
+    /**
     * 单位（千克）放大1000倍
     */
     private Long countWeight;
@@ -106,6 +110,10 @@ public class NxtOrderForm implements Serializable {
     private Long datelinePaid;
     
     private Long datelineReceived;
+    /**
+    * 商家内部备注
+    */
+    private String sellerRemark;
 
 
     public Long getId() {
@@ -244,6 +252,14 @@ public class NxtOrderForm implements Serializable {
         this.deliveryCost = deliveryCost;
     }
 
+    public Long getManualDeliveryCostDiscount() {
+        return manualDeliveryCostDiscount;
+    }
+
+    public void setManualDeliveryCostDiscount(Long manualDeliveryCostDiscount) {
+        this.manualDeliveryCostDiscount = manualDeliveryCostDiscount;
+    }
+
     public Long getCountWeight() {
         return countWeight;
     }
@@ -322,6 +338,14 @@ public class NxtOrderForm implements Serializable {
 
     public void setDatelineReceived(Long datelineReceived) {
         this.datelineReceived = datelineReceived;
+    }
+
+    public String getSellerRemark() {
+        return sellerRemark;
+    }
+
+    public void setSellerRemark(String sellerRemark) {
+        this.sellerRemark = sellerRemark;
     }
 
 }

@@ -1,5 +1,8 @@
 package com.newxton.nxtframework.struct;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author soyojo.earth@gmail.com
  * @time 2020/11/22
@@ -10,6 +13,14 @@ public class NxtStructApiResult {
     private Integer status = 0;
     private String message = "";
     private Object result = null;
+
+    public Map<String,Object> toMap(){
+        Map<String, Object> mapData = new HashMap<>();
+        mapData.put("status", this.status);
+        mapData.put("message", this.message);
+        mapData.put("result", this.result);
+        return mapData;
+    }
 
     public NxtStructApiResult(){
         this.result = null;

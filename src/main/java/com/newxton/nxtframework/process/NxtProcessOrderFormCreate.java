@@ -385,7 +385,7 @@ public class NxtProcessOrderFormCreate {
 
         }
 
-        amountDiscount = amountInitial - amountFinally;
+        amountDiscount = amountFinally - amountInitial;//amountDiscount 负数减价、正数加价
 
         //再更新nxt_order_form订单价格
         nxtOrderForm.setAmountDiscount(amountDiscount);
