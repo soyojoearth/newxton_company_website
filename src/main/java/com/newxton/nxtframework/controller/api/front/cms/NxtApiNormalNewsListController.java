@@ -136,7 +136,10 @@ public class NxtApiNormalNewsListController {
         for (int i = 0; i < contentList.size(); i++) {
             NxtContent content = contentList.get(i);
             String firstPictureUrl = "";
-            Document doc = Jsoup.parse(nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForDisplay(content.getContentDetail()));
+            if (content.getContentDetail() == null){
+                content.setContentDetail("");
+            }
+            Document doc = Jsoup.parse(content.getContentDetail());
             Element elementImg = doc.select("img").last();
             Element firstP = doc.selectFirst("p");
 
