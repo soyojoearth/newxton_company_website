@@ -284,4 +284,40 @@
         </foreach>
     </select>
 
+    <!--后台查询订单列表-->
+    <select id="adminOrderFormList" resultMap="BaseResultMap">
+        select
+        id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, manual_delivery_cost_discount, status_paid, status_delivery, status_reviews, status_refund, deal_platform,dateline_delivery,dateline_paid,dateline_received,seller_remark
+        from nxt_order_form
+        <where>
+            <if test="isPaid != null">
+                <if test="isPaid">
+                    and status_paid = 1
+                </if>
+                <if test="!isPaid">
+                    and (status_paid = 0 or status = -1)
+                </if>
+            </if>
+            <if test="isDelivery != null">
+                <if test="isDelivery">
+                    and status_delivery = 1
+                </if>
+                <if test="!isDelivery">
+                    and (status_delivery = 0)
+                </if>
+            </if>
+            <if test="dealPlatform != null">
+                and deal_platform = #{dealPlatform}
+            </if>
+            <if test="datelineBegin != null">
+                and dateline_create &gt;= #{datelineBegin}
+            </if>
+            <if test="datelineEnd != null">
+                and dateline_create &lt;= #{datelineEnd}
+            </if>
+        </where>
+        order by dateline_create desc
+        limit #{offset}, #{limit}
+    </select>
+
 </mapper>

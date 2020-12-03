@@ -77,4 +77,17 @@ public interface NxtOrderFormDao {
      */
     List<NxtOrderForm> selectByIdSet(@Param("idList") List<Long> idList);
 
+    /**
+     * 后台查询订单列表
+     * @param offset
+     * @param limit
+     * @param isPaid
+     * @param isDelivery
+     * @param dealPlatform
+     * @param datelineBegin
+     * @param datelineEnd
+     * @return
+     */
+    List<NxtOrderForm> adminOrderFormList(@Param("offset") Long offset, @Param("limit") Long limit, @Param("isPaid") Boolean isPaid, @Param("isDelivery") Boolean isDelivery, @Param("dealPlatform") Integer dealPlatform, @Param("datelineBegin") Long datelineBegin, @Param("datelineEnd") Long datelineEnd);
+
 }

@@ -13,6 +13,7 @@ import com.newxton.nxtframework.struct.NxtStructOrderFormProductSku;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -42,7 +43,78 @@ public class NxtProcessOrderForm {
     @Resource
     private NxtUploadImageComponent nxtUploadImageComponent;
 
-    public List<NxtStructOrderForm> userOrderFormList(Long userId,Long offset,Long limit,Boolean isPaid,Boolean isDelivery,Boolean isReviews) throws NxtException{
+    /**
+     * 后台查询订单列表
+     * @param offset
+     * @param limit
+     * @param isPaid
+     * @param isDelivery
+     * @param dealPlatform
+     * @param datelineBegin 例如：2020-11-19
+     * @param datelineEnd 例如：2020-11-20
+     * @return
+     * @throws NxtException
+     */
+    public List<NxtStructOrderForm> adminOrderFormList(Long offset,Long limit,Boolean isPaid,Boolean isDelivery,
+                                    Integer dealPlatform,String datelineBegin,String datelineEnd) throws NxtException {
+
+        Long datelineBeginLong = null;
+        Long datelineEndLong = null;
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date;
+        try {
+            if (datelineBegin != null && !datelineBegin.isEmpty()) {
+                date = dateFormat.parse(datelineBegin);
+                datelineBeginLong = date.getTime();
+            }
+            if (datelineEnd != null && !datelineEnd.isEmpty()) {
+                date = dateFormat.parse(datelineEnd);
+                datelineEndLong = date.getTime() + 86400000L;
+            }
+        }
+        catch (Exception e) {
+            throw new NxtException("日期转化错误");
+        }
+
+        //查询订单
+        List<NxtOrderForm> orderFormList = nxtOrderFormService.adminOrderFormList(offset,limit,isPaid,isDelivery,dealPlatform,datelineBeginLong,datelineEndLong);
+
+        List<NxtStructOrderForm> nxtStructOrderFormList = this.assemblyStructOrderFormList(orderFormList);
+
+        return nxtStructOrderFormList;
+
+    }
+
+    /**
+     * 个人中心--用户查询订单列表
+     * @param userId
+     * @param offset
+     * @param limit
+     * @param isPaid
+     * @param isDelivery
+     * @param isReviews
+     * @return
+     * @throws NxtException
+     */
+    public List<NxtStructOrderForm> userOrderFormList(Long userId,Long offset,Long limit,Boolean isPaid,Boolean isDelivery,Boolean isReviews) throws NxtException {
+
+        //查询订单
+        List<NxtOrderForm> orderFormList = nxtOrderFormService.queryAllByUserIdAndLimit(offset,limit,userId,isPaid,isDelivery,isReviews);
+
+        List<NxtStructOrderForm> nxtStructOrderFormList = this.assemblyStructOrderFormList(orderFormList);
+
+        return nxtStructOrderFormList;
+
+    }
+
+    /**
+     * 根据初步的orderFromList装配详细的结构化订单列表
+     * @param orderFormList
+     * @return
+     * @throws NxtException
+     */
+    public List<NxtStructOrderForm> assemblyStructOrderFormList(List<NxtOrderForm> orderFormList) throws NxtException{
 
         List<NxtStructOrderForm> nxtStructOrderFormList = new ArrayList<>();
 
@@ -51,8 +123,8 @@ public class NxtProcessOrderForm {
 
         Map<Long,NxtStructOrderForm> mapIdToNxtStructOrderForm = new HashMap<>();
 
-        //查询订单
-        List<NxtOrderForm> orderFormList = nxtOrderFormService.queryAllByUserIdAndLimit(offset,limit,userId,isPaid,isDelivery,isReviews);
+//        //查询订单
+//        List<NxtOrderForm> orderFormList = nxtOrderFormService.queryAllByUserIdAndLimit(offset,limit,userId,isPaid,isDelivery,isReviews);
 
         Map<Long,NxtOrderForm> mapIdToOrderForm = new HashMap<>();
         for (NxtOrderForm orderForm : orderFormList) {
