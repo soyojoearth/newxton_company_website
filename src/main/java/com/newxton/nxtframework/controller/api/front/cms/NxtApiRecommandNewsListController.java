@@ -12,7 +12,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -21,12 +20,11 @@ import java.util.*;
 
 /**
  * @author soyojo.earth@gmail.com
- * @time 2020/8/18
+ * @time 2020/12/3
  * @address Shenzhen, China
- * @copyright NxtFramework
  */
 @RestController
-public class NxtApiNormalNewsListController {
+public class NxtApiRecommandNewsListController {
 
     @Resource
     private NxtContentService nxtContentService;
@@ -37,101 +35,45 @@ public class NxtApiNormalNewsListController {
     @Resource
     private NxtUploadImageComponent nxtUploadImageComponent;
 
-    @RequestMapping("/api/normal_news_list")
-    public NxtStructApiResult exec( @RequestBody JSONObject jsonParam) {
+    @RequestMapping("/api/recommand_news_list")
+    public NxtStructApiResult exec(@RequestBody JSONObject jsonParam) {
 
-        Long rootCategoryId = jsonParam.getLong("root_category_id");
         Integer limit = jsonParam.getInteger("limit");
         Integer offset = jsonParam.getInteger("offset");
-        Integer show_pages = jsonParam.getInteger("show_pages");
 
-
-        Map<String, Object> data = new HashMap<>();
-
-        if (limit == null){
-            limit = 4;
-        }
-
-        if (offset == null){
-            offset = 0;
+        if (limit == null || offset == null){
+            return new NxtStructApiResult(53,"缺少offset、limit");
         }
 
         List<NxtNewsCategory> contentCategoryList = nxtNewsCategoryService.queryAll(new NxtNewsCategory());
 
-        List<Long> categoryIdList = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
 
-        if (rootCategoryId == null){
-            for (NxtNewsCategory newsCategory :
-                    contentCategoryList) {
-                categoryIdList.add(newsCategory.getId());
-            }
-        }
-        else {
-            NxtNewsCategory newsCategory = nxtNewsCategoryService.queryById(rootCategoryId);
-            categoryIdList = findSubCategory(newsCategory, contentCategoryList);
-            categoryIdList.add(rootCategoryId);
-        }
-
-        //获取这些子类的内容
-        List<Map<String,Object>> newsList = getNewsList(offset,limit,categoryIdList, contentCategoryList);
+        //获取推荐资讯内容
+        List<Map<String,Object>> newsList = this.recommandNewsList(offset,limit, contentCategoryList);
 
         data.put("newsList", newsList);
-
-        //显示页码
-        if (show_pages != null && show_pages.equals(1)){
-            Long count = this.getNewsCount(categoryIdList, contentCategoryList);
-            int pages = (int) Math.ceil((float)count / limit);
-            data.put("pages", pages);
-        }
 
         return new NxtStructApiResult(data);
 
     }
 
     /**
-     * 遍历搜寻子孙类别的全部Id
-     * @param categoryParent
-     * @param list
+     * 获取推荐资讯内容
      * @return
      */
-    private List<Long> findSubCategory(NxtNewsCategory categoryParent,List<NxtNewsCategory> list){
-
-        List<Long> resultIdList = new ArrayList<>();
-
-        if (categoryParent == null){
-            return resultIdList;
-        }
-
-        for (int i = 0; i < list.size(); i++) {
-            NxtNewsCategory category = list.get(i);
-            if (category.getCategoryPid().equals(categoryParent.getId())){
-                resultIdList.add(category.getId());
-                resultIdList.addAll(findSubCategory(category,list));
-            }
-        }
-
-        return resultIdList;
-
-    }
-
-
-    /**
-     * 获取某些类别下的资讯推荐内容
-     * @return
-     */
-    private List<Map<String,Object>> getNewsList(int offset, int limit,List<Long> categoryIdList, List<NxtNewsCategory> contentCategoryList){
+    private List<Map<String,Object>> recommandNewsList(int offset, int limit, List<NxtNewsCategory> contentCategoryList){
 
         //类别整理
         Map<Long,String> mapCategoryIdToName = new HashMap<>();
-        for (NxtNewsCategory newsCategory :
-                contentCategoryList) {
+        for (NxtNewsCategory newsCategory : contentCategoryList) {
             mapCategoryIdToName.put(newsCategory.getId(),newsCategory.getCategoryName());
         }
 
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 
         //新闻类别列表
-        List<NxtContent> contentList = this.nxtContentService.selectByCategoryIdSet(offset,limit,categoryIdList);
+        List<NxtContent> contentList = this.nxtContentService.queryRecommandListByLimit(offset,limit);
         List<Map<String,Object>> newsList = new ArrayList<>();
         for (int i = 0; i < contentList.size(); i++) {
             NxtContent content = contentList.get(i);
@@ -142,7 +84,6 @@ public class NxtApiNormalNewsListController {
             if (elementImg != null && firstP != null) {
                 firstPictureUrl = elementImg.attr("src");
                 firstPictureUrl = nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForDisplay(firstPictureUrl);
-
             }
             else {
                 firstPictureUrl = nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForDisplay("/common/images/empty.png");
@@ -171,21 +112,6 @@ public class NxtApiNormalNewsListController {
 
         return newsList;
 
-    }
-
-    /**
-     * 获取某些类别下的资讯推荐内容(统计数量)
-     * @return
-     */
-    private Long getNewsCount(List<Long> categoryIdList, List<NxtNewsCategory> contentCategoryList){
-        //类别整理
-        Map<Long,String> mapCategoryIdToName = new HashMap<>();
-        for (NxtNewsCategory newsCategory :
-                contentCategoryList) {
-            mapCategoryIdToName.put(newsCategory.getId(),newsCategory.getCategoryName());
-        }
-        Long count = this.nxtContentService.countSelectByCategoryIdSet(categoryIdList);
-        return count;
     }
 
 }

@@ -148,4 +148,15 @@ public class NxtContentServiceImpl implements NxtContentService {
     public boolean deleteById(Long id) {
         return this.nxtContentDao.deleteById(id) > 0;
     }
+
+    /**
+     * 查询推荐资讯
+     * @param offset
+     * @param limit
+     * @return
+     */
+    public List<NxtContent> queryRecommandListByLimit(@Param("offset") int offset, @Param("limit") int limit){
+        return this.nxtContentDao.queryRecommandListByLimit(offset,limit);
+    }
+
 }

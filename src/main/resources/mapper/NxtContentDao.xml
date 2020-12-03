@@ -244,4 +244,14 @@
         </where>
     </select>
 
+    <!--查询推荐资讯-->
+    <select id="queryRecommandListByLimit" resultMap="BaseResultMap">
+        SELECT
+        id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
+        from nxt_content
+        where is_recommend = 1
+        order by sort_id desc,dateline_update desc
+        limit #{offset}, #{limit}
+    </select>
+
 </mapper>
