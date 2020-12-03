@@ -1,0 +1,222 @@
+#content {
+    clear: both;
+    width: 960px;
+    overflow: hidden;
+    margin: 0 auto;
+    padding-bottom: 225px;
+}
+
+i {
+    font-style:normal;
+}
+
+
+.head-item {
+    position: relative;
+    margin-bottom: 38px;
+}
+
+.head-item .banner-pic {
+    width: 960px;
+    height: 130px;
+}
+
+.head-item .item-title {
+    height: 25px;
+    font-size: 18px;
+    font-family: PingFang SC;
+    font-weight: bold;
+    line-height: 25px;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    opacity: 1;
+    margin: 0;
+    position: absolute;
+    top: 47px;
+    left: 443px;
+}
+
+.head-item .title-bar{
+    width: 22px;
+    height: 0px;
+    border: 1px solid #FFFFFF;
+    opacity: 1;
+    position: absolute;
+    top: 83px;
+    left: 469px;
+}
+
+.connect-item {
+    margin: 0 70px;
+}
+
+
+.connect-item .item-info{
+    overflow: hidden;
+    margin-bottom: 60px;
+}
+
+.item-info .item-leave,
+.item-info .item-us {
+    float: left;
+}
+
+.item-info .item-leave {
+    background: #FFFFFF;
+    border: 1px solid rgba(112, 112, 112, 0.30196078431372547);
+    opacity: 1;
+    padding: 29px 28px 30px 25px;
+    margin-right: 43px;
+}
+
+.item-leave p {
+    height: 24px;
+    line-height: 24px;
+    margin-bottom: 12px;
+}
+
+.item-leave p label {
+    width: 53px;
+    height: 14px;
+    font-size: 10px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 14px;
+    color: #5F5F5F;
+    letter-spacing: 1px;
+    opacity: 1;
+    margin-right: 12px;
+    text-align: right;
+    display: inline-block;
+}
+
+.item-leave p input {
+    height: 24px;
+    border: 1px solid rgba(95, 95, 95, 0.5019607843137255);
+    opacity: 1;
+    padding: 0;
+}
+
+.item-leave .leave-name input {
+    width: 110px;
+}
+
+.item-leave .leave-name .lb-name{
+    width: 44px;
+}
+
+.item-leave .leave-way .connect-way {
+    width: 319px;
+}
+
+.item-leave .leave-msg {
+    height: 67px;
+}
+
+.item-leave .leave-msg .lb-cont{
+    height: 67px;
+    vertical-align: top;
+}
+
+.item-leave .leave-msg .leave-cont {
+    width: 319px;
+    height: 67px;
+    border: 1px solid rgba(95, 95, 95, 0.5019607843137255);
+    overflow: auto;
+}
+
+.item-leave .leave-code .verify-code {
+    width: 110px;
+    margin-right: 4px;
+}
+
+.item-leave .leave-code .verify-pic {
+    width: 80px;
+    height: 24px;
+    background: rgba(0, 0, 0, 0);
+    opacity: 1;
+    vertical-align: middle;
+    border: 1px solid #cccccc;
+}
+
+.item-leave .leave-submit{
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+.item-leave .leave-submit .submit-btn{
+    width: 85px;
+    height: 30px;
+    line-height: 30px;
+    background: #014785;
+    font-size: 10px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    opacity: 1;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+}
+
+.item-us{
+    width: 331px;
+}
+
+.item-us .item-title img{
+    width: 10px;
+    height: 10px;
+    margin-right: 11px;
+    vertical-align: middle;
+}
+
+.item-us  span{
+    font-size: 12px;
+    font-family: PingFang SC;
+    color: #1B1B1B;
+    opacity: 1;
+    display: inline-block;
+    vertical-align: middle;
+
+}
+
+.item-us  .item-hgt,
+.item-us .item-adr{
+    height: 33px;
+}
+
+.item-us p:first-child{
+    height: 33px;
+}
+
+.item-us p{
+    margin-bottom: 40px;
+    height: 21px;
+}
+
+.item-us p:last-child{
+    margin-bottom: 0;
+}
+
+.item-us .item-title{
+    font-weight: 400;
+    margin-right: 25px;
+}
+
+.item-us .item-cont{
+    font-weight: bold;
+    width: 240px;
+}
+
+.item-map{
+    clear: both;
+    width:820px;
+    height: 254px;
+    border: 1px dashed #707070;
+}
+
+.item-map img{
+    width:820px;
+    height: 254px;
+}

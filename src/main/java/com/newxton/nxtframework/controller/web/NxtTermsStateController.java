@@ -13,14 +13,14 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 
 @Controller
-public class NxtAboutUsController {
+public class NxtTermsStateController {
 
-    private Logger logger = LoggerFactory.getLogger(NxtAboutUsController.class);
+    private Logger logger = LoggerFactory.getLogger(NxtTermsStateController.class);
 
     @Resource
     NxtApiWebPageDetailController nxtApiWebPageDetailController;
 
-    @RequestMapping("/about")
+    @RequestMapping("/terms_state")
     public ModelAndView index(Device device,ModelAndView model) {
 
         if (device.isMobile()){
@@ -28,13 +28,13 @@ public class NxtAboutUsController {
 //            logger.info("移动端访客");
         }
         else {
-            model.setViewName("pc/about_us");
+            model.setViewName("pc/terms_state");
 //            logger.info("PC端访客");
         }
 
-        //关于我们
+        //条款声明
         JSONObject jsonParam = new JSONObject();
-        jsonParam.put("id",5);
+        jsonParam.put("id",7);
         NxtStructApiResult webPageDetail = nxtApiWebPageDetailController.exec(jsonParam);
         model.addObject("webPageDetail",webPageDetail.getResult());
 

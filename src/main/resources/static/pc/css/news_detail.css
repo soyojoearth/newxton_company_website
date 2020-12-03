@@ -1,0 +1,184 @@
+#content {
+    clear: both;
+    width: 822px;
+    overflow: hidden;
+    margin: 45px auto 0 auto;
+    padding-bottom: 243px;
+}
+
+i {
+    font-style: normal;
+}
+
+.news-detail {
+    margin-bottom: 30px;
+}
+
+.news-title{
+    margin-bottom: 13px;
+}
+
+.news-title .title-wd {
+    height: 20px;
+    font-size: 14px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 20px;
+    color: #1B1B1B;
+    opacity: 1;
+    text-align: center;
+    margin: 0;
+}
+
+.news-detail .news-item {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.news-item .news-time {
+    height: 12px;
+    font-size: 9px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 12px;
+    color: #C9C9C9;
+    opacity: 1;
+    display: inline-block;
+    margin-right: 25px;
+    -webkit-transform: scale(0.9);
+}
+
+.news-item .news-share {
+    height: 12px;
+    font-size: 9px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 12px;
+    color: #5F5F5F;
+    opacity: 1;
+    display: inline-block;
+    -webkit-transform: scale(0.9);
+}
+
+.news-item .news-share img {
+    width: 10px;
+    height: 10px;
+}
+
+.news-cont {
+    border: 1px dashed #707070;
+    padding: 30px 20px 33px 20px;
+}
+
+.news-cont img {
+    width: 780px;
+}
+
+.rcm-product {
+    overflow: hidden;
+}
+
+.rcm-product .head-title {
+    height: 28px;
+    line-height: 28px;
+    background: #FFFFFF;
+    border: 1px solid rgba(95, 95, 95, 0.2);
+    font-family: PingFang SC;
+    font-size: 10px;
+    font-weight: 400;
+    color: #5F5F5F;
+    opacity: 1;
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.rcm-product .head-title img {
+    width: 11px;
+    height: 11px;
+    vertical-align: middle;
+    margin: -2px 4px 0 16px;
+}
+
+.rcm-product .title-wd {
+    color: #014785;
+}
+
+.rcm-product .title-bar {
+    width: 66px;
+    height: 2px;
+    background: #014785;
+    opacity: 1;
+    position: absolute;
+    left: 16px;
+    top: 27px;
+}
+
+
+.product-list .product-item {
+    width: 146px;
+    height: 194px;
+    background: #FFFFFF;
+    border: 1px solid rgba(95, 95, 95, 0.2);
+    opacity: 1;
+    padding: 5px 6px 7px 6px;
+    margin-right: 5px;
+    float: left;
+}
+
+.product-list .product-item:nth-child(5) {
+    margin-right: 0;
+}
+
+.product-item .item-pic img {
+    width: 147px;
+    height: 147px;
+    background: rgba(0, 0, 0, 0);
+    opacity: 1;
+    margin-bottom: 8px;
+    border: 0;
+}
+
+.product-item:last-child {
+    margin-right: 0;
+}
+
+.product-item .item-title a {
+    width: 147px;
+    height: 15px;
+    font-size: 11px;
+    font-family: PingFang SC;
+    font-weight: 300;
+    line-height: 15px;
+    color: #1B1B1B;
+    letter-spacing: 1px;
+    opacity: 1;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.product-item .sell-price {
+    height: 13px;
+    font-size: 11px;
+    font-family: DIN;
+    font-weight: bold;
+    line-height: 13px;
+    color: #1B1B1B;
+    letter-spacing: 1px;
+    opacity: 1;
+    margin-right: 6px;
+}
+
+.product-item .orig-price {
+    height: 10px;
+    font-size: 8px;
+    font-family: DIN;
+    font-weight: 400;
+    line-height: 10px;
+    color: #5F5F5F;
+    letter-spacing: 1px;
+    opacity: 1;
+    text-decoration: line-through;
+
+}

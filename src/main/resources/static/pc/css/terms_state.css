@@ -1,0 +1,47 @@
+#content {
+    clear: both;
+    width: 960px;
+    overflow: hidden;
+    margin: 0 auto;
+    padding-bottom: 279px;
+}
+
+.head-item {
+    position: relative;
+    margin-bottom: 50px;
+}
+
+.head-item .banner-pic {
+    width: 960px;
+    height: 130px;
+}
+
+.head-item .item-title {
+    height: 25px;
+    font-size: 18px;
+    font-family: PingFang SC;
+    font-weight: bold;
+    line-height: 25px;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    opacity: 1;
+    margin: 0;
+    position: absolute;
+    top: 47px;
+    left: 443px;
+}
+
+.head-item .title-bar{
+    width: 22px;
+    height: 0px;
+    border: 1px solid #FFFFFF;
+    opacity: 1;
+    position: absolute;
+    top: 83px;
+    left: 469px;
+}
+
+
+.terms-item{
+    margin: 0 90px;
+}

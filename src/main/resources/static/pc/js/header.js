@@ -8,9 +8,15 @@ $(function(){
     });
 
     $('.nav-user-buy').mouseenter(function (){
-        $(".nav-cart-list").addClass('active-cart');
+        var nav_cart_list = $(".nav-cart-list");
+        if(nav_cart_list.find('.more-item').length > 0){
+            nav_cart_list.addClass('active-cart');
+        }
     }).mouseleave(function (){
-        $(".nav-cart-list").removeClass('active-cart');
+        var nav_cart_list = $(".nav-cart-list");
+        if(nav_cart_list.find('.more-item').length > 0){
+            nav_cart_list.removeClass('active-cart');
+        }
     });
 
     findUserCart();
