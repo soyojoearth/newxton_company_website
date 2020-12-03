@@ -38,7 +38,9 @@ public class NxtNewsDetailController {
         }
 
         //资讯详情
-        NxtStructApiResult newsDetailData = nxtApiNewsDetailController.exec(id);
+        JSONObject jsonParamDetail = new JSONObject();
+        jsonParamDetail.put("id", id);
+        NxtStructApiResult newsDetailData = nxtApiNewsDetailController.exec(jsonParamDetail);
         model.addObject("newsDetail",newsDetailData.getResult());
 
         //五款推荐产品
