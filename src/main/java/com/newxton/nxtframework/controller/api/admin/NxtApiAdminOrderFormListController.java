@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author soyojo.earth@gmail.com
@@ -22,7 +23,7 @@ public class NxtApiAdminOrderFormListController {
     private NxtProcessOrderForm nxtProcessOrderForm;
 
     @RequestMapping(value = "/api/admin/order_form/list", method = RequestMethod.POST)
-    public NxtStructApiResult index(@RequestBody JSONObject jsonParam) {
+    public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
 
         Boolean isPaid = jsonParam.getBoolean("isPaid");
         Boolean isDelivery = jsonParam.getBoolean("isDelivery");
@@ -35,15 +36,15 @@ public class NxtApiAdminOrderFormListController {
         Long limit = jsonParam.getLong("limit");
 
         if (offset == null || limit == null){
-            return new NxtStructApiResult(54,"缺少offset或limit");
+            return new NxtStructApiResult(54,"缺少offset或limit").toMap();
         }
 
         try {
             List<NxtStructOrderForm> nxtStructOrderFormList = nxtProcessOrderForm.adminOrderFormList(offset,limit,isPaid,isDelivery,dealPlatform,datelineBegin,datelineEnd);
-            return new NxtStructApiResult(nxtStructOrderFormList);
+            return new NxtStructApiResult(nxtStructOrderFormList).toMap();
         }
         catch (NxtException e){
-            return new NxtStructApiResult(34,e.getNxtExecptionMessage());
+            return new NxtStructApiResult(34,e.getNxtExecptionMessage()).toMap();
         }
 
     }

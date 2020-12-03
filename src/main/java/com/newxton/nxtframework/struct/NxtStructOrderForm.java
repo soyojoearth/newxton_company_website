@@ -77,6 +77,10 @@ public class NxtStructOrderForm {
      */
     private Float deliveryCost;
     /**
+     * 手动运费调整
+     */
+    private Float manualDeliveryCostDiscount;
+    /**
      * 是否已经支付
      */
     private Boolean isPaid;
@@ -120,6 +124,11 @@ public class NxtStructOrderForm {
      * 已经确认收货
      */
     private Boolean isDone;
+
+    /**
+     * 商家备注
+     */
+    private String sellerRemark;
 
     /**
      * 订单物品列表
@@ -275,6 +284,14 @@ public class NxtStructOrderForm {
         this.deliveryCost = deliveryCost;
     }
 
+    public Float getManualDeliveryCostDiscount() {
+        return manualDeliveryCostDiscount;
+    }
+
+    public void setManualDeliveryCostDiscount(Float manualDeliveryCostDiscount) {
+        this.manualDeliveryCostDiscount = manualDeliveryCostDiscount;
+    }
+
     public Boolean getPaid() {
         return isPaid;
     }
@@ -369,6 +386,14 @@ public class NxtStructOrderForm {
 
     public void setDone(Boolean done) {
         isDone = done;
+    }
+
+    public String getSellerRemark() {
+        return sellerRemark;
+    }
+
+    public void setSellerRemark(String sellerRemark) {
+        this.sellerRemark = sellerRemark;
     }
 
     public List<NxtStructOrderFormProduct> getOrderFormProductList() {
