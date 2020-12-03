@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"  name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>资讯详情</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/news_detail.css}">
+    <script th:src="@{/pc/js/jquery-1.8.2.min.js}"></script>
+</head>
+<body>
+<div th:replace="pc/common/header :: header"></div>
+<div id="content">
+    <div class="news-detail">
+        <div class="news-title">
+            <h3 class="title-wd" th:text="${newsDetail.contentTitle}"></h3>
+        </div>
+        <div class="news-item">
+            <span class="news-time">
+                <i class="time">发布时间：</i>
+                <i class="time" th:text="${#dates.format(newsDetail.datelineCreate,'yyyy-MM-dd HH:mm')}"></i>
+            </span>
+            <span class="news-share">
+                <img th:src="@{/pc/img/icon-share.png}" alt="">
+                <i class="share">分享资讯</i>
+            </span>
+        </div>
+        <div class="news-cont" th:utext="${newsDetail.contentDetail}"></div>
+    </div>
+    <div class="rcm-product">
+        <div class="head-title">
+            <img th:src="@{/pc/img/rcm-pro.png}" alt="">
+            <span class="title-wd">推荐产品</span>
+            <span class="title-bar"></span>
+        </div>
+        <div class="product-list">
+            <ul class="product-item" th:each="p : ${productListRecommend}">
+                <li class="item-pic">
+                    <a th:href="${'/product/detail?productId=' + p.id}"><img th:src="${p.picUrl+'?imageView2/1/w/147/h/147/q/75'}" alt=""></a>
+                </li>
+                <li class="item-title">
+                    <a th:href="${'/product/detail?productId=' + p.id}" th:text="${p.productName}"></a>
+                </li>
+                <li class="item-price">
+                    <a th:href="${'/product/detail?productId=' + p.id}" class="sell-price">¥89.09</a>
+                    <a th:href="${'/product/detail?productId=' + p.id}" class="orig-price">¥89.09</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div th:replace="pc/common/footer :: footer"></div>
+</body>
+</html>
