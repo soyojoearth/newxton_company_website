@@ -11,15 +11,14 @@ body {
 
 #footer {
     clear: both;
-    width: 960px;
+    width: 100%;
     height: 130px;
     background: #1B1B1B;
     opacity: 1;
     text-align: center;
     position: absolute;
     bottom: 0;
-    left: 50%;
-    margin-left: -480px;
+    min-width: 1200px;
 }
 
 #footer span {
