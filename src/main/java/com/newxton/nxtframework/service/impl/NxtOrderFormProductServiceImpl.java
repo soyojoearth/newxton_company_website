@@ -113,4 +113,15 @@ public class NxtOrderFormProductServiceImpl implements NxtOrderFormProductServic
         return this.nxtOrderFormProductDao.selectAllByIdSet(idList);
     }
 
+    /**
+     * 根据ProductId列表查询
+     * @param offset
+     * @param limit
+     * @param productId
+     * @return
+     */
+    public List<NxtOrderFormProduct> queryAllByProductIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("productId") Long productId){
+        return this.nxtOrderFormProductDao.queryAllByProductIdLimit(offset, limit, productId);
+    }
+
 }

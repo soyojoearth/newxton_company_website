@@ -82,6 +82,14 @@ public class NxtImageController {
 
         byte[] bytesAutoThumbnail = nxtAutoThumbnailComponent.getThumbnail(imageUrl,imageStyle);
 
+        if (bytesAutoThumbnail.length < 4){
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray())));
+        }
+
         MediaType mediaType = MediaType.IMAGE_PNG;
         if (bytesAutoThumbnail[0] == (byte) 0xff && bytesAutoThumbnail[1] == (byte) 0xd8 && bytesAutoThumbnail[2] == (byte) 0xff){
             mediaType = MediaType.IMAGE_PNG;
@@ -93,7 +101,6 @@ public class NxtImageController {
             mediaType = MediaType.IMAGE_GIF;
         }
 
-        //输出图片。若以上没有匹配格式成功，则输出空图片。
         return ResponseEntity
                 .ok()
                 .contentType(mediaType)

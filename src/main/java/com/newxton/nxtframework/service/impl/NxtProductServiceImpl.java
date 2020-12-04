@@ -207,4 +207,34 @@ public class NxtProductServiceImpl implements NxtProductService {
         return this.nxtProductDao.queryAllRecommend(limit);
     }
 
+    /**
+     * 后台admin获取产品列表
+     * @param offset
+     * @param limit
+     * @param categoryId
+     * @param searchKeyword
+     * @param isRecommend
+     * @param isNew
+     * @param isHot
+     * @param isSelling
+     * @return
+     */
+    public List<NxtProduct> adminQueryAllByLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("categoryId") Long categoryId, @Param("searchKeyword") String searchKeyword,@Param("isRecommend") Boolean isRecommend,@Param("isNew") Boolean isNew,@Param("isHot") Boolean isHot,@Param("isSelling") Boolean isSelling,@Param("isTrash") Boolean isTrash){
+        return this.nxtProductDao.adminQueryAllByLimit(offset, limit, categoryId, searchKeyword, isRecommend, isNew, isHot, isSelling,isTrash);
+    }
+
+    /**
+     * 后台admin统计产品总数
+     * @param categoryId
+     * @param searchKeyword
+     * @param isRecommend
+     * @param isNew
+     * @param isHot
+     * @param isSelling
+     * @return
+     */
+    public Long adminCountAll(@Param("categoryId") Long categoryId, @Param("searchKeyword") String searchKeyword,@Param("isRecommend") Boolean isRecommend,@Param("isNew") Boolean isNew,@Param("isHot") Boolean isHot,@Param("isSelling") Boolean isSelling,@Param("isTrash") Boolean isTrash){
+        return this.nxtProductDao.adminCountAll(categoryId, searchKeyword, isRecommend, isNew, isHot, isSelling,isTrash);
+    }
+
 }

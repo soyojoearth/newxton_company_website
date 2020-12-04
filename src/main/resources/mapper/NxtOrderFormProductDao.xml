@@ -181,4 +181,14 @@
         </foreach>
     </select>
 
+    <!--根据ProductId列表查询-->
+    <select id="queryAllByProductIdLimit" resultType="Long">
+        select
+        id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, manual_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
+        from nxt_order_form_product
+        WHERE product_id = #{productId}
+        order by id desc
+        limit #{offset},#{limit}
+    </select>
+
 </mapper>
