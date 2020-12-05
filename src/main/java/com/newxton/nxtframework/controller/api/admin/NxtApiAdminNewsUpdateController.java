@@ -5,6 +5,7 @@ import com.newxton.nxtframework.entity.NxtContent;
 import com.newxton.nxtframework.entity.NxtNewsCategory;
 import com.newxton.nxtframework.service.NxtContentService;
 import com.newxton.nxtframework.service.NxtNewsCategoryService;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,7 +53,7 @@ public class NxtApiAdminNewsUpdateController {
         }
 
         if (categoryId == null){
-            categoryId = 0L;
+            return new NxtStructApiResult(52,"请选择类别").toMap();
         }
 
         if (isRecommend == null){
