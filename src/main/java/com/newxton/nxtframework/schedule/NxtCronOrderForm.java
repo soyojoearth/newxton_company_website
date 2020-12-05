@@ -19,11 +19,9 @@ import java.util.Map;
  * Cronjob 订单
  */
 @Component
-public class CronOrderForm {
+public class NxtCronOrderForm {
 
-    private Logger logger = LoggerFactory.getLogger(CronOrderForm.class);
-
-    private Map<String,Long> lastJobStatusDatelineMap = new HashMap<>();
+    private Logger logger = LoggerFactory.getLogger(NxtCronOrderForm.class);
 
     @Resource
     private NxtCronjobService nxtCronjobService;

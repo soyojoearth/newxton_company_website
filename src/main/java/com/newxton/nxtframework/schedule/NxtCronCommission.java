@@ -19,12 +19,10 @@ import java.util.Map;
  * Cronjob 分销佣金
  */
 @Component
-public class CronCommission {
+public class NxtCronCommission {
 
-    private Logger logger = LoggerFactory.getLogger(CronCommission.class);
-
-    private Map<String,Long> lastJobStatusDatelineMap = new HashMap<>();
-
+    private Logger logger = LoggerFactory.getLogger(NxtCronCommission.class);
+    
     @Resource
     private NxtCronjobService nxtCronjobService;
 

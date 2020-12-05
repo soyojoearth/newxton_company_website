@@ -2,15 +2,12 @@ package com.newxton.nxtframework.schedule;
 
 import com.newxton.nxtframework.component.NxtAclComponent;
 import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
-import com.newxton.nxtframework.service.NxtCronjobService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -20,14 +17,9 @@ import java.util.Map;
  * Cronjob 缓存清理
  */
 @Component
-public class CronCacheClean {
+public class NxtCronCacheClean {
 
-    private Logger logger = LoggerFactory.getLogger(CronCacheClean.class);
-
-    private Map<String,Long> lastJobStatusDatelineMap = new HashMap<>();
-
-    @Resource
-    private NxtCronjobService nxtCronjobService;
+    private Logger logger = LoggerFactory.getLogger(NxtCronCacheClean.class);
 
     @Resource
     private NxtGlobalSettingComponent nxtGlobalSettingComponent;
