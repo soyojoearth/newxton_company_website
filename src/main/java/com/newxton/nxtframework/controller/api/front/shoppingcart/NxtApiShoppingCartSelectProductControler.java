@@ -61,7 +61,7 @@ public class NxtApiShoppingCartSelectProductControler {
             // 匿名用户流程 购物车
             String token = shoppingCartItem.getGuestToken();
             shoppingCart = nxtShoppingCartService.queryByToken(token);
-            if (shoppingCart.getUserId() != null){
+            if (shoppingCart != null && shoppingCart.getUserId() != null){
                 //已有归属的购物车，不能仅靠单独guestToken操作
                 shoppingCart = null;
             }
