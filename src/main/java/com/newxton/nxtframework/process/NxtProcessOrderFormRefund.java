@@ -447,7 +447,7 @@ public class NxtProcessOrderFormRefund {
             if (!mapRefundTotal.containsKey(nxtOrderFormRefundProduct.getOrderFormRefundId())){
                 mapRefundTotal.put(nxtOrderFormRefundProduct.getOrderFormRefundId(),0L);
             }
-            mapRefundTotal.put(nxtOrderFormRefundProduct.getOrderFormRefundId(), mapRefundTotal.get(nxtOrderFormRefundProduct.getOrderFormRefundId())+nxtOrderFormRefundProduct.getAmountRefund()*nxtOrderFormRefundProduct.getQuantity());
+            mapRefundTotal.put(nxtOrderFormRefundProduct.getOrderFormRefundId(), mapRefundTotal.get(nxtOrderFormRefundProduct.getOrderFormRefundId())+nxtOrderFormRefundProduct.getAmountRefund());
         }
 
         //附加订单内容

@@ -44,6 +44,17 @@ public class NxtTransactionServiceImpl implements NxtTransactionService {
     }
 
     /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtTransaction 实例对象
+     * @return 对象列表
+     */
+    @Override
+    public List<NxtTransaction> queryAll(NxtTransaction nxtTransaction){
+        return this.nxtTransactionDao.queryAll(nxtTransaction);
+    }
+
+    /**
      * 新增数据
      *
      * @param nxtTransaction 实例对象
