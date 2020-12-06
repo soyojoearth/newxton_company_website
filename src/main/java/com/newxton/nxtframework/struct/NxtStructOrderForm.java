@@ -15,9 +15,13 @@ public class NxtStructOrderForm {
      */
     private Long id;
     /**
-     * 下单用户
+     * 下单用户id
      */
     private Long userId;
+    /**
+     * 下单用户username
+     */
+    private String username;
     /**
      * 下单时间
      */
@@ -154,6 +158,14 @@ public class NxtStructOrderForm {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Long getDatelineCreate() {

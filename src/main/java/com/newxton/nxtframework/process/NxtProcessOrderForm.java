@@ -26,6 +26,9 @@ import java.util.*;
 public class NxtProcessOrderForm {
 
     @Resource
+    private NxtUserService nxtUserService;
+
+    @Resource
     private NxtProductPictureService nxtProductPictureService;
 
     @Resource
@@ -255,9 +258,12 @@ public class NxtProcessOrderForm {
             return null;
         }
 
+        NxtUser user = nxtUserService.queryById(orderForm.getUserId());
+
         NxtStructOrderForm nxtStructOrderForm = new NxtStructOrderForm();
         nxtStructOrderForm.setId(orderForm.getId());
         nxtStructOrderForm.setUserId(orderForm.getUserId());
+        nxtStructOrderForm.setUsername(user.getUsername());
         nxtStructOrderForm.setDatelineCreate(orderForm.getDatelineCreate());
         nxtStructOrderForm.setDatelineCreateReadable(sdf.format(new Date(orderForm.getDatelineCreate())));
         nxtStructOrderForm.setSerialNum(orderForm.getSerialNum());
@@ -344,8 +350,12 @@ public class NxtProcessOrderForm {
             nxtStructOrderFormProduct.setProductId(nxtOrderFormProduct.getProductId());
             nxtStructOrderFormProduct.setQuantity(nxtOrderFormProduct.getQuantity());
             nxtStructOrderFormProduct.setProductName(nxtOrderFormProduct.getProductName());
-            nxtStructOrderFormProduct.setUnitWeight(nxtOrderFormProduct.getUnitWeight()/1000F);
-            nxtStructOrderFormProduct.setUnitVolume(nxtOrderFormProduct.getUnitVolume()/1000000F);
+            if (nxtOrderFormProduct.getUnitWeight() != null) {
+                nxtStructOrderFormProduct.setUnitWeight(nxtOrderFormProduct.getUnitWeight() / 1000F);
+            }
+            if (nxtOrderFormProduct.getUnitVolume() != null) {
+                nxtStructOrderFormProduct.setUnitVolume(nxtOrderFormProduct.getUnitVolume() / 1000000F);
+            }
             nxtStructOrderFormProduct.setProductPrice(nxtOrderFormProduct.getProductPrice()/100F);
             nxtStructOrderFormProduct.setProductPriceDiscount(nxtOrderFormProduct.getProductPriceDiscount()/100F);
             if (nxtOrderFormProduct.getManualPriceDiscount() != null){

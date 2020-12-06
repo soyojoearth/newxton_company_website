@@ -23,9 +23,6 @@ import java.util.*;
 public class NxtProcessOrderFormRefund {
 
     @Resource
-    private NxtUserService nxtUserService;
-
-    @Resource
     private NxtProductPictureService nxtProductPictureService;
 
     @Resource
@@ -358,12 +355,12 @@ public class NxtProcessOrderFormRefund {
         }
 
 
-        //取订单编号
-        Map<Long,String> mapOrderFormIdToSerialNum = new HashMap<>();
+        //取订单
+        Map<Long,NxtOrderForm> mapOrderFormIdToNxtOrderForm = new HashMap<>();
         List<NxtOrderForm> nxtOrderFormList = nxtOrderFormService.selectByIdSet(orderFormIdList);
         for (NxtOrderForm nxtOrderForm :
                 nxtOrderFormList) {
-            mapOrderFormIdToSerialNum.put(nxtOrderForm.getId(),nxtOrderForm.getSerialNum());
+            mapOrderFormIdToNxtOrderForm.put(nxtOrderForm.getId(),nxtOrderForm);
         }
 
         //批量取sku 、productName
@@ -410,6 +407,9 @@ public class NxtProcessOrderFormRefund {
         List<Long> orderFormRefundIdList = new ArrayList<>();
         orderFormRefundIdList.addAll(mapIdToNxtStructOrderFormRefund.keySet());
 
+        //各退款单的退款总额
+        Map<Long,Long> mapRefundTotal = new HashMap<>();
+
         List<NxtOrderFormRefundProduct> orderFormRefundProductList = nxtOrderFormRefundProductService.selectAllByOrderFormRefundIdSet(orderFormRefundIdList);
         for (NxtOrderFormRefundProduct nxtOrderFormRefundProduct :
                 orderFormRefundProductList) {
@@ -443,12 +443,24 @@ public class NxtProcessOrderFormRefund {
             //把物品塞到对应的退款单
             mapIdToNxtStructOrderFormRefund.get(nxtOrderFormRefundProduct.getOrderFormRefundId()).getOrderFormRefundProductList().add(nxtStructOrderFormRefundProduct);
 
+            //各退款单的退款总额
+            if (!mapRefundTotal.containsKey(nxtOrderFormRefundProduct.getOrderFormRefundId())){
+                mapRefundTotal.put(nxtOrderFormRefundProduct.getOrderFormRefundId(),0L);
+            }
+            mapRefundTotal.put(nxtOrderFormRefundProduct.getOrderFormRefundId(), mapRefundTotal.get(nxtOrderFormRefundProduct.getOrderFormRefundId())+nxtOrderFormRefundProduct.getAmountRefund()*nxtOrderFormRefundProduct.getQuantity());
         }
 
+        //附加订单内容
         for (NxtStructOrderFormRefund item : nxtStructOrderFormRefundList) {
-            //订单编号
-            if (mapOrderFormIdToSerialNum.containsKey(item.getOrderFormId())) {
-                item.setOrderFormSerialNum(mapOrderFormIdToSerialNum.get(item.getOrderFormId()));
+            if (mapOrderFormIdToNxtOrderForm.containsKey(item.getOrderFormId())) {
+                NxtOrderForm nxtOrderForm = mapOrderFormIdToNxtOrderForm.get(item.getOrderFormId());
+                item.setOrderFormSerialNum(nxtOrderForm.getSerialNum());
+                item.setDeliveryPerson(nxtOrderForm.getDeliveryPerson());
+                item.setDeliveryPhone(nxtOrderForm.getDeliveryPhone());
+                item.setAmountFinally(nxtOrderForm.getAmountFinally()/100F);
+                if (mapRefundTotal.containsKey(item.getId())) {
+                    item.setAmountRefundTotal(mapRefundTotal.get(item.getId())/100F);
+                }
             }
         }
 
@@ -531,10 +543,13 @@ public class NxtProcessOrderFormRefund {
 
         orderFormIdList.add(nxtOrderFormRefund.getOrderFormId());
 
-        //取订单编号
+        //取订单内容
         NxtOrderForm nxtOrderForm = nxtOrderFormService.queryById(nxtOrderFormRefund.getOrderFormId());
         if (nxtOrderForm != null){
             nxtStructOrderFormRefund.setOrderFormSerialNum(nxtOrderForm.getSerialNum());
+            nxtStructOrderFormRefund.setDeliveryPerson(nxtOrderForm.getDeliveryPerson());
+            nxtStructOrderFormRefund.setDeliveryPhone(nxtOrderForm.getDeliveryPhone());
+            nxtStructOrderFormRefund.setAmountFinally(nxtOrderForm.getAmountFinally()/100F);
         }
 
         //批量取sku 、productName
@@ -615,6 +630,23 @@ public class NxtProcessOrderFormRefund {
             nxtStructOrderFormRefund.getOrderFormRefundProductList().add(nxtStructOrderFormRefundProduct);
 
         }
+
+        //查申请售后时提交的图片
+        NxtOrderFormRefundPicture nxtOrderFormRefundPictureCondition = new NxtOrderFormRefundPicture();
+        nxtOrderFormRefundPictureCondition.setOrderFormRefundId(nxtOrderFormRefund.getId());
+        List<NxtOrderFormRefundPicture> nxtOrderFormRefundPictureList = nxtOrderFormRefundPictureService.queryAll(nxtOrderFormRefundPictureCondition);
+        List<Long> orderFormRefundPicUploadFileIdList = new ArrayList<>();
+        for (NxtOrderFormRefundPicture item : nxtOrderFormRefundPictureList) {
+            orderFormRefundPicUploadFileIdList.add(item.getUploadfileId());
+        }
+        List<NxtUploadfile> nxtUploadfileList = nxtUploadfileService.selectByIdSet(0,Integer.MAX_VALUE,orderFormRefundPicUploadFileIdList);
+
+        List<String> reasonImageList = new ArrayList<>();
+        for (NxtUploadfile nxtUploadFile : nxtUploadfileList) {
+            reasonImageList.add(nxtUploadImageComponent.convertImagePathToDomainImagePath(nxtUploadFile.getUrlpath()));
+        }
+
+        nxtStructOrderFormRefund.setReasonImageList(reasonImageList);
 
         return nxtStructOrderFormRefund;
 

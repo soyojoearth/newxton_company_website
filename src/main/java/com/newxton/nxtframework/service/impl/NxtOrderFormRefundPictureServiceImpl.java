@@ -43,6 +43,17 @@ public class NxtOrderFormRefundPictureServiceImpl implements NxtOrderFormRefundP
     }
 
     /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtOrderFormRefundPicture 实例对象
+     * @return 对象列表
+     */
+    @Override
+    public List<NxtOrderFormRefundPicture> queryAll(NxtOrderFormRefundPicture nxtOrderFormRefundPicture){
+        return this.nxtOrderFormRefundPictureDao.queryAll(nxtOrderFormRefundPicture);
+    }
+
+    /**
      * 新增数据
      *
      * @param nxtOrderFormRefundPicture 实例对象
