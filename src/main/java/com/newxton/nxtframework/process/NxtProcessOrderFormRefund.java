@@ -23,6 +23,9 @@ import java.util.*;
 public class NxtProcessOrderFormRefund {
 
     @Resource
+    private NxtUserService nxtUserService;
+
+    @Resource
     private NxtProductPictureService nxtProductPictureService;
 
     @Resource
@@ -110,6 +113,7 @@ public class NxtProcessOrderFormRefund {
 
         //创建退货记录
         NxtOrderFormRefund nxtOrderFormRefund = new NxtOrderFormRefund();
+        nxtOrderFormRefund.setUserId(userId);
         nxtOrderFormRefund.setOrderFormId(nxtOrderForm.getId());
         nxtOrderFormRefund.setReasonType(nxtStructOrderFormRefundCreate.getReasonType());
         nxtOrderFormRefund.setReasionDescription(nxtStructOrderFormRefundCreate.getReasionDescription());
@@ -248,6 +252,40 @@ public class NxtProcessOrderFormRefund {
     }
 
     /**
+     * 后台查询售后订单数量
+     * @param offset
+     * @param limit
+     * @param status
+     * @param userId
+     * @param orderFormId
+     * @return
+     * @throws NxtException
+     */
+    public Long adminQueryCount(Long offset, Long limit, Integer status, Long userId, Long orderFormId) throws NxtException {
+
+        return nxtOrderFormRefundService.adminQueryCount(offset,limit,status,userId,orderFormId);
+
+    }
+
+    /**
+     * 后台查询售后订单列表
+     * @param offset
+     * @param limit
+     * @param status
+     * @param userId
+     * @param orderFormId
+     * @return
+     * @throws NxtException
+     */
+    public List<NxtStructOrderFormRefund> adminQueryList(Long offset, Long limit, Integer status, Long userId, Long orderFormId) throws NxtException {
+
+        List<NxtOrderFormRefund> nxtOrderFormRefundList = nxtOrderFormRefundService.adminQueryList(offset,limit,status,userId,orderFormId);
+
+        return this.assemblyStructOrderFormRefundList(nxtOrderFormRefundList);
+
+    }
+
+    /**
      * 用户售后单列表
      * @param userId
      * @param offset
@@ -257,15 +295,25 @@ public class NxtProcessOrderFormRefund {
      * @param isApplied
      * @return
      */
-    public List<NxtStructOrderFormRefund> userOrderFormRefundList(Long userId, Long offset, Long limit,Boolean isDone, Boolean isShippedOrWaitShipping, Boolean isApplied){
+    public List<NxtStructOrderFormRefund> userOrderFormRefundList(Long userId, Long offset, Long limit,Boolean isDone, Boolean isShippedOrWaitShipping, Boolean isApplied) throws NxtException {
 
+        List<NxtOrderFormRefund> nxtOrderFormRefundList = nxtOrderFormRefundService.queryAllByUserIdAndLimit(offset, limit, userId, isDone, isShippedOrWaitShipping, isApplied);
+
+        return this.assemblyStructOrderFormRefundList(nxtOrderFormRefundList);
+
+    }
+
+    /**
+     * 根据初步的nxtOrderFormRefundList装配详细的结构化售后订单列表
+     * @param nxtOrderFormRefundList
+     * @return
+     */
+    public List<NxtStructOrderFormRefund> assemblyStructOrderFormRefundList(List<NxtOrderFormRefund> nxtOrderFormRefundList) throws NxtException{
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Gson gson = new Gson();
 
         List<NxtStructOrderFormRefund> nxtStructOrderFormRefundList = new ArrayList<>();
-
-        List<NxtOrderFormRefund> nxtOrderFormRefundList = nxtOrderFormRefundService.queryAllByUserIdAndLimit(offset,limit,userId,isDone,isShippedOrWaitShipping,isApplied);
 
         Map<Long,NxtStructOrderFormRefund> mapIdToNxtStructOrderFormRefund = new HashMap<>();
 

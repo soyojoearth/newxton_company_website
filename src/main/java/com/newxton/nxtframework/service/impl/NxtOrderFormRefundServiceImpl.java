@@ -85,4 +85,30 @@ public class NxtOrderFormRefundServiceImpl implements NxtOrderFormRefundService 
         return this.nxtOrderFormRefundDao.queryAllByUserIdAndLimit(offset,limit,userId,isDone,isShippedOrWaitShipping,isApplied);
     }
 
+    /**
+     * 后台查询售后订单列表
+     * @param offset
+     * @param limit
+     * @param status
+     * @param userId
+     * @param orderFormId
+     * @return
+     */
+    public List<NxtOrderFormRefund> adminQueryList(Long offset, Long limit, Integer status, Long userId, Long orderFormId){
+        return this.nxtOrderFormRefundDao.adminQueryList(offset, limit, status, userId, orderFormId);
+    }
+
+    /**
+     * 后台查询售后订单数量
+     * @param offset
+     * @param limit
+     * @param status
+     * @param userId
+     * @param orderFormId
+     * @return
+     */
+    public Long adminQueryCount(Long offset, Long limit, Integer status, Long userId, Long orderFormId){
+        return this.nxtOrderFormRefundDao.adminQueryCount(offset, limit, status, userId, orderFormId);
+    }
+
 }

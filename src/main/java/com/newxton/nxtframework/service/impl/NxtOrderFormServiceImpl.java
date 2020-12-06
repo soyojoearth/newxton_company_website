@@ -33,6 +33,17 @@ public class NxtOrderFormServiceImpl implements NxtOrderFormService {
     }
 
     /**
+     * 通过订单编号查询单条数据
+     *
+     * @param serialNum 订单编号
+     * @return 实例对象
+     */
+    @Override
+    public NxtOrderForm queryBySerialNum(String serialNum){
+        return this.nxtOrderFormDao.queryBySerialNum(serialNum);
+    }
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置

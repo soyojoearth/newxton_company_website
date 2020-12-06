@@ -22,6 +22,14 @@ public interface NxtOrderFormService {
     NxtOrderForm queryById(Long id);
 
     /**
+     * 通过订单编号查询单条数据
+     *
+     * @param serialNum 订单编号
+     * @return 实例对象
+     */
+    NxtOrderForm queryBySerialNum(String serialNum);
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置

@@ -59,4 +59,26 @@ public interface NxtOrderFormRefundService {
      */
     List<NxtOrderFormRefund> queryAllByUserIdAndLimit(Long offset,Long limit,Long userId,Boolean isDone,Boolean isShippedOrWaitShipping,Boolean isApplied);
 
+    /**
+     * 后台查询售后订单列表
+     * @param offset
+     * @param limit
+     * @param status
+     * @param userId
+     * @param orderFormId
+     * @return
+     */
+    List<NxtOrderFormRefund> adminQueryList(Long offset, Long limit, Integer status, Long userId, Long orderFormId);
+
+    /**
+     * 后台查询售后订单数量
+     * @param offset
+     * @param limit
+     * @param status
+     * @param userId
+     * @param orderFormId
+     * @return
+     */
+    Long adminQueryCount(Long offset, Long limit, Integer status, Long userId, Long orderFormId);
+
 }

@@ -42,6 +42,14 @@
         where id = #{id}
     </select>
 
+    <!--根据订单编号查询单个-->
+    <select id="queryBySerialNum" resultMap="BaseResultMap">
+        select
+          id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, manual_delivery_cost_discount, status_paid, status_delivery, status_reviews, status_refund, deal_platform,dateline_delivery,dateline_paid,dateline_received,seller_remark
+        from nxt_order_form
+        where serial_num = #{serialNum}
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
