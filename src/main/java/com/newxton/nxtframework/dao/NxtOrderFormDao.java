@@ -90,4 +90,11 @@ public interface NxtOrderFormDao {
      */
     List<NxtOrderForm> adminOrderFormList(@Param("offset") Long offset, @Param("limit") Long limit, @Param("isPaid") Boolean isPaid, @Param("isDelivery") Boolean isDelivery, @Param("dealPlatform") Integer dealPlatform, @Param("datelineBegin") Long datelineBegin, @Param("datelineEnd") Long datelineEnd);
 
+    /**
+     * 查询所有超期等待确认收货的订单
+     * @param datelineDeliveryLimit
+     * @return
+     */
+    List<NxtOrderForm> queryAllWaittingReceivedTooLongTime(@Param("datelineDeliveryLimit") Long datelineDeliveryLimit);
+
 }

@@ -320,4 +320,12 @@
         limit #{offset}, #{limit}
     </select>
 
+    <!--查询所有超期等待确认收货的订单-->
+    <select id="queryAllWaittingReceivedTooLongTime" resultMap="BaseResultMap">
+        select
+          id, user_id, dateline_create, serial_num, amount_initial, amount_discount, amount_finally, delivery_address, delivery_person, delivery_country, delivery_province, delivery_city, delivery_phone, delivery_postcode, delivery_remark, delivery_config_name, delivery_cost, manual_delivery_cost_discount, status_paid, status_delivery, status_reviews, status_refund, deal_platform,dateline_delivery,dateline_paid,dateline_received,seller_remark
+        from nxt_order_form
+        where status_delivery = 1 and dateline_received is null and dateline_delivery &lt; #{datelineDeliveryLimit}
+    </select>
+
 </mapper>

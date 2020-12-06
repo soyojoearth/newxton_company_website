@@ -1,15 +1,12 @@
 package com.newxton.nxtframework.schedule;
 
-import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
-import com.newxton.nxtframework.service.NxtCronjobService;
+import com.newxton.nxtframework.schedule.task.NxtTaskOrderForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -24,11 +21,7 @@ public class NxtCronOrderForm {
     private Logger logger = LoggerFactory.getLogger(NxtCronOrderForm.class);
 
     @Resource
-    private NxtCronjobService nxtCronjobService;
-
-    @Resource
-    private NxtGlobalSettingComponent nxtGlobalSettingComponent;
-
+    private NxtTaskOrderForm nxtTaskOrderForm;
 
     /**
      * TODO
@@ -37,17 +30,8 @@ public class NxtCronOrderForm {
     @Scheduled(fixedDelay = 3600000)
     public void autoConfirmOrderFormReceive() {
 
-        /**
-         * TODO
-         */
-
-        /**
-         * 发货超过这个天数后，自动确认收货
-         */
-        Integer days = 15;
-
-        //1、确认订单
-        //已发货，
+        //检查&自动确认收货
+        nxtTaskOrderForm.checkOrderFormAndComfirmReceived();
 
     }
 

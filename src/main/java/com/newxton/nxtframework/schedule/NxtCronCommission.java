@@ -1,6 +1,8 @@
 package com.newxton.nxtframework.schedule;
 
 import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
+import com.newxton.nxtframework.schedule.task.NxtTaskCommission;
+import com.newxton.nxtframework.schedule.task.NxtTaskOrderForm;
 import com.newxton.nxtframework.service.NxtCronjobService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,27 +23,25 @@ import java.util.Map;
 @Component
 public class NxtCronCommission {
 
+
     private Logger logger = LoggerFactory.getLogger(NxtCronCommission.class);
-    
-    @Resource
-    private NxtCronjobService nxtCronjobService;
 
     @Resource
-    private NxtGlobalSettingComponent nxtGlobalSettingComponent;
+    private NxtTaskCommission nxtTaskCommission;
 
     /**
      * TODO
-     * 佣金检查，自动确认佣金完成
+     * （每隔3600秒执行一次）
+     * （确认收货满14天）确认佣金完成，可以结转
      */
     @Scheduled(fixedDelay = 3600000)
-    public void autoConfirmCommissionCompleted() {
+    public void autoConfirmOrderFormReceive() {
 
         /**
-         * TODO
+         * （确认收货满14天）
          */
-        /**
-         * 确认收货15天后，没有交易纠纷，佣金设置"可结算"
-         */
+        //检查&执行佣金完成，可以结转
+        nxtTaskCommission.checkCommissionAndComfirmCompleted();
 
     }
 

@@ -13,6 +13,7 @@
         <result property="commissionRate" column="commission_rate" jdbcType="INTEGER"/>
         <result property="commissionAmount" column="commission_amount" jdbcType="INTEGER"/>
         <result property="datelineCreate" column="dateline_create" jdbcType="INTEGER"/>
+        <result property="datelineReceived" column="dateline_received" jdbcType="INTEGER"/>
         <result property="datelineEnd" column="dateline_end" jdbcType="INTEGER"/>
         <result property="quantityDeal" column="quantity_deal" jdbcType="INTEGER"/>
         <result property="quantityRefund" column="quantity_refund" jdbcType="INTEGER"/>
@@ -24,7 +25,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
         from nxt_commission
         where id = #{id}
     </select>
@@ -32,7 +33,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
         from nxt_commission
         limit #{offset}, #{limit}
     </select>
@@ -40,7 +41,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
         from nxt_commission
         <where>
             <if test="id != null">
@@ -70,6 +71,9 @@
             <if test="datelineCreate != null">
                 and dateline_create = #{datelineCreate}
             </if>
+            <if test="datelineReceived != null">
+                and dateline_received = #{datelineReceived}
+            </if>
             <if test="datelineEnd != null">
                 and dateline_end = #{datelineEnd}
             </if>
@@ -90,8 +94,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_commission(user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer)
-        values (#{userId}, #{inviterLevel}, #{orderFormId}, #{orderFormProductId}, #{commissionTransferInId}, #{commissionRate}, #{commissionAmount}, #{datelineCreate}, #{datelineEnd}, #{quantityDeal}, #{quantityRefund}, #{isPaid}, #{isTransfer})
+        insert into nxt_commission(user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer)
+        values (#{userId}, #{inviterLevel}, #{orderFormId}, #{orderFormProductId}, #{commissionTransferInId}, #{commissionRate}, #{commissionAmount}, #{datelineCreate}, #{datelineReceived}, #{datelineEnd}, #{quantityDeal}, #{quantityRefund}, #{isPaid}, #{isTransfer})
     </insert>
 
     <!--通过主键修改数据-->
@@ -122,6 +126,9 @@
             <if test="datelineCreate != null">
                 dateline_create = #{datelineCreate},
             </if>
+            <if test="datelineReceived != null">
+                dateline_received = #{datelineReceived},
+            </if>
             <if test="datelineEnd != null">
                 dateline_end = #{datelineEnd},
             </if>
@@ -149,7 +156,7 @@
     <!--根据userId查询指定行数据-->
     <select id="queryAllByUserIdLimit" resultMap="BaseResultMap">
         select
-          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
         from nxt_commission
         where user_id = #{userId}
         order by id desc
@@ -159,7 +166,7 @@
     <!--根据userId查询所有已完成交易、未结转数据-->
     <select id="queryAllAllowTransferByUserId" resultMap="BaseResultMap">
         select
-          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
         from nxt_commission
         where user_id = #{userId} and is_transfer = 0 and is_paid = 1 and dateline_end > 0 and (quantity_deal > quantity_refund)
     </select>
@@ -167,9 +174,17 @@
     <!--根据userId查询所有已付款、等待交易完成的佣金记录-->
     <select id="queryAllWaitDealCompleateByUserId" resultMap="BaseResultMap">
         select
-          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
         from nxt_commission
         where user_id = #{userId} and is_transfer = 0 and is_paid = 1 and (dateline_end is NULL or dateline_end = 0) and (quantity_deal > quantity_refund)
+    </select>
+
+    <!--查询所有已经确认收货，但还没有确认佣金完成，并且时间上可以确认佣金完成的单子-->
+    <select id="queryAllWaittingEndingTooLongTime" resultMap="BaseResultMap">
+        select
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
+        from nxt_commission
+        where dateline_received is not null and dateline_end is null and dateline_received &lt; #{datelineReceivedLimit}
     </select>
 
 </mapper>

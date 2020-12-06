@@ -116,4 +116,13 @@ public class NxtOrderFormServiceImpl implements NxtOrderFormService {
         return this.nxtOrderFormDao.adminOrderFormList(offset,limit,isPaid,isDelivery,dealPlatform,datelineBegin,datelineEnd);
     }
 
+    /**
+     * 查询所有超期等待确认收货的订单
+     * @param datelineDeliveryLimit
+     * @return
+     */
+    public List<NxtOrderForm> queryAllWaittingReceivedTooLongTime(@Param("datelineDeliveryLimit") Long datelineDeliveryLimit){
+        return this.nxtOrderFormDao.queryAllWaittingReceivedTooLongTime(datelineDeliveryLimit);
+    }
+
 }
