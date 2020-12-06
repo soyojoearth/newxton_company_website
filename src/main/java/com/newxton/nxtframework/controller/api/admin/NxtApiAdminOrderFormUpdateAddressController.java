@@ -73,10 +73,10 @@ public class NxtApiAdminOrderFormUpdateAddressController {
                 else {
                     return new NxtStructApiResult(53,"国家、省份、城市错误").toMap();
                 }
-
             }
             else {
-                return new NxtStructApiResult(53,"国家、省份、城市之一找不到").toMap();
+                //不选不改
+                //return new NxtStructApiResult(53,"国家、省份、城市之一找不到").toMap();
             }
         }
 

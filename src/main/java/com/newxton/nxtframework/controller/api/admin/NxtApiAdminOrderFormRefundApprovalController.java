@@ -114,7 +114,7 @@ public class NxtApiAdminOrderFormRefundApprovalController {
         if (status.equals(4)) {
             Set<Integer> statusRejection = Stream.of(1).collect(toSet());
             if (statusRejection.contains(nxtOrderFormRefund.getStatus())) {
-                return new NxtStructApiResult(51, "当前状态下不可设置[收到货退款]").toMap();
+                return new NxtStructApiResult(51, "当前状态下不可设置[直接退款]").toMap();
             }
         }
 

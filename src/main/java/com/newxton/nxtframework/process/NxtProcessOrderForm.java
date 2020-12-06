@@ -47,6 +47,41 @@ public class NxtProcessOrderForm {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     /**
+     * 后台查询订单统计
+     * @param isPaid
+     * @param isDelivery
+     * @param dealPlatform
+     * @param datelineBegin
+     * @param datelineEnd
+     * @return
+     * @throws NxtException
+     */
+    public Long adminOrderFormCount(Boolean isPaid,Boolean isDelivery,Integer dealPlatform,String datelineBegin,String datelineEnd) throws NxtException {
+        Long datelineBeginLong = null;
+        Long datelineEndLong = null;
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date;
+        try {
+            if (datelineBegin != null && !datelineBegin.isEmpty()) {
+                date = dateFormat.parse(datelineBegin);
+                datelineBeginLong = date.getTime();
+            }
+            if (datelineEnd != null && !datelineEnd.isEmpty()) {
+                date = dateFormat.parse(datelineEnd);
+                datelineEndLong = date.getTime() + 86400000L;
+            }
+        }
+        catch (Exception e) {
+            throw new NxtException("日期转化错误");
+        }
+
+        //查询订单统计
+        return nxtOrderFormService.adminOrderFormCount(isPaid,isDelivery,dealPlatform,datelineBeginLong,datelineEndLong);
+
+    }
+
+    /**
      * 后台查询订单列表
      * @param offset
      * @param limit
@@ -212,8 +247,12 @@ public class NxtProcessOrderForm {
             nxtStructOrderFormProduct.setOrderFormId(nxtOrderFormProduct.getOrderFormId());
             nxtStructOrderFormProduct.setQuantity(nxtOrderFormProduct.getQuantity());
             nxtStructOrderFormProduct.setProductName(nxtOrderFormProduct.getProductName());
-            nxtStructOrderFormProduct.setUnitWeight(nxtOrderFormProduct.getUnitWeight()/1000F);
-            nxtStructOrderFormProduct.setUnitVolume(nxtOrderFormProduct.getUnitVolume()/1000000F);
+            if (nxtOrderFormProduct.getUnitWeight() != null) {
+                nxtStructOrderFormProduct.setUnitWeight(nxtOrderFormProduct.getUnitWeight() / 1000F);
+            }
+            if (nxtOrderFormProduct.getUnitVolume() != null) {
+                nxtStructOrderFormProduct.setUnitVolume(nxtOrderFormProduct.getUnitVolume() / 1000000F);
+            }
             nxtStructOrderFormProduct.setProductPrice(nxtOrderFormProduct.getProductPrice()/100F);
             nxtStructOrderFormProduct.setProductPriceDiscount(nxtOrderFormProduct.getProductPriceDiscount()/100F);
             if (nxtOrderFormProduct.getManualPriceDiscount() != null){
@@ -389,6 +428,7 @@ public class NxtProcessOrderForm {
             NxtStructOrderFormDelivery nxtStructOrderFormDelivery = new NxtStructOrderFormDelivery();
             nxtStructOrderFormDelivery.setId(nxtOrderFormDelivery.getId());
             nxtStructOrderFormDelivery.setOrderFormId(nxtOrderFormDelivery.getOrderFormId());
+            nxtStructOrderFormDelivery.setDeliveryCompanyId(nxtOrderFormDelivery.getDeliveryCompanyId());
             nxtStructOrderFormDelivery.setDeliveryCompanyName(nxtOrderFormDelivery.getDeliveryCompanyName());
             nxtStructOrderFormDelivery.setDeliverySerialNum(nxtOrderFormDelivery.getDeliverySerialNum());
 

@@ -128,6 +128,20 @@ public class NxtOrderFormServiceImpl implements NxtOrderFormService {
     }
 
     /**
+     * 后台查询订单统计
+     * @param isPaid
+     * @param isDelivery
+     * @param dealPlatform
+     * @param datelineBegin
+     * @param datelineEnd
+     * @return
+     */
+    public Long adminOrderFormCount(@Param("isPaid") Boolean isPaid, @Param("isDelivery") Boolean isDelivery, @Param("dealPlatform") Integer dealPlatform, @Param("datelineBegin") Long datelineBegin, @Param("datelineEnd") Long datelineEnd){
+        return this.nxtOrderFormDao.adminOrderFormCount(isPaid, isDelivery, dealPlatform, datelineBegin, datelineEnd);
+    }
+
+
+    /**
      * 查询所有超期等待确认收货的订单
      * @param datelineDeliveryLimit
      * @return

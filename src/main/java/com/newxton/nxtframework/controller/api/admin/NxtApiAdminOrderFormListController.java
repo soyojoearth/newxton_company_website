@@ -8,6 +8,7 @@ import com.newxton.nxtframework.struct.NxtStructOrderForm;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,11 @@ public class NxtApiAdminOrderFormListController {
 
         try {
             List<NxtStructOrderForm> nxtStructOrderFormList = nxtProcessOrderForm.adminOrderFormList(offset,limit,isPaid,isDelivery,dealPlatform,datelineBegin,datelineEnd);
-            return new NxtStructApiResult(nxtStructOrderFormList).toMap();
+            Long count = nxtProcessOrderForm.adminOrderFormCount(isPaid,isDelivery,dealPlatform,datelineBegin,datelineEnd);
+            Map<String,Object> result = new HashMap<>();
+            result.put("list",nxtStructOrderFormList);
+            result.put("count",count);
+            return new NxtStructApiResult(result).toMap();
         }
         catch (NxtException e){
             return new NxtStructApiResult(34,e.getNxtExecptionMessage()).toMap();
