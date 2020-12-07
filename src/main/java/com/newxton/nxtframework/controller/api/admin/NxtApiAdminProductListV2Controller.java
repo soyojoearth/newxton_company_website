@@ -42,8 +42,6 @@ public class NxtApiAdminProductListV2Controller {
         Long offset = jsonParam.getLong("offset");
         Long limit = jsonParam.getLong("limit");
 
-        Boolean requireCount = jsonParam.getBoolean("requireCount");
-
         Long categoryId = jsonParam.getLong("categoryId");
         String searchKeyword = jsonParam.getString("searchKeyword");
 
@@ -121,10 +119,8 @@ public class NxtApiAdminProductListV2Controller {
 
         data.put("list",listResult);
 
-        if (requireCount != null && requireCount){
-            Long count = nxtProductService.adminCountAll(categoryId,searchKeyword,isRecommend,isNew,isHot,isSelling,isTrash);
-            data.put("count",count);
-        }
+        Long count = nxtProductService.adminCountAll(categoryId,searchKeyword,isRecommend,isNew,isHot,isSelling,isTrash);
+        data.put("count",count);
 
         return new NxtStructApiResult(data).toMap();
 

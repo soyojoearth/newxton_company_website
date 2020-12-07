@@ -397,9 +397,12 @@ public class NxtProcessReviews {
         nxtReviews.setDateline(System.currentTimeMillis());
         nxtReviews.setContent(content);
         nxtReviews.setParentId(0L);
+        nxtReviews.setIsRecommend(0);
+        nxtReviews.setIsHidden(1);//用户新增评论，默认隐藏
 
         if (rootReviews != null){
             nxtReviews.setParentId(rootReviews.getId());
+            nxtReviews.setIsHidden(0);//回复无所谓隐藏不隐藏，根评论不显示，回复当然看不见
         }
 
         nxtReviewsService.insert(nxtReviews);

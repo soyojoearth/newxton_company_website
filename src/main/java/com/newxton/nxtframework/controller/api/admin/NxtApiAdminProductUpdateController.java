@@ -31,6 +31,9 @@ public class NxtApiAdminProductUpdateController {
             if (nxtStructProduct.getCategoryId() == null){
                 return new NxtStructApiResult(52,"请选择类别").toMap();
             }
+            if (nxtStructProduct.getDeliveryConfigId() == null){
+                return new NxtStructApiResult(52,"请选择运费模版").toMap();
+            }
             return nxtProcessProduct.saveProductAllDetail(nxtStructProduct);
         }
         catch (Exception e){

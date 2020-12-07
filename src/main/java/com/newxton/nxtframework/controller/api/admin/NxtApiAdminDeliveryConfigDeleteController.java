@@ -59,6 +59,9 @@ public class NxtApiAdminDeliveryConfigDeleteController {
             return result;
         }
 
+        //检查运费模版是否已被引用，被引用的不可删除
+        // TODO
+
         //item列表
         NxtDeliveryConfigItem nxtDeliveryConfigItemCondition = new NxtDeliveryConfigItem();
         nxtDeliveryConfigItemCondition.setDeliveryConfigId(nxtDeliveryConfig.getId());
