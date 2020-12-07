@@ -6,6 +6,7 @@ import com.newxton.nxtframework.entity.NxtOrderFormRefund;
 import com.newxton.nxtframework.entity.NxtOrderFormRefundProduct;
 import com.newxton.nxtframework.entity.NxtTransaction;
 import com.newxton.nxtframework.exception.NxtException;
+import com.newxton.nxtframework.process.NxtProcessOrderFormRefund;
 import com.newxton.nxtframework.service.NxtOrderFormRefundProductService;
 import com.newxton.nxtframework.service.NxtOrderFormRefundService;
 import com.newxton.nxtframework.service.NxtOrderFormService;
@@ -14,6 +15,7 @@ import com.newxton.nxtframework.struct.NxtStructApiResult;
 import com.newxton.nxtframework.struct.admin.NxtStructAdminOrderFormRefundApprovalPost;
 import com.newxton.nxtframework.struct.admin.NxtStructAdminOrderFormRefundApprovalPostItemAmount;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,6 +47,9 @@ public class NxtApiAdminOrderFormRefundApprovalController {
 
     @Resource
     private NxtOrderFormService nxtOrderFormService;
+
+    @Resource
+    private NxtProcessOrderFormRefund nxtProcessOrderFormRefund;
 
     @RequestMapping(value = "/api/admin/order_form_refund/approval", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestBody String json) {
@@ -123,13 +128,12 @@ public class NxtApiAdminOrderFormRefundApprovalController {
         if (statusRefundSet.contains(status)){
             try {
                 //执行退款操作
-                this.processRefund(nxtOrderFormRefund,refundAmountList,refundDeliveryCost);
+                nxtProcessOrderFormRefund.execRefund(nxtOrderFormRefund,refundAmountList,refundDeliveryCost);
                 return new NxtStructApiResult().toMap();
             }
             catch (NxtException e){
                 return new NxtStructApiResult(e.getNxtExecptionMessage()).toMap();
             }
-
         }
         else {
             nxtOrderFormRefund.setStatus(status);
@@ -139,80 +143,6 @@ public class NxtApiAdminOrderFormRefundApprovalController {
 
     }
 
-    /**
-     * 执行退款操作
-     * @param nxtOrderFormRefund
-     * @param refundAmountList
-     */
-    @Transactional(rollbackFor = { Exception.class, NxtException.class })
-    public void processRefund(NxtOrderFormRefund nxtOrderFormRefund, List<NxtStructAdminOrderFormRefundApprovalPostItemAmount> refundAmountList, Boolean refundDeliveryCost) throws NxtException {
 
-
-        NxtTransaction nxtTransactionCondition = new NxtTransaction();
-        nxtTransactionCondition.setType(3);//交易类型（1:充值 2:消费 3:退款 4:提现 5:撤销提现 6:佣金结算收入）
-        nxtTransactionCondition.setOuterId(nxtOrderFormRefund.getId());
-        List<NxtTransaction> nxtTransactionList = nxtTransactionService.queryAll(nxtTransactionCondition);
-
-        if (nxtTransactionList.size() > 0){
-            throw new NxtException("不可重复退款");
-        }
-
-        //自定义最终退款金额
-        Map<Long,Long> mapRefundAmount = new HashMap<>();
-        if (refundAmountList != null){
-            for (NxtStructAdminOrderFormRefundApprovalPostItemAmount item : refundAmountList) {
-                mapRefundAmount.put(item.getOrderFromRefundProductId(),(long)(item.getOrderFromRefundProductAmount()*100));
-            }
-        }
-
-        //查询物品
-        List<NxtOrderFormRefundProduct> nxtOrderFormRefundProductList = nxtOrderFormRefundProductService.selectAllByOrderFormRefundIdSet(Stream.of(nxtOrderFormRefund.getId()).collect(toList()));
-
-        Long amountRefundTotal = 0L;
-        for (NxtOrderFormRefundProduct item : nxtOrderFormRefundProductList) {
-            if (mapRefundAmount.containsKey(item.getId())){
-                //修改成最终退款金额
-                if (mapRefundAmount.get(item.getId()) > item.getAmountRefund()){
-                    throw new NxtException("有物品退款额过多，请修改");
-                }
-                item.setAmountRefund(mapRefundAmount.get(item.getId()));
-                nxtOrderFormRefundProductService.update(item);
-            }
-            amountRefundTotal += item.getAmountRefund();
-        }
-
-        //退款到余额(记到账本)
-        NxtTransaction nxtTransaction = new NxtTransaction();
-        nxtTransaction.setUserId(nxtOrderFormRefund.getUserId());
-        nxtTransaction.setType(3);//交易类型（1:充值 2:消费 3:退款 4:提现 5:撤销提现 6:佣金结算收入）
-        nxtTransaction.setAmount(amountRefundTotal);
-        nxtTransaction.setDateline(System.currentTimeMillis());
-        nxtTransaction.setOuterId(nxtOrderFormRefund.getId());
-        nxtTransactionService.insert(nxtTransaction);
-
-        //退运费
-        if (refundDeliveryCost != null && refundDeliveryCost){
-            NxtOrderForm nxtOrderForm = nxtOrderFormService.queryById(nxtOrderFormRefund.getOrderFormId());
-            Long cost = nxtOrderForm.getDeliveryCost();
-//            cost += nxtOrderForm.getManualDeliveryCostDiscount();
-            if (nxtOrderForm.getManualDeliveryCostDiscount() != null){
-                cost += nxtOrderForm.getManualDeliveryCostDiscount();
-            }
-            if (cost > 0) {
-                NxtTransaction nxtTransactionDeliveryCost = new NxtTransaction();
-                nxtTransactionDeliveryCost.setUserId(nxtOrderFormRefund.getUserId());
-                nxtTransactionDeliveryCost.setType(3);//交易类型（1:充值 2:消费 3:退款 4:提现 5:撤销提现 6:佣金结算收入）
-                nxtTransactionDeliveryCost.setAmount(cost);
-                nxtTransactionDeliveryCost.setDateline(System.currentTimeMillis());
-                nxtTransactionDeliveryCost.setOuterId(nxtOrderFormRefund.getId());
-                nxtTransactionService.insert(nxtTransactionDeliveryCost);
-            }
-        }
-
-        //设置售后完成
-        nxtOrderFormRefund.setStatus(1);
-        nxtOrderFormRefundService.update(nxtOrderFormRefund);
-
-    }
 
 }

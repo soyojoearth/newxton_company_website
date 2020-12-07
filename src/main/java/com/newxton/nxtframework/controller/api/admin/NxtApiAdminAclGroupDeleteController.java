@@ -32,7 +32,7 @@ public class NxtApiAdminAclGroupDeleteController {
     @Resource
     private NxtAclGroupActionService nxtAclGroupActionService;
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value = "/api/admin/acl_group_delete", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
 

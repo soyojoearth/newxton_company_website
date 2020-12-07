@@ -33,7 +33,7 @@ public class NxtProcessUserAddress {
      * @param userId
      * @return
      */
-    public List<NxtStructUserAddress> userAddressList(Long offset,Long limit, Long userId) throws NxtException{
+    public List<NxtStructUserAddress> userAddressList(Long offset,Long limit, Long userId){
 
         List<NxtStructUserAddress> nxtStructUserAddressList = new ArrayList<>();
 
@@ -85,8 +85,8 @@ public class NxtProcessUserAddress {
      * @param userId
      * @param nxtStructUserAddress
      */
-    @Transactional
-    public void saveUserAddress(Long userId, NxtStructUserAddress nxtStructUserAddress){
+    @Transactional(rollbackFor=Exception.class)
+    public void saveUserAddress(Long userId, NxtStructUserAddress nxtStructUserAddress) throws NxtException {
 
         NxtUserAddress nxtUserAddress;
         if (nxtStructUserAddress.getId() != null){
@@ -180,8 +180,8 @@ public class NxtProcessUserAddress {
      * @param userId
      * @param id
      */
-    @Transactional
-    public void setDefault(Long userId,Long id){
+    @Transactional(rollbackFor=Exception.class)
+    public void setDefault(Long userId,Long id) throws NxtException {
 
         NxtUserAddress nxtUserAddress = nxtUserAddressService.queryById(id);
 

@@ -35,7 +35,7 @@ public class NxtApiAdminDeliveryConfigDeleteController {
     @Resource
     private NxtDeliveryConfigItemRegionService nxtDeliveryConfigItemRegionService;
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value = "/api/admin/delivery_config/delete", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
 

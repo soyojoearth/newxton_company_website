@@ -30,7 +30,7 @@ public class NxtApiAdminAclGroupDetailUpdateController {
     @Resource
     private NxtAclGroupActionService nxtAclGroupActionService;
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value = "/api/admin/acl_group_detail_update", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestBody String json) {
 

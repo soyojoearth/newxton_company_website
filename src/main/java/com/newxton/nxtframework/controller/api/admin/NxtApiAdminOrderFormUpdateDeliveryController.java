@@ -34,7 +34,7 @@ public class NxtApiAdminOrderFormUpdateDeliveryController {
     @Resource
     private NxtDeliveryCompanyService nxtDeliveryCompanyService;
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value = "/api/admin/order_form/update_delivery", method = RequestMethod.POST)
     public Map<String, Object> exec(@RequestBody JSONObject jsonParam) {
 

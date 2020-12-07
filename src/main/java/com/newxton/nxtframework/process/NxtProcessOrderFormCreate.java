@@ -67,7 +67,7 @@ public class NxtProcessOrderFormCreate {
     @Resource
     private NxtProcessDeliveryConfig nxtProcessDeliveryConfig;
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     public Long exec(NxtStructOrderFromCreate nxtStructOrderFromCreate, Long userId) throws NxtException{
 
         if (nxtStructOrderFromCreate.deliveryCountry == null){

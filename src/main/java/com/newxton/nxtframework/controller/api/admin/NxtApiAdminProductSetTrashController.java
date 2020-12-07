@@ -43,10 +43,6 @@ public class NxtApiAdminProductSetTrashController {
         result.put("status", 0);
         result.put("message", "");
 
-        if (postData.getId() == null) {
-            return new NxtStructApiResult(52,"参数错误").toMap();
-        }
-
         if (postData.getId() != null) {
             /*先查询*/
             NxtProduct nxtProduct = nxtProductService.queryById(postData.getId());

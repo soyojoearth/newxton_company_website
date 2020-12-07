@@ -222,7 +222,7 @@ public class NxtProcessProduct {
 
     }
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     public Map<String, Object> saveProductAllDetail(NxtStructProduct nxtStructProduct){
 
         Map<String, Object> result = new HashMap<>();

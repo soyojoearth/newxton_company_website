@@ -284,7 +284,7 @@ public class NxtProcessOrderForm {
 
     }
 
-    public NxtStructOrderForm orderFormDetail(Long id){
+    public NxtStructOrderForm orderFormDetail(Long id) throws NxtException {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Gson gson = new Gson();

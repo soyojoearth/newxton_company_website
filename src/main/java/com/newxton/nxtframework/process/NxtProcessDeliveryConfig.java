@@ -42,7 +42,7 @@ public class NxtProcessDeliveryConfig {
      * @param nxtStructDeliveryConfig
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     public Map<String, Object> save(NxtStructDeliveryConfig nxtStructDeliveryConfig) {
 
         Map<String, Object> result = new HashMap<>();

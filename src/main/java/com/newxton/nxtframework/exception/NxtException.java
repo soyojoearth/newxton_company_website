@@ -5,7 +5,7 @@ package com.newxton.nxtframework.exception;
  * @time 2020/11/19
  * @address Shenzhen, China
  */
-public class NxtException extends RuntimeException {
+public class NxtException extends Exception {
 
     private String nxtExecptionCode;
     private String nxtExecptionMessage;

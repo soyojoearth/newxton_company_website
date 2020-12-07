@@ -33,7 +33,7 @@ public class NxtProcessWithdraw {
      * @param platformPerson
      * @throws NxtException
      */
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     public void create(Long userId,Long amount,String platform, String platformAccount,String platformPerson) throws NxtException {
 
         Integer platformType = 0;//平台（0:银行 1:微信 2:支付宝 3:paypal 888:现金）

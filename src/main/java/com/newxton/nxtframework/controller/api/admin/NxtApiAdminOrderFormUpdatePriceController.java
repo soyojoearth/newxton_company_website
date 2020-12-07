@@ -76,7 +76,7 @@ public class NxtApiAdminOrderFormUpdatePriceController {
      * @param manualDeliveryCostDiscount
      * @throws NxtException
      */
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     public void processDo(Long orderFormId, Float manualAmountDiscount, Float manualDeliveryCostDiscount) throws NxtException {
 
         if (manualAmountDiscount == null || manualDeliveryCostDiscount == null){

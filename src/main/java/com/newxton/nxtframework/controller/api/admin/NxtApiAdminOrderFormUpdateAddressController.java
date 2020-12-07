@@ -31,7 +31,7 @@ public class NxtApiAdminOrderFormUpdateAddressController {
     @Resource
     private NxtDeliveryRegionService nxtDeliveryRegionService;
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value = "/api/admin/order_form/update_address", method = RequestMethod.POST)
     public Map<String, Object> exec(@RequestBody JSONObject jsonParam) {
 

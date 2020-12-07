@@ -22,7 +22,7 @@ public class NxtApiAdminOSSAddJobTransferController {
     @Resource
     private NxtCronjobService nxtCronjobService;
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value = "/api/admin/oss_addjob_transfer", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "location_from", required = false) String locationFrom,
                                      @RequestParam(value = "location_to", required = false) String locationTo) {

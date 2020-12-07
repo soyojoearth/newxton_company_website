@@ -7,12 +7,16 @@ import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.service.*;
 import com.newxton.nxtframework.struct.*;
+import com.newxton.nxtframework.struct.admin.NxtStructAdminOrderFormRefundApprovalPostItemAmount;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * @author soyojo.earth@gmail.com
@@ -21,6 +25,10 @@ import java.util.*;
  */
 @Component
 public class NxtProcessOrderFormRefund {
+
+    @Resource
+    private NxtTransactionService nxtTransactionService;
+
 
     @Resource
     private NxtProductPictureService nxtProductPictureService;
@@ -55,7 +63,7 @@ public class NxtProcessOrderFormRefund {
      * @param nxtStructOrderFormRefundCreate
      * @throws NxtException
      */
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     public void create(Long userId, NxtStructOrderFormRefundCreate nxtStructOrderFormRefundCreate) throws NxtException {
 
         if (nxtStructOrderFormRefundCreate.getId() == null){
@@ -500,7 +508,7 @@ public class NxtProcessOrderFormRefund {
      * @param id
      * @return
      */
-    public NxtStructOrderFormRefund allDetail(Long id){
+    public NxtStructOrderFormRefund allDetail(Long id) throws NxtException {
 
 
         NxtOrderFormRefund nxtOrderFormRefund = nxtOrderFormRefundService.queryById(id);
@@ -649,6 +657,81 @@ public class NxtProcessOrderFormRefund {
         nxtStructOrderFormRefund.setReasonImageList(reasonImageList);
 
         return nxtStructOrderFormRefund;
+
+    }
+
+    /**
+     * 执行退款操作
+     * @param nxtOrderFormRefund
+     * @param refundAmountList
+     */
+    @Transactional(rollbackFor=Exception.class)
+    public void execRefund(NxtOrderFormRefund nxtOrderFormRefund, List<NxtStructAdminOrderFormRefundApprovalPostItemAmount> refundAmountList, Boolean refundDeliveryCost) throws NxtException {
+
+        NxtTransaction nxtTransactionCondition = new NxtTransaction();
+        nxtTransactionCondition.setType(3);//交易类型（1:充值 2:消费 3:退款 4:提现 5:撤销提现 6:佣金结算收入）
+        nxtTransactionCondition.setOuterId(nxtOrderFormRefund.getId());
+        List<NxtTransaction> nxtTransactionList = nxtTransactionService.queryAll(nxtTransactionCondition);
+
+        if (nxtTransactionList.size() > 0){
+            throw new NxtException("不可重复退款");
+        }
+
+        //自定义最终退款金额
+        Map<Long,Long> mapRefundAmount = new HashMap<>();
+        if (refundAmountList != null){
+            for (NxtStructAdminOrderFormRefundApprovalPostItemAmount item : refundAmountList) {
+                mapRefundAmount.put(item.getOrderFromRefundProductId(),(long)(item.getOrderFromRefundProductAmount()*100));
+            }
+        }
+
+        //查询物品
+        List<NxtOrderFormRefundProduct> nxtOrderFormRefundProductList = nxtOrderFormRefundProductService.selectAllByOrderFormRefundIdSet(Stream.of(nxtOrderFormRefund.getId()).collect(toList()));
+
+        Long amountRefundTotal = 0L;
+        for (NxtOrderFormRefundProduct item : nxtOrderFormRefundProductList) {
+            if (mapRefundAmount.containsKey(item.getId())){
+                //修改成最终退款金额
+                if (mapRefundAmount.get(item.getId()) > item.getAmountRefund()){
+                    throw new NxtException("有物品退款额过多，请修改");
+                }
+                item.setAmountRefund(mapRefundAmount.get(item.getId()));
+                nxtOrderFormRefundProductService.update(item);
+            }
+            amountRefundTotal += item.getAmountRefund();
+        }
+
+        //退款到余额(记到账本)
+        NxtTransaction nxtTransaction = new NxtTransaction();
+        nxtTransaction.setUserId(nxtOrderFormRefund.getUserId());
+        nxtTransaction.setType(3);//交易类型（1:充值 2:消费 3:退款 4:提现 5:撤销提现 6:佣金结算收入）
+        nxtTransaction.setAmount(amountRefundTotal);
+        nxtTransaction.setDateline(System.currentTimeMillis());
+        nxtTransaction.setOuterId(nxtOrderFormRefund.getId());
+        nxtTransactionService.insert(nxtTransaction);
+
+        //退运费
+        if (refundDeliveryCost != null && refundDeliveryCost){
+            NxtOrderForm nxtOrderForm = nxtOrderFormService.queryById(nxtOrderFormRefund.getOrderFormId());
+            Long cost = nxtOrderForm.getDeliveryCost();
+//            cost += nxtOrderForm.getManualDeliveryCostDiscount();
+            if (nxtOrderForm.getManualDeliveryCostDiscount() != null){
+                cost += nxtOrderForm.getManualDeliveryCostDiscount();
+            }
+            if (cost > 0) {
+                NxtTransaction nxtTransactionDeliveryCost = new NxtTransaction();
+                nxtTransactionDeliveryCost.setUserId(nxtOrderFormRefund.getUserId());
+                nxtTransactionDeliveryCost.setType(3);//交易类型（1:充值 2:消费 3:退款 4:提现 5:撤销提现 6:佣金结算收入）
+                nxtTransactionDeliveryCost.setAmount(cost);
+                nxtTransactionDeliveryCost.setDateline(System.currentTimeMillis());
+                nxtTransactionDeliveryCost.setOuterId(nxtOrderFormRefund.getId());
+                nxtTransactionService.insert(nxtTransactionDeliveryCost);
+            }
+        }
+
+        //设置售后完成
+        nxtOrderFormRefund.setStatus(1);
+        nxtOrderFormRefundService.update(nxtOrderFormRefund);
 
     }
 

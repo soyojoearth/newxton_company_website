@@ -42,7 +42,7 @@ public class NxtApiAdminProductDeleteController {
     @Resource
     private NxtOrderFormProductService nxtOrderFormProductService;
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value = "/api/admin/product/delete", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "id", required=false) Long id) {
 

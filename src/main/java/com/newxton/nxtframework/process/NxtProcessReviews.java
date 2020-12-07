@@ -333,8 +333,8 @@ public class NxtProcessReviews {
      * 用户创建订单评论
      * @param userId
      */
-    @Transactional
-    public void create(Long userId, NxtStructOrderFormReivewsCreate nxtStructOrderFormReivewsCreate){
+    @Transactional(rollbackFor=Exception.class)
+    public void create(Long userId, NxtStructOrderFormReivewsCreate nxtStructOrderFormReivewsCreate) throws NxtException {
 
         Long orderFormId = nxtStructOrderFormReivewsCreate.getOrderFormId();
         Long orderFormProductId = nxtStructOrderFormReivewsCreate.getOrderFormProductId();
