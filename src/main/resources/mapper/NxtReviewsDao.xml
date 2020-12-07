@@ -173,4 +173,34 @@
         order by id limit 1
     </select>
 
+
+    <!--管理员后台，获取评论列表-->
+    <select id="adminQueryReviewsList" resultMap="BaseResultMap">
+        select
+          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
+        from nxt_reviews
+        <where>
+            <if test="productId != null">
+                and product_id = #{productId}
+            </if>
+            and origin_type = 0 and parent_id = 0
+        </where>
+        order by dateline desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--管理员后台，获取评论统计-->
+    <select id="adminQueryReviewsCount" resultType="Long">
+        select
+        count(*)
+        from nxt_reviews
+        <where>
+            <if test="productId != null">
+                and product_id = #{productId}
+            </if>
+            and origin_type = 0 and parent_id = 0
+        </where>
+    </select>
+
+
 </mapper>

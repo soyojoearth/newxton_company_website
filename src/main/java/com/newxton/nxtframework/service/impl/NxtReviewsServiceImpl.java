@@ -130,4 +130,26 @@ public class NxtReviewsServiceImpl implements NxtReviewsService {
         return this.nxtReviewsDao.queryRootReviewsByOrderFormProductId(orderFormProductId);
     }
 
+    /**
+     * 管理员后台，获取评论列表
+     * @param offset
+     * @param limit
+     * @param productId
+     * @return
+     */
+    public List<NxtReviews> adminQueryReviewsList(Long offset, Long limit, Long productId){
+        return this.nxtReviewsDao.adminQueryReviewsList(offset, limit, productId);
+    }
+
+    /**
+     * 管理员后台，获取评论列表
+     * @param offset
+     * @param limit
+     * @param productId
+     * @return
+     */
+    public Long adminQueryReviewsCount(Long offset, Long limit, Long productId){
+        return this.nxtReviewsDao.adminQueryReviewsCount(offset, limit, productId);
+    }
+
 }

@@ -41,6 +41,12 @@ public class NxtProcessOrderFormCreate {
     private NxtProductService nxtProductService;
 
     @Resource
+    private NxtProductPictureService nxtProductPictureService;
+
+    @Resource
+    private NxtUploadfileService nxtUploadfileService;
+
+    @Resource
     private NxtProductSkuService nxtProductSkuService;
 
     @Resource
@@ -204,6 +210,15 @@ public class NxtProcessOrderFormCreate {
                 nxtOrderFormProduct.setProductId(nxtShoppingCartProduct.getProductId());
                 nxtOrderFormProduct.setQuantity(nxtShoppingCartProduct.getQuantity());
                 nxtOrderFormProduct.setProductName(nxtProduct.getProductName());
+
+                //查询主图
+                NxtProductPicture nxtProductPictureCondition = new NxtProductPicture();
+                nxtProductPictureCondition.setProductId(nxtProduct.getId());
+                List<NxtProductPicture> nxtProductPictureList = nxtProductPictureService.queryAll(nxtProductPictureCondition);
+                if (nxtProductPictureList.size() > 0){
+                    NxtProductPicture nxtProductPicture = nxtProductPictureList.get(0);
+                    nxtOrderFormProduct.setProductPicUploadfileId(nxtProductPicture.getUploadfileId());
+                }
 
                 if (nxtProduct.getUnitVolume() != null){
                     nxtOrderFormProduct.setUnitVolume(nxtProduct.getUnitVolume());

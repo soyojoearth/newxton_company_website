@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtOrderFormProduct)实体类
  *
  * @author makejava
- * @since 2020-12-03 10:46:12
+ * @since 2020-12-07 17:26:06
  */
 public class NxtOrderFormProduct implements Serializable {
-    private static final long serialVersionUID = 481339145454037900L;
+    private static final long serialVersionUID = 229535902208318713L;
     /**
     * 订单管理商品
     */
@@ -24,6 +24,8 @@ public class NxtOrderFormProduct implements Serializable {
     * 成交数量   
     */
     private Long quantity;
+    
+    private Long productPicUploadfileId;
     /**
     * 产品名称
     */
@@ -68,12 +70,6 @@ public class NxtOrderFormProduct implements Serializable {
     private Long quantityRefund;
     
     private Long commissionRate;
-    
-    private Long datelineDelivery;
-    
-    private Long datelinePaid;
-    
-    private Long datelineReceived;
 
 
     public Long getId() {
@@ -106,6 +102,14 @@ public class NxtOrderFormProduct implements Serializable {
 
     public void setQuantity(Long quantity) {
         this.quantity = quantity;
+    }
+
+    public Long getProductPicUploadfileId() {
+        return productPicUploadfileId;
+    }
+
+    public void setProductPicUploadfileId(Long productPicUploadfileId) {
+        this.productPicUploadfileId = productPicUploadfileId;
     }
 
     public String getProductName() {
@@ -202,30 +206,6 @@ public class NxtOrderFormProduct implements Serializable {
 
     public void setCommissionRate(Long commissionRate) {
         this.commissionRate = commissionRate;
-    }
-
-    public Long getDatelineDelivery() {
-        return datelineDelivery;
-    }
-
-    public void setDatelineDelivery(Long datelineDelivery) {
-        this.datelineDelivery = datelineDelivery;
-    }
-
-    public Long getDatelinePaid() {
-        return datelinePaid;
-    }
-
-    public void setDatelinePaid(Long datelinePaid) {
-        this.datelinePaid = datelinePaid;
-    }
-
-    public Long getDatelineReceived() {
-        return datelineReceived;
-    }
-
-    public void setDatelineReceived(Long datelineReceived) {
-        this.datelineReceived = datelineReceived;
     }
 
 }
