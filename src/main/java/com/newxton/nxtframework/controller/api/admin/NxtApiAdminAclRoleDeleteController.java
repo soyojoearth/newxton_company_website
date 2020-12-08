@@ -38,7 +38,7 @@ public class NxtApiAdminAclRoleDeleteController {
     @Resource
     private NxtAclUserRoleService nxtAclUserRoleService;
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value = "/api/admin/acl_role_delete", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
 

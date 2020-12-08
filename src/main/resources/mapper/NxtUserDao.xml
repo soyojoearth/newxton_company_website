@@ -251,4 +251,16 @@
         limit #{offset}, #{limit}
     </select>
 
+    <!--解绑手机号-->
+    <update id="removePhoneById">
+        update nxt_user set phone = null
+        where id = #{id}
+    </update>
+
+    <!--解绑Email-->
+    <update id="removeEmailById">
+        update nxt_user set email = null
+        where id = #{id}
+    </update>
+
 </mapper>

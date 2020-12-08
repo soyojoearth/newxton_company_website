@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtCommission)实体类
  *
  * @author makejava
- * @since 2020-11-22 18:11:07
+ * @since 2020-12-05 20:20:39
  */
 public class NxtCommission implements Serializable {
-    private static final long serialVersionUID = 871581093495057848L;
+    private static final long serialVersionUID = 298046260750629523L;
     /**
     * 佣金记录表
     */
@@ -42,6 +42,8 @@ public class NxtCommission implements Serializable {
     * 交易创建时间
     */
     private Long datelineCreate;
+    
+    private Long datelineReceived;
     /**
     * 交易完成时间
     */
@@ -130,6 +132,14 @@ public class NxtCommission implements Serializable {
 
     public void setDatelineCreate(Long datelineCreate) {
         this.datelineCreate = datelineCreate;
+    }
+
+    public Long getDatelineReceived() {
+        return datelineReceived;
+    }
+
+    public void setDatelineReceived(Long datelineReceived) {
+        this.datelineReceived = datelineReceived;
     }
 
     public Long getDatelineEnd() {

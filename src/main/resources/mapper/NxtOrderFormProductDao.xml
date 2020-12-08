@@ -13,6 +13,7 @@
         <result property="unitVolume" column="unit_volume" jdbcType="INTEGER"/>
         <result property="productPrice" column="product_price" jdbcType="INTEGER"/>
         <result property="productPriceDiscount" column="product_price_discount" jdbcType="INTEGER"/>
+        <result property="manualPriceDiscount" column="manual_price_discount" jdbcType="INTEGER"/>
         <result property="levelNum" column="level_num" jdbcType="INTEGER"/>
         <result property="levelDiscount" column="level_discount" jdbcType="INTEGER"/>
         <result property="productPriceDeal" column="product_price_deal" jdbcType="INTEGER"/>
@@ -24,7 +25,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
+          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, manual_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
         from nxt_order_form_product
         where id = #{id}
     </select>
@@ -32,7 +33,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
+          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, manual_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
         from nxt_order_form_product
         limit #{offset}, #{limit}
     </select>
@@ -40,7 +41,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
+          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, manual_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
         from nxt_order_form_product
         <where>
             <if test="id != null">
@@ -70,6 +71,9 @@
             <if test="productPriceDiscount != null">
                 and product_price_discount = #{productPriceDiscount}
             </if>
+            <if test="manualPriceDiscount != null">
+                and manual_price_discount = #{manualPriceDiscount}
+            </if>
             <if test="levelNum != null">
                 and level_num = #{levelNum}
             </if>
@@ -93,8 +97,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_product(order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate)
-        values (#{orderFormId}, #{productId}, #{quantity}, #{productName}, #{unitWeight}, #{unitVolume}, #{productPrice}, #{productPriceDiscount}, #{levelNum}, #{levelDiscount}, #{productPriceDeal}, #{productSku}, #{quantityRefund}, #{commissionRate})
+        insert into nxt_order_form_product(order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, manual_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate)
+        values (#{orderFormId}, #{productId}, #{quantity}, #{productName}, #{unitWeight}, #{unitVolume}, #{productPrice}, #{productPriceDiscount}, #{manualPriceDiscount}, #{levelNum}, #{levelDiscount}, #{productPriceDeal}, #{productSku}, #{quantityRefund}, #{commissionRate})
     </insert>
 
     <!--通过主键修改数据-->
@@ -124,6 +128,9 @@
             </if>
             <if test="productPriceDiscount != null">
                 product_price_discount = #{productPriceDiscount},
+            </if>
+            <if test="manualPriceDiscount != null">
+                manual_price_discount = #{manualPriceDiscount},
             </if>
             <if test="levelNum != null">
                 level_num = #{levelNum},
@@ -155,7 +162,7 @@
     <!--根据orderFormId列表查询所有-->
     <select id="selectAllByOrderFormIdSet" resultMap="BaseResultMap">
         select
-          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
+          id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, manual_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
         from nxt_order_form_product
         WHERE order_form_id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
@@ -166,12 +173,22 @@
     <!--根据Id列表查询所有-->
     <select id="selectAllByIdSet" resultMap="BaseResultMap">
         select
-        id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
+        id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, manual_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
         from nxt_order_form_product
         WHERE id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
+    </select>
+
+    <!--根据ProductId列表查询-->
+    <select id="queryAllByProductIdLimit" resultType="Long">
+        select
+        id, order_form_id, product_id, quantity, product_name, unit_weight, unit_volume, product_price, product_price_discount, manual_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
+        from nxt_order_form_product
+        WHERE product_id = #{productId}
+        order by id desc
+        limit #{offset},#{limit}
     </select>
 
 </mapper>

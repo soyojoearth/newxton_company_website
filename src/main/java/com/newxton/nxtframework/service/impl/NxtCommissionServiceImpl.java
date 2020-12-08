@@ -117,4 +117,14 @@ public class NxtCommissionServiceImpl implements NxtCommissionService {
         return this.nxtCommissionDao.queryAllWaitDealCompleateByUserId(userId);
     }
 
+    /**
+     * 查询所有已经确认收货，但还没有确认佣金完成，并且时间上可以确认佣金完成的单子
+     * @param datelineReceivedLimit
+     * @return
+     */
+    public List<NxtCommission> queryAllWaittingEndingTooLongTime(@Param("datelineReceivedLimit") Long datelineReceivedLimit){
+        return this.nxtCommissionDao.queryAllWaittingEndingTooLongTime(datelineReceivedLimit);
+    }
+
+
 }

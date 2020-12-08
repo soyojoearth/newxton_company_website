@@ -34,7 +34,7 @@ public class NxtApiAdminCreateUserController {
     private NxtAclUserRoleService nxtAclUserRoleService;
 
     @CacheEvict(cacheNames = {"getUserRoleGroupActionIdSet","getUserActionIdSet"},allEntries = true,beforeInvocation = false)
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value = "/api/admin/create_user", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "new_user_name", required=false) String newUserName,
                                      @RequestParam(value = "new_user_pwd", required=false) String newUserPwd,

@@ -4,7 +4,6 @@
 
     <resultMap type="com.newxton.nxtframework.entity.NxtOrderFormDelivery" id="NxtOrderFormDeliveryMap">
         <result property="id" column="id" jdbcType="INTEGER"/>
-        <result property="type" column="type" jdbcType="INTEGER"/>
         <result property="orderFormId" column="order_form_id" jdbcType="INTEGER"/>
         <result property="deliveryCompanyId" column="delivery_company_id" jdbcType="INTEGER"/>
         <result property="deliveryCompanyName" column="delivery_company_name" jdbcType="VARCHAR"/>
@@ -14,7 +13,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="NxtOrderFormDeliveryMap">
         select
-          id, type, order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num
+          id, order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num
         from nxt_order_form_delivery
         where id = #{id}
     </select>
@@ -22,7 +21,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="NxtOrderFormDeliveryMap">
         select
-          id, type, order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num
+          id, order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num
         from nxt_order_form_delivery
         limit #{offset}, #{limit}
     </select>
@@ -30,14 +29,11 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="NxtOrderFormDeliveryMap">
         select
-        id, type, order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num
+        id, order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num
         from nxt_order_form_delivery
         <where>
             <if test="id != null">
                 and id = #{id}
-            </if>
-            <if test="type != null">
-                and type = #{type}
             </if>
             <if test="orderFormId != null">
                 and order_form_id = #{orderFormId}
@@ -56,30 +52,30 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_delivery(type, order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num)
-        values (#{type}, #{orderFormId}, #{deliveryCompanyId}, #{deliveryCompanyName}, #{deliverySerialNum})
+        insert into nxt_order_form_delivery(order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num)
+        values (#{orderFormId}, #{deliveryCompanyId}, #{deliveryCompanyName}, #{deliverySerialNum})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_delivery(type, order_form_id, delivery_company_id,
+        insert into nxt_order_form_delivery(order_form_id, delivery_company_id,
         delivery_company_name, delivery_serial_num)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.type}, #{entity.orderFormId}, #{entity.deliveryCompanyId}, #{entity.deliveryCompanyName},
+            (#{entity.orderFormId}, #{entity.deliveryCompanyId}, #{entity.deliveryCompanyName},
             #{entity.deliverySerialNum})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_delivery(type, order_form_id, delivery_company_id,
+        insert into nxt_order_form_delivery(order_form_id, delivery_company_id,
         delivery_company_name, delivery_serial_num)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.type}, #{entity.orderFormId}, #{entity.deliveryCompanyId}, #{entity.deliveryCompanyName},
+            (#{entity.orderFormId}, #{entity.deliveryCompanyId}, #{entity.deliveryCompanyName},
             #{entity.deliverySerialNum})
         </foreach>
         on duplicate key update
-        type = values(type) , order_form_id = values(order_form_id) , delivery_company_id = values(delivery_company_id)
+        order_form_id = values(order_form_id) , delivery_company_id = values(delivery_company_id)
         , delivery_company_name = values(delivery_company_name) , delivery_serial_num = values(delivery_serial_num)
     </insert>
 
@@ -87,9 +83,6 @@
     <update id="update">
         update nxt_order_form_delivery
         <set>
-            <if test="type != null">
-                type = #{type},
-            </if>
             <if test="orderFormId != null">
                 order_form_id = #{orderFormId},
             </if>
@@ -114,12 +107,11 @@
     <!--根据orderFromId查询单个发货物流信息-->
     <select id="queryShippingByOrderFormId" resultMap="NxtOrderFormDeliveryMap">
         select
-          id, type, order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num
+          id, order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num
         from nxt_order_form_delivery
-        where order_form_id = #{orderFormId} and type = 1
+        where order_form_id = #{orderFormId}
         order by id desc
         limit 1
     </select>
-
 
 </mapper>

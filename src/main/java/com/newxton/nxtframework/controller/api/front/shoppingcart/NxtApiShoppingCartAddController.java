@@ -75,7 +75,9 @@ public class NxtApiShoppingCartAddController {
 			// 匿名用户 购物车
 			String guestToken = shoppingCartPOST.getGuestToken();
 			shoppingCart = nxtShoppingCartService.queryByToken(guestToken);
-			if (shoppingCart == null) {
+			if (shoppingCart == null ||
+					shoppingCart.getUserId() != null//已有归属的购物车，不能仅靠单独guestToken操作
+			) {
 				NxtShoppingCart newNxtShoppingCart = new NxtShoppingCart();
 				newNxtShoppingCart.setToken(nxtUtilComponent.getRandomString(32));
 				nxtShoppingCartService.insert(newNxtShoppingCart);

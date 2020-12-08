@@ -4,6 +4,9 @@ $(document).ready(function () {
         var cate_child = $(this).parents('.cate-type').find('.cate-child');
         if(cate_child.find('.cate-level').length > 0){
             cate_child.slideDown();
+        } else{
+            var url = cate_child.prev().find('.one-level').attr('href');
+            window.location.href = url;
         }
     }, function () {
         var cate_child = $(this).parents('.cate-type').find('.cate-child');
@@ -16,6 +19,10 @@ $(document).ready(function () {
         var cate_third = $(this).parents('.cate-level').find('.cate-third');
         if(cate_third.find('.third-wd').length > 0){
             cate_third.slideDown();
+        }
+        else{
+            var url = cate_third.prev().find('.two-level').attr('href');
+            window.location.href = url;
         }
     }, function () {
         var cate_third = $(this).parents('.cate-level').find('.cate-third');

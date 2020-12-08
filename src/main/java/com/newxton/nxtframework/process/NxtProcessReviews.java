@@ -5,6 +5,7 @@ import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.service.*;
 import com.newxton.nxtframework.struct.*;
+import com.newxton.nxtframework.struct.admin.NxtStructAdminProductReviewsItem;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +40,95 @@ public class NxtProcessReviews {
     private NxtOrderFormService nxtOrderFormService;
 
     @Resource
+    private NxtProductService nxtProductService;
+
+    @Resource
     private NxtOrderFormProductService nxtOrderFormProductService;
+
+    /**
+     * 管理员后台，获取评论数量
+     * @param offset
+     * @param limit
+     * @param productId
+     * @return
+     */
+    public Long adminProductReviewsItemCount(Long offset, Long limit, Long productId){
+        Long count = nxtReviewsService.adminQueryReviewsCount(offset,limit,productId);
+        return count;
+    }
+
+    /**
+     * 管理员后台，获取评论列表，包含该评论的对应产品信息
+     * @param offset
+     * @param limit
+     * @param productId
+     * @return
+     */
+    public List<NxtStructAdminProductReviewsItem> adminProductReviewsItemList(Long offset, Long limit, Long productId){
+        List<NxtStructAdminProductReviewsItem> list = new ArrayList<>();
+
+        List<NxtReviews> nxtReviewsList = nxtReviewsService.adminQueryReviewsList(offset,limit,productId);
+
+        List<Long> orderFormProductIdList = new ArrayList<>();
+        List<Long> userIdList = new ArrayList<>();
+
+        for (NxtReviews nxtReviews : nxtReviewsList) {
+            orderFormProductIdList.add(nxtReviews.getOrderFormProductId());
+            userIdList.add(nxtReviews.getUserId());
+        }
+
+        //查询用户
+        List<NxtUser> nxtUserList = nxtUserService.selectByIdSet(0,Integer.MAX_VALUE,userIdList);
+        Map<Long,String> mapUserIdToName = new HashMap<>();
+        for (NxtUser nxtUser : nxtUserList) {
+            mapUserIdToName.put(nxtUser.getId(),nxtUser.getUsername());
+        }
+
+
+        //查询主图&产品名称
+        List<NxtOrderFormProduct> nxtOrderFormProductList = nxtOrderFormProductService.selectAllByIdSet(orderFormProductIdList);
+
+        Map<Long,String> mapOrderFormProductIdToProductName = new HashMap<>();
+        List<Long> uploadFileIdList = new ArrayList<>();
+        for (NxtOrderFormProduct nxtOrderFormProduct : nxtOrderFormProductList) {
+            uploadFileIdList.add(nxtOrderFormProduct.getProductPicUploadfileId());
+            mapOrderFormProductIdToProductName.put(nxtOrderFormProduct.getId(),nxtOrderFormProduct.getProductName());
+        }
+
+        Map<Long,String> mapUploadFileIdToPicUrl = new HashMap<>();
+        List<NxtUploadfile> nxtUploadfileList = nxtUploadfileService.selectByIdSet(0,Integer.MAX_VALUE,uploadFileIdList);
+
+        for (NxtUploadfile nxtUploadfile : nxtUploadfileList) {
+            mapUploadFileIdToPicUrl.put(nxtUploadfile.getId(),nxtUploadImageComponent.convertImagePathToDomainImagePath(nxtUploadfile.getUrlpath()));
+        }
+
+        Map<Long,String> mapOrderFormProductIdToPicUrl = new HashMap<>();
+        for (NxtOrderFormProduct nxtOrderFormProduct : nxtOrderFormProductList) {
+            String urlPath = mapUploadFileIdToPicUrl.getOrDefault(nxtOrderFormProduct.getProductPicUploadfileId(),"/common/images/empty.png");
+            mapOrderFormProductIdToPicUrl.put(nxtOrderFormProduct.getId(),urlPath);
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        for (NxtReviews nxtReviews : nxtReviewsList) {
+            NxtStructAdminProductReviewsItem nxtStructAdminProductReviewsItem = new NxtStructAdminProductReviewsItem();
+            nxtStructAdminProductReviewsItem.setUserId(nxtReviews.getUserId());
+            nxtStructAdminProductReviewsItem.setContent(nxtReviews.getContent());
+            nxtStructAdminProductReviewsItem.setDate(sdf.format(new Date(nxtReviews.getDateline())));
+            nxtStructAdminProductReviewsItem.setId(nxtReviews.getId());
+            nxtStructAdminProductReviewsItem.setOrderFormId(nxtReviews.getOrderFormId());
+            String productName = mapOrderFormProductIdToProductName.get(nxtReviews.getOrderFormProductId());
+            nxtStructAdminProductReviewsItem.setProductName(productName);
+            nxtStructAdminProductReviewsItem.setProductPicUrl(mapOrderFormProductIdToPicUrl.get(nxtReviews.getOrderFormProductId()));
+            nxtStructAdminProductReviewsItem.setUsername(mapUserIdToName.get(nxtReviews.getUserId()));
+            nxtStructAdminProductReviewsItem.setRecommend(nxtReviews.getIsRecommend() > 0);
+            nxtStructAdminProductReviewsItem.setHidden(nxtReviews.getIsHidden() > 0);
+            nxtStructAdminProductReviewsItem.setOriginType(nxtReviews.getOriginType());
+            list.add(nxtStructAdminProductReviewsItem);
+        }
+
+        return list;
+    }
 
     /**
      * 获取某个产品的评论列表详情，包含该评论的回复
@@ -219,6 +308,7 @@ public class NxtProcessReviews {
             nxtStructProductReviewsItem.setUserId(item.getUserId());
             nxtStructProductReviewsItem.setDate(sdf.format(new Date(item.getDateline())));
             nxtStructProductReviewsItem.setContent(item.getContent());
+            nxtStructProductReviewsItem.setOriginType(item.getOriginType());
 
             mapIdToReviewsItem.put(item.getId(),nxtStructProductReviewsItem);
 
@@ -249,6 +339,7 @@ public class NxtProcessReviews {
                 nxtStructProductReviewsItem.setUserId(item.getUserId());
                 nxtStructProductReviewsItem.setDate(sdf.format(new Date(item.getDateline())));
                 nxtStructProductReviewsItem.setContent(item.getContent());
+                nxtStructProductReviewsItem.setOriginType(item.getOriginType());
 
                 replyList.add(nxtStructProductReviewsItem);
 
@@ -333,8 +424,8 @@ public class NxtProcessReviews {
      * 用户创建订单评论
      * @param userId
      */
-    @Transactional
-    public void create(Long userId, NxtStructOrderFormReivewsCreate nxtStructOrderFormReivewsCreate){
+    @Transactional(rollbackFor=Exception.class)
+    public void create(Long userId, NxtStructOrderFormReivewsCreate nxtStructOrderFormReivewsCreate) throws NxtException {
 
         Long orderFormId = nxtStructOrderFormReivewsCreate.getOrderFormId();
         Long orderFormProductId = nxtStructOrderFormReivewsCreate.getOrderFormProductId();
@@ -397,9 +488,12 @@ public class NxtProcessReviews {
         nxtReviews.setDateline(System.currentTimeMillis());
         nxtReviews.setContent(content);
         nxtReviews.setParentId(0L);
+        nxtReviews.setIsRecommend(0);
+        nxtReviews.setIsHidden(1);//用户新增评论，默认隐藏
 
         if (rootReviews != null){
             nxtReviews.setParentId(rootReviews.getId());
+            nxtReviews.setIsHidden(0);//回复无所谓隐藏不隐藏，根评论不显示，回复当然看不见
         }
 
         nxtReviewsService.insert(nxtReviews);

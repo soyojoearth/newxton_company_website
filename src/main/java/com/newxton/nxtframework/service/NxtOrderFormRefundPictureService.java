@@ -30,6 +30,14 @@ public interface NxtOrderFormRefundPictureService {
     List<NxtOrderFormRefundPicture> queryAllByLimit(int offset, int limit);
 
     /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtOrderFormRefundPicture 实例对象
+     * @return 对象列表
+     */
+    List<NxtOrderFormRefundPicture> queryAll(NxtOrderFormRefundPicture nxtOrderFormRefundPicture);
+
+    /**
      * 新增数据
      *
      * @param nxtOrderFormRefundPicture 实例对象

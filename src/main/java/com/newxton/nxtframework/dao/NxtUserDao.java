@@ -131,4 +131,19 @@ public interface NxtUserDao {
      */
     List<NxtUser> queryAllLevelThreeInviteesUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("inviterUserId") Long inviterUserId);
 
+
+    /**
+     * 解绑用户手机号
+     * @param id
+     * @return
+     */
+    int removePhoneById(@Param("id") Long id);
+
+    /**
+     * 解绑用户Email
+     * @param id
+     * @return
+     */
+    int removeEmailById(@Param("id") Long id);
+
 }

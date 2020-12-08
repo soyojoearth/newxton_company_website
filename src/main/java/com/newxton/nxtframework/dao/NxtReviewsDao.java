@@ -116,4 +116,22 @@ public interface NxtReviewsDao {
      */
     NxtReviews queryRootReviewsByOrderFormProductId(@Param("orderFormProductId") Long orderFormProductId);
 
+    /**
+     * 管理员后台，获取评论列表
+     * @param offset
+     * @param limit
+     * @param productId
+     * @return
+     */
+    List<NxtReviews> adminQueryReviewsList(Long offset, Long limit, Long productId);
+
+    /**
+     * 管理员后台，获取评论列表
+     * @param offset
+     * @param limit
+     * @param productId
+     * @return
+     */
+    Long adminQueryReviewsCount(Long offset, Long limit, Long productId);
+
 }

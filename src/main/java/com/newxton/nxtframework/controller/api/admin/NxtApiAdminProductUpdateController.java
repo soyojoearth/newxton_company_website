@@ -2,6 +2,7 @@ package com.newxton.nxtframework.controller.api.admin;
 
 import com.google.gson.Gson;
 import com.newxton.nxtframework.process.NxtProcessProduct;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import com.newxton.nxtframework.struct.NxtStructProduct;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,9 +26,19 @@ public class NxtApiAdminProductUpdateController {
 
         Gson gson = new Gson();
 
-        NxtStructProduct nxtStructProduct = gson.fromJson(json,NxtStructProduct.class);
-
-        return nxtProcessProduct.saveProductAllDetail(nxtStructProduct);
+        try {
+            NxtStructProduct nxtStructProduct = gson.fromJson(json,NxtStructProduct.class);
+            if (nxtStructProduct.getCategoryId() == null){
+                return new NxtStructApiResult(52,"请选择类别").toMap();
+            }
+            if (nxtStructProduct.getDeliveryConfigId() == null){
+                return new NxtStructApiResult(52,"请选择运费模版").toMap();
+            }
+            return nxtProcessProduct.saveProductAllDetail(nxtStructProduct);
+        }
+        catch (Exception e){
+            return new NxtStructApiResult(53,"json解析错误或者缺少参数").toMap();
+        }
 
     }
 

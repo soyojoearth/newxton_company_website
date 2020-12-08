@@ -1,18 +1,31 @@
-#footer{
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+#footer {
     clear: both;
-    width: 960px;
+    width: 100%;
     height: 130px;
     background: #1B1B1B;
     opacity: 1;
     text-align: center;
-    margin: 0 auto;
+    position: absolute;
+    bottom: 0;
+    min-width: 1200px;
 }
 
-#footer span{
+#footer span {
     color: #FFFFFF;
 }
 
-.footer-hd span{
+.footer-hd span {
     width: 54px;
     height: 16px;
     font-size: 12px;
@@ -26,7 +39,7 @@
     margin: 32px 49px 13px 0;
 }
 
-.footer-bd span{
+.footer-bd span {
     width: 363px;
     height: 16px;
     font-size: 12px;
@@ -38,7 +51,7 @@
     opacity: 1;
 }
 
-.footer-ft span{
+.footer-ft span {
     width: 104px;
     height: 16px;
     font-size: 12px;

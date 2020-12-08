@@ -76,5 +76,13 @@ public interface NxtOrderFormProductDao {
      */
     List<NxtOrderFormProduct> selectAllByIdSet(@Param("idList") List<Long> idList);
 
+    /**
+     * 根据ProductId列表查询
+     * @param offset
+     * @param limit
+     * @param productId
+     * @return
+     */
+    List<NxtOrderFormProduct> queryAllByProductIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("productId") Long productId);
 
 }

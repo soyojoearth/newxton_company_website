@@ -34,24 +34,31 @@ public class NxtApiOrderFormReviewsDetailController {
 
         Long orderFormId = jsonParam.getLong("id");
 
-        NxtStructOrderForm nxtStructOrderForm = nxtProcessOrderForm.orderFormDetail(orderFormId);
 
-        if (nxtStructOrderForm == null){
-            return new NxtStructApiResult(54,"找不到该订单");
-        }
-        if (!nxtStructOrderForm.getUserId().equals(userId)){
-            return new NxtStructApiResult(54,"该订单不属于你");
-        }
 
         try {
+
+            NxtStructOrderForm nxtStructOrderForm = nxtProcessOrderForm.orderFormDetail(orderFormId);
+
+            if (nxtStructOrderForm == null){
+                return new NxtStructApiResult(54,"找不到该订单");
+            }
+            if (!nxtStructOrderForm.getUserId().equals(userId)){
+                return new NxtStructApiResult(54,"该订单不属于你");
+            }
+
             //给订单详情中的物品，查询添加评论数据
             nxtProcessReviews.queryReviewsPutIntoStructOrderForm(nxtStructOrderForm);
+
+            return new NxtStructApiResult(nxtStructOrderForm);
+
         }
         catch (NxtException e){
+
             return new NxtStructApiResult(54,e.getNxtExecptionMessage());
+
         }
 
-        return new NxtStructApiResult(nxtStructOrderForm);
 
     }
 

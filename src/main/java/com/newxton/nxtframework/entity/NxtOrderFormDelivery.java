@@ -14,10 +14,6 @@ public class NxtOrderFormDelivery implements Serializable {
      * 订单物流表
      */
     private Long id;
-    /**
-     * 类型（1:发货 -1:退货）
-     */
-    private Integer type;
 
     private Long orderFormId;
 
@@ -34,14 +30,6 @@ public class NxtOrderFormDelivery implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
     }
 
     public Long getOrderFormId() {

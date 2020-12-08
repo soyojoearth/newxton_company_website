@@ -157,4 +157,31 @@ public interface NxtProductDao {
      * @return
      */
     List<NxtProduct> queryAllRecommend(@Param("limit") int limit);
+
+    /**
+     * 后台admin获取产品列表
+     * @param offset
+     * @param limit
+     * @param categoryId
+     * @param searchKeyword
+     * @param isRecommend
+     * @param isNew
+     * @param isHot
+     * @param isSelling
+     * @return
+     */
+    List<NxtProduct> adminQueryAllByLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("categoryId") Long categoryId, @Param("searchKeyword") String searchKeyword,@Param("isRecommend") Boolean isRecommend,@Param("isNew") Boolean isNew,@Param("isHot") Boolean isHot,@Param("isSelling") Boolean isSelling,@Param("isTrash") Boolean isTrash);
+
+    /**
+     * 后台admin统计产品总数
+     * @param categoryId
+     * @param searchKeyword
+     * @param isRecommend
+     * @param isNew
+     * @param isHot
+     * @param isSelling
+     * @return
+     */
+    Long adminCountAll(@Param("categoryId") Long categoryId, @Param("searchKeyword") String searchKeyword,@Param("isRecommend") Boolean isRecommend,@Param("isNew") Boolean isNew,@Param("isHot") Boolean isHot,@Param("isSelling") Boolean isSelling,@Param("isTrash") Boolean isTrash);
+
 }

@@ -1,10 +1,8 @@
 package com.newxton.nxtframework.controller.api.admin;
 
-import com.newxton.nxtframework.entity.NxtProduct;
-import com.newxton.nxtframework.entity.NxtProductPicture;
-import com.newxton.nxtframework.entity.NxtProductSku;
-import com.newxton.nxtframework.entity.NxtProductSkuValue;
+import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.service.*;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,7 +39,10 @@ public class NxtApiAdminProductDeleteController {
     @Resource
     private NxtProductService nxtProductService;
 
-    @Transactional
+    @Resource
+    private NxtOrderFormProductService nxtOrderFormProductService;
+
+    @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value = "/api/admin/product/delete", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "id", required=false) Long id) {
 
@@ -61,6 +62,12 @@ public class NxtApiAdminProductDeleteController {
             result.put("status", 49);
             result.put("message", "对应的产品不存在");
             return result;
+        }
+
+        //查询订单
+        List<NxtOrderFormProduct> nxtOrderFormProductList = nxtOrderFormProductService.queryAllByProductIdLimit(0L,1L,product.getId());
+        if (nxtOrderFormProductList.size() > 0){
+            return new NxtStructApiResult(53,"该产品已产生订单，请勿删除").toMap();
         }
 
         //先清除原先的sku

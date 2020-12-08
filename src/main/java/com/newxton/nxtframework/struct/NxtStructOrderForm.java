@@ -15,9 +15,13 @@ public class NxtStructOrderForm {
      */
     private Long id;
     /**
-     * 下单用户
+     * 下单用户id
      */
     private Long userId;
+    /**
+     * 下单用户username
+     */
+    private String username;
     /**
      * 下单时间
      */
@@ -77,6 +81,14 @@ public class NxtStructOrderForm {
      */
     private Float deliveryCost;
     /**
+     * 手动运费调整
+     */
+    private Float manualDeliveryCostDiscount;
+    /**
+     * 订单状态描述文字
+     */
+    private String statusText;
+    /**
      * 是否已经支付
      */
     private Boolean isPaid;
@@ -122,6 +134,11 @@ public class NxtStructOrderForm {
     private Boolean isDone;
 
     /**
+     * 商家备注
+     */
+    private String sellerRemark;
+
+    /**
      * 订单物品列表
      */
     private List<NxtStructOrderFormProduct> orderFormProductList = new ArrayList<>();
@@ -145,6 +162,14 @@ public class NxtStructOrderForm {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Long getDatelineCreate() {
@@ -275,6 +300,22 @@ public class NxtStructOrderForm {
         this.deliveryCost = deliveryCost;
     }
 
+    public Float getManualDeliveryCostDiscount() {
+        return manualDeliveryCostDiscount;
+    }
+
+    public void setManualDeliveryCostDiscount(Float manualDeliveryCostDiscount) {
+        this.manualDeliveryCostDiscount = manualDeliveryCostDiscount;
+    }
+
+    public String getStatusText() {
+        return statusText;
+    }
+
+    public void setStatusText(String statusText) {
+        this.statusText = statusText;
+    }
+
     public Boolean getPaid() {
         return isPaid;
     }
@@ -369,6 +410,14 @@ public class NxtStructOrderForm {
 
     public void setDone(Boolean done) {
         isDone = done;
+    }
+
+    public String getSellerRemark() {
+        return sellerRemark;
+    }
+
+    public void setSellerRemark(String sellerRemark) {
+        this.sellerRemark = sellerRemark;
     }
 
     public List<NxtStructOrderFormProduct> getOrderFormProductList() {

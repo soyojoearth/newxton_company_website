@@ -33,6 +33,17 @@ public class NxtOrderFormServiceImpl implements NxtOrderFormService {
     }
 
     /**
+     * 通过订单编号查询单条数据
+     *
+     * @param serialNum 订单编号
+     * @return 实例对象
+     */
+    @Override
+    public NxtOrderForm queryBySerialNum(String serialNum){
+        return this.nxtOrderFormDao.queryBySerialNum(serialNum);
+    }
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置
@@ -99,6 +110,44 @@ public class NxtOrderFormServiceImpl implements NxtOrderFormService {
             return new ArrayList<>();
         }
         return this.nxtOrderFormDao.selectByIdSet(idList);
+    }
+
+    /**
+     * 后台查询订单列表
+     * @param offset
+     * @param limit
+     * @param isPaid
+     * @param isDelivery
+     * @param dealPlatform
+     * @param datelineBegin
+     * @param datelineEnd
+     * @return
+     */
+    public List<NxtOrderForm> adminOrderFormList(@Param("offset") Long offset, @Param("limit") Long limit, @Param("isPaid") Boolean isPaid, @Param("isDelivery") Boolean isDelivery, @Param("dealPlatform") Integer dealPlatform, @Param("datelineBegin") Long datelineBegin, @Param("datelineEnd") Long datelineEnd){
+        return this.nxtOrderFormDao.adminOrderFormList(offset,limit,isPaid,isDelivery,dealPlatform,datelineBegin,datelineEnd);
+    }
+
+    /**
+     * 后台查询订单统计
+     * @param isPaid
+     * @param isDelivery
+     * @param dealPlatform
+     * @param datelineBegin
+     * @param datelineEnd
+     * @return
+     */
+    public Long adminOrderFormCount(@Param("isPaid") Boolean isPaid, @Param("isDelivery") Boolean isDelivery, @Param("dealPlatform") Integer dealPlatform, @Param("datelineBegin") Long datelineBegin, @Param("datelineEnd") Long datelineEnd){
+        return this.nxtOrderFormDao.adminOrderFormCount(isPaid, isDelivery, dealPlatform, datelineBegin, datelineEnd);
+    }
+
+
+    /**
+     * 查询所有超期等待确认收货的订单
+     * @param datelineDeliveryLimit
+     * @return
+     */
+    public List<NxtOrderForm> queryAllWaittingReceivedTooLongTime(@Param("datelineDeliveryLimit") Long datelineDeliveryLimit){
+        return this.nxtOrderFormDao.queryAllWaittingReceivedTooLongTime(datelineDeliveryLimit);
     }
 
 }

@@ -111,4 +111,12 @@ public interface NxtContentService {
      */
     boolean deleteById(Long id);
 
+    /**
+     * 查询推荐资讯
+     * @param offset
+     * @param limit
+     * @return
+     */
+    List<NxtContent> queryRecommandListByLimit(@Param("offset") int offset, @Param("limit") int limit);
+
 }

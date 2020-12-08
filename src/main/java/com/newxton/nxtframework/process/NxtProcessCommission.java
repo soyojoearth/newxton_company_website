@@ -40,7 +40,7 @@ public class NxtProcessCommission {
      * 个人中心--申请结转全部佣金到余额
      * @param userId
      */
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     public void userCashOut(Long userId) throws NxtException {
 
         //查询所有已完成交易、且未结转的佣金记录

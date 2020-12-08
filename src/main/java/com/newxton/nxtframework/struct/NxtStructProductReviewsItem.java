@@ -11,6 +11,10 @@ import java.util.List;
 public class NxtStructProductReviewsItem {
     private Long id;
     /**
+     * 来源类型
+     */
+    private Integer originType;
+    /**
      * 用户id
      */
     private Long userId;
@@ -43,6 +47,14 @@ public class NxtStructProductReviewsItem {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getOriginType() {
+        return originType;
+    }
+
+    public void setOriginType(Integer originType) {
+        this.originType = originType;
     }
 
     public Long getUserId() {

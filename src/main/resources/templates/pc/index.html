@@ -6,9 +6,8 @@
     <title>Title</title>
     <link rel="stylesheet" type="text/css" th:href="@{/pc/css/main.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/pc/css/index.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/content.css}">
     <script  th:src="@{/pc/js/jquery-1.8.2.min.js}" ></script>
-    <script  th:src="@{/pc/js/content.js}" ></script>
+    <script  th:src="@{/pc/js/index.js}" ></script>
 </head>
 <body>
     <div th:replace="pc/common/header :: header"></div>
@@ -35,7 +34,7 @@
                     <a th:href="${'/product/detail?productId=' + p.id}" class="goods-item-view">查看详情</a>
                 </li>
                 <li>
-                    <a th:href="${'/product/detail?productId=' + p.id}"><img th:src="${p.picUrl + '?imageView2/1/w/100/h/100/q/75'}" alt="" class="goods-item-pic"></a>
+                    <a th:href="${'/product/detail?productId=' + p.id}"><img th:src="${p.picUrl + '?imageView2/1/w/225/h/225/q/75'}" alt="" class="goods-item-pic"></a>
                 </li>
             </ul>
         </div>

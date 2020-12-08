@@ -2,7 +2,8 @@
     clear: both;
     width: 822px;
     overflow: hidden;
-    margin: 25px auto 70px auto;
+    margin: 25px auto 0 auto;
+    padding-bottom: 205px;
 }
 
 .list-left, .list-right {
@@ -10,10 +11,19 @@
     overflow: hidden;
 }
 
-.list-left .cate-item {
-    width: 180px;
-    border: 1px dashed #707070;
+
+.list-left{
+    width: 182px;
     margin-right: 9px;
+}
+
+.list-right{
+    width: 631px;
+}
+
+
+.list-left .cate-item {
+    border: 1px dashed #707070;
 }
 
 .cate-item .title-wd {
@@ -206,7 +216,6 @@
 }
 
 .list-right .product-list {
-    width: 631px;
     overflow: hidden;
     margin-top: 10px;
     margin-bottom: 23px;

@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtOrderFormProduct)实体类
  *
  * @author makejava
- * @since 2020-11-19 20:58:12
+ * @since 2020-12-07 17:26:06
  */
 public class NxtOrderFormProduct implements Serializable {
-    private static final long serialVersionUID = 830209453183432348L;
+    private static final long serialVersionUID = 229535902208318713L;
     /**
     * 订单管理商品
     */
@@ -24,6 +24,8 @@ public class NxtOrderFormProduct implements Serializable {
     * 成交数量   
     */
     private Long quantity;
+    
+    private Long productPicUploadfileId;
     /**
     * 产品名称
     */
@@ -42,6 +44,10 @@ public class NxtOrderFormProduct implements Serializable {
     * 价格折扣（放大100倍）
     */
     private Long productPriceDiscount;
+    /**
+    * 订单商品价格调整（后台手动）（正数加、负数减）
+    */
+    private Long manualPriceDiscount;
     /**
     * 用户等级
     */
@@ -98,6 +104,14 @@ public class NxtOrderFormProduct implements Serializable {
         this.quantity = quantity;
     }
 
+    public Long getProductPicUploadfileId() {
+        return productPicUploadfileId;
+    }
+
+    public void setProductPicUploadfileId(Long productPicUploadfileId) {
+        this.productPicUploadfileId = productPicUploadfileId;
+    }
+
     public String getProductName() {
         return productName;
     }
@@ -136,6 +150,14 @@ public class NxtOrderFormProduct implements Serializable {
 
     public void setProductPriceDiscount(Long productPriceDiscount) {
         this.productPriceDiscount = productPriceDiscount;
+    }
+
+    public Long getManualPriceDiscount() {
+        return manualPriceDiscount;
+    }
+
+    public void setManualPriceDiscount(Long manualPriceDiscount) {
+        this.manualPriceDiscount = manualPriceDiscount;
     }
 
     public Integer getLevelNum() {

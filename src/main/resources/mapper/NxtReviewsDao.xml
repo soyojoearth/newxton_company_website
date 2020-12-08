@@ -13,12 +13,14 @@
         <result property="dateline" column="dateline" jdbcType="INTEGER"/>
         <result property="content" column="content" jdbcType="VARCHAR"/>
         <result property="parentId" column="parent_id" jdbcType="INTEGER"/>
+        <result property="isRecommend" column="is_recommend" jdbcType="INTEGER"/>
+        <result property="isHidden" column="is_hidden" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
+          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
         from nxt_reviews
         where id = #{id}
     </select>
@@ -26,7 +28,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
+          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
         from nxt_reviews
         limit #{offset}, #{limit}
     </select>
@@ -34,7 +36,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
+          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
         from nxt_reviews
         <where>
             <if test="id != null">
@@ -64,13 +66,19 @@
             <if test="parentId != null">
                 and parent_id = #{parentId}
             </if>
+            <if test="isRecommend != null">
+                and is_recommend = #{isRecommend}
+            </if>
+            <if test="isHidden != null">
+                and is_hidden = #{isHidden}
+            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_reviews(origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id)
-        values (#{originType}, #{userId}, #{productId}, #{orderFormId}, #{orderFormProductId}, #{dateline}, #{content}, #{parentId})
+        insert into nxt_reviews(origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden)
+        values (#{originType}, #{userId}, #{productId}, #{orderFormId}, #{orderFormProductId}, #{dateline}, #{content}, #{parentId}, #{isRecommend}, #{isHidden})
     </insert>
 
     <!--通过主键修改数据-->
@@ -101,6 +109,12 @@
             <if test="parentId != null">
                 parent_id = #{parentId},
             </if>
+            <if test="isRecommend != null">
+                is_recommend = #{isRecommend},
+            </if>
+            <if test="isHidden != null">
+                is_hidden = #{isHidden},
+            </if>
         </set>
         where id = #{id}
     </update>
@@ -110,13 +124,13 @@
         delete from nxt_reviews where id = #{id}
     </delete>
 
-    <!--查询指定产品的所有用户评论列表(不含回复)-按时间倒序-->
+    <!--查询指定产品的所有用户评论列表(不含回复)-按推荐倒序、时间倒序-->
     <select id="queryUserReviewsByProductId" resultMap="BaseResultMap">
         select
-          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
+          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
         from nxt_reviews
-        where product_id = #{productId} and origin_type = 0 and parent_id = 0
-        order by dateline desc
+        where product_id = #{productId} and origin_type = 0 and parent_id = 0 and is_hidden = 0
+        order by is_recommend desc, dateline desc
         limit #{offset}, #{limit}
     </select>
 
@@ -129,10 +143,10 @@
         order by dateline desc
     </select>
 
-    <!--查询指定根评论的所有回复-按时间asc排序-->
+    <!--查询指定根评论的所有回复-时间asc排序-->
     <select id="queryReviewsReplyByIdList" resultMap="BaseResultMap">
         select
-          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
+          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
         from nxt_reviews
         WHERE parent_id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
@@ -144,7 +158,7 @@
     <!--查询指定订单的所有评论列表(不含回复)-按时间倒序-->
     <select id="queryUserReviewsByOrderFormId" resultMap="BaseResultMap">
         select
-          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
+          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
         from nxt_reviews
         where order_form_id = #{orderFormId} and origin_type = 0 and parent_id = 0
         order by dateline desc
@@ -153,10 +167,40 @@
     <!--查询指定订单物品的根评论-->
     <select id="queryRootReviewsByOrderFormProductId" resultMap="BaseResultMap">
         select
-          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id
+          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
         from nxt_reviews
         where order_form_product_id = #{orderFormProductId} and origin_type = 0 and parent_id = 0
         order by id limit 1
     </select>
+
+
+    <!--管理员后台，获取评论列表-->
+    <select id="adminQueryReviewsList" resultMap="BaseResultMap">
+        select
+          id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
+        from nxt_reviews
+        <where>
+            <if test="productId != null">
+                and product_id = #{productId}
+            </if>
+            and origin_type = 0 and parent_id = 0
+        </where>
+        order by dateline desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--管理员后台，获取评论统计-->
+    <select id="adminQueryReviewsCount" resultType="Long">
+        select
+        count(*)
+        from nxt_reviews
+        <where>
+            <if test="productId != null">
+                and product_id = #{productId}
+            </if>
+            and origin_type = 0 and parent_id = 0
+        </where>
+    </select>
+
 
 </mapper>

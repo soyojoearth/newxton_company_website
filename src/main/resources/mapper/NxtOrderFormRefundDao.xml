@@ -113,7 +113,7 @@
     <!--查询用户的售后服务单-->
     <select id="queryAllByUserIdAndLimit" resultMap="BaseResultMap">
         select
-        id, order_form_id, reason_type, reasion_description, transaction_id, status, dateline_create, dateline_end
+        id, user_id, order_form_id, reason_type, reasion_description, transaction_id, status, dateline_create, dateline_end
         from nxt_order_form_refund
         <where>
             and user_id = #{userId}
@@ -144,6 +144,46 @@
         </where>
         order by dateline_create desc , id desc
         limit #{offset}, #{limit}
+    </select>
+
+
+    <!--后台查询售后订单列表-->
+    <select id="adminQueryList" resultMap="BaseResultMap">
+        select
+        id, user_id, order_form_id, reason_type, reasion_description, transaction_id, status, dateline_create, dateline_end
+        from nxt_order_form_refund
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="orderFormId != null">
+                and order_form_id = #{orderFormId}
+            </if>
+        </where>
+        order by dateline_create desc , id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--后台统计售后订单列表-->
+    <select id="adminQueryCount" resultType="Long">
+        select
+        count(*)
+        from nxt_order_form_refund
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="orderFormId != null">
+                and order_form_id = #{orderFormId}
+            </if>
+        </where>
+        order by dateline_create desc , id desc
     </select>
 
 </mapper>

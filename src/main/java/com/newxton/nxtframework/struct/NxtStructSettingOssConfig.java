@@ -20,7 +20,7 @@ public class NxtStructSettingOssConfig {
     public String ossQiniuBucket;
 
     //七牛云OSS域名
-    public String ossQiniuDomain = "";
+    public String ossQiniuDomain = "http://newxton-qiniu-domain-for-demo";
 
     public String getOssLocation() {
         return ossLocation;

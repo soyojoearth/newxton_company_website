@@ -23,7 +23,7 @@ public class NxtApiOrderFromCreateController {
     private NxtProcessOrderFormCreate nxtProcessOrderFormCreate;
 
     @RequestMapping(value = "/api/order_form/create", method = RequestMethod.POST)
-    public NxtStructApiResult exec(@RequestHeader("user_id") Long userId, @RequestBody String json) {
+    public NxtStructApiResult exec(@RequestHeader(value = "user_id",required = false) Long userId, @RequestBody String json) {
 
         Gson gson = new Gson();
         NxtStructOrderFromCreate nxtStructOrderFromCreate;

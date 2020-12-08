@@ -1,13 +1,11 @@
 package com.newxton.nxtframework.controller.api.front.cms;
 
+import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtContent;
 import com.newxton.nxtframework.service.NxtContentService;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -31,7 +29,9 @@ public class NxtApiNewsDetailController {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping(value = "/api/news/detail", method = RequestMethod.POST)
-    public NxtStructApiResult exec(@RequestParam(value = "id", required=false) Long id) {
+    public NxtStructApiResult exec(@RequestBody JSONObject jsonParam) {
+
+        Long id = jsonParam.getLong("id");
 
         if (id == null) {
             return new NxtStructApiResult(52,"参数错误");

@@ -35,7 +35,7 @@ public class NxtApiAdminDeliveryConfigDeleteController {
     @Resource
     private NxtDeliveryConfigItemRegionService nxtDeliveryConfigItemRegionService;
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value = "/api/admin/delivery_config/delete", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
 
@@ -58,6 +58,9 @@ public class NxtApiAdminDeliveryConfigDeleteController {
             result.put("message", "找不到对应的内容");
             return result;
         }
+
+        //检查运费模版是否已被引用，被引用的不可删除
+        // TODO
 
         //item列表
         NxtDeliveryConfigItem nxtDeliveryConfigItemCondition = new NxtDeliveryConfigItem();

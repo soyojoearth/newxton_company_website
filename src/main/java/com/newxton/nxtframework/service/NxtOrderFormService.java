@@ -22,6 +22,14 @@ public interface NxtOrderFormService {
     NxtOrderForm queryById(Long id);
 
     /**
+     * 通过订单编号查询单条数据
+     *
+     * @param serialNum 订单编号
+     * @return 实例对象
+     */
+    NxtOrderForm queryBySerialNum(String serialNum);
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置
@@ -68,5 +76,37 @@ public interface NxtOrderFormService {
      * @return
      */
     List<NxtOrderForm> selectByIdSet(@Param("idList") List<Long> idList);
+
+    /**
+     * 后台查询订单列表
+     * @param offset
+     * @param limit
+     * @param isPaid
+     * @param isDelivery
+     * @param dealPlatform
+     * @param datelineBegin
+     * @param datelineEnd
+     * @return
+     */
+    List<NxtOrderForm> adminOrderFormList(@Param("offset") Long offset, @Param("limit") Long limit, @Param("isPaid") Boolean isPaid, @Param("isDelivery") Boolean isDelivery, @Param("dealPlatform") Integer dealPlatform, @Param("datelineBegin") Long datelineBegin, @Param("datelineEnd") Long datelineEnd);
+
+    /**
+     * 后台查询订单统计
+     * @param isPaid
+     * @param isDelivery
+     * @param dealPlatform
+     * @param datelineBegin
+     * @param datelineEnd
+     * @return
+     */
+    Long adminOrderFormCount(@Param("isPaid") Boolean isPaid, @Param("isDelivery") Boolean isDelivery, @Param("dealPlatform") Integer dealPlatform, @Param("datelineBegin") Long datelineBegin, @Param("datelineEnd") Long datelineEnd);
+
+
+    /**
+     * 查询所有超期等待确认收货的订单
+     * @param datelineDeliveryLimit
+     * @return
+     */
+    List<NxtOrderForm> queryAllWaittingReceivedTooLongTime(@Param("datelineDeliveryLimit") Long datelineDeliveryLimit);
 
 }

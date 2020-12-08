@@ -29,7 +29,6 @@ public class NxtApiUserEmailUpdateController {
 
         String email = jsonParam.getString("email");
         Long verifyCode = jsonParam.getLong("verifyCode");
-        Long verifyCodePrevEmail = jsonParam.getLong("verifyCodePrevEmail");
 
         if (email == null || email.isEmpty()){
             return new NxtStructApiResult(54,"请提供email");
@@ -42,21 +41,9 @@ public class NxtApiUserEmailUpdateController {
         //查询用户
         NxtUser user = nxtUserService.queryById(userId);
 
-        NxtUserVerify nxtUserVerifyPrevEmail = null;
+        //旧邮箱检查
         if (user.getEmail() != null && !user.getEmail().isEmpty()){
-            //旧邮箱验证码
-            nxtUserVerifyPrevEmail = nxtUserVerifyService.queryLastByPhoneOrEmail(user.getEmail());
-            if (nxtUserVerifyPrevEmail == null){
-                return new NxtStructApiResult(54,"没有发送原绑定邮箱验证码");
-            }
-            if (!(
-                nxtUserVerifyPrevEmail.getStatus().equals(0) &&
-                nxtUserVerifyPrevEmail.getType().equals(-1) && //-1：修改绑定 1：绑定账户 2：找回密码 3：提现验证
-                nxtUserVerifyPrevEmail.getCode().equals(verifyCodePrevEmail) &&
-                nxtUserVerifyPrevEmail.getDateline() + 1800000 > System.currentTimeMillis()
-            )){
-                return new NxtStructApiResult(53,"原绑定邮箱验证码无效");
-            }
+            return new NxtStructApiResult(53,"原绑定邮箱需要先解绑");
         }
 
         //新邮箱验证码
@@ -66,7 +53,7 @@ public class NxtApiUserEmailUpdateController {
         }
         if (!(
                 nxtUserVerify.getStatus().equals(0) &&
-                nxtUserVerify.getType().equals(1) && //-1：修改绑定 1：绑定账户 2：找回密码 3：提现验证
+                nxtUserVerify.getType().equals(1) && //-1：解除绑定 1：绑定账户 2：找回密码 3：提现验证
                 nxtUserVerify.getCode().equals(verifyCode) &&
                 nxtUserVerify.getDateline() + 1800000 > System.currentTimeMillis()
         )){
@@ -84,10 +71,6 @@ public class NxtApiUserEmailUpdateController {
         nxtUserService.update(user);
 
         //验证码标记已使用
-        if (nxtUserVerifyPrevEmail != null){
-            nxtUserVerifyPrevEmail.setStatus(1);
-            nxtUserVerifyService.update(nxtUserVerifyPrevEmail);
-        }
         nxtUserVerify.setStatus(1);
         nxtUserVerifyService.update(nxtUserVerify);
 

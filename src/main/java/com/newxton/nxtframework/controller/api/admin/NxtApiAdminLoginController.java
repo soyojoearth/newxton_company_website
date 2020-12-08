@@ -73,6 +73,13 @@ public class NxtApiAdminLoginController {
 
         if (multiDeviceLogin) {
             //允许多设备登录
+            if (user.getToken() == null){
+                //更新token
+                String newToken = getRandomString(32);
+                newToken = DigestUtils.md5Hex(newToken).toLowerCase();
+                user.setToken(newToken);
+                nxtUserService.update(user);
+            }
             result.put("token", user.getToken());
             result.put("user_id", user.getId());
         }

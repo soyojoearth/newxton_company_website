@@ -1,14 +1,22 @@
 package com.newxton.nxtframework.controller.image;
 
+import com.newxton.nxtframework.component.NxtAclComponent;
+import com.newxton.nxtframework.component.NxtAutoThumbnailComponent;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -28,186 +36,76 @@ import java.util.regex.Pattern;
 @RestController
 public class NxtImageController {
 
+    private Logger logger = LoggerFactory.getLogger(NxtImageController.class);
+
+    @Resource
+    private HttpServletRequest request;
+
     @Value("${newxton.config.oss.localPath}")
     private String ossLocalPath;
 
+    @Resource
+    private NxtAutoThumbnailComponent nxtAutoThumbnailComponent;
+
     /**
      * 输出图片
+     * NxtAutoThumbnailComponent 这个组件是带缓存的，每个图片只要裁剪计算一次就被缓存了。
      */
     @RequestMapping(value = {
-            "/public_pic/*.png",
-            "/public_pic/*/*.png",
-            "/public_pic/*/*/*.png",
-            "/public_pic/*/*/*/*.png",
-            "/public_pic/*.jpg",
-            "/public_pic/*/*.jpg",
-            "/public_pic/*/*/*.jpg",
-            "/public_pic/*/*/*/*.jpg",
-            "/public_pic/*.gif",
-            "/public_pic/*/*.gif",
-            "/public_pic/*/*/*.gif",
-            "/public_pic/*/*/*/*.gif",
-            "/public_pic/*.jpeg",
-            "/public_pic/*/*.jpeg",
-            "/public_pic/*/*/*.jpeg",
-            "/public_pic/*/*/*/*.jpeg",
+            "/public_pic/{a}.png",
+            "/public_pic/{a}/{b}.png",
+            "/public_pic/{a}/{b}/{c}.png",
+            "/public_pic/{a}/{b}/{c}/{d}.png",
+            "/public_pic/{a}.jpg",
+            "/public_pic/{a}/{b}.jpg",
+            "/public_pic/{a}/{b}/{c}.jpg",
+            "/public_pic/{a}/{b}/{c}/{d}.jpg",
+            "/public_pic/{a}.gif",
+            "/public_pic/{a}/{b}.gif",
+            "/public_pic/{a}/{b}/{c}.gif",
+            "/public_pic/{a}/{b}/{c}/{d}.gif",
+            "/public_pic/{a}.jpeg",
+            "/public_pic/{a}/{b}.jpeg",
+            "/public_pic/{a}/{b}/{c}.jpeg",
+            "/public_pic/{a}/{b}/{c}/{d}.jpeg",
     })
-    public ResponseEntity<InputStreamResource> index(HttpServletRequest request) throws IOException {
+    public ResponseEntity<InputStreamResource> index(
+            @PathVariable(value = "a",required = false) String p1,
+            @PathVariable(value = "b",required = false) String p2,
+            @PathVariable(value = "c",required = false) String p3,
+            @PathVariable(value = "d",required = false) String p4
+            ) throws IOException {
 
         String imageUrl= request.getRequestURI().toLowerCase();
 
         String imageStyle = request.getQueryString();
 
-        if (imageStyle == null || imageStyle.isEmpty()){
-            //_imageview2_type1_w50_h150_q75.png（这里兼容Nginx Rewrite过来的地址）
-            String patternString = "(.*?)_(imageview2)_type(\\d+?)_w(\\d+?)_h(\\d+?)_q(\\d+)";
-            Matcher m = Pattern.compile(patternString).matcher(imageUrl);
-            if (m.find()) {
-                imageStyle = "imageView2/"+m.group(3)+"/w/"+m.group(4)+"/h/"+m.group(5)+"/q/"+m.group(6);
-                imageUrl = m.group(1);
-            }
-        }
+        byte[] bytesAutoThumbnail = nxtAutoThumbnailComponent.getThumbnail(imageUrl,imageStyle);
 
-        imageUrl = this.ossLocalPath + imageUrl;
-
-        //初始化对象、检查文件是否存在
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        BufferedImage sourceImg;
-        ImageInputStream imageInputStream;
-        try {
-            File file = new File(imageUrl);
-            sourceImg = ImageIO.read(new FileInputStream(file));
-            imageInputStream = ImageIO.createImageInputStream(file);
-        }
-        catch (FileNotFoundException e){
-            //文件不存在，输出空
+        if (bytesAutoThumbnail.length < 4){
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             return ResponseEntity
                     .ok()
                     .contentType(MediaType.IMAGE_PNG)
                     .body(new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray())));
         }
 
-        //检查文件类型
-        String formatName = getImageFormatName(imageInputStream);
-        MediaType mediaType;
-        if (formatName != null && formatName.equals("png")){
+        MediaType mediaType = MediaType.IMAGE_PNG;
+        if (bytesAutoThumbnail[0] == (byte) 0xff && bytesAutoThumbnail[1] == (byte) 0xd8 && bytesAutoThumbnail[2] == (byte) 0xff){
             mediaType = MediaType.IMAGE_PNG;
         }
-        else if (formatName != null && formatName.equals("JPEG")){
-            mediaType = MediaType.IMAGE_JPEG;
+        else if (bytesAutoThumbnail[0] == (byte)0x89 && bytesAutoThumbnail[1] == (byte)0x50 && bytesAutoThumbnail[2] == (byte)0x4e && bytesAutoThumbnail[3] == (byte)0x47){
+            mediaType = MediaType.IMAGE_PNG;
         }
-        else if (formatName != null && formatName.equals("gif")){
+        else if (bytesAutoThumbnail[0] == (byte)0x47 && bytesAutoThumbnail[1] == (byte)0x49 && bytesAutoThumbnail[2] == (byte)0x46 && bytesAutoThumbnail[3] == (byte)0x38){
             mediaType = MediaType.IMAGE_GIF;
         }
-        else {
-            //文件类型不支持
-            return ResponseEntity
-                    .ok()
-                    .contentType(MediaType.IMAGE_JPEG)
-                    .body(new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray())));
-        }
 
-        //无格式命令
-        if (imageStyle == null || imageStyle.isEmpty()){
-            //原图
-            ImageIO.write(sourceImg,formatName,outputStream);
-        }
-        else {
-
-            //根据格式要求进行缩放、输出图片（此处兼容七牛云的格式命令串：imageView2/1/w/100/h/135/q/75）
-            int width = 0;
-            int height = 0;
-            float quality = 1;
-            String patternString = "(imageView2)/(.+?)/w/(\\d+?)/h/(\\d+?)/q/(\\d+)";
-            Matcher m = Pattern.compile(patternString).matcher(imageStyle);
-            if (m.find()) {
-                int type = Integer.valueOf(m.group(2));
-                width = Integer.valueOf(m.group(3));
-                height = Integer.valueOf(m.group(4));
-                quality = Float.valueOf(m.group(5)) / 100;
-                if (type == 2) {
-                    //按比例缩放，不裁剪(七牛：缩至指定宽高区域内)
-                    Thumbnails.of(sourceImg)
-                            .size(width, height)
-                            .outputQuality(quality)
-                            .outputFormat(formatName)
-                            .toOutputStream(outputStream);
-                } else if (type == 1) {
-                    //按比例缩放，裁剪(七牛：缩至完全覆盖指定宽高区域，居中剪裁)
-                    int imgHeight = sourceImg.getHeight();
-                    int imgWidth = sourceImg.getWidth();
-                    if (width < height) {
-                        float rate = (float) width / (float) height;
-                        imgWidth = (int) ((float) imgHeight * rate);
-                    } else if (height < width) {
-                        float rate = (float) height / (float) width;
-                        imgHeight = (int) ((float) imgWidth * rate);
-                    } else {
-                        if (imgHeight > imgWidth) {
-                            imgHeight = imgWidth;
-                        } else {
-                            imgWidth = imgHeight;
-                        }
-                    }
-                    Thumbnails.of(sourceImg)
-                            .sourceRegion(Positions.CENTER, imgWidth, imgHeight)
-                            .size(width, height)
-                            .keepAspectRatio(false)
-                            .outputQuality(quality)
-                            .outputFormat(formatName)
-                            .toOutputStream(outputStream);
-                }
-            }
-        }
-
-        //保存缓存图片
-        if (imageStyle != null && !imageStyle.isEmpty() && outputStream.toByteArray().length > 0) {
-            String suffix = imageUrl.substring(imageUrl.lastIndexOf(".") + 1).toLowerCase();
-            String filePath = imageUrl + "_" + imageStyle.replace("imageView2/", "imageView2_type")
-                    .replace("/w/","_w")
-                    .replace("/h/","_h")
-                    .replace("/q/","_q")
-                    + "." + suffix;
-            String fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
-            try {
-                File file = new File(filePath);
-                byte[] bytes = outputStream.toByteArray();
-                OutputStream os = new FileOutputStream(file);
-                os.write(bytes);
-                os.close();
-                System.out.println("生成文件" + fileName);
-            } catch (Exception e) {
-                System.out.println("Exception: " + e);
-                System.out.println("生成文件Fail" + fileName);
-            }
-        }
-
-        //输出图片。若以上没有匹配格式成功，则输出空图片。
         return ResponseEntity
                 .ok()
                 .contentType(mediaType)
-                .body(new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray())));
+                .body(new InputStreamResource(new ByteArrayInputStream(bytesAutoThumbnail)));
 
-    }
-
-
-    /**
-     * 获取图片格式类型
-     * @param imageInputStream
-     * @return
-     */
-    private String getImageFormatName(ImageInputStream imageInputStream) {
-        Iterator<ImageReader> imageReaders = ImageIO.getImageReaders(imageInputStream);
-        try {
-            while (imageReaders.hasNext()) {
-                ImageReader reader = (ImageReader) imageReaders.next();
-                return reader.getFormatName();
-            }
-        }
-        catch (Exception e){
-            return null;
-        }
-        return null;
     }
 
 }

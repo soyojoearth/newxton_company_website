@@ -47,6 +47,10 @@ public class NxtStructOrderFormProduct {
      */
     private Float productPriceDiscount;
     /**
+     * 手动价格调整
+     */
+    private Float manualPriceDiscount;
+    /**
      * 用户等级
      */
     private Integer levelNum;
@@ -150,6 +154,14 @@ public class NxtStructOrderFormProduct {
 
     public void setProductPriceDiscount(Float productPriceDiscount) {
         this.productPriceDiscount = productPriceDiscount;
+    }
+
+    public Float getManualPriceDiscount() {
+        return manualPriceDiscount;
+    }
+
+    public void setManualPriceDiscount(Float manualPriceDiscount) {
+        this.manualPriceDiscount = manualPriceDiscount;
     }
 
     public Integer getLevelNum() {

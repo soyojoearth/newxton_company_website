@@ -22,7 +22,7 @@ public class NxtProcessDeliveryRegion {
     @Resource
     private NxtDeliveryRegionService nxtDeliveryRegionService;
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     public Map<String, Object> save(@RequestBody JSONObject jsonParam) {
 
         Long id = jsonParam.getLong("id");

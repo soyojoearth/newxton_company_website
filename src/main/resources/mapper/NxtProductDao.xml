@@ -47,6 +47,7 @@
         select
           id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
+        where and is_trash = 0
         order by is_recommend desc, sort_id desc
         limit #{offset}, #{limit}
     </select>
@@ -59,6 +60,7 @@
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
+        and is_trash = 0
         order by is_recommend desc, sort_id desc
         limit #{offset}, #{limit}
     </select>
@@ -72,6 +74,7 @@
         <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
+        and is_trash = 0
         order by is_recommend desc, sort_id desc
         limit #{offset}, #{limit}
     </select>
@@ -84,6 +87,7 @@
         <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
+        and is_trash = 0
     </select>
 
     <!--通过实体作为筛选条件查询-->
@@ -185,6 +189,7 @@
             <if test="categoryId != null">
                 and category_id = #{categoryId}
             </if>
+            and is_trash = 0
         </where>
         order by is_recommend desc, sort_id desc
         limit #{offset}, #{limit}
@@ -196,7 +201,7 @@
         select
           id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
-        where product_name like #{keyword}
+        where product_name like #{keyword} and is_trash = 0
         order by is_recommend desc, sort_id desc
         limit #{offset}, #{limit}
     </select>
@@ -205,7 +210,7 @@
         select
         count(*)
         from nxt_product
-        where product_name like #{keyword}
+        where product_name like #{keyword} and is_trash = 0
     </select>
 
 
@@ -610,5 +615,116 @@
         limit 0,#{limit}
     </select>
 
+    <!--后台admin获取产品列表-->
+    <select id="adminQueryAllByLimit" resultMap="BaseResultMap">
+        select
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
+        from nxt_product
+        <where>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="searchKeyword != null">
+                and product_name like #{searchKeyword}
+            </if>
+            <if test="isRecommend != null">
+                <if test="isRecommend">
+                    and is_recommend = 1
+                </if>
+                <if test="!isRecommend">
+                    and is_recommend = 0
+                </if>
+            </if>
+            <if test="isNew != null">
+                <if test="isNew">
+                    and is_new = 1
+                </if>
+                <if test="!isNew">
+                    and is_new = 0
+                </if>
+            </if>
+            <if test="isHot != null">
+                <if test="isHot">
+                    and is_hot = 1
+                </if>
+                <if test="!isHot">
+                    and is_hot = 0
+                </if>
+            </if>
+            <if test="isSelling != null">
+                <if test="isSelling">
+                    and is_selling = 1
+                </if>
+                <if test="!isSelling">
+                    and is_selling = 0
+                </if>
+            </if>
+            <if test="isTrash != null">
+                <if test="isTrash">
+                    and is_trash = 1
+                </if>
+                <if test="!isTrash">
+                    and is_trash = 0
+                </if>
+            </if>
+        </where>
+        order by sort_id desc,dateline_updated desc
+        limit #{offset},#{limit}
+    </select>
+
+    <!--后台admin统计产品总数-->
+    <select id="adminCountAll" resultType="Long">
+        select
+        count(*)
+        from nxt_product
+        <where>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="searchKeyword != null">
+                and product_name like #{searchKeyword}
+            </if>
+            <if test="isRecommend != null">
+                <if test="isRecommend">
+                    and is_recommend = 1
+                </if>
+                <if test="!isRecommend">
+                    and is_recommend = 0
+                </if>
+            </if>
+            <if test="isNew != null">
+                <if test="isNew">
+                    and is_new = 1
+                </if>
+                <if test="!isNew">
+                    and is_new = 0
+                </if>
+            </if>
+            <if test="isHot != null">
+                <if test="isHot">
+                    and is_hot = 1
+                </if>
+                <if test="!isHot">
+                    and is_hot = 0
+                </if>
+            </if>
+            <if test="isSelling != null">
+                <if test="isSelling">
+                    and is_selling = 1
+                </if>
+                <if test="!isSelling">
+                    and is_selling = 0
+                </if>
+            </if>
+            <if test="isTrash != null">
+                <if test="isTrash">
+                    and is_trash = 1
+                </if>
+                <if test="!isTrash">
+                    and is_trash = 0
+                </if>
+            </if>
+        </where>
+    </select>
 
 </mapper>

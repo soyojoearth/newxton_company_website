@@ -1,5 +1,6 @@
 package com.newxton.nxtframework.controller.api.front.cms;
 
+import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtContent;
 import com.newxton.nxtframework.entity.NxtNewsCategory;
@@ -9,6 +10,7 @@ import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,14 +38,19 @@ public class NxtApiNormalNewsListController {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/normal_news_list")
-    public NxtStructApiResult exec(
-            @RequestParam(value = "root_category_id",required = false) Long rootCategoryId,
-            @RequestParam("limit") Integer limit,
-            @RequestParam(value = "offset",required = false) Integer offset,
-            @RequestParam(value = "show_pages",required = false) Integer show_pages
-    ) {
+    public NxtStructApiResult exec( @RequestBody JSONObject jsonParam) {
+
+        Long rootCategoryId = jsonParam.getLong("root_category_id");
+        Integer limit = jsonParam.getInteger("limit");
+        Integer offset = jsonParam.getInteger("offset");
+        Integer show_pages = jsonParam.getInteger("show_pages");
+
 
         Map<String, Object> data = new HashMap<>();
+
+        if (limit == null){
+            limit = 4;
+        }
 
         if (offset == null){
             offset = 0;
@@ -129,9 +136,13 @@ public class NxtApiNormalNewsListController {
         for (int i = 0; i < contentList.size(); i++) {
             NxtContent content = contentList.get(i);
             String firstPictureUrl = "";
+            if (content.getContentDetail() == null){
+                content.setContentDetail("");
+            }
             Document doc = Jsoup.parse(content.getContentDetail());
             Element elementImg = doc.select("img").last();
             Element firstP = doc.selectFirst("p");
+
             if (elementImg != null && firstP != null) {
                 firstPictureUrl = elementImg.attr("src");
                 firstPictureUrl = nxtUploadImageComponent.checkHtmlAndReplaceImageUrlForDisplay(firstPictureUrl);
@@ -144,7 +155,12 @@ public class NxtApiNormalNewsListController {
             Map<String, Object> item = new HashMap<>();
             item.put("id", content.getId());
             item.put("title", content.getContentTitle());
-            item.put("text", firstP.text());
+            if (firstP != null) {
+                item.put("text", firstP.text());
+            }
+            else {
+                item.put("text", "");
+            }
             item.put("picUrl", firstPictureUrl);
             item.put("time",sdf.format(new Date(content.getDatelineCreate())));
             if (mapCategoryIdToName.containsKey(content.getCategoryId())){

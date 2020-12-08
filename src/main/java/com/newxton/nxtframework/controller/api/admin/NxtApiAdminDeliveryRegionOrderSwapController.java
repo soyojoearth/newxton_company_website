@@ -23,7 +23,7 @@ public class NxtApiAdminDeliveryRegionOrderSwapController {
     @Resource
     private NxtDeliveryRegionService nxtDeliveryRegionService;
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     @RequestMapping(value = "/api/admin/delivery_region/order_swap", method = RequestMethod.POST)
     public Map<String, Object> index(@RequestParam(value = "id1", required=false) Long id1,
                                      @RequestParam(value = "id2", required=false) Long id2

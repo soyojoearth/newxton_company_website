@@ -11,6 +11,8 @@ public class NxtStructOrderFormDelivery {
 
     private Long orderFormId;
 
+    private Long deliveryCompanyId;
+
     private String deliveryCompanyName;
 
     private String deliverySerialNum;
@@ -29,6 +31,14 @@ public class NxtStructOrderFormDelivery {
 
     public void setOrderFormId(Long orderFormId) {
         this.orderFormId = orderFormId;
+    }
+
+    public Long getDeliveryCompanyId() {
+        return deliveryCompanyId;
+    }
+
+    public void setDeliveryCompanyId(Long deliveryCompanyId) {
+        this.deliveryCompanyId = deliveryCompanyId;
     }
 
     public String getDeliveryCompanyName() {

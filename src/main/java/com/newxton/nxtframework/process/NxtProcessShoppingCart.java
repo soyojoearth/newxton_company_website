@@ -142,10 +142,13 @@ public class NxtProcessShoppingCart {
     /**
      * 检查、合并匿名购物车到已登录用户
      */
-    public void mergeGuestShoppingCartToUser(String guestToken,Long userId){
+    public void mergeGuestShoppingCartToUser(String guestToken,Long userId) throws NxtException {
 
         //查询匿名用户购物车
         NxtShoppingCart nxtShoppingCartGuest = nxtShoppingCartService.queryByToken(guestToken);
+        if (nxtShoppingCartGuest == null){
+            return;
+        }
         if (nxtShoppingCartGuest.getUserId() != null){
             return;
         }

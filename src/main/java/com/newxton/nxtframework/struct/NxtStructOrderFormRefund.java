@@ -37,6 +37,10 @@ public class NxtStructOrderFormRefund {
      */
     private String reasionDescription;
     /**
+     * 售后图片证据列表
+     */
+    private List<String> reasonImageList = new ArrayList<>();
+    /**
      * 售后状态 数字）状态（-1:拒绝退款 0:已申请 1:完成 2:等用户发货 3:收到货退款 4:收到货有问题，请修改金额 5:用户已寄出物品）
      */
     private Integer status;
@@ -61,6 +65,33 @@ public class NxtStructOrderFormRefund {
      * 售后单中的物品
      */
     private List<NxtStructOrderFormRefundProduct> orderFormRefundProductList = new ArrayList<>();
+
+    /**
+     * 收货人
+     */
+    private String deliveryPerson;
+    /**
+     * 收货人电话
+     */
+    private String deliveryPhone;
+    /**
+     * 订单总额
+     */
+    private Float amountFinally;
+
+    /**
+     * 申请退款总额
+     */
+    private Float amountRefundTotal;
+
+    /**
+     * 退货快递名字
+     */
+    private String deliveryCompanyName;
+    /**
+     * 退货快递单号
+     */
+    private String deliverySerialNum;
 
     public Long getId() {
         return id;
@@ -108,6 +139,14 @@ public class NxtStructOrderFormRefund {
 
     public void setReasionDescription(String reasionDescription) {
         this.reasionDescription = reasionDescription;
+    }
+
+    public List<String> getReasonImageList() {
+        return reasonImageList;
+    }
+
+    public void setReasonImageList(List<String> reasonImageList) {
+        this.reasonImageList = reasonImageList;
     }
 
     public Integer getStatus() {
@@ -172,6 +211,54 @@ public class NxtStructOrderFormRefund {
 
     public void setOrderFormRefundProductList(List<NxtStructOrderFormRefundProduct> orderFormRefundProductList) {
         this.orderFormRefundProductList = orderFormRefundProductList;
+    }
+
+    public String getDeliveryPerson() {
+        return deliveryPerson;
+    }
+
+    public void setDeliveryPerson(String deliveryPerson) {
+        this.deliveryPerson = deliveryPerson;
+    }
+
+    public String getDeliveryPhone() {
+        return deliveryPhone;
+    }
+
+    public void setDeliveryPhone(String deliveryPhone) {
+        this.deliveryPhone = deliveryPhone;
+    }
+
+    public Float getAmountFinally() {
+        return amountFinally;
+    }
+
+    public void setAmountFinally(Float amountFinally) {
+        this.amountFinally = amountFinally;
+    }
+
+    public Float getAmountRefundTotal() {
+        return amountRefundTotal;
+    }
+
+    public void setAmountRefundTotal(Float amountRefundTotal) {
+        this.amountRefundTotal = amountRefundTotal;
+    }
+
+    public String getDeliveryCompanyName() {
+        return deliveryCompanyName;
+    }
+
+    public void setDeliveryCompanyName(String deliveryCompanyName) {
+        this.deliveryCompanyName = deliveryCompanyName;
+    }
+
+    public String getDeliverySerialNum() {
+        return deliverySerialNum;
+    }
+
+    public void setDeliverySerialNum(String deliverySerialNum) {
+        this.deliverySerialNum = deliverySerialNum;
     }
 
 }

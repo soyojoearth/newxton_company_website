@@ -1,12 +1,18 @@
 package com.newxton.nxtframework.controller.api.admin;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
 import com.newxton.nxtframework.entity.NxtProduct;
 import com.newxton.nxtframework.service.NxtProductService;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
+import com.newxton.nxtframework.struct.NxtStructOrderFromCreate;
+import com.newxton.nxtframework.struct.admin.NxtStructAdminProductSetTrashPost;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,34 +27,44 @@ public class NxtApiAdminProductSetTrashController {
     private NxtProductService nxtProductService;
 
     @RequestMapping(value = "/api/admin/product/set_trash", method = RequestMethod.POST)
-    public Map<String, Object> index(@RequestBody JSONObject jsonParam) {
+    public Map<String, Object> index(@RequestBody String json) {
 
-        Long id = jsonParam.getLong("id");
-        Boolean isTrash = jsonParam.getBoolean("isTrash");
+        Gson gson = new Gson();
+        NxtStructAdminProductSetTrashPost postData;
+        try {
+            postData = gson.fromJson(json, NxtStructAdminProductSetTrashPost.class);
+        }
+        catch (Exception e){
+            return new NxtStructApiResult(54,"json数据不对").toMap();
+        }
+
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("message", "");
 
-        if (id == null) {
-            result.put("status", 52);
-            result.put("message", "参数错误");
-            return result;
+        if (postData.getId() != null) {
+            /*先查询*/
+            NxtProduct nxtProduct = nxtProductService.queryById(postData.getId());
+            if (nxtProduct == null) {
+                return new NxtStructApiResult(49, "对应的产品不存在").toMap();
+            }
+            nxtProduct.setIsTrash(postData.getTrash() ? 1 : 0);//1放入回收站 0恢复
+            nxtProductService.update(nxtProduct);
         }
 
-        /*先查询*/
-        NxtProduct content = nxtProductService.queryById(id);
-        if (content == null){
-            result.put("status", 49);
-            result.put("message", "对应的产品不存在");
-            return result;
+        if (postData.getIdList() != null){
+            for (Long productId : postData.getIdList()) {
+                /*先查询*/
+                NxtProduct nxtProduct = nxtProductService.queryById(productId);
+                if (nxtProduct != null) {
+                    nxtProduct.setIsTrash(postData.getTrash() ? 1 : 0);//1放入回收站 0恢复
+                    nxtProductService.update(nxtProduct);
+                }
+            }
         }
 
-        content.setIsTrash(isTrash ? 1 : 0);//1放入回收站 0恢复
-
-        nxtProductService.update(content);
-
-        return result;
+        return new NxtStructApiResult().toMap();
 
     }
 
