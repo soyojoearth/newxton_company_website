@@ -70,7 +70,6 @@ public class NxtApiAdminOrderFormUpdateDeliveryController {
         if (nxtOrderFormDelivery == null){
             nxtOrderFormDelivery = new NxtOrderFormDelivery();
             nxtOrderFormDelivery.setOrderFormId(nxtOrderForm.getId());
-            nxtOrderFormDelivery.setType(1);//类型（1:发货 -1:退货）
         }
         nxtOrderFormDelivery.setDeliveryCompanyId(nxtDeliveryCompany.getId());
         nxtOrderFormDelivery.setDeliveryCompanyName(nxtDeliveryCompany.getName());

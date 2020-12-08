@@ -40,7 +40,7 @@ public class NxtApiAdminProductReviewsListController {
             return new NxtStructApiResult(53,"缺少参数：offset或limit").toMap();
         }
 
-        if (productUrl != null) {
+        if (productUrl != null && !productUrl.trim().isEmpty()) {
             String pattern = "productId=(\\d+)";
             Pattern r = Pattern.compile(pattern);
             Matcher m = r.matcher(productUrl);

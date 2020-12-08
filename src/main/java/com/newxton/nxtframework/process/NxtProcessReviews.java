@@ -123,6 +123,7 @@ public class NxtProcessReviews {
             nxtStructAdminProductReviewsItem.setUsername(mapUserIdToName.get(nxtReviews.getUserId()));
             nxtStructAdminProductReviewsItem.setRecommend(nxtReviews.getIsRecommend() > 0);
             nxtStructAdminProductReviewsItem.setHidden(nxtReviews.getIsHidden() > 0);
+            nxtStructAdminProductReviewsItem.setOriginType(nxtReviews.getOriginType());
             list.add(nxtStructAdminProductReviewsItem);
         }
 
@@ -307,6 +308,7 @@ public class NxtProcessReviews {
             nxtStructProductReviewsItem.setUserId(item.getUserId());
             nxtStructProductReviewsItem.setDate(sdf.format(new Date(item.getDateline())));
             nxtStructProductReviewsItem.setContent(item.getContent());
+            nxtStructProductReviewsItem.setOriginType(item.getOriginType());
 
             mapIdToReviewsItem.put(item.getId(),nxtStructProductReviewsItem);
 
@@ -337,6 +339,7 @@ public class NxtProcessReviews {
                 nxtStructProductReviewsItem.setUserId(item.getUserId());
                 nxtStructProductReviewsItem.setDate(sdf.format(new Date(item.getDateline())));
                 nxtStructProductReviewsItem.setContent(item.getContent());
+                nxtStructProductReviewsItem.setOriginType(item.getOriginType());
 
                 replyList.add(nxtStructProductReviewsItem);
 

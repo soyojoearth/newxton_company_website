@@ -3,24 +3,20 @@ package com.newxton.nxtframework.entity;
 import java.io.Serializable;
 
 /**
- * (NxtOrderFormDelivery)实体类
+ * (NxtOrderFormRefundDelivery)实体类
  *
  * @author makejava
- * @since 2020-11-14 21:41:51
+ * @since 2020-12-08 15:39:40
  */
-public class NxtOrderFormDelivery implements Serializable {
-    private static final long serialVersionUID = 740227055002073987L;
-    /**
-     * 订单物流表
-     */
+public class NxtOrderFormRefundDelivery implements Serializable {
+    private static final long serialVersionUID = -89780013402504384L;
+    
     private Long id;
-
-    private Long orderFormId;
-
-    private Long deliveryCompanyId;
-
+    
+    private Long orderFormRefundId;
+    
     private String deliveryCompanyName;
-
+    
     private String deliverySerialNum;
 
 
@@ -32,20 +28,12 @@ public class NxtOrderFormDelivery implements Serializable {
         this.id = id;
     }
 
-    public Long getOrderFormId() {
-        return orderFormId;
+    public Long getOrderFormRefundId() {
+        return orderFormRefundId;
     }
 
-    public void setOrderFormId(Long orderFormId) {
-        this.orderFormId = orderFormId;
-    }
-
-    public Long getDeliveryCompanyId() {
-        return deliveryCompanyId;
-    }
-
-    public void setDeliveryCompanyId(Long deliveryCompanyId) {
-        this.deliveryCompanyId = deliveryCompanyId;
+    public void setOrderFormRefundId(Long orderFormRefundId) {
+        this.orderFormRefundId = orderFormRefundId;
     }
 
     public String getDeliveryCompanyName() {

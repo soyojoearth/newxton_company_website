@@ -1,5 +1,7 @@
 package com.newxton.nxtframework.struct.admin;
 
+import org.springframework.data.relational.core.sql.In;
+
 /**
  * @author soyojo.earth@gmail.com
  * @time 2020/12/7
@@ -42,6 +44,11 @@ public class NxtStructAdminProductReviewsItem {
 
     private Boolean isHidden;
     private Boolean isRecommend;
+
+    /**
+     * 来源类型
+     */
+    private Integer originType;
 
 
     public Long getId() {
@@ -122,5 +129,13 @@ public class NxtStructAdminProductReviewsItem {
 
     public void setRecommend(Boolean recommend) {
         isRecommend = recommend;
+    }
+
+    public Integer getOriginType() {
+        return originType;
+    }
+
+    public void setOriginType(Integer originType) {
+        this.originType = originType;
     }
 }
