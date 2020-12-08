@@ -12,7 +12,7 @@ typora-copy-images-to: ./gitbook_resource
 
 
 
-#### 不过，本项目正在开发中，感谢关注，敬请期待：
+#### 本项目很快开发完成，感谢关注，敬请期待：
 
 1、ACL权限控制模块（完成）；
 
@@ -20,11 +20,9 @@ typora-copy-images-to: ./gitbook_resource
 
 3、产品（商品）管理（完成）；
 
-4、订单模块（开发中）；
+4、订单模块（完成）；
 
-5、Elasticsearch搜索（开发中）；
-
-6、分销管理（开发中）；
+5、分销管理（--开发中--）；
 
 
 
