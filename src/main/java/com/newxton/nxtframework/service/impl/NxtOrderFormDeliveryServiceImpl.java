@@ -87,4 +87,13 @@ public class NxtOrderFormDeliveryServiceImpl implements NxtOrderFormDeliveryServ
         return this.nxtOrderFormDeliveryDao.queryShippingByOrderFormId(orderFormId);
     }
 
+    /**
+     * 通过orderFormId查询单条
+     * @param orderFormId
+     * @return
+     */
+    public NxtOrderFormDelivery queryRefundByOrderFormId(@Param("orderFormId") Long orderFormId){
+        return this.nxtOrderFormDeliveryDao.queryRefundByOrderFormId(orderFormId);
+    }
+
 }

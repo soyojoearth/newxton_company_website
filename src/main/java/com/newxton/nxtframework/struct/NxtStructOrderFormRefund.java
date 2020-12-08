@@ -84,6 +84,15 @@ public class NxtStructOrderFormRefund {
      */
     private Float amountRefundTotal;
 
+    /**
+     * 退货快递名字
+     */
+    private String deliveryCompanyName;
+    /**
+     * 退货快递单号
+     */
+    private String deliverySerialNum;
+
     public Long getId() {
         return id;
     }
@@ -234,6 +243,22 @@ public class NxtStructOrderFormRefund {
 
     public void setAmountRefundTotal(Float amountRefundTotal) {
         this.amountRefundTotal = amountRefundTotal;
+    }
+
+    public String getDeliveryCompanyName() {
+        return deliveryCompanyName;
+    }
+
+    public void setDeliveryCompanyName(String deliveryCompanyName) {
+        this.deliveryCompanyName = deliveryCompanyName;
+    }
+
+    public String getDeliverySerialNum() {
+        return deliverySerialNum;
+    }
+
+    public void setDeliverySerialNum(String deliverySerialNum) {
+        this.deliverySerialNum = deliverySerialNum;
     }
 
 }

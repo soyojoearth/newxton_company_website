@@ -40,6 +40,9 @@ public class NxtProcessOrderFormRefund {
     private NxtOrderFormService nxtOrderFormService;
 
     @Resource
+    private NxtOrderFormDeliveryService nxtOrderFormDeliveryService;
+
+    @Resource
     private NxtOrderFormProductService nxtOrderFormProductService;
 
     @Resource
@@ -655,6 +658,15 @@ public class NxtProcessOrderFormRefund {
         }
 
         nxtStructOrderFormRefund.setReasonImageList(reasonImageList);
+
+        //查询退货快递
+        if (nxtOrderFormRefund.getStatus().equals(5)){//状态（-1:拒绝退款 0:已申请 1:完成 2:等用户发货 3:收到货退款 4:直接退款 5:用户已寄出物品）
+            NxtOrderFormDelivery nxtOrderFormDelivery = nxtOrderFormDeliveryService.queryRefundByOrderFormId(nxtOrderFormRefund.getOrderFormId());
+            if (nxtOrderFormDelivery != null){
+                nxtStructOrderFormRefund.setDeliveryCompanyName(nxtOrderFormDelivery.getDeliveryCompanyName());
+                nxtStructOrderFormRefund.setDeliverySerialNum(nxtOrderFormDelivery.getDeliverySerialNum());
+            }
+        }
 
         return nxtStructOrderFormRefund;
 

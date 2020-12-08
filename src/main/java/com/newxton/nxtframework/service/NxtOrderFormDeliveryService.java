@@ -61,4 +61,11 @@ public interface NxtOrderFormDeliveryService {
      */
     NxtOrderFormDelivery queryShippingByOrderFormId(@Param("orderFormId") Long orderFormId);
 
+    /**
+     * 通过orderFormId查询单条
+     * @param orderFormId
+     * @return
+     */
+    NxtOrderFormDelivery queryRefundByOrderFormId(@Param("orderFormId") Long orderFormId);
+
 }
