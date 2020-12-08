@@ -85,6 +85,10 @@ public class NxtStructOrderForm {
      */
     private Float manualDeliveryCostDiscount;
     /**
+     * 订单状态描述文字
+     */
+    private String statusText;
+    /**
      * 是否已经支付
      */
     private Boolean isPaid;
@@ -302,6 +306,14 @@ public class NxtStructOrderForm {
 
     public void setManualDeliveryCostDiscount(Float manualDeliveryCostDiscount) {
         this.manualDeliveryCostDiscount = manualDeliveryCostDiscount;
+    }
+
+    public String getStatusText() {
+        return statusText;
+    }
+
+    public void setStatusText(String statusText) {
+        this.statusText = statusText;
     }
 
     public Boolean getPaid() {

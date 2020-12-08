@@ -277,7 +277,7 @@
                 </if>
             </if>
         </where>
-        order by status_paid asc, dateline_create desc
+        order by dateline_create desc
         limit #{offset}, #{limit}
     </select>
 

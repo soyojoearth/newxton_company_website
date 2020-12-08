@@ -40,6 +40,10 @@ public class NxtStructAdminProductReviewsItem {
      */
     private Long orderFormId;
 
+    private Boolean isHidden;
+    private Boolean isRecommend;
+
+
     public Long getId() {
         return id;
     }
@@ -104,4 +108,19 @@ public class NxtStructAdminProductReviewsItem {
         this.orderFormId = orderFormId;
     }
 
+    public Boolean getHidden() {
+        return isHidden;
+    }
+
+    public void setHidden(Boolean hidden) {
+        isHidden = hidden;
+    }
+
+    public Boolean getRecommend() {
+        return isRecommend;
+    }
+
+    public void setRecommend(Boolean recommend) {
+        isRecommend = recommend;
+    }
 }

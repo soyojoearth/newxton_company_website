@@ -121,6 +121,8 @@ public class NxtProcessReviews {
             nxtStructAdminProductReviewsItem.setProductName(productName);
             nxtStructAdminProductReviewsItem.setProductPicUrl(mapOrderFormProductIdToPicUrl.get(nxtReviews.getOrderFormProductId()));
             nxtStructAdminProductReviewsItem.setUsername(mapUserIdToName.get(nxtReviews.getUserId()));
+            nxtStructAdminProductReviewsItem.setRecommend(nxtReviews.getIsRecommend() > 0);
+            nxtStructAdminProductReviewsItem.setHidden(nxtReviews.getIsHidden() > 0);
             list.add(nxtStructAdminProductReviewsItem);
         }
 
