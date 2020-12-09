@@ -8,6 +8,11 @@ package com.newxton.nxtframework.struct;
 public class NxtStructSettingCommission {
 
     /**
+     * 分销开关
+     */
+    private Boolean onoff = true;
+
+    /**
      * 一级分销佣金分成比例
      */
     private Long commissionRateLevel1 = 70L;//默认值
@@ -24,6 +29,16 @@ public class NxtStructSettingCommission {
      * 全站默认产品佣金比率
      */
     private Long defaultProductCommissionRate = 10L;//默认值
+
+    private Long inviterExpirationDays = 36500L;
+
+    public Boolean getOnoff() {
+        return onoff;
+    }
+
+    public void setOnoff(Boolean onoff) {
+        this.onoff = onoff;
+    }
 
     public Long getCommissionRateLevel1() {
         return commissionRateLevel1;
@@ -56,4 +71,13 @@ public class NxtStructSettingCommission {
     public void setDefaultProductCommissionRate(Long defaultProductCommissionRate) {
         this.defaultProductCommissionRate = defaultProductCommissionRate;
     }
+
+    public Long getInviterExpirationDays() {
+        return inviterExpirationDays;
+    }
+
+    public void setInviterExpirationDays(Long inviterExpirationDays) {
+        this.inviterExpirationDays = inviterExpirationDays;
+    }
+
 }
