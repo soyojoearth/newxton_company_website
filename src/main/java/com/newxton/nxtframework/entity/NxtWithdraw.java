@@ -29,7 +29,7 @@ public class NxtWithdraw implements Serializable {
 
     private Long datelineCreate;
 
-    private String datelineEnd;
+    private Long datelineEnd;
     /**
      * 平台（0:银行 1:微信 2:支付宝 3:paypal 888:现金）
      */
@@ -104,11 +104,11 @@ public class NxtWithdraw implements Serializable {
         this.datelineCreate = datelineCreate;
     }
 
-    public String getDatelineEnd() {
+    public Long getDatelineEnd() {
         return datelineEnd;
     }
 
-    public void setDatelineEnd(String datelineEnd) {
+    public void setDatelineEnd(Long datelineEnd) {
         this.datelineEnd = datelineEnd;
     }
 
