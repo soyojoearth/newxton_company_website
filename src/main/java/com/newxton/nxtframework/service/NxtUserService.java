@@ -136,4 +136,26 @@ public interface NxtUserService {
      */
     NxtUser removeEmailById(@Param("id") Long id);
 
+    /**
+     * 获取会员列表
+     * @param offset
+     * @param limit
+     * @param userId
+     * @param username
+     * @param datelineCreateBegin
+     * @param datelineCreateEnd
+     * @return
+     */
+    List<NxtUser> adminQueryMemberList(Long offset, Long limit, Long userId, String username, Long datelineCreateBegin, Long datelineCreateEnd);
+
+    /**
+     * 获取会员统计数字
+     * @param userId
+     * @param username
+     * @param datelineCreateBegin
+     * @param datelineCreateEnd
+     * @return
+     */
+    Long adminQueryMemberCount(Long userId, String username, Long datelineCreateBegin, Long datelineCreateEnd);
+
 }

@@ -187,4 +187,30 @@ public class NxtUserServiceImpl implements NxtUserService {
         return this.queryById(id);
     }
 
+    /**
+     * 获取会员列表
+     * @param offset
+     * @param limit
+     * @param userId
+     * @param username
+     * @param datelineCreateBegin
+     * @param datelineCreateEnd
+     * @return
+     */
+    public List<NxtUser> adminQueryMemberList(Long offset, Long limit, Long userId, String username, Long datelineCreateBegin, Long datelineCreateEnd){
+        return this.nxtUserDao.adminQueryMemberList(offset, limit, userId, username, datelineCreateBegin, datelineCreateEnd);
+    }
+
+    /**
+     * 获取会员统计数字
+     * @param userId
+     * @param username
+     * @param datelineCreateBegin
+     * @param datelineCreateEnd
+     * @return
+     */
+    public Long adminQueryMemberCount(Long userId, String username, Long datelineCreateBegin, Long datelineCreateEnd){
+        return this.nxtUserDao.adminQueryMemberCount(userId, username, datelineCreateBegin, datelineCreateEnd);
+    }
+
 }

@@ -263,4 +263,48 @@
         where id = #{id}
     </update>
 
+    <!--获取会员列表-->
+    <select id="adminQueryMemberList" resultMap="BaseResultMap">
+        select
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+        from nxt_user
+        <where>
+            <if test="userId != null">
+                and id = #{userId}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="datelineCreateBegin != null">
+                and dateline_create &gt;= #{datelineCreateBegin}
+            </if>
+            <if test="datelineCreateEnd != null">
+                and dateline_create &lt;= #{datelineCreateEnd}
+            </if>
+        </where>
+        order by id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--获取会员统计数字-->
+    <select id="adminQueryMemberCount" resultType="Long">
+        select
+        count(*)
+        from nxt_user
+        <where>
+            <if test="userId != null">
+                and id = #{userId}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="datelineCreateBegin != null">
+                and dateline_create &gt;= #{datelineCreateBegin}
+            </if>
+            <if test="datelineCreateEnd != null">
+                and dateline_create &lt;= #{datelineCreateEnd}
+            </if>
+        </where>
+    </select>
+
 </mapper>
