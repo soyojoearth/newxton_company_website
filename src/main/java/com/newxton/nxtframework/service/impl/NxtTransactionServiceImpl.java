@@ -108,5 +108,26 @@ public class NxtTransactionServiceImpl implements NxtTransactionService {
         return this.nxtTransactionDao.queryAllByUserIdLimit(offset,limit,userId);
     }
 
+    /**
+     * 后台查询资金log列表
+     * @param offset
+     * @param limit
+     * @param userId
+     * @param type
+     * @return
+     */
+    public List<NxtTransaction> adminQueryList(Long offset, Long limit, Long userId, Integer type){
+        return this.nxtTransactionDao.adminQueryList(offset, limit, userId, type);
+    }
+
+    /**
+     * 后台查询资金log列表
+     * @param userId
+     * @param type
+     * @return
+     */
+    public Long adminQueryCount(Long userId, Integer type){
+        return this.nxtTransactionDao.adminQueryCount(userId, type);
+    }
 
 }

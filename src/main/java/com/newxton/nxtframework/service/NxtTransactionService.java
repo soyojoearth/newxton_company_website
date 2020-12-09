@@ -77,4 +77,22 @@ public interface NxtTransactionService {
      */
     List<NxtTransaction> queryAllByUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("userId") Long userId);
 
+    /**
+     * 后台查询资金log列表
+     * @param offset
+     * @param limit
+     * @param userId
+     * @param type
+     * @return
+     */
+    List<NxtTransaction> adminQueryList(Long offset, Long limit, Long userId, Integer type);
+
+    /**
+     * 后台查询资金log列表
+     * @param userId
+     * @param type
+     * @return
+     */
+    Long adminQueryCount(Long userId, Integer type);
+
 }
