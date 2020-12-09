@@ -92,4 +92,28 @@ public interface NxtCommissionDao {
      */
     List<NxtCommission> queryAllWaittingEndingTooLongTime(@Param("datelineReceivedLimit") Long datelineReceivedLimit);
 
+    /**
+     * 后台查询log
+     * @param offset
+     * @param limit
+     * @param userId
+     * @param orderFormId
+     * @param isPaid
+     * @param isReceive
+     * @param isTransfer
+     * @return
+     */
+    List<NxtCommission> adminQueryList(Integer offset, Integer limit, Long userId, Long orderFormId, Boolean isPaid, Boolean isReceive, Boolean isTransfer);
+
+    /**
+     * 后台查询log数量
+     * @param userId
+     * @param orderFormId
+     * @param isPaid
+     * @param isReceive
+     * @param isTransfer
+     * @return
+     */
+    Long adminQueryCount(Long userId, Long orderFormId, Boolean isPaid, Boolean isReceive, Boolean isTransfer);
+
 }

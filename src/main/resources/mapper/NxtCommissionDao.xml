@@ -187,4 +187,85 @@
         where dateline_received is not null and dateline_end is null and dateline_received &lt; #{datelineReceivedLimit}
     </select>
 
+
+    <!--后台查询log-->
+    <select id="adminQueryList" resultMap="BaseResultMap">
+        select
+          id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
+        from nxt_commission
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="orderFormId != null">
+                and order_form_id = #{orderFormId}
+            </if>
+            <if test="isPaid != null">
+                <if test="isPaid">
+                    and is_paid = 1
+                </if>
+                <if test="!isPaid">
+                    and is_paid = 0
+                </if>
+            </if>
+            <if test="isReceive != null">
+                <if test="isReceive">
+                    and dateline_received is not NULL
+                </if>
+                <if test="!isReceive">
+                    and dateline_received is NULL
+                </if>
+            </if>
+            <if test="isTransfer != null">
+                <if test="isTransfer">
+                    and is_transfer = 1
+                </if>
+                <if test="!isTransfer">
+                    and is_transfer = 0
+                </if>
+            </if>
+        </where>
+        order by id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--后台查询log数量-->
+    <select id="adminQueryCount" resultType="Long">
+        select
+        count(*)
+        from nxt_commission
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="orderFormId != null">
+                and order_form_id = #{orderFormId}
+            </if>
+            <if test="isPaid != null">
+                <if test="isPaid">
+                    and is_paid = 1
+                </if>
+                <if test="!isPaid">
+                    and is_paid = 0
+                </if>
+            </if>
+            <if test="isReceive != null">
+                <if test="isReceive">
+                    and dateline_received is not NULL
+                </if>
+                <if test="!isReceive">
+                    and dateline_received is NULL
+                </if>
+            </if>
+            <if test="isTransfer != null">
+                <if test="isTransfer">
+                    and is_transfer = 1
+                </if>
+                <if test="!isTransfer">
+                    and is_transfer = 0
+                </if>
+            </if>
+        </where>
+    </select>
+
 </mapper>

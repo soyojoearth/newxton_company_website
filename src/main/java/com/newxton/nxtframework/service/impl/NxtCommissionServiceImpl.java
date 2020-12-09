@@ -126,5 +126,33 @@ public class NxtCommissionServiceImpl implements NxtCommissionService {
         return this.nxtCommissionDao.queryAllWaittingEndingTooLongTime(datelineReceivedLimit);
     }
 
+    /**
+     * 后台查询log
+     * @param offset
+     * @param limit
+     * @param userId
+     * @param orderFormId
+     * @param isPaid
+     * @param isReceive
+     * @param isTransfer
+     * @return
+     */
+    public List<NxtCommission> adminQueryList(Integer offset, Integer limit, Long userId, Long orderFormId, Boolean isPaid, Boolean isReceive, Boolean isTransfer){
+        return this.nxtCommissionDao.adminQueryList(offset, limit, userId, orderFormId, isPaid, isReceive, isTransfer);
+    }
+
+    /**
+     * 后台查询log数量
+     * @param userId
+     * @param orderFormId
+     * @param isPaid
+     * @param isReceive
+     * @param isTransfer
+     * @return
+     */
+    public Long adminQueryCount(Long userId, Long orderFormId, Boolean isPaid, Boolean isReceive, Boolean isTransfer){
+        return this.nxtCommissionDao.adminQueryCount(userId, orderFormId, isPaid, isReceive, isTransfer);
+    }
+
 
 }
