@@ -47,6 +47,7 @@ public class NxtApiAdminMemberUpdateBalanceController {
 
         Long userId = jsonParam.getLong("userId");
         Float amount = jsonParam.getFloat("amount");
+        String remark = jsonParam.getString("remark");
 
         NxtUser nxtUser = nxtUserService.queryById(userId);
 
@@ -55,12 +56,21 @@ public class NxtApiAdminMemberUpdateBalanceController {
         }
 
 
+
         //增减资
         if (amount != null){
 
             Long amountLong = (long)(amount * 100L);
 
             if (amountLong > 0){
+
+                if (remark == null || remark.trim().isEmpty()){
+                    remark = "后台手动增资";
+                }
+                else {
+                    remark = "后台手动增资:"+remark;
+                }
+
                 //现金充值
                 NxtRecharge nxtRecharge = new NxtRecharge();
                 nxtRecharge.setUserId(nxtUser.getId());
@@ -68,7 +78,7 @@ public class NxtApiAdminMemberUpdateBalanceController {
                 nxtRecharge.setPlatform(888);//平台（0:银行 1:微信 2:支付宝 3:paypal 888:现金）
                 nxtRecharge.setDateline(System.currentTimeMillis());
                 nxtRecharge.setAmount(amountLong);
-                nxtRecharge.setRemark("后台手动增资");
+                nxtRecharge.setRemark(remark);
                 nxtRechargeService.insert(nxtRecharge);
 
                 //插入账本
@@ -89,6 +99,13 @@ public class NxtApiAdminMemberUpdateBalanceController {
 
             if (amountLong < 0){
 
+                if (remark == null || remark.trim().isEmpty()){
+                    remark = "后台手动减资";
+                }
+                else {
+                    remark = "后台手动减资:"+remark;
+                }
+
                 //插入账本
                 NxtTransaction nxtTransaction = new NxtTransaction();
                 nxtTransaction.setUserId(nxtUser.getId());
@@ -108,7 +125,7 @@ public class NxtApiAdminMemberUpdateBalanceController {
                 nxtWithdraw.setPlatform(888);//平台（0:银行 1:微信 2:支付宝 3:paypal 888:现金）
                 nxtWithdraw.setPlatformPerson(nxtUser.getUsername());
                 nxtWithdraw.setPlatformAccount(nxtUser.getUsername());
-                nxtWithdraw.setRemarkAdmin("后台手动减资");
+                nxtWithdraw.setRemarkAdmin(remark);
                 nxtWithdrawService.insert(nxtWithdraw);
 
                 //(减资)提现成功
