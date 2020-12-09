@@ -14,6 +14,10 @@ public class NxtStructAdminMember {
      * 用户名
      */
     private String username;
+
+    private String phone;
+
+    private String email;
     /**
      * 用户等级数字
      */
@@ -42,6 +46,34 @@ public class NxtStructAdminMember {
      * 下家数量
      */
     private Long inviteesCount;
+    /**
+     * 性别（0:保密 1:男 2:女 3:其它）
+     */
+    private Integer gender;
+
+    /**
+     * 是否已经被拉黑
+     */
+    private boolean isBlock;
+
+    /**
+     * 分销权限是否打开
+     * @return
+     */
+    private boolean canInvite;
+    /**
+     * 邀请人id
+     */
+    private Long inviterUserId;
+    /**
+     * 邀请人名字
+     */
+    private String inviterUsername;
+
+    /**
+     * 余额
+     */
+    private Float balance;
 
     public Long getUserId() {
         return userId;
@@ -57,6 +89,22 @@ public class NxtStructAdminMember {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Integer getLevelNum() {
@@ -115,4 +163,51 @@ public class NxtStructAdminMember {
         this.inviteesCount = inviteesCount;
     }
 
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
+
+    public boolean isBlock() {
+        return isBlock;
+    }
+
+    public void setBlock(boolean block) {
+        isBlock = block;
+    }
+
+    public boolean isCanInvite() {
+        return canInvite;
+    }
+
+    public void setCanInvite(boolean canInvite) {
+        this.canInvite = canInvite;
+    }
+
+    public Long getInviterUserId() {
+        return inviterUserId;
+    }
+
+    public void setInviterUserId(Long inviterUserId) {
+        this.inviterUserId = inviterUserId;
+    }
+
+    public String getInviterUsername() {
+        return inviterUsername;
+    }
+
+    public void setInviterUsername(String inviterUsername) {
+        this.inviterUsername = inviterUsername;
+    }
+
+    public Float getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Float balance) {
+        this.balance = balance;
+    }
 }

@@ -4,8 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.entity.NxtUser;
 import com.newxton.nxtframework.entity.NxtUserLevel;
 import com.newxton.nxtframework.exception.NxtException;
-import com.newxton.nxtframework.service.NxtAclRoleService;
-import com.newxton.nxtframework.service.NxtAclUserRoleService;
 import com.newxton.nxtframework.service.NxtUserLevelService;
 import com.newxton.nxtframework.service.NxtUserService;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
@@ -140,6 +138,8 @@ public class NxtApiAdminMemberListController {
             NxtStructAdminMember nxtStructAdminMember = new NxtStructAdminMember();
             nxtStructAdminMember.setUserId(nxtUser.getId());
             nxtStructAdminMember.setUsername(nxtUser.getUsername());
+            nxtStructAdminMember.setPhone(nxtUser.getPhone());
+            nxtStructAdminMember.setEmail(nxtUser.getEmail());
             nxtStructAdminMember.setDatelineRegister(nxtUser.getDatelineCreate());
             if (nxtUser.getDatelineCreate() != null) {
                 nxtStructAdminMember.setDatelineRegisterReadable(sdf.format(new Date(nxtUser.getDatelineCreate())));
