@@ -275,6 +275,9 @@
             <if test="username != null and username != ''">
                 and username = #{username}
             </if>
+            <if test="levelNum != null">
+                and level_num = #{levelNum}
+            </if>
             <if test="datelineCreateBegin != null">
                 and dateline_create &gt;= #{datelineCreateBegin}
             </if>
@@ -297,6 +300,9 @@
             </if>
             <if test="username != null and username != ''">
                 and username = #{username}
+            </if>
+            <if test="levelNum != null">
+                and level_num = #{levelNum}
             </if>
             <if test="datelineCreateBegin != null">
                 and dateline_create &gt;= #{datelineCreateBegin}

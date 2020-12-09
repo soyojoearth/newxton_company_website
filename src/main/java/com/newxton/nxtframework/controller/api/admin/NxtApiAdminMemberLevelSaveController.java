@@ -54,7 +54,7 @@ public class NxtApiAdminMemberLevelSaveController {
         }
 
         NxtUserLevel nxtUserLevel = nxtUserLevelService.queryByNum(nxtStructAdminMemberLevel.getLevelNum());
-        
+
         if (nxtUserLevel == null){
             nxtUserLevel = new NxtUserLevel();
             NxtUserLevel nxtUserLevelMax = nxtUserLevelService.queryMaxOne();

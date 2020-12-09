@@ -8,6 +8,7 @@ import com.newxton.nxtframework.service.NxtUserLevelService;
 import com.newxton.nxtframework.service.NxtUserService;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
 import com.newxton.nxtframework.struct.admin.NxtStructAdminMember;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -36,6 +37,7 @@ public class NxtApiAdminMemberListController {
         Long limit = jsonParam.getLong("limit");
         Long userId = jsonParam.getLong("userId");
         String username = jsonParam.getString("username");
+        Integer levelNum = jsonParam.getInteger("levelNum");
         String datelineRegisterBegin = jsonParam.getString("datelineRegisterBegin");
         String datelineRegisterEnd = jsonParam.getString("datelineRegisterEnd");
 
@@ -44,8 +46,8 @@ public class NxtApiAdminMemberListController {
         }
 
         try {
-            List<NxtStructAdminMember> list = this.queryMemberList(offset,limit,userId,username,datelineRegisterBegin,datelineRegisterEnd);
-            Long count = this.queryMemberCount(userId,username,datelineRegisterBegin,datelineRegisterEnd);
+            List<NxtStructAdminMember> list = this.queryMemberList(offset,limit,userId,username,levelNum,datelineRegisterBegin,datelineRegisterEnd);
+            Long count = this.queryMemberCount(userId,username,levelNum,datelineRegisterBegin,datelineRegisterEnd);
             Map<String,Object> result = new HashMap<>();
             result.put("list",list);
             result.put("count",count);
@@ -66,7 +68,7 @@ public class NxtApiAdminMemberListController {
      * @return
      * @throws NxtException
      */
-    private Long queryMemberCount(Long userId, String username, String datelineRegisterBegin, String datelineRegisterEnd) throws NxtException {
+    private Long queryMemberCount(Long userId, String username, Integer levelNum, String datelineRegisterBegin, String datelineRegisterEnd) throws NxtException {
 
         Long datelineCreateBegin = null;
         Long datelineCreateEnd = null;
@@ -86,7 +88,7 @@ public class NxtApiAdminMemberListController {
             throw new NxtException("日期转化错误");
         }
 
-        return nxtUserService.adminQueryMemberCount(userId,username,datelineCreateBegin,datelineCreateEnd);
+        return nxtUserService.adminQueryMemberCount(userId,username,levelNum,datelineCreateBegin,datelineCreateEnd);
 
     }
 
@@ -101,7 +103,7 @@ public class NxtApiAdminMemberListController {
      * @return
      * @throws NxtException
      */
-    private List<NxtStructAdminMember> queryMemberList(Long offset, Long limit, Long userId, String username, String datelineRegisterBegin, String datelineRegisterEnd) throws NxtException{
+    private List<NxtStructAdminMember> queryMemberList(Long offset, Long limit, Long userId, String username, Integer levelNum, String datelineRegisterBegin, String datelineRegisterEnd) throws NxtException{
 
         Long datelineCreateBegin = null;
         Long datelineCreateEnd = null;
@@ -128,7 +130,7 @@ public class NxtApiAdminMemberListController {
             mapLevelNumToName.put(nxtUserLevel.getNum(), nxtUserLevel.getName());
         }
 
-        List<NxtUser> list = nxtUserService.adminQueryMemberList(offset,limit,userId,username,datelineCreateBegin,datelineCreateEnd);
+        List<NxtUser> list = nxtUserService.adminQueryMemberList(offset,limit,userId,username,levelNum,datelineCreateBegin,datelineCreateEnd);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 

@@ -142,20 +142,22 @@ public interface NxtUserService {
      * @param limit
      * @param userId
      * @param username
+     * @param levelNum
      * @param datelineCreateBegin
      * @param datelineCreateEnd
      * @return
      */
-    List<NxtUser> adminQueryMemberList(Long offset, Long limit, Long userId, String username, Long datelineCreateBegin, Long datelineCreateEnd);
+    List<NxtUser> adminQueryMemberList(Long offset, Long limit, Long userId, String username, Integer levelNum, Long datelineCreateBegin, Long datelineCreateEnd);
 
     /**
      * 获取会员统计数字
      * @param userId
      * @param username
+     * @param levelNum
      * @param datelineCreateBegin
      * @param datelineCreateEnd
      * @return
      */
-    Long adminQueryMemberCount(Long userId, String username, Long datelineCreateBegin, Long datelineCreateEnd);
+    Long adminQueryMemberCount(Long userId, String username, Integer levelNum, Long datelineCreateBegin, Long datelineCreateEnd);
 
 }
