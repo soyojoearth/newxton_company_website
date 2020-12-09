@@ -71,4 +71,10 @@ public interface NxtDeliveryRegionDao {
      */
     int deleteById(Long id);
 
+    /**
+     * 查询所有地区列表（为tree接口）
+     * @return
+     */
+    List<NxtDeliveryRegion> queryAllRegionForTree();
+
 }

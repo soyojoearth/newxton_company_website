@@ -26,6 +26,14 @@
         where num = #{num}
     </select>
 
+    <!--查询最大的那个levelNum-->
+    <select id="queryMaxOne" resultMap="NxtUserLevelMap">
+        select
+          id, num, name, cost, discount
+        from nxt_user_level
+        order by num desc limit 1
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="NxtUserLevelMap">
         select

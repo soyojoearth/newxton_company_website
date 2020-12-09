@@ -30,6 +30,12 @@ public interface NxtUserLevelDao {
     NxtUserLevel queryByNum(Integer num);
 
     /**
+     * 查询levelNum最大的那个
+     * @return
+     */
+    NxtUserLevel queryMaxOne();
+
+    /**
      * 查询指定行数据
      *
      * @param offset 查询起始位置
