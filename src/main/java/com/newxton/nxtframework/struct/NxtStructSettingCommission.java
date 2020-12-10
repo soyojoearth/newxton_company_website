@@ -30,7 +30,15 @@ public class NxtStructSettingCommission {
      */
     private Long defaultProductCommissionRate = 10L;//默认值
 
+    /**
+     * 下家注册超过这个时间后，上家不再享有佣金提成
+     */
     private Long inviterExpirationDays = 36500L;
+
+    /**
+     * 安全期：佣金售后期限（确认收货后几天，佣金才可转入余额）
+     */
+    private Long safeDays = 14L;//默认值
 
     public Boolean getOnoff() {
         return onoff;
@@ -80,4 +88,11 @@ public class NxtStructSettingCommission {
         this.inviterExpirationDays = inviterExpirationDays;
     }
 
+    public Long getSafeDays() {
+        return safeDays;
+    }
+
+    public void setSafeDays(Long safeDays) {
+        this.safeDays = safeDays;
+    }
 }
