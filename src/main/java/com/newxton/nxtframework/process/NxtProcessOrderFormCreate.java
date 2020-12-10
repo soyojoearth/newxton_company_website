@@ -273,7 +273,11 @@ public class NxtProcessOrderFormCreate {
 
                 nxtOrderFormProductService.insert(nxtOrderFormProduct);
 
-                if (user.getInviterUserId() != null) {
+                if (user.getInviterUserId() != null &&
+                        nxtStructSettingCommission.getOnoff() &&
+                        user.getDatelineCreate() != null &&
+                        System.currentTimeMillis() - user.getDatelineCreate() < nxtStructSettingCommission.getInviterExpirationDays() * 86400000L
+                ) {
 
                     //待瓜分的佣金占产品成交价的比率（数据库）
                     Long commissionRate = nxtProduct.getCommissionRate();
@@ -410,10 +414,10 @@ public class NxtProcessOrderFormCreate {
 
 
         //最最后，才删除购物车选中的产品
-//        for (NxtShoppingCartProduct nxtShoppingCartProduct :
-//                nxtShoppingCartProductList) {
-//            nxtShoppingCartProductService.deleteById(nxtShoppingCartProduct.getId());
-//        }
+        for (NxtShoppingCartProduct nxtShoppingCartProduct :
+                nxtShoppingCartProductList) {
+            nxtShoppingCartProductService.deleteById(nxtShoppingCartProduct.getId());
+        }
 
         return nxtOrderForm.getId();
     }

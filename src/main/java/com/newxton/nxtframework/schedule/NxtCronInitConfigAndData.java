@@ -41,6 +41,9 @@ public class NxtCronInitConfigAndData {
     @Resource
     private NxtTaskCheckAndInitProductCategory nxtTaskCheckAndInitProductCategory;
 
+    @Resource
+    private NxtTaskCheckAndInitUserLevel nxtTaskCheckAndInitUserLevel;
+
     /**
      * 启动时，仅执行一次
      * @throws Exception
@@ -69,6 +72,8 @@ public class NxtCronInitConfigAndData {
         //检查&初始化地区列表
         nxtTaskCheckAndInitDeliveryRegion.exec();
 
+        //检查&初始化用户等级数据
+        nxtTaskCheckAndInitUserLevel.exec();
 
         //检查&初始化示例资讯
 

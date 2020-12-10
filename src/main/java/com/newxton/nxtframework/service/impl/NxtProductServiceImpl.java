@@ -237,4 +237,13 @@ public class NxtProductServiceImpl implements NxtProductService {
         return this.nxtProductDao.adminCountAll(categoryId, searchKeyword, isRecommend, isNew, isHot, isSelling,isTrash);
     }
 
+    /**
+     * 后台admin统计某个运费模版的产品数量
+     * @param deliveryConfigId
+     * @return
+     */
+    public Long adminCountByDeliveryConfigId(Long deliveryConfigId){
+        return this.nxtProductDao.adminCountByDeliveryConfigId(deliveryConfigId);
+    }
+
 }

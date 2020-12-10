@@ -72,6 +72,9 @@ public class NxtApiAdminCreateUserController {
         user.setSalt(saltNew);
         user.setPassword(newUserPwd);
         user.setStatus(0);
+        user.setLevelNum(1);
+        user.setDatelineCreate(System.currentTimeMillis());
+        user.setIsAdmin(1);
 
         //增加用户
         NxtUser userCreated = nxtUserService.insert(user);

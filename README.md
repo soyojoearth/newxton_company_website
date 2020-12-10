@@ -22,7 +22,9 @@ typora-copy-images-to: ./gitbook_resource
 
 4、订单模块（完成）；
 
-5、分销管理（--开发中--）；
+5、分销模块（完成）；
+
+6、支付接口集成与测试（--进行中--）；
 
 
 
@@ -66,6 +68,10 @@ typora-copy-images-to: ./gitbook_resource
 3、可docker-compose一键启动，已配置好nginx文件，支持ssl，只要修改绑定域名和证书文件即可；
 
 4、具备Docker HEALTHCHECK 、Docker autoheal，自动检测健康状态，发现故障自动重启；
+
+
+
+#### 后台预览图：
 
 
 

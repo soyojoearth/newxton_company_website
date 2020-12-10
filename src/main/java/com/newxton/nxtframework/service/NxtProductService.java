@@ -174,4 +174,11 @@ public interface NxtProductService {
      */
     Long adminCountAll(@Param("categoryId") Long categoryId, @Param("searchKeyword") String searchKeyword,@Param("isRecommend") Boolean isRecommend,@Param("isNew") Boolean isNew,@Param("isHot") Boolean isHot,@Param("isSelling") Boolean isSelling,@Param("isTrash") Boolean isTrash);
 
+    /**
+     * 后台admin统计某个运费模版的产品数量
+     * @param deliveryConfigId
+     * @return
+     */
+    Long adminCountByDeliveryConfigId(Long deliveryConfigId);
+
 }

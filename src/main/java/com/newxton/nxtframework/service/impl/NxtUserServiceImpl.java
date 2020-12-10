@@ -75,6 +75,17 @@ public class NxtUserServiceImpl implements NxtUserService {
     }
 
     /**
+     * 查询所有管理员
+     *
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    public List<NxtUser> queryAllAdminUserByLimit(@Param("offset") int offset, @Param("limit") int limit){
+        return this.nxtUserDao.queryAllAdminUserByLimit(offset, limit);
+    }
+
+    /**
      * 新增数据
      *
      * @param nxtUser 实例对象

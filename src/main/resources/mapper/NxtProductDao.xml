@@ -727,4 +727,12 @@
         </where>
     </select>
 
+    <!--后台admin统计某个运费模版的产品数量-->
+    <select id="adminCountByDeliveryConfigId" resultType="Long">
+    select
+    count(*)
+    from nxt_product
+    where delivery_config_id = #{deliveryConfigId}
+    </select>
+
 </mapper>

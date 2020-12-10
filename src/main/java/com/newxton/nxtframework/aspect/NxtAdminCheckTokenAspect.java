@@ -2,6 +2,7 @@ package com.newxton.nxtframework.aspect;
 
 import com.newxton.nxtframework.entity.NxtUser;
 import com.newxton.nxtframework.service.NxtUserService;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -74,6 +75,13 @@ public class NxtAdminCheckTokenAspect {
             //已被拉入黑名单
             errorResult.put("status",-1);
             errorResult.put("message","已被禁止");
+            return errorResult;
+        }
+
+        if (user.getIsAdmin() == null || !user.getIsAdmin().equals(1)){
+            //非管理员
+            errorResult.put("status",-1);
+            errorResult.put("message","非管理员");
             return errorResult;
         }
 
