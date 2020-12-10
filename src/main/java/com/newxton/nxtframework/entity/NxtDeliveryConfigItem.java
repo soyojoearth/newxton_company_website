@@ -15,7 +15,7 @@ public class NxtDeliveryConfigItem implements Serializable {
     
     private Long deliveryConfigId;
     /**
-    * 首重/首体积/最低计费数量
+    * 最低计费数量
     */
     private Long billableQuantity;
     /**
@@ -23,7 +23,7 @@ public class NxtDeliveryConfigItem implements Serializable {
     */
     private Long billablePrice;
     /**
-    * 续重/续体积/最低增加单位量
+    * 最低增加单位量
     */
     private Long additionQuantity;
     /**

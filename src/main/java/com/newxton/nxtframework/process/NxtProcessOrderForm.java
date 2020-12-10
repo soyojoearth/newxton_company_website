@@ -255,12 +255,6 @@ public class NxtProcessOrderForm {
             nxtStructOrderFormProduct.setOrderFormId(nxtOrderFormProduct.getOrderFormId());
             nxtStructOrderFormProduct.setQuantity(nxtOrderFormProduct.getQuantity());
             nxtStructOrderFormProduct.setProductName(nxtOrderFormProduct.getProductName());
-            if (nxtOrderFormProduct.getUnitWeight() != null) {
-                nxtStructOrderFormProduct.setUnitWeight(nxtOrderFormProduct.getUnitWeight() / 1000F);
-            }
-            if (nxtOrderFormProduct.getUnitVolume() != null) {
-                nxtStructOrderFormProduct.setUnitVolume(nxtOrderFormProduct.getUnitVolume() / 1000000F);
-            }
             nxtStructOrderFormProduct.setProductPrice(nxtOrderFormProduct.getProductPrice()/100F);
             nxtStructOrderFormProduct.setProductPriceDiscount(nxtOrderFormProduct.getProductPriceDiscount()/100F);
             if (nxtOrderFormProduct.getManualPriceDiscount() != null){
@@ -422,12 +416,6 @@ public class NxtProcessOrderForm {
             nxtStructOrderFormProduct.setProductId(nxtOrderFormProduct.getProductId());
             nxtStructOrderFormProduct.setQuantity(nxtOrderFormProduct.getQuantity());
             nxtStructOrderFormProduct.setProductName(nxtOrderFormProduct.getProductName());
-            if (nxtOrderFormProduct.getUnitWeight() != null) {
-                nxtStructOrderFormProduct.setUnitWeight(nxtOrderFormProduct.getUnitWeight() / 1000F);
-            }
-            if (nxtOrderFormProduct.getUnitVolume() != null) {
-                nxtStructOrderFormProduct.setUnitVolume(nxtOrderFormProduct.getUnitVolume() / 1000000F);
-            }
             nxtStructOrderFormProduct.setProductPrice(nxtOrderFormProduct.getProductPrice()/100F);
             nxtStructOrderFormProduct.setProductPriceDiscount(nxtOrderFormProduct.getProductPriceDiscount()/100F);
             if (nxtOrderFormProduct.getManualPriceDiscount() != null){

@@ -76,7 +76,6 @@ public class NxtProcessDeliveryConfig {
         if (nxtStructDeliveryConfig.getId() == null){
 
             nxtDeliveryConfig.setName(nxtStructDeliveryConfig.getName());
-            nxtDeliveryConfig.setType(nxtStructDeliveryConfig.getType());
 
             nxtDeliveryConfigService.insert(nxtDeliveryConfig);
 
@@ -92,7 +91,6 @@ public class NxtProcessDeliveryConfig {
         else {
             nxtDeliveryConfig.setId(nxtStructDeliveryConfig.getId());
             nxtDeliveryConfig.setName(nxtStructDeliveryConfig.getName());
-            nxtDeliveryConfig.setType(nxtStructDeliveryConfig.getType());
 
             nxtDeliveryConfigService.update(nxtDeliveryConfig);
 
@@ -312,7 +310,6 @@ public class NxtProcessDeliveryConfig {
         NxtStructDeliveryConfig nxtStructDeliveryConfig = new NxtStructDeliveryConfig();
         nxtStructDeliveryConfig.setId(nxtDeliveryConfig.getId());
         nxtStructDeliveryConfig.setName(nxtDeliveryConfig.getName());
-        nxtStructDeliveryConfig.setType(nxtDeliveryConfig.getType());
         nxtStructDeliveryConfig.setItemList(getDeliveryConfigItemListAllDetail(nxtDeliveryConfig));
 
         return nxtStructDeliveryConfig;

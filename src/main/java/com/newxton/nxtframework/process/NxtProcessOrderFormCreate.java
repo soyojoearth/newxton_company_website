@@ -178,7 +178,6 @@ public class NxtProcessOrderFormCreate {
         //计算运费
         Long deliveryCost = calculateDeliveryCost(
                 nxtShoppingCart,
-                nxtStructOrderFromCreate.getDeliveryConfigId(),
                 nxtStructOrderFromCreate.deliveryCountry,
                 nxtStructOrderFromCreate.deliveryProvince,
                 nxtStructOrderFromCreate.deliveryCity);
@@ -218,21 +217,6 @@ public class NxtProcessOrderFormCreate {
                 if (nxtProductPictureList.size() > 0){
                     NxtProductPicture nxtProductPicture = nxtProductPictureList.get(0);
                     nxtOrderFormProduct.setProductPicUploadfileId(nxtProductPicture.getUploadfileId());
-                }
-
-                if (nxtProduct.getUnitVolume() != null){
-                    nxtOrderFormProduct.setUnitVolume(nxtProduct.getUnitVolume());
-                    if (countVolume == null){
-                        countVolume = 0L;
-                    }
-                    countVolume += nxtProduct.getUnitVolume();//累加体积
-                }
-                if (nxtProduct.getUnitWeight() != null){
-                    nxtOrderFormProduct.setUnitWeight(nxtProduct.getUnitWeight());
-                    if (countWeight == null){
-                        countWeight = 0L;
-                    }
-                    countWeight += nxtProduct.getUnitWeight();//累加重量
                 }
 
                 if (nxtProduct.getWithSku() > 0){
@@ -494,129 +478,125 @@ public class NxtProcessOrderFormCreate {
     }
 
     /**
-     * 根据购物车，运费模版编号，国家、省份、城市，计算运费
+     * 根据购物车，国家、省份、城市，计算运费
      * @param nxtShoppingCart
-     * @param nxtDeliveryConfigId
      * @param deliveryCountry
      * @param deliveryProvince
      * @param deliveryCity
      * @return
      */
-    public Long calculateDeliveryCost(NxtShoppingCart nxtShoppingCart, Long nxtDeliveryConfigId, Long deliveryCountry, Long deliveryProvince, Long deliveryCity) throws NxtException{
+    public Long calculateDeliveryCost(NxtShoppingCart nxtShoppingCart, Long deliveryCountry, Long deliveryProvince, Long deliveryCity) throws NxtException{
 
-        //运费模版
-        NxtDeliveryConfig nxtDeliveryConfig = nxtDeliveryConfigService.queryById(nxtDeliveryConfigId);
-        NxtStructDeliveryConfig nxtStructDeliveryConfig = nxtProcessDeliveryConfig.getDeliveryConfigAllDetail(nxtDeliveryConfig);
+        //拿出所有运费模版数据
+        Map<Long,NxtStructDeliveryConfig> mapDeliveryConfig = new HashMap<>();
+        List<NxtDeliveryConfig> nxtDeliveryConfigList = nxtDeliveryConfigService.queryAllByLimit(0,Integer.MAX_VALUE);
+        for (NxtDeliveryConfig nxtDeliveryConfig : nxtDeliveryConfigList) {
+            NxtStructDeliveryConfig mapItemAllDetailG = nxtProcessDeliveryConfig.getDeliveryConfigAllDetail(nxtDeliveryConfig);
+            mapDeliveryConfig.put(nxtDeliveryConfig.getId(),mapItemAllDetailG);
+        }
+
+        List<NxtStructDeliveryConfigItem> listConfigItem = new ArrayList<>();
+
+        //各运费规则下的产品数量
+        Map<Long,Long> mapConfigItemIdToProductQuantity = new HashMap<>();
+
+        //第一步：找出产品所匹配的运费规则条目 ConfigItem
 
         //购物车内的已选中产品列表
+        List<Long> productIdList = new ArrayList<>();
+        Map<Long,Long> mapProductIdToQuantity = new HashMap<>();
         List<NxtShoppingCartProduct> nxtShoppingCartProductList = nxtShoppingCartProductService.queryAllSelectedProductByShoppingCartId(nxtShoppingCart.getId());
-
-        Long countQuantity = 0L;
-        Long countWeight = 0L;
-        Long countVolume = 0L;
-        if (nxtDeliveryConfig.getType().equals(3))//类型：（1:按重量 2:按体积 3:按件数）
-        {
-            for (NxtShoppingCartProduct cartProduct : nxtShoppingCartProductList) {
-                countQuantity += cartProduct.getQuantity();
+        for (NxtShoppingCartProduct cartProduct : nxtShoppingCartProductList) {
+            if (cartProduct.getSelected().equals(1)) {//已选中的产品
+                productIdList.add(cartProduct.getProductId());
+                mapProductIdToQuantity.put(cartProduct.getProductId(), cartProduct.getQuantity());
             }
         }
-        else if (nxtDeliveryConfig.getType().equals(1))//类型：（1:按重量 2:按体积 3:按件数）
-        {
-            for (NxtShoppingCartProduct cartProduct : nxtShoppingCartProductList) {
-                NxtProduct product = nxtProductService.queryById(cartProduct.getProductId());
-                if (product.getUnitWeight() != null) {
-                    countWeight += product.getUnitWeight();
-                }
-            }
-        }
-        else if (nxtDeliveryConfig.getType().equals(2))//类型：（1:按重量 2:按体积 3:按件数）
-        {
-            for (NxtShoppingCartProduct cartProduct : nxtShoppingCartProductList) {
-                NxtProduct product = nxtProductService.queryById(cartProduct.getProductId());
-                if (product.getUnitVolume() != null) {
-                    countVolume += product.getUnitVolume();
-                }
-            }
+        //查询产品运费模版
+        Map<Long,Long> mapProductIdToConfigId = new HashMap<>();
+        List<NxtProduct> nxtProductList = nxtProductService.selectByIdSet(0,Integer.MAX_VALUE,productIdList);
+        for (NxtProduct nxtProduct : nxtProductList) {
+            mapProductIdToConfigId.put(nxtProduct.getId(),nxtProduct.getDeliveryConfigId());
         }
 
-        NxtStructDeliveryConfigItem configItemRight = null;
-
-        List<NxtStructDeliveryConfigItem> configItemList = nxtStructDeliveryConfig.getItemList();
-
-        //先匹配City
-        for (NxtStructDeliveryConfigItem configItem : configItemList) {
-            List<NxtStructDeliveryCofnigItemRegion> regionList = configItem.getRegionList();
-            for (NxtStructDeliveryCofnigItemRegion itemRegion : regionList) {
-                if (itemRegion.getRegionId().equals(deliveryCity)){
-                    configItemRight = configItem;
-                }
+        //找出产品所匹配的运费规则条目 ConfigItem
+        for (Long productId : productIdList) {
+            NxtStructDeliveryConfig nxtDeliveryConfig = mapDeliveryConfig.getOrDefault(mapProductIdToConfigId.getOrDefault(productId,0L),null);
+            if (nxtDeliveryConfig == null){
+                continue;
             }
-        }
-
-        if (configItemRight == null) {
-            //再匹配Province
+            List<NxtStructDeliveryConfigItem> configItemList = nxtDeliveryConfig.getItemList();
+            //进行匹配
+            NxtStructDeliveryConfigItem configItemRight = null;
+            //先匹配City
             for (NxtStructDeliveryConfigItem configItem : configItemList) {
                 List<NxtStructDeliveryCofnigItemRegion> regionList = configItem.getRegionList();
                 for (NxtStructDeliveryCofnigItemRegion itemRegion : regionList) {
-                    if (itemRegion.getRegionId().equals(deliveryProvince)) {
+                    if (itemRegion.getRegionId().equals(deliveryCity)){
                         configItemRight = configItem;
                     }
                 }
             }
-        }
-
-        if (configItemRight == null) {
-            //最后，匹配Country
-            for (NxtStructDeliveryConfigItem configItem : configItemList) {
-                List<NxtStructDeliveryCofnigItemRegion> regionList = configItem.getRegionList();
-                for (NxtStructDeliveryCofnigItemRegion itemRegion : regionList) {
-                    if (itemRegion.getRegionId().equals(deliveryCountry)) {
-                        configItemRight = configItem;
+            if (configItemRight == null) {
+                //再匹配Province
+                for (NxtStructDeliveryConfigItem configItem : configItemList) {
+                    List<NxtStructDeliveryCofnigItemRegion> regionList = configItem.getRegionList();
+                    for (NxtStructDeliveryCofnigItemRegion itemRegion : regionList) {
+                        if (itemRegion.getRegionId().equals(deliveryProvince)) {
+                            configItemRight = configItem;
+                        }
                     }
+                }
+            }
+            if (configItemRight == null) {
+                //最后，匹配Country
+                for (NxtStructDeliveryConfigItem configItem : configItemList) {
+                    List<NxtStructDeliveryCofnigItemRegion> regionList = configItem.getRegionList();
+                    for (NxtStructDeliveryCofnigItemRegion itemRegion : regionList) {
+                        if (itemRegion.getRegionId().equals(deliveryCountry)) {
+                            configItemRight = configItem;
+                        }
+                    }
+                }
+            }
+            if (configItemRight != null) {
+                listConfigItem.add(configItemRight);
+                //累加各运费规则下的产品数量
+                Long quantity = mapProductIdToQuantity.get(productId);
+                if (quantity != null) {
+                    Long quantityOld = mapConfigItemIdToProductQuantity.getOrDefault(configItemRight.getId(),0L);
+                    mapConfigItemIdToProductQuantity.put(configItemRight.getId(), quantity+quantityOld);
                 }
             }
         }
 
-        if (configItemRight == null) {
-            throw new NxtException("没找对对应地区的运费模版条目");
-        }
+        Map<Long,Float> mapAdditionPrice = new HashMap<>();
+        List<Float> listAdditionPrice = new ArrayList<>();
 
-        if (nxtDeliveryConfig.getType().equals(3))//类型：（1:按重量 2:按体积 3:按件数）
-        {
-            if (countQuantity > configItemRight.getBillableQuantity()){
-                Float cost = configItemRight.getBillablePrice() + (countQuantity - configItemRight.getBillableQuantity()) / (float)configItemRight.getAdditionQuantity() * configItemRight.getAdditionPrice();
-                return (long)Math.round(cost * 100);//返回Long，放大100倍
+        Float maxBillablePrice = 0F;
+        //确定匹配上运费最贵的那个 ConfigItem 条目，作为起步价
+        for (NxtStructDeliveryConfigItem configItem : listConfigItem) {
+            maxBillablePrice = Math.max(maxBillablePrice,configItem.getBillablePrice());
+            if (!mapConfigItemIdToProductQuantity.containsKey(configItem.getId())){
+                continue;
             }
-            else {
-                Float cost = configItemRight.getBillablePrice();
-                return (long)Math.round(cost * 100);//返回Long，放大100倍
-            }
-
-
-        }
-        else if (nxtDeliveryConfig.getType().equals(1)){//类型：（1:按重量 2:按体积 3:按件数）
-
-            if (countWeight > configItemRight.getBillableQuantity()) {//重量单位：克
-                Float cost = configItemRight.getBillablePrice() + (float)Math.ceil((countWeight - configItemRight.getBillableQuantity()) / (float)configItemRight.getAdditionQuantity()) * configItemRight.getAdditionPrice();
-                return (long)Math.round(cost * 100);//返回Long，放大100倍
-            }
-            else {
-                Float cost = configItemRight.getBillablePrice();
-                return (long)Math.round(cost * 100);//返回Long，放大100倍
-            }
-        }
-        else  if (nxtDeliveryConfig.getType().equals(2)){//类型：（1:按重量 2:按体积 3:按件数）
-            if (countVolume / 1000000F > configItemRight.getBillableQuantity()) {//体积单位：立法米（数据库存储放大了100万倍）
-                Float cost = configItemRight.getBillablePrice() + (float)Math.ceil((countVolume / 1000000F - configItemRight.getBillableQuantity()) / (float)configItemRight.getAdditionQuantity()) * configItemRight.getAdditionPrice();
-                return (long)Math.round(cost * 100);//返回Long，放大100倍
-            }
-            else {
-                Float cost = configItemRight.getBillablePrice();
-                return (long)Math.round(cost * 100);//返回Long，放大100倍
+            Long countQuantity = mapConfigItemIdToProductQuantity.get(configItem.getId());
+            //仅计算续件部分的价格
+            if (countQuantity > configItem.getBillableQuantity()){
+                Float cost = (countQuantity - configItem.getBillableQuantity()) / (float)configItem.getAdditionQuantity() * configItem.getAdditionPrice();
+                mapAdditionPrice.put(configItem.getId(),cost);
+                listAdditionPrice.add(cost);
             }
         }
 
-        throw new NxtException("运费计算失败");
+        Float additionPriceTotal = 0F;
+        //计算各 ConfigItem 中 的 续费总价
+        for (Float addPrice : listAdditionPrice) {
+            additionPriceTotal += addPrice;
+        }
+
+        //1个起步价+各个续费总价=运费
+        return (long)((maxBillablePrice + additionPriceTotal)*100L);
 
     }
 

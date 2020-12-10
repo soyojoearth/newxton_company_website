@@ -1,10 +1,8 @@
 package com.newxton.nxtframework.controller.api.front.delivery;
 
-import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.entity.NxtDeliveryConfig;
 import com.newxton.nxtframework.service.NxtDeliveryConfigService;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
