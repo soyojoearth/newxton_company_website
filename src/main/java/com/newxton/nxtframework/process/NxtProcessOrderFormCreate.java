@@ -97,9 +97,6 @@ public class NxtProcessOrderFormCreate {
         if (nxtStructOrderFromCreate.deliveryPostcode == null || nxtStructOrderFromCreate.deliveryPostcode.isEmpty()){
             throw new NxtException("缺少邮编");
         }
-        if (nxtStructOrderFromCreate.deliveryConfigId == null){
-            throw new NxtException("缺少配送方式");
-        }
         if (nxtStructOrderFromCreate.dealPlatform == null){
             throw new NxtException("缺少参数：成交平台（0:web 1:ios 2:android 3:wx ）");
         }
