@@ -22,6 +22,14 @@ public interface NxtTransactionService {
     NxtTransaction queryById(Long id);
 
     /**
+     * 根据type、outId查询单个
+     * @param type
+     * @param outerId
+     * @return
+     */
+    NxtTransaction queryByTypeAndOuterId(Integer type, Long outerId);
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置

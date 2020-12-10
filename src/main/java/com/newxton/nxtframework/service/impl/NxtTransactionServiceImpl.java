@@ -32,6 +32,17 @@ public class NxtTransactionServiceImpl implements NxtTransactionService {
     }
 
     /**
+     * 根据type、outId查询单个
+     * @param type
+     * @param outerId
+     * @return
+     */
+    @Override
+    public NxtTransaction queryByTypeAndOuterId(Integer type, Long outerId){
+        return this.nxtTransactionDao.queryByTypeAndOuterId(type, outerId);
+    }
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置

@@ -20,6 +20,15 @@
         where id = #{id}
     </select>
 
+    <!--根据type、outId查询单个-->
+    <select id="queryByTypeAndOuterId" resultMap="NxtTransactionMap">
+        select
+          id, user_id, amount, balance, dateline, type, outer_id
+        from nxt_transaction
+        where type = #{type} and outer_id = #{outerId}
+        limit 1
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="NxtTransactionMap">
         select
