@@ -190,9 +190,6 @@ public class NxtProcessOrderFormCreate {
         Long amountDiscount = 0L;//折扣金额
         Long amountFinally = 0L;//打折总价
 
-        Long countWeight = null;
-        Long countVolume = null;
-
         NxtStructSettingCommission nxtStructSettingCommission = nxtGlobalSettingComponent.getNxtStructSettingCommission();
 
         //nxt_order_form_product入库，且计算价格
@@ -270,6 +267,11 @@ public class NxtProcessOrderFormCreate {
                         commissionRate = nxtStructSettingCommission.getDefaultProductCommissionRate();
                     }
 
+                    //佣金比率
+                    nxtOrderFormProduct.setCommissionRate(commissionRate);
+                    //更新佣金比率
+                    nxtOrderFormProductService.update(nxtOrderFormProduct);
+
                     //三个分销佣金等级配置
                     Long commissionRateLevel1 = nxtStructSettingCommission.getCommissionRateLevel1();
                     Long commissionRateLevel2 = nxtStructSettingCommission.getCommissionRateLevel2();
@@ -281,11 +283,6 @@ public class NxtProcessOrderFormCreate {
                     if (inviterUser1 != null) {
 
                         //1、一级分销佣金
-
-                        //佣金比率
-                        nxtOrderFormProduct.setCommissionRate(commissionRate);
-                        //更新佣金比率
-                        nxtOrderFormProductService.update(nxtOrderFormProduct);
 
                         //计入佣金表
                         NxtCommission nxtCommission1 = new NxtCommission();
@@ -398,10 +395,9 @@ public class NxtProcessOrderFormCreate {
 
 
         //最最后，才删除购物车选中的产品
-        for (NxtShoppingCartProduct nxtShoppingCartProduct :
-                nxtShoppingCartProductList) {
-            nxtShoppingCartProductService.deleteById(nxtShoppingCartProduct.getId());
-        }
+//        for (NxtShoppingCartProduct nxtShoppingCartProduct : nxtShoppingCartProductList) {
+//            nxtShoppingCartProductService.deleteById(nxtShoppingCartProduct.getId());
+//        }
 
         return nxtOrderForm.getId();
     }
