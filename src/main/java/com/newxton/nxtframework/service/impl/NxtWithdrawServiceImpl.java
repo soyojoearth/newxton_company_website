@@ -105,4 +105,26 @@ public class NxtWithdrawServiceImpl implements NxtWithdrawService {
         return this.nxtWithdrawDao.queryTotalWithdrawRejectedByUserId(userId);
     }
 
+    /**
+     * 后台查询列表
+     * @param offset
+     * @param limit
+     * @param userId
+     * @param status
+     * @return
+     */
+    public List<NxtWithdraw> adminQueryList(Long offset, Long limit, Long userId, Integer status){
+        return this.nxtWithdrawDao.adminQueryList(offset, limit, userId, status);
+    }
+
+    /**
+     * 后台查询统计
+     * @param userId
+     * @param status
+     * @return
+     */
+    public Long adminQueryCount(Long userId, Integer status){
+        return this.nxtWithdrawDao.adminQueryCount(userId, status);
+    }
+
 }
