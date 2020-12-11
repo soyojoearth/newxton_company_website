@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtOrderForm)实体类
  *
  * @author makejava
- * @since 2020-12-10 17:34:01
+ * @since 2020-12-11 09:05:30
  */
 public class NxtOrderForm implements Serializable {
-    private static final long serialVersionUID = 521845928295281953L;
+    private static final long serialVersionUID = 811614255211204023L;
     /**
     * 订单表
     */
@@ -64,10 +64,6 @@ public class NxtOrderForm implements Serializable {
     * 备注
     */
     private String deliveryRemark;
-    /**
-    * 运费模版名称
-    */
-    private String deliveryConfigName;
     /**
     * 运费
     */
@@ -226,14 +222,6 @@ public class NxtOrderForm implements Serializable {
 
     public void setDeliveryRemark(String deliveryRemark) {
         this.deliveryRemark = deliveryRemark;
-    }
-
-    public String getDeliveryConfigName() {
-        return deliveryConfigName;
-    }
-
-    public void setDeliveryConfigName(String deliveryConfigName) {
-        this.deliveryConfigName = deliveryConfigName;
     }
 
     public Long getDeliveryCost() {

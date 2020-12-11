@@ -186,7 +186,6 @@ public class NxtProcessOrderForm {
             nxtStructOrderForm.setDeliveryPhone(orderForm.getDeliveryPhone());
             nxtStructOrderForm.setDeliveryPostcode(orderForm.getDeliveryPostcode());
             nxtStructOrderForm.setDeliveryRemark(orderForm.getDeliveryRemark());
-            nxtStructOrderForm.setDeliveryConfigName(orderForm.getDeliveryConfigName());
             nxtStructOrderForm.setDeliveryCost(orderForm.getDeliveryCost()/100F);
             if (orderForm.getManualDeliveryCostDiscount() != null){
                 nxtStructOrderForm.setManualDeliveryCostDiscount(orderForm.getManualDeliveryCostDiscount()/100F);
@@ -343,7 +342,6 @@ public class NxtProcessOrderForm {
         nxtStructOrderForm.setDeliveryPhone(orderForm.getDeliveryPhone());
         nxtStructOrderForm.setDeliveryPostcode(orderForm.getDeliveryPostcode());
         nxtStructOrderForm.setDeliveryRemark(orderForm.getDeliveryRemark());
-        nxtStructOrderForm.setDeliveryConfigName(orderForm.getDeliveryConfigName());
         nxtStructOrderForm.setDeliveryCost(orderForm.getDeliveryCost()/100F);
         if (orderForm.getManualDeliveryCostDiscount() != null){
             nxtStructOrderForm.setManualDeliveryCostDiscount(orderForm.getManualDeliveryCostDiscount()/100F);

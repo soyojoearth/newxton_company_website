@@ -80,12 +80,6 @@ public class NxtApiAdminOrderFormUpdateAddressController {
             }
         }
 
-        NxtDeliveryConfig nxtDeliveryConfig = nxtDeliveryConfigService.queryById(deliveryConfigId);
-
-        if (nxtDeliveryConfig != null){
-            nxtOrderForm.setDeliveryConfigName(nxtDeliveryConfig.getName());
-        }
-
         nxtOrderForm.setDeliveryAddress(deliveryAddress);
         nxtOrderForm.setDeliveryPerson(deliveryPerson);
         nxtOrderForm.setDeliveryPhone(deliveryPhone);

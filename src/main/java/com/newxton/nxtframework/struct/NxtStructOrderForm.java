@@ -73,10 +73,6 @@ public class NxtStructOrderForm {
      */
     private String deliveryRemark;
     /**
-     * 运费模版名称
-     */
-    private String deliveryConfigName;
-    /**
      * 运费
      */
     private Float deliveryCost;
@@ -282,14 +278,6 @@ public class NxtStructOrderForm {
 
     public void setDeliveryRemark(String deliveryRemark) {
         this.deliveryRemark = deliveryRemark;
-    }
-
-    public String getDeliveryConfigName() {
-        return deliveryConfigName;
-    }
-
-    public void setDeliveryConfigName(String deliveryConfigName) {
-        this.deliveryConfigName = deliveryConfigName;
     }
 
     public Float getDeliveryCost() {
