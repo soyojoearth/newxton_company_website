@@ -109,8 +109,10 @@ public class NxtProcessShoppingCart {
         //批量 查产品名称 & 价格 & 库存
         Map<Long,Boolean> mapProductWithSku = new HashMap<>();
         Map<Long,Long> mapProductInventoryQuantity = new HashMap<>();
+        Map<Long,NxtProduct> mapProduct = new HashMap<>();
         List<NxtProduct> productList = nxtProductService.selectByIdSet(0,Integer.MAX_VALUE,productIdList);
         for (NxtProduct nxtProduct : productList) {
+            mapProduct.put(nxtProduct.getId(),nxtProduct);
             mapProductInventoryQuantity.put(nxtProduct.getId(),nxtProduct.getInventoryQuantity());
             mapProductName.put(nxtProduct.getId(),nxtProduct.getProductName());
             mapProductPrice.put(nxtProduct.getId(),(nxtProduct.getPrice() * nxtProduct.getPriceDiscount()/100F/100F));
@@ -152,6 +154,7 @@ public class NxtProcessShoppingCart {
 
         for (NxtStructShoppingCartProduct nxtStructShoppingCartProduct : nxtStructShoppingCartProductList) {
             Long productId = nxtStructShoppingCartProduct.getProductId();
+            NxtProduct nxtProduct = mapProduct.get(productId);
             String productName = mapProductName.get(productId);
             if (productName != null) {
                 nxtStructShoppingCartProduct.setProductName(productName);
@@ -174,6 +177,14 @@ public class NxtProcessShoppingCart {
             }
             //检查库存
             if (inventoryQuantity == null || inventoryQuantity <= 0){
+                nxtStructShoppingCartProduct.setInvalid(true);
+            }
+            //是否还在上架
+            if (!(nxtProduct != null && nxtProduct.getIsSelling() != null && nxtProduct.getIsSelling().equals(1))){
+                nxtStructShoppingCartProduct.setInvalid(true);
+            }
+            //是否在回收站
+            if (nxtProduct != null && nxtProduct.getIsTrash() != null && nxtProduct.getIsTrash().equals(1)){
                 nxtStructShoppingCartProduct.setInvalid(true);
             }
         }
