@@ -44,7 +44,6 @@ public class NxtApiAdminOrderFormUpdateAddressController {
         String deliveryPhone = jsonParam.getString("deliveryPhone");
         String deliveryPostcode = jsonParam.getString("deliveryPostcode");
         String deliveryRemark = jsonParam.getString("deliveryRemark");
-        Long deliveryConfigId = jsonParam.getLong("deliveryConfigId");
 
         if (id == null){
             return new NxtStructApiResult(53,"缺少参数：id").toMap();
