@@ -73,6 +73,8 @@ typora-copy-images-to: ./gitbook_resource
 
 #### 后台预览图：
 
+![image-20201215140649883](gitbook_resource/image-20201215140649883.png)
+
 
 
 #### 技术架构图：
