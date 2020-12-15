@@ -2,6 +2,7 @@ package com.newxton.nxtframework.dao;
 
 import com.newxton.nxtframework.entity.NxtTransaction;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.data.relational.core.sql.In;
 
 import java.util.List;
 
@@ -20,6 +21,14 @@ public interface NxtTransactionDao {
      * @return 实例对象
      */
     NxtTransaction queryById(Long id);
+
+    /**
+     * 根据type、outId查询单个
+     * @param type
+     * @param outerId
+     * @return
+     */
+    NxtTransaction queryByTypeAndOuterId(Integer type, Long outerId);
 
     /**
      * 查询指定行数据
@@ -94,5 +103,23 @@ public interface NxtTransactionDao {
      * @return
      */
     List<NxtTransaction> queryAllByUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("userId") Long userId);
+
+    /**
+     * 后台查询资金log列表
+     * @param offset
+     * @param limit
+     * @param userId
+     * @param type
+     * @return
+     */
+    List<NxtTransaction> adminQueryList(Long offset, Long limit, Long userId, Integer type);
+
+    /**
+     * 后台查询资金log列表
+     * @param userId
+     * @param type
+     * @return
+     */
+    Long adminQueryCount(Long userId, Integer type);
 
 }

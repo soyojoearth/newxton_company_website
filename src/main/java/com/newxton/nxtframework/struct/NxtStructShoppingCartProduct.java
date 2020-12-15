@@ -28,6 +28,11 @@ public class NxtStructShoppingCartProduct {
 	private Boolean selected = true;
 
 	/**
+	 * 无效（sku不对、库存无货时，会无效）
+	 */
+	private Boolean invalid = false;
+
+	/**
 	 * 比较是不是同一款产品且同样的sku
 	 * @param obj
 	 * @return
@@ -128,4 +133,11 @@ public class NxtStructShoppingCartProduct {
 		this.selected = selected;
 	}
 
+	public Boolean getInvalid() {
+		return invalid;
+	}
+
+	public void setInvalid(Boolean invalid) {
+		this.invalid = invalid;
+	}
 }

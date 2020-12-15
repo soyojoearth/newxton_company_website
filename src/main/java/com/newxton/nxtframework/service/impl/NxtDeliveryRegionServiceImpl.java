@@ -102,4 +102,14 @@ public class NxtDeliveryRegionServiceImpl implements NxtDeliveryRegionService {
     public boolean deleteById(Long id) {
         return this.nxtDeliveryRegionDao.deleteById(id) > 0;
     }
+
+    /**
+     * 查询所有地区列表（为tree接口）
+     * @return
+     */
+    @Override
+    public List<NxtDeliveryRegion> queryAllRegionForTree(){
+        return this.nxtDeliveryRegionDao.queryAllRegionForTree();
+    }
+
 }

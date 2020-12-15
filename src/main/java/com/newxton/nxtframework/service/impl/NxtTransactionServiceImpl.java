@@ -32,6 +32,17 @@ public class NxtTransactionServiceImpl implements NxtTransactionService {
     }
 
     /**
+     * 根据type、outId查询单个
+     * @param type
+     * @param outerId
+     * @return
+     */
+    @Override
+    public NxtTransaction queryByTypeAndOuterId(Integer type, Long outerId){
+        return this.nxtTransactionDao.queryByTypeAndOuterId(type, outerId);
+    }
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置
@@ -108,5 +119,26 @@ public class NxtTransactionServiceImpl implements NxtTransactionService {
         return this.nxtTransactionDao.queryAllByUserIdLimit(offset,limit,userId);
     }
 
+    /**
+     * 后台查询资金log列表
+     * @param offset
+     * @param limit
+     * @param userId
+     * @param type
+     * @return
+     */
+    public List<NxtTransaction> adminQueryList(Long offset, Long limit, Long userId, Integer type){
+        return this.nxtTransactionDao.adminQueryList(offset, limit, userId, type);
+    }
+
+    /**
+     * 后台查询资金log列表
+     * @param userId
+     * @param type
+     * @return
+     */
+    public Long adminQueryCount(Long userId, Integer type){
+        return this.nxtTransactionDao.adminQueryCount(userId, type);
+    }
 
 }

@@ -18,6 +18,7 @@ import java.util.Map;
  * @author soyojo.earth@gmail.com
  * @time 2020/10/8
  * @address Shenzhen, China
+ * @copyright NxtFramework
  * Cronjob 分销佣金
  */
 @Component
@@ -32,14 +33,10 @@ public class NxtCronCommission {
     /**
      * TODO
      * （每隔3600秒执行一次）
-     * （确认收货满14天）确认佣金完成，可以结转
      */
     @Scheduled(fixedDelay = 3600000)
     public void autoConfirmOrderFormReceive() {
 
-        /**
-         * （确认收货满14天）
-         */
         //检查&执行佣金完成，可以结转
         nxtTaskCommission.checkCommissionAndComfirmCompleted();
 

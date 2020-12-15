@@ -4,6 +4,7 @@ package com.newxton.nxtframework.struct;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/12
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 public class NxtStructSettingOssConfig {
 

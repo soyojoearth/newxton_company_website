@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtProduct)实体类
  *
  * @author makejava
- * @since 2020-11-19 13:58:10
+ * @since 2020-12-10 17:33:37
  */
 public class NxtProduct implements Serializable {
-    private static final long serialVersionUID = -79299512784945929L;
+    private static final long serialVersionUID = -58409406665610051L;
     
     private Long id;
     
@@ -44,14 +44,6 @@ public class NxtProduct implements Serializable {
     * 货号
     */
     private String itemNo;
-    /**
-    * 重量（单位：千克）
-    */
-    private Long unitWeight;
-    /**
-    * 体积（单位：立方米）
-    */
-    private Long unitVolume;
     /**
     * 是否附带sku
     */
@@ -190,22 +182,6 @@ public class NxtProduct implements Serializable {
 
     public void setItemNo(String itemNo) {
         this.itemNo = itemNo;
-    }
-
-    public Long getUnitWeight() {
-        return unitWeight;
-    }
-
-    public void setUnitWeight(Long unitWeight) {
-        this.unitWeight = unitWeight;
-    }
-
-    public Long getUnitVolume() {
-        return unitVolume;
-    }
-
-    public void setUnitVolume(Long unitVolume) {
-        this.unitVolume = unitVolume;
     }
 
     public Integer getWithSku() {

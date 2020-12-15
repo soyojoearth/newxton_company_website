@@ -94,6 +94,9 @@ public class NxtApiUserRegisterController {
         newNxtUser.setPhone(phone);
         newNxtUser.setEmail(email);
         newNxtUser.setStatus(0);
+        newNxtUser.setIsAdmin(0);
+        newNxtUser.setLevelNum(1);//普通会员
+        newNxtUser.setDatelineCreate(System.currentTimeMillis());
         nxtUserService.insert(newNxtUser);
 
         return new NxtStructApiResult();

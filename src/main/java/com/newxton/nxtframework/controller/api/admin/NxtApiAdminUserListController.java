@@ -73,7 +73,7 @@ public class NxtApiAdminUserListController {
             offset = limit * (pageNumber-1);
         }
 
-        List<NxtUser> list = nxtUserService.queryAllByLimit(offset,limit);
+        List<NxtUser> list = nxtUserService.queryAllAdminUserByLimit(offset,limit);
 
         List<Map<String,Object>> listResult = new ArrayList<>();
 

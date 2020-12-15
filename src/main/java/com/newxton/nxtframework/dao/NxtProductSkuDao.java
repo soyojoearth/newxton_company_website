@@ -63,4 +63,11 @@ public interface NxtProductSkuDao {
      */
     int deleteById(Long id);
 
+    /**
+     * 根据产品id集合查询
+     * @param idList
+     * @return
+     */
+    List<NxtProductSku> selectByProductIdSet(List<Long> idList);
+
 }

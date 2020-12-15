@@ -9,8 +9,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author soyojo.earth@gmail.com
- * @time 2020/11/23
+ * @time 2020/11/22
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @Controller
 public class NxtUCenterController {

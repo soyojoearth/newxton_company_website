@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtOrderForm)实体类
  *
  * @author makejava
- * @since 2020-12-03 10:41:45
+ * @since 2020-12-11 09:05:30
  */
 public class NxtOrderForm implements Serializable {
-    private static final long serialVersionUID = -47959913067327264L;
+    private static final long serialVersionUID = 811614255211204023L;
     /**
     * 订单表
     */
@@ -65,10 +65,6 @@ public class NxtOrderForm implements Serializable {
     */
     private String deliveryRemark;
     /**
-    * 运费模版名称
-    */
-    private String deliveryConfigName;
-    /**
     * 运费
     */
     private Long deliveryCost;
@@ -76,14 +72,6 @@ public class NxtOrderForm implements Serializable {
     * 运费调整（正数加、负数减）
     */
     private Long manualDeliveryCostDiscount;
-    /**
-    * 单位（千克）放大1000倍
-    */
-    private Long countWeight;
-    /**
-    * 单位（立方米）放大100万倍
-    */
-    private Long countVolume;
     /**
     * 是否已经支付（0：未支付 1:已支付 -1:支付失败）
     */
@@ -236,14 +224,6 @@ public class NxtOrderForm implements Serializable {
         this.deliveryRemark = deliveryRemark;
     }
 
-    public String getDeliveryConfigName() {
-        return deliveryConfigName;
-    }
-
-    public void setDeliveryConfigName(String deliveryConfigName) {
-        this.deliveryConfigName = deliveryConfigName;
-    }
-
     public Long getDeliveryCost() {
         return deliveryCost;
     }
@@ -258,22 +238,6 @@ public class NxtOrderForm implements Serializable {
 
     public void setManualDeliveryCostDiscount(Long manualDeliveryCostDiscount) {
         this.manualDeliveryCostDiscount = manualDeliveryCostDiscount;
-    }
-
-    public Long getCountWeight() {
-        return countWeight;
-    }
-
-    public void setCountWeight(Long countWeight) {
-        this.countWeight = countWeight;
-    }
-
-    public Long getCountVolume() {
-        return countVolume;
-    }
-
-    public void setCountVolume(Long countVolume) {
-        this.countVolume = countVolume;
     }
 
     public Integer getStatusPaid() {

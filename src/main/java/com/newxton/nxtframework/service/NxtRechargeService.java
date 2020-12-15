@@ -22,6 +22,14 @@ public interface NxtRechargeService {
     NxtRecharge queryById(Long id);
 
     /**
+     * 通过serialNum查询单条数据
+     *
+     * @param serialNum
+     * @return 实例对象
+     */
+    NxtRecharge queryBySerialNum(String serialNum);
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置

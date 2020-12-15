@@ -21,6 +21,7 @@ import java.util.List;
  * @author soyojo.earth@gmail.com
  * @time 2020/10/18
  * @address Shenzhen, China
+ * @copyright NxtFramework
  * 图片搬家。例如将图片从本地搬到七牛云、或者七牛云搬到本地、或者阿里云搬到七牛云等
  */
 @Component

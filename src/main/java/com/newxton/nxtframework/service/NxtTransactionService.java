@@ -22,6 +22,14 @@ public interface NxtTransactionService {
     NxtTransaction queryById(Long id);
 
     /**
+     * 根据type、outId查询单个
+     * @param type
+     * @param outerId
+     * @return
+     */
+    NxtTransaction queryByTypeAndOuterId(Integer type, Long outerId);
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置
@@ -76,5 +84,23 @@ public interface NxtTransactionService {
      * @return
      */
     List<NxtTransaction> queryAllByUserIdLimit(@Param("offset") Long offset, @Param("limit") Long limit, @Param("userId") Long userId);
+
+    /**
+     * 后台查询资金log列表
+     * @param offset
+     * @param limit
+     * @param userId
+     * @param type
+     * @return
+     */
+    List<NxtTransaction> adminQueryList(Long offset, Long limit, Long userId, Integer type);
+
+    /**
+     * 后台查询资金log列表
+     * @param userId
+     * @param type
+     * @return
+     */
+    Long adminQueryCount(Long userId, Integer type);
 
 }

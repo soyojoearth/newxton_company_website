@@ -6,6 +6,8 @@ import com.newxton.nxtframework.entity.NxtDeliveryConfigItem;
 import com.newxton.nxtframework.service.NxtDeliveryConfigItemRegionService;
 import com.newxton.nxtframework.service.NxtDeliveryConfigItemService;
 import com.newxton.nxtframework.service.NxtDeliveryConfigService;
+import com.newxton.nxtframework.service.NxtProductService;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +24,16 @@ import java.util.Map;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/4
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @RestController
 public class NxtApiAdminDeliveryConfigDeleteController {
 
     @Resource
     private NxtDeliveryConfigService nxtDeliveryConfigService;
+
+    @Resource
+    private NxtProductService nxtProductService;
 
     @Resource
     private NxtDeliveryConfigItemService nxtDeliveryConfigItemService;
@@ -60,7 +66,10 @@ public class NxtApiAdminDeliveryConfigDeleteController {
         }
 
         //检查运费模版是否已被引用，被引用的不可删除
-        // TODO
+        Long countProduct = nxtProductService.adminCountByDeliveryConfigId(nxtDeliveryConfig.getId());
+        if (countProduct > 0){
+            return new NxtStructApiResult(53,"已经有产品引用该运费模版，不可删除").toMap();
+        }
 
         //item列表
         NxtDeliveryConfigItem nxtDeliveryConfigItemCondition = new NxtDeliveryConfigItem();

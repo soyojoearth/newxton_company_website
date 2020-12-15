@@ -68,4 +68,16 @@
         delete from nxt_product_sku where id = #{id}
     </delete>
 
+    <!--根据产品id集合查询-->
+    <select id="selectByProductIdSet" resultMap="BaseResultMap">
+        select
+          id, product_id, sku_key_name
+        from nxt_product_sku
+        where product_id IN
+        <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+
 </mapper>

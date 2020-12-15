@@ -6,6 +6,7 @@
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="userId" column="user_id" jdbcType="INTEGER"/>
         <result property="amount" column="amount" jdbcType="INTEGER"/>
+        <result property="balance" column="balance" jdbcType="INTEGER"/>
         <result property="dateline" column="dateline" jdbcType="INTEGER"/>
         <result property="type" column="type" jdbcType="INTEGER"/>
         <result property="outerId" column="outer_id" jdbcType="INTEGER"/>
@@ -14,15 +15,24 @@
     <!--查询单个-->
     <select id="queryById" resultMap="NxtTransactionMap">
         select
-          id, user_id, amount, dateline, type, outer_id
+          id, user_id, amount, balance, dateline, type, outer_id
         from nxt_transaction
         where id = #{id}
+    </select>
+
+    <!--根据type、outId查询单个-->
+    <select id="queryByTypeAndOuterId" resultMap="NxtTransactionMap">
+        select
+          id, user_id, amount, balance, dateline, type, outer_id
+        from nxt_transaction
+        where type = #{type} and outer_id = #{outerId}
+        limit 1
     </select>
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="NxtTransactionMap">
         select
-          id, user_id, amount, dateline, type, outer_id
+          id, user_id, amount, balance, dateline, type, outer_id
         from nxt_transaction
         limit #{offset}, #{limit}
     </select>
@@ -30,7 +40,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="NxtTransactionMap">
         select
-        id, user_id, amount, dateline, type, outer_id
+        id, user_id, amount, balance, dateline, type, outer_id
         from nxt_transaction
         <where>
             <if test="id != null">
@@ -41,6 +51,9 @@
             </if>
             <if test="amount != null">
                 and amount = #{amount}
+            </if>
+            <if test="balance != null">
+                and balance = #{balance}
             </if>
             <if test="dateline != null">
                 and dateline = #{dateline}
@@ -56,26 +69,26 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_transaction(user_id, amount, dateline, type, outer_id)
-        values (#{userId}, #{amount}, #{dateline}, #{type}, #{outerId})
+        insert into nxt_transaction(user_id, amount, balance, dateline, type, outer_id)
+        values (#{userId}, #{amount}, #{balance}, #{dateline}, #{type}, #{outerId})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_transaction(user_id, amount, dateline, type, outer_id)
+        insert into nxt_transaction(user_id, amount, balance, dateline, type, outer_id)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userId}, #{entity.amount}, #{entity.dateline}, #{entity.type}, #{entity.outerId})
+            (#{entity.userId}, #{entity.amount}, #{entity.balance}, #{entity.dateline}, #{entity.type}, #{entity.outerId})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_transaction(user_id, amount, dateline, type, outer_id)
+        insert into nxt_transaction(user_id, amount, balance, dateline, type, outer_id)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userId}, #{entity.amount}, #{entity.dateline}, #{entity.type}, #{entity.outerId})
+            (#{entity.userId}, #{entity.amount}, #{entity.balance}, #{entity.dateline}, #{entity.type}, #{entity.outerId})
         </foreach>
         on duplicate key update
-        user_id = values(user_id) , amount = values(amount) , dateline = values(dateline) , type = values(type) ,
+        user_id = values(user_id) , amount = values(amount) , balance = values(balance) , dateline = values(dateline) , type = values(type) ,
         outer_id = values(outer_id)
     </insert>
 
@@ -88,6 +101,9 @@
             </if>
             <if test="amount != null">
                 amount = #{amount},
+            </if>
+            <if test="balance != null">
+                balance = #{balance},
             </if>
             <if test="dateline != null">
                 dateline = #{dateline},
@@ -113,6 +129,38 @@
           sum(amount)
         from nxt_transaction
         where user_id = #{userId}
+    </select>
+
+    <!--后台查询资金log列表-->
+    <select id="adminQueryList" resultMap="NxtTransactionMap">
+        select
+          id, user_id, amount, balance, dateline, type, outer_id
+        from nxt_transaction
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+        </where>
+        order by id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--后台查询资金log数量统计-->
+    <select id="adminQueryCount" resultType="Long">
+        select
+        count(*)
+        from nxt_transaction
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+        </where>
     </select>
 
 </mapper>

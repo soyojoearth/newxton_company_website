@@ -1,7 +1,5 @@
 package com.newxton.nxtframework.struct;
 
-import org.springframework.data.relational.core.sql.In;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +7,7 @@ import java.util.List;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/25
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 public class NxtStructOrderFormRefund {
 

@@ -4,8 +4,14 @@ package com.newxton.nxtframework.struct;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/20
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 public class NxtStructSettingCommission {
+
+    /**
+     * 分销开关
+     */
+    private Boolean onoff = true;
 
     /**
      * 一级分销佣金分成比例
@@ -24,6 +30,24 @@ public class NxtStructSettingCommission {
      * 全站默认产品佣金比率
      */
     private Long defaultProductCommissionRate = 10L;//默认值
+
+    /**
+     * 下家注册超过这个时间后，上家不再享有佣金提成
+     */
+    private Long inviterExpirationDays = 36500L;
+
+    /**
+     * 安全期：佣金售后期限（确认收货后几天，佣金才可转入余额）
+     */
+    private Long safeDays = 14L;//默认值
+
+    public Boolean getOnoff() {
+        return onoff;
+    }
+
+    public void setOnoff(Boolean onoff) {
+        this.onoff = onoff;
+    }
 
     public Long getCommissionRateLevel1() {
         return commissionRateLevel1;
@@ -55,5 +79,21 @@ public class NxtStructSettingCommission {
 
     public void setDefaultProductCommissionRate(Long defaultProductCommissionRate) {
         this.defaultProductCommissionRate = defaultProductCommissionRate;
+    }
+
+    public Long getInviterExpirationDays() {
+        return inviterExpirationDays;
+    }
+
+    public void setInviterExpirationDays(Long inviterExpirationDays) {
+        this.inviterExpirationDays = inviterExpirationDays;
+    }
+
+    public Long getSafeDays() {
+        return safeDays;
+    }
+
+    public void setSafeDays(Long safeDays) {
+        this.safeDays = safeDays;
     }
 }

@@ -21,6 +21,7 @@ import java.util.*;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/24
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @Component
 public class NxtProcessOrderForm {
@@ -186,7 +187,6 @@ public class NxtProcessOrderForm {
             nxtStructOrderForm.setDeliveryPhone(orderForm.getDeliveryPhone());
             nxtStructOrderForm.setDeliveryPostcode(orderForm.getDeliveryPostcode());
             nxtStructOrderForm.setDeliveryRemark(orderForm.getDeliveryRemark());
-            nxtStructOrderForm.setDeliveryConfigName(orderForm.getDeliveryConfigName());
             nxtStructOrderForm.setDeliveryCost(orderForm.getDeliveryCost()/100F);
             if (orderForm.getManualDeliveryCostDiscount() != null){
                 nxtStructOrderForm.setManualDeliveryCostDiscount(orderForm.getManualDeliveryCostDiscount()/100F);
@@ -255,12 +255,6 @@ public class NxtProcessOrderForm {
             nxtStructOrderFormProduct.setOrderFormId(nxtOrderFormProduct.getOrderFormId());
             nxtStructOrderFormProduct.setQuantity(nxtOrderFormProduct.getQuantity());
             nxtStructOrderFormProduct.setProductName(nxtOrderFormProduct.getProductName());
-            if (nxtOrderFormProduct.getUnitWeight() != null) {
-                nxtStructOrderFormProduct.setUnitWeight(nxtOrderFormProduct.getUnitWeight() / 1000F);
-            }
-            if (nxtOrderFormProduct.getUnitVolume() != null) {
-                nxtStructOrderFormProduct.setUnitVolume(nxtOrderFormProduct.getUnitVolume() / 1000000F);
-            }
             nxtStructOrderFormProduct.setProductPrice(nxtOrderFormProduct.getProductPrice()/100F);
             nxtStructOrderFormProduct.setProductPriceDiscount(nxtOrderFormProduct.getProductPriceDiscount()/100F);
             if (nxtOrderFormProduct.getManualPriceDiscount() != null){
@@ -349,7 +343,6 @@ public class NxtProcessOrderForm {
         nxtStructOrderForm.setDeliveryPhone(orderForm.getDeliveryPhone());
         nxtStructOrderForm.setDeliveryPostcode(orderForm.getDeliveryPostcode());
         nxtStructOrderForm.setDeliveryRemark(orderForm.getDeliveryRemark());
-        nxtStructOrderForm.setDeliveryConfigName(orderForm.getDeliveryConfigName());
         nxtStructOrderForm.setDeliveryCost(orderForm.getDeliveryCost()/100F);
         if (orderForm.getManualDeliveryCostDiscount() != null){
             nxtStructOrderForm.setManualDeliveryCostDiscount(orderForm.getManualDeliveryCostDiscount()/100F);
@@ -422,12 +415,6 @@ public class NxtProcessOrderForm {
             nxtStructOrderFormProduct.setProductId(nxtOrderFormProduct.getProductId());
             nxtStructOrderFormProduct.setQuantity(nxtOrderFormProduct.getQuantity());
             nxtStructOrderFormProduct.setProductName(nxtOrderFormProduct.getProductName());
-            if (nxtOrderFormProduct.getUnitWeight() != null) {
-                nxtStructOrderFormProduct.setUnitWeight(nxtOrderFormProduct.getUnitWeight() / 1000F);
-            }
-            if (nxtOrderFormProduct.getUnitVolume() != null) {
-                nxtStructOrderFormProduct.setUnitVolume(nxtOrderFormProduct.getUnitVolume() / 1000000F);
-            }
             nxtStructOrderFormProduct.setProductPrice(nxtOrderFormProduct.getProductPrice()/100F);
             nxtStructOrderFormProduct.setProductPriceDiscount(nxtOrderFormProduct.getProductPriceDiscount()/100F);
             if (nxtOrderFormProduct.getManualPriceDiscount() != null){

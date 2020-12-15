@@ -1,7 +1,7 @@
 创建镜像
 
 
-docker build --tag nxtframework_dev:0.1.100 .
+docker build --tag nxtframework_dev:0.1.139 .
 
 
 

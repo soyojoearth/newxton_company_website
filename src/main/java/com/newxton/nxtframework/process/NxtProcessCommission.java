@@ -3,6 +3,7 @@ package com.newxton.nxtframework.process;
 import com.newxton.nxtframework.entity.NxtCommission;
 import com.newxton.nxtframework.entity.NxtCommissionTransferIn;
 import com.newxton.nxtframework.entity.NxtOrderFormProduct;
+import com.newxton.nxtframework.entity.NxtTransaction;
 import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.service.NxtCommissionService;
 import com.newxton.nxtframework.service.NxtCommissionTransferInService;
@@ -20,6 +21,7 @@ import java.util.*;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/29
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @Component
 public class NxtProcessCommission {
@@ -64,7 +66,7 @@ public class NxtProcessCommission {
             throw new NxtException("可结转金额不足");
         }
 
-        //创建结转记录（然后等待后台管理员审核）
+        //创建结转记录（然后等待后台管理员审核）【现在变了，实时到账吧】
         NxtCommissionTransferIn nxtCommissionTransferIn = new NxtCommissionTransferIn();
         nxtCommissionTransferIn.setUserId(userId);
         nxtCommissionTransferIn.setAmount(balanceAllowTransfer);
@@ -83,6 +85,21 @@ public class NxtProcessCommission {
                 nxtCommissionService.update(nxtCommission);
             }
         }
+
+        //实时到账
+        NxtTransaction nxtTransaction = new NxtTransaction();
+        nxtTransaction.setType(6);//交易类型（1:充值 2:消费 3:退款 4:提现 5:撤销提现 6:佣金结算收入）
+        nxtTransaction.setUserId(userId);
+        nxtTransaction.setAmount(nxtCommissionTransferIn.getAmount());
+        nxtTransaction.setDateline(System.currentTimeMillis());
+        nxtTransaction.setOuterId(nxtCommissionTransferIn.getId());
+        nxtTransactionService.insert(nxtTransaction);
+
+        nxtCommissionTransferIn.setDatelineEnd(System.currentTimeMillis());
+        nxtCommissionTransferIn.setTransactionId(nxtTransaction.getId());
+        nxtCommissionTransferIn.setStatus(1);//状态（0等待审核 1通过 -1驳回）
+        nxtCommissionTransferInService.update(nxtCommissionTransferIn);
+
 
     }
 

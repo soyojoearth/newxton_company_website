@@ -21,6 +21,7 @@ import java.util.Map;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/25
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @RestController
 public class NxtApiUserUploadimageController {

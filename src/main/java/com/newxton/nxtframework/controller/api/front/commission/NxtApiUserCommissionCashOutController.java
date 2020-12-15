@@ -1,6 +1,5 @@
 package com.newxton.nxtframework.controller.api.front.commission;
 
-import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.process.NxtProcessCommission;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
@@ -12,6 +11,7 @@ import javax.annotation.Resource;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/29
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @RestController
 public class NxtApiUserCommissionCashOutController {

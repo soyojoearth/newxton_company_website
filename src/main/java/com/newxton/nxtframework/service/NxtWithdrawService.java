@@ -75,4 +75,22 @@ public interface NxtWithdrawService {
      */
     Long queryTotalWithdrawRejectedByUserId(@Param("userId") Long userId);
 
+    /**
+     * 后台查询列表
+     * @param offset
+     * @param limit
+     * @param userId
+     * @param status
+     * @return
+     */
+    List<NxtWithdraw> adminQueryList(Long offset, Long limit, Long userId, Integer status);
+
+    /**
+     * 后台查询统计
+     * @param userId
+     * @param status
+     * @return
+     */
+    Long adminQueryCount(Long userId, Integer status);
+
 }

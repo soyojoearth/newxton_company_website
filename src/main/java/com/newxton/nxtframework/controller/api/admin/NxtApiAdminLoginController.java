@@ -2,6 +2,7 @@ package com.newxton.nxtframework.controller.api.admin;
 
 import com.newxton.nxtframework.entity.NxtUser;
 import com.newxton.nxtframework.service.NxtUserService;
+import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,6 +70,10 @@ public class NxtApiAdminLoginController {
             result.put("status", -1);
             result.put("message", "禁止登录");
             return result;
+        }
+
+        if (user.getIsAdmin() == null || !user.getIsAdmin().equals(1)){
+            return new NxtStructApiResult(40,"该用户不是管理员，不可登录后台").toMap();
         }
 
         if (multiDeviceLogin) {

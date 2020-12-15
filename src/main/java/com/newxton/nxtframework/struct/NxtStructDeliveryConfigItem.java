@@ -1,7 +1,10 @@
 package com.newxton.nxtframework.struct;
 
+import com.newxton.nxtframework.entity.NxtDeliveryRegion;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author soyojo.earth@gmail.com
@@ -20,6 +23,21 @@ public class NxtStructDeliveryConfigItem {
     public Long additionQuantity;
     public Float additionPrice;
     public List<NxtStructDeliveryCofnigItemRegion> regionList = new ArrayList<>();
+
+    /**
+     * 有个前端地区选择的组件，需要这个数据（前端工程师太弱鸡，组装不了这个数据）
+     */
+    public List<NxtStructDeliveryCofnigItemRegionForVueComponent> selectRegionList = new ArrayList<>();
+
+    public void createItemRegionForVueComponent(Map<Long,NxtDeliveryRegion> mapRegion){
+        for (NxtStructDeliveryCofnigItemRegion item : regionList) {
+            if (mapRegion.containsKey(item.getRegionId())){
+                NxtStructDeliveryCofnigItemRegionForVueComponent regionForVueComponent = new NxtStructDeliveryCofnigItemRegionForVueComponent(mapRegion.get(item.getRegionId()),mapRegion);
+                selectRegionList.add(regionForVueComponent);
+            }
+        }
+    }
+    //end for Vue component
 
     public Long getId() {
         return id;

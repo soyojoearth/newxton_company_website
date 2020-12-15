@@ -4,6 +4,7 @@ package com.newxton.nxtframework.struct;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/19
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 public class NxtStructShoppingCartProductSku implements Comparable<NxtStructShoppingCartProductSku> {
 

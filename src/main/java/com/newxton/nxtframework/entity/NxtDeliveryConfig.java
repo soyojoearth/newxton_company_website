@@ -18,11 +18,6 @@ public class NxtDeliveryConfig implements Serializable {
     * 名称
     */
     private String name;
-    /**
-    * 类型：（1:按重量 2:按体积）
-    */
-    private Integer type;
-
 
     public Long getId() {
         return id;
@@ -38,14 +33,6 @@ public class NxtDeliveryConfig implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
     }
 
 }

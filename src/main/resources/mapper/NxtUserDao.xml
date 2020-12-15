@@ -16,6 +16,7 @@
         <result property="levelNum" column="level_num" jdbcType="INTEGER"/>
         <result property="moneyBalance" column="money_balance" jdbcType="INTEGER"/>
         <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="isAdmin" column="is_admin" jdbcType="INTEGER"/>
         <result property="datelineCreate" column="dateline_create" jdbcType="INTEGER"/>
         <result property="inviterUserId" column="inviter_user_id" jdbcType="INTEGER"/>
         <result property="canInvite" column="can_invite" jdbcType="INTEGER"/>
@@ -26,7 +27,7 @@
     <!--通过phone查询单个-->
     <select id="queryByPhone" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
         where phone = #{phone} limit 1
     </select>
@@ -34,7 +35,7 @@
     <!--通过email查询单个-->
     <select id="queryByEmail" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
         where email = #{email} limit 1
     </select>
@@ -42,7 +43,7 @@
     <!--通过username查询单个-->
     <select id="queryByUsername" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
         where username = #{username} limit 1
     </select>
@@ -50,7 +51,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
         where id = #{id}
     </select>
@@ -58,15 +59,24 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--查询所有管理员-->
+    <select id="queryAllAdminUserByLimit" resultMap="BaseResultMap">
+        select
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+        from nxt_user
+        where is_admin is not NULL and is_admin = 1
         limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-        id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status,
+        id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status,is_admin,
         dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
         <where>
@@ -106,6 +116,9 @@
             <if test="status != null">
                 and status = #{status}
             </if>
+            <if test="isAdmin != null">
+                and is_admin = #{isAdmin}
+            </if>
             <if test="datelineCreate != null">
                 and dateline_create = #{datelineCreate}
             </if>
@@ -126,17 +139,17 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_user(username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code)
-        values (#{username}, #{password}, #{salt}, #{token}, #{phone}, #{email}, #{avatarId}, #{gender}, #{levelNum}, #{moneyBalance}, #{status}, #{datelineCreate}, #{inviterUserId}, #{canInvite}, #{inviteesCount}, #{inviteCode})
+        insert into nxt_user(username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code)
+        values (#{username}, #{password}, #{salt}, #{token}, #{phone}, #{email}, #{avatarId}, #{gender}, #{levelNum}, #{moneyBalance}, #{status}, #{isAdmin}, #{datelineCreate}, #{inviterUserId}, #{canInvite}, #{inviteesCount}, #{inviteCode})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
         insert into nxt_user(username, password, salt, token, phone, email, avatar_id, gender, level_num,
-        money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code)
+        money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.username}, #{entity.password}, #{entity.salt}, #{entity.token}, #{entity.phone}, #{entity.email},
-            #{entity.avatarId}, #{entity.gender}, #{entity.levelNum}, #{entity.moneyBalance}, #{entity.status},
+            #{entity.avatarId}, #{entity.gender}, #{entity.levelNum}, #{entity.moneyBalance}, #{entity.status}, #{entity.isAdmin},
             #{entity.datelineCreate}, #{entity.inviterUserId}, #{entity.canInvite}, #{entity.inviteesCount},
             #{entity.inviteCode})
         </foreach>
@@ -179,6 +192,9 @@
             <if test="status != null">
                 status = #{status},
             </if>
+            <if test="isAdmin != null">
+                is_admin = #{isAdmin},
+            </if>
             <if test="datelineCreate != null">
                 dateline_create = #{datelineCreate},
             </if>
@@ -207,7 +223,7 @@
     <!--通过inviteCode查询单个-->
     <select id="queryByInviteCode" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
         where invite_code = #{inviteCode}
     </select>
@@ -215,7 +231,7 @@
     <!--根据userId列表批量查询user-->
     <select id="selectByIdSet" resultMap="BaseResultMap">
         SELECT
-        id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+        id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
         WHERE id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
@@ -227,7 +243,7 @@
     <!--查询某用户的1级下家列表-->
     <select id="queryAllLevelOneInviteesUserIdLimit" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
         where inviter_user_id = #{inviterUserId}
         limit #{offset}, #{limit}
@@ -236,7 +252,7 @@
     <!--查询某用户的2级下家列表-->
     <select id="queryAllLevelTwoInviteesUserIdLimit" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
         where inviter_user_id IN (select id from nxt_user where inviter_user_id = #{inviterUserId})
         limit #{offset}, #{limit}
@@ -245,7 +261,7 @@
     <!--查询某用户的3级下家列表-->
     <select id="queryAllLevelThreeInviteesUserIdLimit" resultMap="BaseResultMap">
         select
-          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
         where inviter_user_id IN (select id from nxt_user where inviter_user_id IN (select id from nxt_user where inviter_user_id = #{inviterUserId}))
         limit #{offset}, #{limit}
@@ -262,5 +278,57 @@
         update nxt_user set email = null
         where id = #{id}
     </update>
+
+    <!--获取会员列表-->
+    <select id="adminQueryMemberList" resultMap="BaseResultMap">
+        select
+          id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
+        from nxt_user
+        <where>
+            <if test="userId != null">
+                and id = #{userId}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="levelNum != null">
+                and level_num = #{levelNum}
+            </if>
+            <if test="datelineCreateBegin != null">
+                and dateline_create &gt;= #{datelineCreateBegin}
+            </if>
+            <if test="datelineCreateEnd != null">
+                and dateline_create &lt;= #{datelineCreateEnd}
+            </if>
+            and (is_admin is NULL or is_admin = 0)
+        </where>
+        order by id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--获取会员统计数字-->
+    <select id="adminQueryMemberCount" resultType="Long">
+        select
+        count(*)
+        from nxt_user
+        <where>
+            <if test="userId != null">
+                and id = #{userId}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="levelNum != null">
+                and level_num = #{levelNum}
+            </if>
+            <if test="datelineCreateBegin != null">
+                and dateline_create &gt;= #{datelineCreateBegin}
+            </if>
+            <if test="datelineCreateEnd != null">
+                and dateline_create &lt;= #{datelineCreateEnd}
+            </if>
+            and (is_admin is NULL or is_admin = 0)
+        </where>
+    </select>
 
 </mapper>

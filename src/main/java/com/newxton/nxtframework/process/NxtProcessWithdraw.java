@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author soyojo.earth@gmail.com
  * @time 2020/11/28
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @Component
 public class NxtProcessWithdraw {

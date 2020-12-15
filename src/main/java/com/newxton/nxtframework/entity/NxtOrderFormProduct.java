@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtOrderFormProduct)实体类
  *
  * @author makejava
- * @since 2020-12-07 17:26:06
+ * @since 2020-12-10 17:33:55
  */
 public class NxtOrderFormProduct implements Serializable {
-    private static final long serialVersionUID = 229535902208318713L;
+    private static final long serialVersionUID = -71608681440420202L;
     /**
     * 订单管理商品
     */
@@ -30,14 +30,6 @@ public class NxtOrderFormProduct implements Serializable {
     * 产品名称
     */
     private String productName;
-    /**
-    * 单位（克）
-    */
-    private Long unitWeight;
-    /**
-    * 单位（立法米）放大100万倍
-    */
-    private Long unitVolume;
     
     private Long productPrice;
     /**
@@ -70,6 +62,12 @@ public class NxtOrderFormProduct implements Serializable {
     private Long quantityRefund;
     
     private Long commissionRate;
+    
+    private Long datelineDelivery;
+    
+    private Long datelinePaid;
+    
+    private Long datelineReceived;
 
 
     public Long getId() {
@@ -118,22 +116,6 @@ public class NxtOrderFormProduct implements Serializable {
 
     public void setProductName(String productName) {
         this.productName = productName;
-    }
-
-    public Long getUnitWeight() {
-        return unitWeight;
-    }
-
-    public void setUnitWeight(Long unitWeight) {
-        this.unitWeight = unitWeight;
-    }
-
-    public Long getUnitVolume() {
-        return unitVolume;
-    }
-
-    public void setUnitVolume(Long unitVolume) {
-        this.unitVolume = unitVolume;
     }
 
     public Long getProductPrice() {
@@ -206,6 +188,30 @@ public class NxtOrderFormProduct implements Serializable {
 
     public void setCommissionRate(Long commissionRate) {
         this.commissionRate = commissionRate;
+    }
+
+    public Long getDatelineDelivery() {
+        return datelineDelivery;
+    }
+
+    public void setDatelineDelivery(Long datelineDelivery) {
+        this.datelineDelivery = datelineDelivery;
+    }
+
+    public Long getDatelinePaid() {
+        return datelinePaid;
+    }
+
+    public void setDatelinePaid(Long datelinePaid) {
+        this.datelinePaid = datelinePaid;
+    }
+
+    public Long getDatelineReceived() {
+        return datelineReceived;
+    }
+
+    public void setDatelineReceived(Long datelineReceived) {
+        this.datelineReceived = datelineReceived;
     }
 
 }

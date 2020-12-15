@@ -7,6 +7,7 @@ import java.util.List;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/24
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 public class NxtStructOrderForm {
 
@@ -72,10 +73,6 @@ public class NxtStructOrderForm {
      * 备注
      */
     private String deliveryRemark;
-    /**
-     * 运费模版名称
-     */
-    private String deliveryConfigName;
     /**
      * 运费
      */
@@ -282,14 +279,6 @@ public class NxtStructOrderForm {
 
     public void setDeliveryRemark(String deliveryRemark) {
         this.deliveryRemark = deliveryRemark;
-    }
-
-    public String getDeliveryConfigName() {
-        return deliveryConfigName;
-    }
-
-    public void setDeliveryConfigName(String deliveryConfigName) {
-        this.deliveryConfigName = deliveryConfigName;
     }
 
     public Float getDeliveryCost() {

@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
  * @author soyojo.earth@gmail.com
  * @time 2020/10/26
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @Component
 public class NxtWebUtilComponent {

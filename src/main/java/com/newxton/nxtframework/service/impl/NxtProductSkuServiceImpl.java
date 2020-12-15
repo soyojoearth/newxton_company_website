@@ -6,6 +6,7 @@ import com.newxton.nxtframework.service.NxtProductSkuService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -86,4 +87,17 @@ public class NxtProductSkuServiceImpl implements NxtProductSkuService {
     public boolean deleteById(Long id) {
         return this.nxtProductSkuDao.deleteById(id) > 0;
     }
+
+    /**
+     * 根据产品id集合查询
+     * @param idList
+     * @return
+     */
+    public List<NxtProductSku> selectByProductIdSet(List<Long> idList){
+        if (idList.size() == 0){
+            return new ArrayList<>();
+        }
+        return this.nxtProductSkuDao.selectByProductIdSet(idList);
+    }
+
 }

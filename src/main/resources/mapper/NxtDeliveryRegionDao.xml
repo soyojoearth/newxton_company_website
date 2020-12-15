@@ -87,4 +87,13 @@
         delete from nxt_delivery_region where id = #{id}
     </delete>
 
+    <!--查询所有地区列表（为tree接口）-->
+    <select id="queryAllRegionForTree" resultMap="BaseResultMap">
+        select
+        id, region_name, region_pid, sort_id
+        from nxt_delivery_region
+        where region_pid is not NULL
+        order by region_pid asc, sort_id asc
+    </select>
+
 </mapper>

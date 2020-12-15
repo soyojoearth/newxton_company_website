@@ -14,8 +14,6 @@
         <result property="freeShipping" column="free_shipping" jdbcType="INTEGER"/>
         <result property="deliveryConfigId" column="delivery_config_id" jdbcType="INTEGER"/>
         <result property="itemNo" column="item_no" jdbcType="VARCHAR"/>
-        <result property="unitWeight" column="unit_weight" jdbcType="INTEGER"/>
-        <result property="unitVolume" column="unit_volume" jdbcType="INTEGER"/>
         <result property="withSku" column="with_sku" jdbcType="INTEGER"/>
         <result property="price" column="price" jdbcType="INTEGER"/>
         <result property="priceDiscount" column="price_discount" jdbcType="INTEGER"/>
@@ -37,7 +35,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
+          id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         where id = #{id}
     </select>
@@ -45,7 +43,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
+          id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         where and is_trash = 0
         order by is_recommend desc, sort_id desc
@@ -54,7 +52,7 @@
 
     <select id="selectByIdSet" resultMap="BaseResultMap">
         SELECT
-        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         WHERE id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
@@ -68,7 +66,7 @@
 
     <select id="selectByCategoryIdSet" resultMap="BaseResultMap">
         SELECT
-        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         WHERE category_id IN
         <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
@@ -93,7 +91,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         <where>
             <if test="id != null">
@@ -125,12 +123,6 @@
             </if>
             <if test="itemNo != null and itemNo != ''">
                 and item_no = #{itemNo}
-            </if>
-            <if test="unitWeight != null and unitWeight != ''">
-                and unit_weight = #{unitWeight}
-            </if>
-            <if test="unitVolume != null and unitVolume != ''">
-                and unit_volume = #{unitVolume}
             </if>
             <if test="withSku != null">
                 and with_sku = #{withSku}
@@ -183,7 +175,7 @@
     <!--通过实体作为筛选条件查询指定行数据-->
     <select id="selectAllByLimit" resultMap="BaseResultMap">
         select
-        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         <where>
             <if test="categoryId != null">
@@ -199,7 +191,7 @@
     <!--根据关键字搜索-->
     <select id="searchAllByLimit" resultMap="BaseResultMap">
         select
-          id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
+          id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         where product_name like #{keyword} and is_trash = 0
         order by is_recommend desc, sort_id desc
@@ -249,12 +241,6 @@
             </if>
             <if test="itemNo != null and itemNo != ''">
                 and item_no = #{itemNo}
-            </if>
-            <if test="unitWeight != null and unitWeight != ''">
-                and unit_weight = #{unitWeight}
-            </if>
-            <if test="unitVolume != null and unitVolume != ''">
-                and unit_volume = #{unitVolume}
             </if>
             <if test="withSku != null">
                 and with_sku = #{withSku}
@@ -306,8 +292,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_product(category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count)
-        values (#{categoryId}, #{brandId}, #{productName}, #{productSubtitle}, #{dealQuantityMin}, #{dealQuantityMax}, #{freeShipping}, #{deliveryConfigId}, #{itemNo}, #{unitWeight}, #{unitVolume}, #{withSku}, #{price}, #{priceDiscount}, #{inventoryQuantity}, #{productDescription}, #{datelineCreate}, #{datelineUpdated}, #{isRecommend}, #{isHot}, #{isNew}, #{isSelling}, #{sortId}, #{isTrash}, #{commissionRate}, #{salsCount})
+        insert into nxt_product(category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count)
+        values (#{categoryId}, #{brandId}, #{productName}, #{productSubtitle}, #{dealQuantityMin}, #{dealQuantityMax}, #{freeShipping}, #{deliveryConfigId}, #{itemNo}, #{withSku}, #{price}, #{priceDiscount}, #{inventoryQuantity}, #{productDescription}, #{datelineCreate}, #{datelineUpdated}, #{isRecommend}, #{isHot}, #{isNew}, #{isSelling}, #{sortId}, #{isTrash}, #{commissionRate}, #{salsCount})
     </insert>
 
     <!--通过主键修改数据-->
@@ -340,12 +326,6 @@
             </if>
             <if test="itemNo != null and itemNo != ''">
                 item_no = #{itemNo},
-            </if>
-            <if test="unitWeight != null">
-                unit_weight = #{unitWeight},
-            </if>
-            <if test="unitVolume != null">
-                unit_volume = #{unitVolume},
             </if>
             <if test="withSku != null">
                 with_sku = #{withSku},
@@ -405,7 +385,7 @@
     <!--通过实体作为筛选条件查询（且字符串字段作为搜索关键词）-->
     <select id="searchQueryAllByMap" parameterType="map" resultMap="BaseResultMap">
         select
-        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         <where>
             <if test="id != null">
@@ -437,12 +417,6 @@
             </if>
             <if test="itemNo != null and itemNo != ''">
                 and item_no = #{itemNo}
-            </if>
-            <if test="unitWeight != null and unitWeight != ''">
-                and unit_weight = #{unitWeight}
-            </if>
-            <if test="unitVolume != null and unitVolume != ''">
-                and unit_volume = #{unitVolume}
             </if>
             <if test="withSku != null">
                 and with_sku = #{withSku}
@@ -530,12 +504,6 @@
             <if test="itemNo != null and itemNo != ''">
                 and item_no = #{itemNo}
             </if>
-            <if test="unitWeight != null and unitWeight != ''">
-                and unit_weight = #{unitWeight}
-            </if>
-            <if test="unitVolume != null and unitVolume != ''">
-                and unit_volume = #{unitVolume}
-            </if>
             <if test="withSku != null">
                 and with_sku = #{withSku}
             </if>
@@ -588,7 +556,7 @@
     <!--前台获取热卖产品列表-->
     <select id="queryAllHot" resultMap="BaseResultMap">
         select
-        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         where is_selling = 1 and is_trash = 0 and is_hot = 1
         order by sort_id desc,dateline_updated desc
@@ -598,7 +566,7 @@
     <!--前台获取推荐产品列表-->
     <select id="queryAllRecommend" resultMap="BaseResultMap">
         select
-        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         where is_selling = 1 and is_trash = 0 and is_recommend = 1
         order by sort_id desc,dateline_updated desc
@@ -608,7 +576,7 @@
     <!--前台获取新品产品列表-->
     <select id="queryAllNew" resultMap="BaseResultMap">
         select
-        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         where is_selling = 1 and is_trash = 0 and is_new = 1
         order by sort_id desc,dateline_updated desc
@@ -618,7 +586,7 @@
     <!--后台admin获取产品列表-->
     <select id="adminQueryAllByLimit" resultMap="BaseResultMap">
         select
-        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, unit_weight, unit_volume, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
+        id, category_id, brand_id, product_name, product_subtitle, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         <where>
             <if test="categoryId != null">
@@ -725,6 +693,14 @@
                 </if>
             </if>
         </where>
+    </select>
+
+    <!--后台admin统计某个运费模版的产品数量-->
+    <select id="adminCountByDeliveryConfigId" resultType="Long">
+    select
+    count(*)
+    from nxt_product
+    where delivery_config_id = #{deliveryConfigId}
     </select>
 
 </mapper>

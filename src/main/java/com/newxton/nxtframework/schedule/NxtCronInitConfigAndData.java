@@ -13,6 +13,7 @@ import javax.annotation.Resource;
  * @author soyojo.earth@gmail.com
  * @time 2020/10/8
  * @address Shenzhen, China
+ * @copyright NxtFramework
  * Cronjob 系统初始化，检查默认配置
  */
 @Component
@@ -40,6 +41,9 @@ public class NxtCronInitConfigAndData {
 
     @Resource
     private NxtTaskCheckAndInitProductCategory nxtTaskCheckAndInitProductCategory;
+
+    @Resource
+    private NxtTaskCheckAndInitUserLevel nxtTaskCheckAndInitUserLevel;
 
     /**
      * 启动时，仅执行一次
@@ -69,6 +73,8 @@ public class NxtCronInitConfigAndData {
         //检查&初始化地区列表
         nxtTaskCheckAndInitDeliveryRegion.exec();
 
+        //检查&初始化用户等级数据
+        nxtTaskCheckAndInitUserLevel.exec();
 
         //检查&初始化示例资讯
 

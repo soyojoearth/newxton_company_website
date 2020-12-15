@@ -19,6 +19,7 @@ import javax.annotation.Resource;
  * @author soyojo.earth@gmail.com
  * @time 2020/10/18
  * @address Shenzhen, China
+ * @copyright NxtFramework
  *
  * 全局设置，放置在数据库的nxt_setting表中
  */
@@ -235,7 +236,7 @@ public class NxtGlobalSettingComponent {
             "getNxtStructSettingCommission",
             "getNxtStructSettingNormal",
             "getNxtStructSettingOssConfig",
-            "NxtStructSettingPayConfig",
+            "getNxtStructSettingPayConfig",
             "getNxtStructSettingEcConfig"
     },allEntries = true,beforeInvocation = false)
     @Transactional(isolation = Isolation.READ_COMMITTED)

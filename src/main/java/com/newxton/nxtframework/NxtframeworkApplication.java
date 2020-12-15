@@ -9,6 +9,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import javax.annotation.PostConstruct;
 import java.util.TimeZone;
 
+/**
+ * @author soyojo.earth@gmail.com
+ * @time 2020/7/21
+ * @address Shenzhen, China
+ * @copyright NxtFramework
+ */
 @MapperScan("com.newxton.nxtframework.dao")
 @SpringBootApplication
 @EnableScheduling

@@ -12,6 +12,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 
+/**
+ * @author soyojo.earth@gmail.com
+ * @time 2020/7/21
+ * @address Shenzhen, China
+ * @copyright NxtFramework
+ */
 @Controller
 public class NxtAboutUsController {
 

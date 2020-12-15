@@ -18,6 +18,7 @@ import java.util.Map;
  * @author soyojo.earth@gmail.com
  * @time 2020/12/3
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @RestController
 public class NxtApiAdminOrderFormUpdateAddressController {
@@ -44,7 +45,6 @@ public class NxtApiAdminOrderFormUpdateAddressController {
         String deliveryPhone = jsonParam.getString("deliveryPhone");
         String deliveryPostcode = jsonParam.getString("deliveryPostcode");
         String deliveryRemark = jsonParam.getString("deliveryRemark");
-        Long deliveryConfigId = jsonParam.getLong("deliveryConfigId");
 
         if (id == null){
             return new NxtStructApiResult(53,"缺少参数：id").toMap();
@@ -78,12 +78,6 @@ public class NxtApiAdminOrderFormUpdateAddressController {
                 //不选不改
                 //return new NxtStructApiResult(53,"国家、省份、城市之一找不到").toMap();
             }
-        }
-
-        NxtDeliveryConfig nxtDeliveryConfig = nxtDeliveryConfigService.queryById(deliveryConfigId);
-
-        if (nxtDeliveryConfig != null){
-            nxtOrderForm.setDeliveryConfigName(nxtDeliveryConfig.getName());
         }
 
         nxtOrderForm.setDeliveryAddress(deliveryAddress);

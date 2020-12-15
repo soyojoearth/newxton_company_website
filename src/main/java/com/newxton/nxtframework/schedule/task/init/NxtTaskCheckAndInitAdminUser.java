@@ -25,6 +25,7 @@ import java.util.Set;
  * @author soyojo.earth@gmail.com
  * @time 2020/12/5
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @Component
 public class NxtTaskCheckAndInitAdminUser {
@@ -97,6 +98,7 @@ public class NxtTaskCheckAndInitAdminUser {
             adminUser.setToken(newToken);
             adminUser.setSalt(salt);
             adminUser.setStatus(0);
+            adminUser.setIsAdmin(1);
             adminUser = nxtUserService.insert(adminUser);
         }
         else {

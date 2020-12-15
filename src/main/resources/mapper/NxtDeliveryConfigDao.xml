@@ -6,13 +6,12 @@
         <!--@Table nxt_delivery_config-->
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="type" column="type" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, name, type
+          id, name
         from nxt_delivery_config
         where id = #{id}
     </select>
@@ -20,7 +19,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, name, type
+          id, name
         from nxt_delivery_config
         limit #{offset}, #{limit}
     </select>
@@ -28,7 +27,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, name, type
+          id, name
         from nxt_delivery_config
         <where>
             <if test="id != null">
@@ -37,17 +36,14 @@
             <if test="name != null and name != ''">
                 and name = #{name}
             </if>
-            <if test="type != null">
-                and type = #{type}
-            </if>
         </where>
-        order by type asc,name asc
+        order by id desc
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_delivery_config(name, type)
-        values (#{name}, #{type})
+        insert into nxt_delivery_config(name)
+        values (#{name})
     </insert>
 
     <!--通过主键修改数据-->
@@ -56,9 +52,6 @@
         <set>
             <if test="name != null and name != ''">
                 name = #{name},
-            </if>
-            <if test="type != null">
-                type = #{type},
             </if>
         </set>
         where id = #{id}

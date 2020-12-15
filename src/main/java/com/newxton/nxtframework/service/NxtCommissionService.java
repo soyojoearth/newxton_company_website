@@ -2,6 +2,7 @@ package com.newxton.nxtframework.service;
 
 import com.newxton.nxtframework.entity.NxtCommission;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.data.relational.core.sql.In;
 
 import java.util.List;
 
@@ -91,5 +92,29 @@ public interface NxtCommissionService {
      * @return
      */
     List<NxtCommission> queryAllWaittingEndingTooLongTime(@Param("datelineReceivedLimit") Long datelineReceivedLimit);
+
+    /**
+     * 后台查询log
+     * @param offset
+     * @param limit
+     * @param userId
+     * @param orderFormId
+     * @param isPaid
+     * @param isReceive
+     * @param isTransfer
+     * @return
+     */
+    List<NxtCommission> adminQueryList(Integer offset, Integer limit, Long userId, Long orderFormId, Boolean isPaid, Boolean isReceive, Boolean isTransfer);
+
+    /**
+     * 后台查询log数量
+     * @param userId
+     * @param orderFormId
+     * @param isPaid
+     * @param isReceive
+     * @param isTransfer
+     * @return
+     */
+    Long adminQueryCount(Long userId, Long orderFormId, Boolean isPaid, Boolean isReceive, Boolean isTransfer);
 
 }

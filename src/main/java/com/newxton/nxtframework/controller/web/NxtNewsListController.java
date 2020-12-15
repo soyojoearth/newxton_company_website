@@ -19,6 +19,12 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author soyojo.earth@gmail.com
+ * @time 2020/7/21
+ * @address Shenzhen, China
+ * @copyright NxtFramework
+ */
 @Controller
 public class NxtNewsListController {
 

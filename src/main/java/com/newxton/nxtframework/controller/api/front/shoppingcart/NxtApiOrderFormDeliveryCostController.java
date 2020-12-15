@@ -17,6 +17,7 @@ import javax.annotation.Resource;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/23
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @RestController
 public class NxtApiOrderFormDeliveryCostController {
@@ -30,7 +31,6 @@ public class NxtApiOrderFormDeliveryCostController {
     @RequestMapping("/api/order_form/delivery_cost")
     public NxtStructApiResult exec(@RequestBody JSONObject jsonParam, @RequestHeader(value = "user_id", required = false) Long userId) {
 
-        Long deliveryConfigId = jsonParam.getLong("deliveryConfigId");
         Long deliveryCountry = jsonParam.getLong("deliveryCountry");
         Long deliveryProvince = jsonParam.getLong("deliveryProvince");
         Long deliveryCity = jsonParam.getLong("deliveryCity");
@@ -43,9 +43,6 @@ public class NxtApiOrderFormDeliveryCostController {
         }
         if (deliveryCity == null){
             return new NxtStructApiResult(54,"缺少城市");
-        }
-        if (deliveryConfigId == null){
-            return new NxtStructApiResult(54,"缺少配送方式");
         }
 
         NxtShoppingCart nxtShoppingCart;
@@ -67,7 +64,6 @@ public class NxtApiOrderFormDeliveryCostController {
             //计算运费
             Long deliveryCost = nxtProcessOrderFormCreate.calculateDeliveryCost(
                     nxtShoppingCart,
-                    deliveryConfigId,
                     deliveryCountry,
                     deliveryProvince,
                     deliveryCity);

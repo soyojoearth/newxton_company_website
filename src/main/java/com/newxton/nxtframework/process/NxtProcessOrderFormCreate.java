@@ -17,6 +17,7 @@ import java.util.*;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/19
  * @address Shenzhen, China
+ * @copyright NxtFramework
  * Process - 创建订单、计算运费、根据折扣计算实际成交价、根据成交价分配佣金（包括三级分销）
  */
 @Component
@@ -73,6 +74,9 @@ public class NxtProcessOrderFormCreate {
     @Resource
     private NxtProcessDeliveryConfig nxtProcessDeliveryConfig;
 
+    @Resource
+    private NxtProcessShoppingCart nxtProcessShoppingCart;
+
     @Transactional(rollbackFor=Exception.class)
     public Long exec(NxtStructOrderFromCreate nxtStructOrderFromCreate, Long userId) throws NxtException{
 
@@ -97,9 +101,6 @@ public class NxtProcessOrderFormCreate {
         if (nxtStructOrderFromCreate.deliveryPostcode == null || nxtStructOrderFromCreate.deliveryPostcode.isEmpty()){
             throw new NxtException("缺少邮编");
         }
-        if (nxtStructOrderFromCreate.deliveryConfigId == null){
-            throw new NxtException("缺少配送方式");
-        }
         if (nxtStructOrderFromCreate.dealPlatform == null){
             throw new NxtException("缺少参数：成交平台（0:web 1:ios 2:android 3:wx ）");
         }
@@ -111,6 +112,35 @@ public class NxtProcessOrderFormCreate {
             throw new NxtException("找不到该用户的购物车");
         }
 
+        List<Long> productIdList = new ArrayList<>();
+        Integer countCartProductInEffect = 0;
+        NxtStructShoppingCart nxtStructShoppingCart = nxtProcessShoppingCart.allDetail(nxtShoppingCart);
+        for (NxtStructShoppingCartProduct cartProduct :
+                nxtStructShoppingCart.getItemList()) {
+            if (cartProduct.getSelected() && !cartProduct.getInvalid()){
+                countCartProductInEffect ++;
+            }
+            productIdList.add(cartProduct.getProductId());
+        }
+        if (countCartProductInEffect.equals(0)){
+            throw new NxtException("购物车内没有选中有效的产品");
+        }
+
+        //先准备好sku列表数据
+        List<NxtProductSku> nxtProductSkuList = nxtProductSkuService.selectByProductIdSet(productIdList);
+        List<Long> skuIdList = new ArrayList<>();
+        for (NxtProductSku nxtProductSku : nxtProductSkuList) {
+            skuIdList.add(nxtProductSku.getId());
+        }
+        List<NxtProductSkuValue> nxtProductSkuValueList = nxtProductSkuValueService.selectBySkuIdSet(0,Integer.MAX_VALUE,skuIdList);
+        List<Long> skuValueIdList = new ArrayList<>();
+        for (NxtProductSkuValue nxtProductSkuValue : nxtProductSkuValueList) {
+            skuValueIdList.add(nxtProductSkuValue.getId());
+        }
+        List<NxtProductSkuValuePriceEtc> nxtProductSkuValuePriceEtcList = nxtProductSkuValuePriceEtcService.selectByValueIdSet(0,Integer.MAX_VALUE,skuValueIdList);
+        //准备好了
+
+
         //查询用户
         NxtUser user = nxtUserService.queryById(userId);
 
@@ -121,26 +151,14 @@ public class NxtProcessOrderFormCreate {
             userLevelDiscount = nxtUserLevel.getDiscount();
         }
 
-        //购物车内的已选中产品列表
-        List<NxtShoppingCartProduct> nxtShoppingCartProductList = nxtShoppingCartProductService.queryAllSelectedProductByShoppingCartId(nxtShoppingCart.getId());
 
-        if (nxtShoppingCartProductList.size() == 0){
-            throw new NxtException("购物车内没有选中的产品");
-        }
-
-        NxtDeliveryConfig nxtDeliveryConfig = nxtDeliveryConfigService.queryById(nxtStructOrderFromCreate.deliveryConfigId);
-
-        if (nxtDeliveryConfig == null){
-            throw new NxtException("运费模版不存在");
-        }
+        Gson gson = new Gson();
 
         //nxt_order_form入库
         NxtOrderForm nxtOrderForm = new NxtOrderForm();
         nxtOrderForm.setUserId(userId);
         nxtOrderForm.setDatelineCreate(System.currentTimeMillis());
         nxtOrderForm.setSerialNum(this.createSerialNum(nxtOrderForm.getDatelineCreate()));//订单编号
-
-        nxtOrderForm.setDeliveryConfigName(nxtDeliveryConfig.getName());
 
         nxtOrderForm.setDeliveryRemark(nxtStructOrderFromCreate.deliveryRemark);
 
@@ -178,7 +196,6 @@ public class NxtProcessOrderFormCreate {
         //计算运费
         Long deliveryCost = calculateDeliveryCost(
                 nxtShoppingCart,
-                nxtStructOrderFromCreate.getDeliveryConfigId(),
                 nxtStructOrderFromCreate.deliveryCountry,
                 nxtStructOrderFromCreate.deliveryProvince,
                 nxtStructOrderFromCreate.deliveryCity);
@@ -191,24 +208,39 @@ public class NxtProcessOrderFormCreate {
         Long amountDiscount = 0L;//折扣金额
         Long amountFinally = 0L;//打折总价
 
-        Long countWeight = null;
-        Long countVolume = null;
-
         NxtStructSettingCommission nxtStructSettingCommission = nxtGlobalSettingComponent.getNxtStructSettingCommission();
 
         //nxt_order_form_product入库，且计算价格
-        for (NxtShoppingCartProduct nxtShoppingCartProduct :
-                nxtShoppingCartProductList) {
+        for (NxtStructShoppingCartProduct nxtStructShoppingCartProduct :
+                nxtStructShoppingCart.getItemList()) {
+
+            if (nxtStructShoppingCartProduct.getInvalid() || !nxtStructShoppingCartProduct.getSelected()){
+                continue;
+            }
 
             //先查询产品
-            NxtProduct nxtProduct = nxtProductService.queryById(nxtShoppingCartProduct.getProductId());
+            NxtProduct nxtProduct = nxtProductService.queryById(nxtStructShoppingCartProduct.getProductId());
 
             if (nxtProduct != null){
+                //累加销量 & 减库存
+                nxtProduct.setSalsCount(nxtProduct.getSalsCount() == null ? 1 : nxtProduct.getSalsCount() + 1);
+                if (nxtProduct.getWithSku() != null && nxtProduct.getWithSku().equals(1)){
+                    //减sku库存
+                    this.reduceProductInventoryQuantityBySku(nxtStructShoppingCartProduct.getSku(),nxtProductSkuList,nxtProductSkuValueList,nxtProductSkuValuePriceEtcList);
+                }
+                else {
+                    if (nxtProduct.getInventoryQuantity() != null && nxtProduct.getInventoryQuantity() > 0){
+                        nxtProduct.setInventoryQuantity(nxtProduct.getInventoryQuantity()-1);
+                    }
+                }
+                nxtProductService.update(nxtProduct);
+
+
 
                 NxtOrderFormProduct nxtOrderFormProduct = new NxtOrderFormProduct();
                 nxtOrderFormProduct.setOrderFormId(nxtOrderForm.getId());
-                nxtOrderFormProduct.setProductId(nxtShoppingCartProduct.getProductId());
-                nxtOrderFormProduct.setQuantity(nxtShoppingCartProduct.getQuantity());
+                nxtOrderFormProduct.setProductId(nxtStructShoppingCartProduct.getProductId());
+                nxtOrderFormProduct.setQuantity(nxtStructShoppingCartProduct.getQuantity());
                 nxtOrderFormProduct.setProductName(nxtProduct.getProductName());
 
                 //查询主图
@@ -220,25 +252,10 @@ public class NxtProcessOrderFormCreate {
                     nxtOrderFormProduct.setProductPicUploadfileId(nxtProductPicture.getUploadfileId());
                 }
 
-                if (nxtProduct.getUnitVolume() != null){
-                    nxtOrderFormProduct.setUnitVolume(nxtProduct.getUnitVolume());
-                    if (countVolume == null){
-                        countVolume = 0L;
-                    }
-                    countVolume += nxtProduct.getUnitVolume();//累加体积
-                }
-                if (nxtProduct.getUnitWeight() != null){
-                    nxtOrderFormProduct.setUnitWeight(nxtProduct.getUnitWeight());
-                    if (countWeight == null){
-                        countWeight = 0L;
-                    }
-                    countWeight += nxtProduct.getUnitWeight();//累加重量
-                }
-
                 if (nxtProduct.getWithSku() > 0){
                     //查询sku对应的产品价格、折扣
-                    if (nxtShoppingCartProduct.getSku() != null){
-                        NxtProductSkuValuePriceEtc skuValuePriceEtc = this.querySkuValuePriceEtc(nxtShoppingCartProduct);
+                    if (nxtStructShoppingCartProduct.getSku().size() > 0){
+                        NxtProductSkuValuePriceEtc skuValuePriceEtc = this.querySkuValuePriceEtc(nxtStructShoppingCartProduct.getSku(),nxtProductSkuList,nxtProductSkuValueList,nxtProductSkuValuePriceEtcList);
                         if (skuValuePriceEtc != null) {
                             nxtOrderFormProduct.setProductPrice(skuValuePriceEtc.getSkuValuePrice());
                             nxtOrderFormProduct.setProductPriceDiscount(skuValuePriceEtc.getSkuValuePriceDiscount());
@@ -250,7 +267,7 @@ public class NxtProcessOrderFormCreate {
                     else {
                         throw new NxtException("购物车的物品缺少sku信息");
                     }
-                    nxtOrderFormProduct.setProductSku(nxtShoppingCartProduct.getSku());//json
+                    nxtOrderFormProduct.setProductSku(gson.toJson(nxtStructShoppingCartProduct.getSku()));//json
                 }
                 else {
                     //直接得到产品价格、折扣
@@ -273,7 +290,11 @@ public class NxtProcessOrderFormCreate {
 
                 nxtOrderFormProductService.insert(nxtOrderFormProduct);
 
-                if (user.getInviterUserId() != null) {
+                if (user.getInviterUserId() != null &&
+                        nxtStructSettingCommission.getOnoff() &&
+                        user.getDatelineCreate() != null &&
+                        System.currentTimeMillis() - user.getDatelineCreate() < nxtStructSettingCommission.getInviterExpirationDays() * 86400000L
+                ) {
 
                     //待瓜分的佣金占产品成交价的比率（数据库）
                     Long commissionRate = nxtProduct.getCommissionRate();
@@ -281,6 +302,11 @@ public class NxtProcessOrderFormCreate {
                     if (commissionRate == null){
                         commissionRate = nxtStructSettingCommission.getDefaultProductCommissionRate();
                     }
+
+                    //佣金比率
+                    nxtOrderFormProduct.setCommissionRate(commissionRate);
+                    //更新佣金比率
+                    nxtOrderFormProductService.update(nxtOrderFormProduct);
 
                     //三个分销佣金等级配置
                     Long commissionRateLevel1 = nxtStructSettingCommission.getCommissionRateLevel1();
@@ -293,11 +319,6 @@ public class NxtProcessOrderFormCreate {
                     if (inviterUser1 != null) {
 
                         //1、一级分销佣金
-
-                        //佣金比率
-                        nxtOrderFormProduct.setCommissionRate(commissionRate);
-                        //更新佣金比率
-                        nxtOrderFormProductService.update(nxtOrderFormProduct);
 
                         //计入佣金表
                         NxtCommission nxtCommission1 = new NxtCommission();
@@ -410,56 +431,37 @@ public class NxtProcessOrderFormCreate {
 
 
         //最最后，才删除购物车选中的产品
-//        for (NxtShoppingCartProduct nxtShoppingCartProduct :
-//                nxtShoppingCartProductList) {
-//            nxtShoppingCartProductService.deleteById(nxtShoppingCartProduct.getId());
-//        }
+        for (NxtStructShoppingCartProduct nxtStructShoppingCartProduct : nxtStructShoppingCart.getItemList()) {
+            nxtShoppingCartProductService.deleteById(nxtStructShoppingCartProduct.getId());
+        }
 
         return nxtOrderForm.getId();
     }
 
     /**
-     * 查询购物车中产品sku对应的NxtProductSkuValuePriceEtc
-     * @param nxtShoppingCartProduct
+     * 查找sku的价格
+     * @param skuList
+     * @param nxtProductSkuList
+     * @param nxtProductSkuValueList
+     * @param nxtProductSkuValuePriceEtcList
      * @return
      */
-    private NxtProductSkuValuePriceEtc querySkuValuePriceEtc(NxtShoppingCartProduct nxtShoppingCartProduct) {
+    private NxtProductSkuValuePriceEtc querySkuValuePriceEtc(List<NxtStructShoppingCartProductSku> skuList,List<NxtProductSku> nxtProductSkuList, List<NxtProductSkuValue> nxtProductSkuValueList, List<NxtProductSkuValuePriceEtc> nxtProductSkuValuePriceEtcList){
 
-        Long skuValueId1 = null;//第1个sku值id
-        Long skuValueId2 = null;//第2个sku值id
+        Long skuValueId1 = null;
+        Long skuValueId2 = null;
 
-        /**
-         * nxtShoppingCartProduct.getSku()的内容一般是这样的：
-         * 一个json数组 [{"skuKeyName":"颜色","skuValueName":"白色"},{"skuKeyName":"尺码","skuValueName":"XL"}]
-         * 然后根据sku文字，去数据库里面查询对应的价格、库存、折扣（NxtProductSkuValuePriceEtc）
-         */
-
-        Gson gson = new Gson();
-        List<NxtStructShoppingCartProductSku> productSkuListSubmit = gson.fromJson(nxtShoppingCartProduct.getSku(), new TypeToken<List<NxtStructShoppingCartProductSku>>(){}.getType());
-
-        //第1步：寻找该产品的所有sku
-        NxtProductSku nxtProductSkuCondition = new NxtProductSku();
-        nxtProductSkuCondition.setProductId(nxtShoppingCartProduct.getProductId());
-        List<NxtProductSku> nxtProductSkuList = nxtProductSkuService.queryAll(nxtProductSkuCondition);
-        for (NxtStructShoppingCartProductSku cartProductSku :
-                productSkuListSubmit) {
-            for (NxtProductSku nxtProductSku:
-                    nxtProductSkuList) {
-                //第2步：遍历匹配出对应的NxtProductSku
-                if (nxtProductSku.getSkuKeyName().equals(cartProductSku.getSkuKeyName())){
-                    NxtProductSkuValue nxtProductSkuValueCondition = new NxtProductSkuValue();
-                    nxtProductSkuValueCondition.setSkuId(nxtProductSku.getId());
-                    //第3步：查询该NxtProductSku下的所有sku值
-                    List<NxtProductSkuValue> nxtProductSkuValueList = nxtProductSkuValueService.queryAll(nxtProductSkuValueCondition);
-                    for (NxtProductSkuValue nxtProductSkuValue :
-                            nxtProductSkuValueList) {
-                        //第4步：遍历匹配出对应的NxtProductSkuValue
-                        if (nxtProductSkuValue.getSkuValueName().equals(cartProductSku.getSkuValueName())) {
-                            //第5步：保存sku value 的id
+        for (NxtStructShoppingCartProductSku sku :
+                skuList) {
+            for (NxtProductSku productSku : nxtProductSkuList) {
+                if (sku.getSkuKeyName().equals(productSku.getSkuKeyName())){
+                    for (NxtProductSkuValue skuValue : nxtProductSkuValueList){
+                        if (productSku.getId().equals(skuValue.getSkuId()) && skuValue.getSkuValueName().equals(sku.getSkuValueName())){
                             if (skuValueId1 == null) {
-                                skuValueId1 = nxtProductSkuValue.getId();
-                            } else if (skuValueId2 == null) {
-                                skuValueId2 = nxtProductSkuValue.getId();
+                                skuValueId1 = skuValue.getId();
+                            }
+                            else if (skuValueId2 == null){
+                                skuValueId2 = skuValue.getId();
                             }
                         }
                     }
@@ -467,152 +469,245 @@ public class NxtProcessOrderFormCreate {
             }
         }
 
-        //最后：根据保存的2个sku value的id，查询NxtProductSkuValuePriceEtc
-        if (skuValueId1 != null && skuValueId2 != null){
-            NxtProductSkuValuePriceEtc nxtProductSkuValuePriceEtcCondition = new NxtProductSkuValuePriceEtc();
-            nxtProductSkuValuePriceEtcCondition.setSkuValueId1(skuValueId1);
-            nxtProductSkuValuePriceEtcCondition.setSkuValueId2(skuValueId2);
-            List<NxtProductSkuValuePriceEtc> nxtProductSkuValuePriceEtcList =nxtProductSkuValuePriceEtcService.queryAll(nxtProductSkuValuePriceEtcCondition);
-            if (nxtProductSkuValuePriceEtcList.size() == 0) {
-                nxtProductSkuValuePriceEtcCondition.setSkuValueId1(skuValueId2);
-                nxtProductSkuValuePriceEtcCondition.setSkuValueId2(skuValueId1);
-                nxtProductSkuValuePriceEtcList = nxtProductSkuValuePriceEtcService.queryAll(nxtProductSkuValuePriceEtcCondition);
+        if (skuValueId1 == null && skuValueId2 == null){
+            return null;
+        }
+
+        for (NxtProductSkuValuePriceEtc priceEtc : nxtProductSkuValuePriceEtcList){
+            //双sku
+            if (
+                    (
+                            skuValueId1 != null && priceEtc.getSkuValueId1().equals(skuValueId1) &&
+                                    skuValueId2 != null && priceEtc.getSkuValueId2().equals(skuValueId2)
+                    )
+                            ||
+                            (
+                                    skuValueId2 != null && priceEtc.getSkuValueId1().equals(skuValueId2) &&
+                                            skuValueId1 != null && priceEtc.getSkuValueId2().equals(skuValueId1)
+                            )
+            ){
+                return priceEtc;
             }
-            //第一条就是了
-            if (nxtProductSkuValuePriceEtcList.size() > 0){
-                NxtProductSkuValuePriceEtc nxtProductSkuValuePriceEtc = nxtProductSkuValuePriceEtcList.get(0);
-                return nxtProductSkuValuePriceEtc;
+        }
+
+        for (NxtProductSkuValuePriceEtc priceEtc : nxtProductSkuValuePriceEtcList){
+            //单sku
+            if (
+                    (
+                            skuValueId1 != null && priceEtc.getSkuValueId1().equals(skuValueId1) ||
+                                    skuValueId2 != null && priceEtc.getSkuValueId2().equals(skuValueId2)
+                    )
+                            ||
+                            (
+                                    skuValueId2 != null && priceEtc.getSkuValueId1().equals(skuValueId2) ||
+                                            skuValueId1 != null && priceEtc.getSkuValueId2().equals(skuValueId1)
+                            )
+            ){
+                return priceEtc;
             }
         }
 
         return null;
+    }
+
+    /**
+     * 减sku的库存
+     * @param skuList
+     * @param nxtProductSkuList
+     * @param nxtProductSkuValueList
+     * @param nxtProductSkuValuePriceEtcList
+     */
+    private void reduceProductInventoryQuantityBySku(List<NxtStructShoppingCartProductSku> skuList,List<NxtProductSku> nxtProductSkuList, List<NxtProductSkuValue> nxtProductSkuValueList, List<NxtProductSkuValuePriceEtc> nxtProductSkuValuePriceEtcList) throws NxtException{
+
+        Long skuValueId1 = null;
+        Long skuValueId2 = null;
+
+        for (NxtStructShoppingCartProductSku sku :
+                skuList) {
+            for (NxtProductSku productSku : nxtProductSkuList) {
+                if (sku.getSkuKeyName().equals(productSku.getSkuKeyName())){
+                    for (NxtProductSkuValue skuValue : nxtProductSkuValueList){
+                        if (productSku.getId().equals(skuValue.getSkuId()) && skuValue.getSkuValueName().equals(sku.getSkuValueName())){
+                            if (skuValueId1 == null) {
+                                skuValueId1 = skuValue.getId();
+                            }
+                            else if (skuValueId2 == null){
+                                skuValueId2 = skuValue.getId();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (skuValueId1 == null && skuValueId2 == null){
+            throw new NxtException("sku减库存出错");
+        }
+
+        for (NxtProductSkuValuePriceEtc priceEtc : nxtProductSkuValuePriceEtcList){
+            //双sku
+            if (
+                    (
+                            skuValueId1 != null && priceEtc.getSkuValueId1().equals(skuValueId1) &&
+                                    skuValueId2 != null && priceEtc.getSkuValueId2().equals(skuValueId2)
+                    )
+                            ||
+                            (
+                                    skuValueId2 != null && priceEtc.getSkuValueId1().equals(skuValueId2) &&
+                                            skuValueId1 != null && priceEtc.getSkuValueId2().equals(skuValueId1)
+                            )
+            ){
+                if (priceEtc.getSkuValueInventoryQuantity() != null && priceEtc.getSkuValueInventoryQuantity() > 0) {
+                    priceEtc.setSkuValueInventoryQuantity(priceEtc.getSkuValueInventoryQuantity()-1);
+                    nxtProductSkuValuePriceEtcService.update(priceEtc);
+                    return;
+                }
+            }
+        }
+
+        for (NxtProductSkuValuePriceEtc priceEtc : nxtProductSkuValuePriceEtcList){
+            //单sku
+            if (
+                    (
+                            skuValueId1 != null && priceEtc.getSkuValueId1().equals(skuValueId1) ||
+                                    skuValueId2 != null && priceEtc.getSkuValueId2().equals(skuValueId2)
+                    )
+                            ||
+                            (
+                                    skuValueId2 != null && priceEtc.getSkuValueId1().equals(skuValueId2) ||
+                                            skuValueId1 != null && priceEtc.getSkuValueId2().equals(skuValueId1)
+                            )
+            ){
+                if (priceEtc.getSkuValueInventoryQuantity() != null && priceEtc.getSkuValueInventoryQuantity() > 0) {
+                    priceEtc.setSkuValueInventoryQuantity(priceEtc.getSkuValueInventoryQuantity()-1);
+                    nxtProductSkuValuePriceEtcService.update(priceEtc);
+                    return;
+                }
+            }
+        }
 
     }
 
     /**
-     * 根据购物车，运费模版编号，国家、省份、城市，计算运费
+     * 根据购物车，国家、省份、城市，计算运费
      * @param nxtShoppingCart
-     * @param nxtDeliveryConfigId
      * @param deliveryCountry
      * @param deliveryProvince
      * @param deliveryCity
      * @return
      */
-    public Long calculateDeliveryCost(NxtShoppingCart nxtShoppingCart, Long nxtDeliveryConfigId, Long deliveryCountry, Long deliveryProvince, Long deliveryCity) throws NxtException{
+    public Long calculateDeliveryCost(NxtShoppingCart nxtShoppingCart, Long deliveryCountry, Long deliveryProvince, Long deliveryCity) throws NxtException{
 
-        //运费模版
-        NxtDeliveryConfig nxtDeliveryConfig = nxtDeliveryConfigService.queryById(nxtDeliveryConfigId);
-        NxtStructDeliveryConfig nxtStructDeliveryConfig = nxtProcessDeliveryConfig.getDeliveryConfigAllDetail(nxtDeliveryConfig);
+        //拿出所有运费模版数据
+        Map<Long,NxtStructDeliveryConfig> mapDeliveryConfig = new HashMap<>();
+        List<NxtDeliveryConfig> nxtDeliveryConfigList = nxtDeliveryConfigService.queryAllByLimit(0,Integer.MAX_VALUE);
+        for (NxtDeliveryConfig nxtDeliveryConfig : nxtDeliveryConfigList) {
+            NxtStructDeliveryConfig mapItemAllDetailG = nxtProcessDeliveryConfig.getDeliveryConfigAllDetail(nxtDeliveryConfig);
+            mapDeliveryConfig.put(nxtDeliveryConfig.getId(),mapItemAllDetailG);
+        }
+
+        List<NxtStructDeliveryConfigItem> listConfigItem = new ArrayList<>();
+
+        //各运费规则下的产品数量
+        Map<Long,Long> mapConfigItemIdToProductQuantity = new HashMap<>();
+
+        //第一步：找出产品所匹配的运费规则条目 ConfigItem
 
         //购物车内的已选中产品列表
+        List<Long> productIdList = new ArrayList<>();
+        Map<Long,Long> mapProductIdToQuantity = new HashMap<>();
         List<NxtShoppingCartProduct> nxtShoppingCartProductList = nxtShoppingCartProductService.queryAllSelectedProductByShoppingCartId(nxtShoppingCart.getId());
-
-        Long countQuantity = 0L;
-        Long countWeight = 0L;
-        Long countVolume = 0L;
-        if (nxtDeliveryConfig.getType().equals(3))//类型：（1:按重量 2:按体积 3:按件数）
-        {
-            for (NxtShoppingCartProduct cartProduct : nxtShoppingCartProductList) {
-                countQuantity += cartProduct.getQuantity();
+        for (NxtShoppingCartProduct cartProduct : nxtShoppingCartProductList) {
+            if (cartProduct.getSelected().equals(1)) {//已选中的产品
+                productIdList.add(cartProduct.getProductId());
+                mapProductIdToQuantity.put(cartProduct.getProductId(), cartProduct.getQuantity());
             }
         }
-        else if (nxtDeliveryConfig.getType().equals(1))//类型：（1:按重量 2:按体积 3:按件数）
-        {
-            for (NxtShoppingCartProduct cartProduct : nxtShoppingCartProductList) {
-                NxtProduct product = nxtProductService.queryById(cartProduct.getProductId());
-                if (product.getUnitWeight() != null) {
-                    countWeight += product.getUnitWeight();
-                }
-            }
-        }
-        else if (nxtDeliveryConfig.getType().equals(2))//类型：（1:按重量 2:按体积 3:按件数）
-        {
-            for (NxtShoppingCartProduct cartProduct : nxtShoppingCartProductList) {
-                NxtProduct product = nxtProductService.queryById(cartProduct.getProductId());
-                if (product.getUnitVolume() != null) {
-                    countVolume += product.getUnitVolume();
-                }
-            }
+        //查询产品运费模版
+        Map<Long,Long> mapProductIdToConfigId = new HashMap<>();
+        List<NxtProduct> nxtProductList = nxtProductService.selectByIdSet(0,Integer.MAX_VALUE,productIdList);
+        for (NxtProduct nxtProduct : nxtProductList) {
+            mapProductIdToConfigId.put(nxtProduct.getId(),nxtProduct.getDeliveryConfigId());
         }
 
-        NxtStructDeliveryConfigItem configItemRight = null;
-
-        List<NxtStructDeliveryConfigItem> configItemList = nxtStructDeliveryConfig.getItemList();
-
-        //先匹配City
-        for (NxtStructDeliveryConfigItem configItem : configItemList) {
-            List<NxtStructDeliveryCofnigItemRegion> regionList = configItem.getRegionList();
-            for (NxtStructDeliveryCofnigItemRegion itemRegion : regionList) {
-                if (itemRegion.getRegionId().equals(deliveryCity)){
-                    configItemRight = configItem;
-                }
+        //找出产品所匹配的运费规则条目 ConfigItem
+        for (Long productId : productIdList) {
+            NxtStructDeliveryConfig nxtDeliveryConfig = mapDeliveryConfig.getOrDefault(mapProductIdToConfigId.getOrDefault(productId,0L),null);
+            if (nxtDeliveryConfig == null){
+                continue;
             }
-        }
-
-        if (configItemRight == null) {
-            //再匹配Province
+            List<NxtStructDeliveryConfigItem> configItemList = nxtDeliveryConfig.getItemList();
+            //进行匹配
+            NxtStructDeliveryConfigItem configItemRight = null;
+            //先匹配City
             for (NxtStructDeliveryConfigItem configItem : configItemList) {
                 List<NxtStructDeliveryCofnigItemRegion> regionList = configItem.getRegionList();
                 for (NxtStructDeliveryCofnigItemRegion itemRegion : regionList) {
-                    if (itemRegion.getRegionId().equals(deliveryProvince)) {
+                    if (itemRegion.getRegionId().equals(deliveryCity)){
                         configItemRight = configItem;
                     }
                 }
             }
-        }
-
-        if (configItemRight == null) {
-            //最后，匹配Country
-            for (NxtStructDeliveryConfigItem configItem : configItemList) {
-                List<NxtStructDeliveryCofnigItemRegion> regionList = configItem.getRegionList();
-                for (NxtStructDeliveryCofnigItemRegion itemRegion : regionList) {
-                    if (itemRegion.getRegionId().equals(deliveryCountry)) {
-                        configItemRight = configItem;
+            if (configItemRight == null) {
+                //再匹配Province
+                for (NxtStructDeliveryConfigItem configItem : configItemList) {
+                    List<NxtStructDeliveryCofnigItemRegion> regionList = configItem.getRegionList();
+                    for (NxtStructDeliveryCofnigItemRegion itemRegion : regionList) {
+                        if (itemRegion.getRegionId().equals(deliveryProvince)) {
+                            configItemRight = configItem;
+                        }
                     }
+                }
+            }
+            if (configItemRight == null) {
+                //最后，匹配Country
+                for (NxtStructDeliveryConfigItem configItem : configItemList) {
+                    List<NxtStructDeliveryCofnigItemRegion> regionList = configItem.getRegionList();
+                    for (NxtStructDeliveryCofnigItemRegion itemRegion : regionList) {
+                        if (itemRegion.getRegionId().equals(deliveryCountry)) {
+                            configItemRight = configItem;
+                        }
+                    }
+                }
+            }
+            if (configItemRight != null) {
+                listConfigItem.add(configItemRight);
+                //累加各运费规则下的产品数量
+                Long quantity = mapProductIdToQuantity.get(productId);
+                if (quantity != null) {
+                    Long quantityOld = mapConfigItemIdToProductQuantity.getOrDefault(configItemRight.getId(),0L);
+                    mapConfigItemIdToProductQuantity.put(configItemRight.getId(), quantity+quantityOld);
                 }
             }
         }
 
-        if (configItemRight == null) {
-            throw new NxtException("没找对对应地区的运费模版条目");
-        }
+        Map<Long,Float> mapAdditionPrice = new HashMap<>();
+        List<Float> listAdditionPrice = new ArrayList<>();
 
-        if (nxtDeliveryConfig.getType().equals(3))//类型：（1:按重量 2:按体积 3:按件数）
-        {
-            if (countQuantity > configItemRight.getBillableQuantity()){
-                Float cost = configItemRight.getBillablePrice() + (countQuantity - configItemRight.getBillableQuantity()) / (float)configItemRight.getAdditionQuantity() * configItemRight.getAdditionPrice();
-                return (long)Math.round(cost * 100);//返回Long，放大100倍
+        Float maxBillablePrice = 0F;
+        //确定匹配上运费最贵的那个 ConfigItem 条目，作为起步价
+        for (NxtStructDeliveryConfigItem configItem : listConfigItem) {
+            maxBillablePrice = Math.max(maxBillablePrice,configItem.getBillablePrice());
+            if (!mapConfigItemIdToProductQuantity.containsKey(configItem.getId())){
+                continue;
             }
-            else {
-                Float cost = configItemRight.getBillablePrice();
-                return (long)Math.round(cost * 100);//返回Long，放大100倍
-            }
-
-
-        }
-        else if (nxtDeliveryConfig.getType().equals(1)){//类型：（1:按重量 2:按体积 3:按件数）
-
-            if (countWeight > configItemRight.getBillableQuantity()) {//重量单位：克
-                Float cost = configItemRight.getBillablePrice() + (float)Math.ceil((countWeight - configItemRight.getBillableQuantity()) / (float)configItemRight.getAdditionQuantity()) * configItemRight.getAdditionPrice();
-                return (long)Math.round(cost * 100);//返回Long，放大100倍
-            }
-            else {
-                Float cost = configItemRight.getBillablePrice();
-                return (long)Math.round(cost * 100);//返回Long，放大100倍
-            }
-        }
-        else  if (nxtDeliveryConfig.getType().equals(2)){//类型：（1:按重量 2:按体积 3:按件数）
-            if (countVolume / 1000000F > configItemRight.getBillableQuantity()) {//体积单位：立法米（数据库存储放大了100万倍）
-                Float cost = configItemRight.getBillablePrice() + (float)Math.ceil((countVolume / 1000000F - configItemRight.getBillableQuantity()) / (float)configItemRight.getAdditionQuantity()) * configItemRight.getAdditionPrice();
-                return (long)Math.round(cost * 100);//返回Long，放大100倍
-            }
-            else {
-                Float cost = configItemRight.getBillablePrice();
-                return (long)Math.round(cost * 100);//返回Long，放大100倍
+            Long countQuantity = mapConfigItemIdToProductQuantity.get(configItem.getId());
+            //仅计算续件部分的价格
+            if (countQuantity > configItem.getBillableQuantity()){
+                Float cost = (countQuantity - configItem.getBillableQuantity()) / (float)configItem.getAdditionQuantity() * configItem.getAdditionPrice();
+                mapAdditionPrice.put(configItem.getId(),cost);
+                listAdditionPrice.add(cost);
             }
         }
 
-        throw new NxtException("运费计算失败");
+        Float additionPriceTotal = 0F;
+        //计算各 ConfigItem 中 的 续费总价
+        for (Float addPrice : listAdditionPrice) {
+            additionPriceTotal += addPrice;
+        }
+
+        //1个起步价+各个续费总价=运费
+        return (long)((maxBillablePrice + additionPriceTotal)*100L);
 
     }
 

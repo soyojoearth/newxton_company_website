@@ -55,6 +55,15 @@ public interface NxtUserService {
     List<NxtUser> queryAllByLimit(int offset, int limit);
 
     /**
+     * 查询所有管理员
+     *
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    List<NxtUser> queryAllAdminUserByLimit(@Param("offset") int offset, @Param("limit") int limit);
+
+    /**
      * 新增数据
      *
      * @param nxtUser 实例对象
@@ -135,5 +144,29 @@ public interface NxtUserService {
      * @return NxtUser
      */
     NxtUser removeEmailById(@Param("id") Long id);
+
+    /**
+     * 获取会员列表
+     * @param offset
+     * @param limit
+     * @param userId
+     * @param username
+     * @param levelNum
+     * @param datelineCreateBegin
+     * @param datelineCreateEnd
+     * @return
+     */
+    List<NxtUser> adminQueryMemberList(Long offset, Long limit, Long userId, String username, Integer levelNum, Long datelineCreateBegin, Long datelineCreateEnd);
+
+    /**
+     * 获取会员统计数字
+     * @param userId
+     * @param username
+     * @param levelNum
+     * @param datelineCreateBegin
+     * @param datelineCreateEnd
+     * @return
+     */
+    Long adminQueryMemberCount(Long userId, String username, Integer levelNum, Long datelineCreateBegin, Long datelineCreateEnd);
 
 }

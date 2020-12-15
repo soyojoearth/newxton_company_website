@@ -7,6 +7,7 @@ import com.newxton.nxtframework.entity.NxtOrderFormRefundDelivery;
 import com.newxton.nxtframework.service.NxtOrderFormRefundDeliveryService;
 import com.newxton.nxtframework.service.NxtOrderFormRefundService;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import javax.annotation.Resource;
  * @author soyojo.earth@gmail.com
  * @time 2020/12/8
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @RestController
 public class NxtApiOrderFormRefundUpdateDeliveryController {
@@ -28,6 +30,7 @@ public class NxtApiOrderFormRefundUpdateDeliveryController {
     @Resource
     private NxtOrderFormRefundDeliveryService nxtOrderFormRefundDeliveryService;
 
+    @Transactional(rollbackFor=Exception.class)
     @RequestMapping("/api/order_form_refund/update_delivery")
     public NxtStructApiResult exec(@RequestBody JSONObject jsonParam, @RequestHeader(value = "user_id", required = true) Long userId) {
 
@@ -75,6 +78,10 @@ public class NxtApiOrderFormRefundUpdateDeliveryController {
         else {
             nxtOrderFormRefundDeliveryService.update(nxtOrderFormRefundDelivery);
         }
+
+        nxtOrderFormRefund.setStatus(5);
+        nxtOrderFormRefundService.update(nxtOrderFormRefund);
+
 
         return new NxtStructApiResult();
 

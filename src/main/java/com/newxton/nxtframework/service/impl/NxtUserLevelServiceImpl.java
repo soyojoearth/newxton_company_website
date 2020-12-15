@@ -41,6 +41,14 @@ public class NxtUserLevelServiceImpl implements NxtUserLevelService {
     }
 
     /**
+     * 查询levelNum最大的那个
+     * @return
+     */
+    public NxtUserLevel queryMaxOne(){
+        return this.nxtUserLevelDao.queryMaxOne();
+    }
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置
@@ -50,6 +58,18 @@ public class NxtUserLevelServiceImpl implements NxtUserLevelService {
     @Override
     public List<NxtUserLevel> queryAllByLimit(int offset, int limit) {
         return this.nxtUserLevelDao.queryAllByLimit(offset, limit);
+    }
+
+
+    /**
+     * 通过实体作为筛选条件查询
+     *
+     * @param nxtUserLevel 实例对象
+     * @return 对象列表
+     */
+    @Override
+    public List<NxtUserLevel> queryAll(NxtUserLevel nxtUserLevel){
+        return this.nxtUserLevelDao.queryAll(nxtUserLevel);
     }
 
     /**

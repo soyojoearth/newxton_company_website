@@ -10,7 +10,7 @@
         <result property="status" column="status" jdbcType="INTEGER"/>
         <result property="amount" column="amount" jdbcType="INTEGER"/>
         <result property="datelineCreate" column="dateline_create" jdbcType="INTEGER"/>
-        <result property="datelineEnd" column="dateline_end" jdbcType="VARCHAR"/>
+        <result property="datelineEnd" column="dateline_end" jdbcType="INTEGER"/>
         <result property="platform" column="platform" jdbcType="INTEGER"/>
         <result property="platformPerson" column="platform_person" jdbcType="VARCHAR"/>
         <result property="platformAccount" column="platform_account" jdbcType="VARCHAR"/>
@@ -59,7 +59,7 @@
             <if test="datelineCreate != null">
                 and dateline_create = #{datelineCreate}
             </if>
-            <if test="datelineEnd != null and datelineEnd != ''">
+            <if test="datelineEnd != null">
                 and dateline_end = #{datelineEnd}
             </if>
             <if test="platform != null">
@@ -108,7 +108,7 @@
             <if test="datelineCreate != null">
                 dateline_create = #{datelineCreate},
             </if>
-            <if test="datelineEnd != null and datelineEnd != ''">
+            <if test="datelineEnd != null">
                 dateline_end = #{datelineEnd},
             </if>
             <if test="platform != null">
@@ -160,6 +160,38 @@
             sum(amount)
         from nxt_withdraw
         where user_id = #{userId} and status = 2
+    </select>
+
+    <!--后台查询列表-->
+    <select id="adminQueryList" resultMap="BaseResultMap">
+        select
+        id, user_id, transaction_id, status, amount, dateline_create, dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin
+        from nxt_withdraw
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        order by id desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--后台查询数量统计-->
+    <select id="adminQueryCount" resultType="Long">
+        select
+        count(*)
+        from nxt_withdraw
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
     </select>
 
 </mapper>

@@ -75,6 +75,17 @@ public class NxtUserServiceImpl implements NxtUserService {
     }
 
     /**
+     * 查询所有管理员
+     *
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    public List<NxtUser> queryAllAdminUserByLimit(@Param("offset") int offset, @Param("limit") int limit){
+        return this.nxtUserDao.queryAllAdminUserByLimit(offset, limit);
+    }
+
+    /**
      * 新增数据
      *
      * @param nxtUser 实例对象
@@ -186,5 +197,36 @@ public class NxtUserServiceImpl implements NxtUserService {
         this.nxtUserDao.removeEmailById(id);
         return this.queryById(id);
     }
+
+    /**
+     * 获取会员列表
+     * @param offset
+     * @param limit
+     * @param userId
+     * @param username
+     * @param levelNum
+     * @param datelineCreateBegin
+     * @param datelineCreateEnd
+     * @return
+     */
+    @Override
+    public List<NxtUser> adminQueryMemberList(Long offset, Long limit, Long userId, String username, Integer levelNum, Long datelineCreateBegin, Long datelineCreateEnd){
+        return this.nxtUserDao.adminQueryMemberList(offset, limit, userId, username, levelNum, datelineCreateBegin, datelineCreateEnd);
+    }
+
+    /**
+     * 获取会员统计数字
+     * @param userId
+     * @param username
+     * @param levelNum
+     * @param datelineCreateBegin
+     * @param datelineCreateEnd
+     * @return
+     */
+    @Override
+    public Long adminQueryMemberCount(Long userId, String username, Integer levelNum, Long datelineCreateBegin, Long datelineCreateEnd){
+        return this.nxtUserDao.adminQueryMemberCount(userId, username, levelNum, datelineCreateBegin, datelineCreateEnd);
+    }
+
 
 }
