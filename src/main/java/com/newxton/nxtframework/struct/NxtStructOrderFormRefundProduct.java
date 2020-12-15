@@ -7,6 +7,7 @@ import java.util.List;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/25
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 public class NxtStructOrderFormRefundProduct {
 

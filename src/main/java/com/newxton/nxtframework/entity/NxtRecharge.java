@@ -6,18 +6,22 @@ import java.io.Serializable;
  * (NxtRecharge)实体类
  *
  * @author makejava
- * @since 2020-11-23 20:34:35
+ * @since 2020-12-14 19:34:48
  */
 public class NxtRecharge implements Serializable {
-    private static final long serialVersionUID = 698842583411524433L;
+    private static final long serialVersionUID = 346138542683584711L;
     /**
     * 充值表
     */
     private Long id;
     
+    private String serialNum;
+    
     private Long userId;
     
     private Long transactionId;
+    
+    private Long orderFormId;
     /**
     * 状态（0:正在充值 1:成功 -1:失败）
     */
@@ -58,6 +62,14 @@ public class NxtRecharge implements Serializable {
         this.id = id;
     }
 
+    public String getSerialNum() {
+        return serialNum;
+    }
+
+    public void setSerialNum(String serialNum) {
+        this.serialNum = serialNum;
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -72,6 +84,14 @@ public class NxtRecharge implements Serializable {
 
     public void setTransactionId(Long transactionId) {
         this.transactionId = transactionId;
+    }
+
+    public Long getOrderFormId() {
+        return orderFormId;
+    }
+
+    public void setOrderFormId(Long orderFormId) {
+        this.orderFormId = orderFormId;
     }
 
     public Integer getStatus() {

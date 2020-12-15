@@ -18,6 +18,7 @@ import java.util.Map;
  * @author soyojo.earth@gmail.com
  * @time 2020/10/8
  * @address Shenzhen, China
+ * @copyright NxtFramework
  * Cronjob 分销佣金
  */
 @Component

@@ -16,6 +16,7 @@ import java.util.Map;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/12
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @RestController
 public class NxtApiAdminSettingOssConfigSaveController {

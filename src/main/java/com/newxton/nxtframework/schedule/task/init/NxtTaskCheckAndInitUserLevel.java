@@ -17,6 +17,7 @@ import javax.annotation.Resource;
  * @author soyojo.earth@gmail.com
  * @time 2020/12/10
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @Component
 public class NxtTaskCheckAndInitUserLevel {

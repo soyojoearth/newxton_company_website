@@ -17,6 +17,7 @@ import java.util.*;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/19
  * @address Shenzhen, China
+ * @copyright NxtFramework
  * Process - 创建订单、计算运费、根据折扣计算实际成交价、根据成交价分配佣金（包括三级分销）
  */
 @Component

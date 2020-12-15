@@ -13,6 +13,7 @@ import java.util.*;
  * @author soyojo.earth@gmail.com
  * @time 2020/10/22
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @RestController
 public class NxtApiAdminAclRoleListController {

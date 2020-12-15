@@ -9,6 +9,7 @@ import java.util.Random;
  * @author soyojo.earth@gmail.com
  * @time 2020/9/6
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @Component
 public class NxtUtilComponent {

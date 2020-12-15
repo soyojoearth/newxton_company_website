@@ -6,6 +6,7 @@ import org.springframework.data.relational.core.sql.In;
  * @author soyojo.earth@gmail.com
  * @time 2020/12/7
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 public class NxtStructAdminProductReviewsItem {
 

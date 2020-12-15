@@ -22,6 +22,7 @@ import java.util.Set;
  * @author soyojo.earth@gmail.com
  * @time 2020/12/5
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @Component
 public class NxtTaskCheckAndInitAclAction {

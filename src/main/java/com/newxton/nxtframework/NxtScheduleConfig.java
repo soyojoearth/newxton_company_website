@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
  * @author soyojo.earth@gmail.com
  * @time 2020/9/29
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @Configuration
 public class NxtScheduleConfig implements SchedulingConfigurer {

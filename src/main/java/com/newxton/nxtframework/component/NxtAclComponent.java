@@ -17,6 +17,7 @@ import java.util.*;
  * @author soyojo.earth@gmail.com
  * @time 2020/10/21
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @Component
 public class NxtAclComponent {

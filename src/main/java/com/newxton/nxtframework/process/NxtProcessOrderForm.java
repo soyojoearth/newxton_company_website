@@ -21,6 +21,7 @@ import java.util.*;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/24
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @Component
 public class NxtProcessOrderForm {

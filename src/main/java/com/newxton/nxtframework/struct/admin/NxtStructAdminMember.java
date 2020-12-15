@@ -4,6 +4,7 @@ package com.newxton.nxtframework.struct.admin;
  * @author soyojo.earth@gmail.com
  * @time 2020/12/9
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 public class NxtStructAdminMember {
     /**

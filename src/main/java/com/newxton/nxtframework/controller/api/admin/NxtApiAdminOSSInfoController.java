@@ -18,6 +18,7 @@ import java.util.Map;
  * @author soyojo.earth@gmail.com
  * @time 2020/10/27
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @RestController
 public class NxtApiAdminOSSInfoController {

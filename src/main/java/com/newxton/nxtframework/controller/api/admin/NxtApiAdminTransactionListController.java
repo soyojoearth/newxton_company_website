@@ -20,6 +20,7 @@ import java.util.*;
  * @author soyojo.earth@gmail.com
  * @time 2020/12/9
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @RestController
 public class NxtApiAdminTransactionListController {

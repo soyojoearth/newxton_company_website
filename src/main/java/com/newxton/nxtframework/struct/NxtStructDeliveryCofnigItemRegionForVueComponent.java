@@ -11,6 +11,7 @@ import java.util.Map;
  * @author soyojo.earth@gmail.com
  * @time 2020/12/10
  * @address Shenzhen, China
+ * @copyright NxtFramework
  * Api接口数据结构：运费模版中的条目的地区 2
  *
  * 有个前端地区选择的组件，需要这个数据（前端工程师太弱鸡，组装不了这个数据）

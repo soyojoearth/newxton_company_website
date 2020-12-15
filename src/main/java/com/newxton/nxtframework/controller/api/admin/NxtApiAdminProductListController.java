@@ -23,7 +23,8 @@ import java.util.*;
  * @address Shenzhen, China
  * @copyright NxtFramework
  */
-@RestController
+//舍弃
+//@RestController
 public class NxtApiAdminProductListController {
 
     @Resource

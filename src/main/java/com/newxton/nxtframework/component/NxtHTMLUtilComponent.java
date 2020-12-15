@@ -1,6 +1,5 @@
 package com.newxton.nxtframework.component;
 
-import com.gargoylesoftware.htmlunit.AjaxController;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -14,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author soyojo.earth@gmail.com
  * @time 2020/10/28
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @Component
 public class NxtHTMLUtilComponent {

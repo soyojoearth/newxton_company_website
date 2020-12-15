@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * @author soyojo.earth@gmail.com
  * @time 2020/11/28
  * @address Shenzhen, China
+ * @copyright NxtFramework
  */
 @RestController
 public class NxtApiUserRechargeCreateController {
@@ -62,7 +64,7 @@ public class NxtApiUserRechargeCreateController {
         }
 
         NxtRecharge nxtRecharge = new NxtRecharge();
-
+        nxtRecharge.setSerialNum(this.createSerialNum(System.currentTimeMillis()));
         nxtRecharge.setUserId(userId);
         nxtRecharge.setStatus(0);//状态（0:正在充值 1:成功 -1:失败）
         nxtRecharge.setPlatform(platform);//平台（0:银行 1:微信 2:支付宝 3:paypal 888:现金）
@@ -72,12 +74,47 @@ public class NxtApiUserRechargeCreateController {
 
         nxtRechargeService.insert(nxtRecharge);
 
-
-        //开发阶段测试自动充值
-        data.put("redirectURL",nxtWebUtilComponent.getDomainPath()+"/test_recharge?id="+nxtRecharge.getId());
+        if (paymentMethod.equals("alipay")){
+            //生成支付宝付款链接或其它付款凭证放入data
+            data.put("redirectURL", nxtWebUtilComponent.getDomainPath() + "/payment/alipay?serial_num=" + nxtRecharge.getSerialNum());
+        }
+        else if (paymentMethod.equals("wxpay")){
+            //生成微信付款链接
+            data.put("redirectURL", nxtWebUtilComponent.getDomainPath() + "/payment/wxpay?serial_num=" + nxtRecharge.getSerialNum());
+        }
+        else if (paymentMethod.equals("paypal")){
+            //生成paypal付款链接
+            data.put("redirectURL", nxtWebUtilComponent.getDomainPath() + "/payment/paypal?serial_num=" + nxtRecharge.getSerialNum());
+        }
 
         return new NxtStructApiResult(data);
 
     }
+
+    /**
+     * 生成充值订单号码
+     * @return
+     */
+    private String createSerialNum(Long dateline){
+        String serialNum = "NXT-RH-" + dateline + this.getRandomUppercaseLetter(6);
+        return serialNum;
+    }
+
+    /**
+     * 取随机大写字母
+     * @param length
+     * @return
+     */
+    public String getRandomUppercaseLetter(int length) {
+        String str = "ACFHKLPQSTUVWXYZ";
+        Random random = new Random();
+        StringBuffer buffet = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            int number = random.nextInt(str.length() - 1);
+            buffet.append(str.charAt(number));
+        }
+        return buffet.toString();
+    }
+
 
 }

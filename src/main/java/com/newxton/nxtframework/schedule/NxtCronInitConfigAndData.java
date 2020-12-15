@@ -13,6 +13,7 @@ import javax.annotation.Resource;
  * @author soyojo.earth@gmail.com
  * @time 2020/10/8
  * @address Shenzhen, China
+ * @copyright NxtFramework
  * Cronjob 系统初始化，检查默认配置
  */
 @Component

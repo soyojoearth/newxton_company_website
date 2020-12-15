@@ -4,6 +4,7 @@ package com.newxton.nxtframework.struct;
  * @author soyojo.earth@gmail.com
  * @time 2020/12/1
  * @address Shenzhen, China
+ * @copyright NxtFramework
  * 受邀者（下家）
  */
 public class NxtStructInvitees {

@@ -19,6 +19,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author soyojo.earth@gmail.com
+ * @time 2020/8/18
+ * @address Shenzhen, China
+ * @copyright NxtFramework
+ */
 @RestController
 public class NxtApiProductListNewController {
 

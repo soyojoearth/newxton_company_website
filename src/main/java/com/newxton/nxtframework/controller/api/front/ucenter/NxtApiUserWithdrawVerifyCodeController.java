@@ -14,6 +14,7 @@ import javax.annotation.Resource;
  * @author soyojo.earth@gmail.com
  * @time 2020/11/28
  * @address Shenzhen, China
+ * @copyright NxtFramework
  * 提现验证码
  */
 @RestController

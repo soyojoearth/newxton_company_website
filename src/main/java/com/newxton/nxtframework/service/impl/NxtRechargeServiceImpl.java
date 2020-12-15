@@ -32,6 +32,17 @@ public class NxtRechargeServiceImpl implements NxtRechargeService {
     }
 
     /**
+     * 通过serialNum查询单条数据
+     *
+     * @param serialNum
+     * @return 实例对象
+     */
+    @Override
+    public NxtRecharge queryBySerialNum(String serialNum){
+        return this.nxtRechargeDao.queryBySerialNum(serialNum);
+    }
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置
