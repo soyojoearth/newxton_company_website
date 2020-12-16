@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (NxtProduct)实体类
  *
  * @author makejava
- * @since 2020-12-10 17:33:37
+ * @since 2020-12-15 20:29:35
  */
 public class NxtProduct implements Serializable {
-    private static final long serialVersionUID = -58409406665610051L;
+    private static final long serialVersionUID = 294822362667118422L;
     
     private Long id;
     
@@ -24,6 +24,18 @@ public class NxtProduct implements Serializable {
     * 副标题（营销使用）
     */
     private String productSubtitle;
+    /**
+    * 标签（逗号隔开）
+    */
+    private String productTags;
+    /**
+    * 产品评分(0-5星，放大10倍)
+    */
+    private Integer productRatings;
+    /**
+    * 产品站外地址（第三方平台）
+    */
+    private String externalUrl;
     /**
     * 单次最少购买
     */
@@ -142,6 +154,30 @@ public class NxtProduct implements Serializable {
 
     public void setProductSubtitle(String productSubtitle) {
         this.productSubtitle = productSubtitle;
+    }
+
+    public String getProductTags() {
+        return productTags;
+    }
+
+    public void setProductTags(String productTags) {
+        this.productTags = productTags;
+    }
+
+    public Integer getProductRatings() {
+        return productRatings;
+    }
+
+    public void setProductRatings(Integer productRatings) {
+        this.productRatings = productRatings;
+    }
+
+    public String getExternalUrl() {
+        return externalUrl;
+    }
+
+    public void setExternalUrl(String externalUrl) {
+        this.externalUrl = externalUrl;
     }
 
     public Long getDealQuantityMin() {

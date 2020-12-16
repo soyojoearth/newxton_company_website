@@ -52,7 +52,9 @@ public class NxtIndexController {
          */
 
         //轮播广告
-        NxtStructApiResult dataBanner = nxtApiBannerListController.exec("首页");
+        JSONObject jsonParamBanner= new JSONObject();
+        jsonParamBanner.put("locationName","首页");
+        NxtStructApiResult dataBanner = nxtApiBannerListController.exec(jsonParamBanner);
         model.addObject("bannerList",dataBanner.getResult());
 
         //两款新品

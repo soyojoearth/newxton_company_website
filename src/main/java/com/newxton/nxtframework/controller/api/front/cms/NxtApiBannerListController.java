@@ -1,11 +1,13 @@
 package com.newxton.nxtframework.controller.api.front.cms;
 
+import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.component.NxtUploadImageComponent;
 import com.newxton.nxtframework.entity.NxtBanner;
 import com.newxton.nxtframework.entity.NxtUploadfile;
 import com.newxton.nxtframework.service.NxtBannerService;
 import com.newxton.nxtframework.service.NxtUploadfileService;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +37,9 @@ public class NxtApiBannerListController {
     private NxtUploadImageComponent nxtUploadImageComponent;
 
     @RequestMapping("/api/banner_list")
-    public NxtStructApiResult exec(@RequestParam("location_name") String locationName) {
+    public NxtStructApiResult exec(@RequestBody JSONObject jsonParam) {
+
+        String locationName = jsonParam.getString("locationName");
 
         //热门搜索
         NxtBanner nxtBannerCondition = new NxtBanner();
@@ -60,7 +64,8 @@ public class NxtApiBannerListController {
             if (fileIdMapUrlPath.containsKey(banner.getUploadfileId())) {
                 String urlPath = fileIdMapUrlPath.get(banner.getUploadfileId()).toString();
                 Map<String, Object> item = new HashMap<>();
-                item.put("urlpath", nxtUploadImageComponent.convertImagePathToDomainImagePath(urlPath));
+                item.put("urlPathFull", nxtUploadImageComponent.convertImagePathToFullDomainImagePath(urlPath));
+                item.put("urlPath", nxtUploadImageComponent.convertImagePathToDomainImagePath(urlPath));
                 item.put("clickUrl", banner.getClickUrl());
                 resultList.add(item);
             }

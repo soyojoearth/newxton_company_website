@@ -37,6 +37,9 @@ public class NxtStructUserInfo {
      */
     private String inviteUrlQrImageUrl;
 
+    private Integer status;
+    private String statusText;
+
     public String getUsername() {
         return username;
     }
@@ -93,4 +96,19 @@ public class NxtStructUserInfo {
         this.inviteUrlQrImageUrl = inviteUrlQrImageUrl;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getStatusText() {
+        return statusText;
+    }
+
+    public void setStatusText(String statusText) {
+        this.statusText = statusText;
+    }
 }
