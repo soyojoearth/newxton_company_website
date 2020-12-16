@@ -54,6 +54,9 @@ public class NxtProcessProduct {
         nxtStructProduct.setBrandId(nxtProduct.getBrandId());
         nxtStructProduct.setProductName(nxtProduct.getProductName());
         nxtStructProduct.setProductSubtitle(nxtProduct.getProductSubtitle());
+        nxtStructProduct.setProductTags(nxtProduct.getProductTags() == null ? "" : nxtProduct.getProductTags());
+        nxtStructProduct.setProductRatings(nxtProduct.getProductRatings() != null ? nxtProduct.getProductRatings()/10F : null);
+        nxtStructProduct.setExternalUrl(nxtProduct.getExternalUrl() == null ? "" : nxtProduct.getExternalUrl());
         nxtStructProduct.setDealQuantityMin(nxtProduct.getDealQuantityMin());
         nxtStructProduct.setDealQuantityMax(nxtProduct.getDealQuantityMax());
         nxtStructProduct.setFreeShipping(nxtProduct.getFreeShipping() != null && nxtProduct.getFreeShipping() > 0);
@@ -252,6 +255,11 @@ public class NxtProcessProduct {
         product.setBrandId(nxtStructProduct.getBrandId());
         product.setProductName(nxtStructProduct.getProductName());
         product.setProductSubtitle(nxtStructProduct.getProductSubtitle());
+        product.setProductTags(nxtStructProduct.getProductTags().replace("，",","));
+        if (nxtStructProduct.getProductRatings() != null) {
+            product.setProductRatings((int) (nxtStructProduct.getProductRatings() * 10));
+        }
+        product.setExternalUrl(nxtStructProduct.getExternalUrl());
         product.setDealQuantityMin(nxtStructProduct.getDealQuantityMin());
         product.setDealQuantityMax(nxtStructProduct.getDealQuantityMax());
         product.setFreeShipping(nxtStructProduct.getFreeShipping() ? 1 : 0);

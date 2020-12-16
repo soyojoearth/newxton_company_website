@@ -228,17 +228,22 @@ public class NxtApiProductListController {
         }
 
 
-        for (NxtProduct product:
-                productList) {
+        for (NxtProduct product : productList) {
+            String[] tags = {};
             Map<String,Object> item = new HashMap<>();
             item.put("id",product.getId());
             item.put("productName",product.getProductName());
             item.put("productSubtitle",product.getProductSubtitle());
+            item.put("productTags",product.getProductTags() != null ? product.getProductTags().split(",") : tags);
+            item.put("productRatings", product.getProductRatings() != null ? product.getProductRatings() / 10F : null);
+            item.put("externalUrl",product.getExternalUrl());
             if (mapProductFirstPicture.containsKey(product.getId())){
                 item.put("picUrl",nxtUploadImageComponent.convertImagePathToDomainImagePath(mapProductFirstPicture.get(product.getId())));
+                item.put("picUrlFull",nxtUploadImageComponent.convertImagePathToFullDomainImagePath(mapProductFirstPicture.get(product.getId())));
             }
             else {
-                item.put("picUrl","");
+                item.put("picUrl","/common/images/empty.png");
+                item.put("picUrlFull",nxtUploadImageComponent.convertImagePathToFullDomainImagePath("/common/images/empty.png"));
             }
             resultList.add(item);
         }

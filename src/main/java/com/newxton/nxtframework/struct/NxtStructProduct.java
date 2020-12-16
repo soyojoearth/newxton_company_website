@@ -18,6 +18,9 @@ public class NxtStructProduct {
     public Long brandId;
     public String productName;
     public String productSubtitle;
+    public String productTags;
+    public Float productRatings;
+    public String externalUrl;
     public Long dealQuantityMin;
     public Long dealQuantityMax;
     public Boolean freeShipping;
@@ -79,6 +82,30 @@ public class NxtStructProduct {
 
     public void setProductSubtitle(String productSubtitle) {
         this.productSubtitle = productSubtitle;
+    }
+
+    public String getProductTags() {
+        return productTags;
+    }
+
+    public void setProductTags(String productTags) {
+        this.productTags = productTags;
+    }
+
+    public Float getProductRatings() {
+        return productRatings;
+    }
+
+    public void setProductRatings(Float productRatings) {
+        this.productRatings = productRatings;
+    }
+
+    public String getExternalUrl() {
+        return externalUrl;
+    }
+
+    public void setExternalUrl(String externalUrl) {
+        this.externalUrl = externalUrl;
     }
 
     public Long getDealQuantityMin() {

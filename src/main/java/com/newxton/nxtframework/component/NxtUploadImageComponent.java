@@ -48,6 +48,9 @@ public class NxtUploadImageComponent {
     @Resource
     private HttpServletRequest request;
 
+    @Resource
+    private NxtWebUtilComponent nxtWebUtilComponent;
+
     private String getOssLocation(){
         String ossLocation = nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssLocation();
         return ossLocation;
@@ -178,6 +181,23 @@ public class NxtUploadImageComponent {
         }
         if (imagePath.contains("/public_pic")){
             return imagePath;
+        }
+        else {
+            return this.getOssQiniuDomain() + imagePath;
+        }
+    }
+
+    /**
+     * 给imagePath加上图片域名(包含本站图片)
+     * @param imagePath
+     * @return
+     */
+    public String convertImagePathToFullDomainImagePath(String imagePath){
+        if (imagePath == null){
+            return null;
+        }
+        if (imagePath.contains("/public_pic")){
+            return nxtWebUtilComponent.getDomainPath() + imagePath;
         }
         else {
             return this.getOssQiniuDomain() + imagePath;

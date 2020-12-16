@@ -26,7 +26,7 @@ public class NxtApiUserEmailUpdateVerifyCodeController {
     private NxtProcessVerifyCode nxtProcessVerifyCode;
 
     @RequestMapping(value = "/api/user/email/update/verify_code", method = RequestMethod.POST)
-    public NxtStructApiResult index(@RequestHeader(value = "user_id", required = true) Long userId, @RequestBody JSONObject jsonParam) {
+    public NxtStructApiResult index(@RequestHeader(value = "user_id", required = false) Long userId, @RequestBody JSONObject jsonParam) {
 
         NxtUser user = nxtUserService.queryById(userId);
 

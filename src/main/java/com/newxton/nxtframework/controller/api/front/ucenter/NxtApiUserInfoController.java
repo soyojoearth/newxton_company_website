@@ -67,6 +67,16 @@ public class NxtApiUserInfoController {
         nxtStructUserInfo.setInviteUrl(inviteUrl);
         nxtStructUserInfo.setInviteUrlQrImageUrl(inviteQrCodePicUrl);
 
+        if (user.getStatus() != null){
+            nxtStructUserInfo.setStatus(user.getStatus());
+            if (user.getStatus().equals(-1)){
+                nxtStructUserInfo.setStatusText("黑名单");
+            }
+            if (user.getStatus().equals(0)){
+                nxtStructUserInfo.setStatusText("正常");
+            }
+        }
+
         if (user.getAvatarId() != null){
             NxtUploadfile nxtUploadfile = nxtUploadfileService.queryById(user.getAvatarId());
             nxtStructUserInfo.setAvatarPicUrl(nxtUploadfile.getUrlpath());

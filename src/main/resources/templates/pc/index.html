@@ -15,7 +15,7 @@
         <div class="slider-banner">
             <div class="slider-banner-pic">
                 <a th:each="b : ${bannerList}" th:href="${b.clickUrl}">
-                    <img th:src="${b.urlpath + '?imageView2/1/w/960/h/340/q/75'}">
+                    <img th:src="${b.urlPath + '?imageView2/1/w/960/h/340/q/75'}">
                 </a>
             </div>
             <div class="slider-banner-dot">
