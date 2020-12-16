@@ -54,9 +54,9 @@ public class NxtProcessProduct {
         nxtStructProduct.setBrandId(nxtProduct.getBrandId());
         nxtStructProduct.setProductName(nxtProduct.getProductName());
         nxtStructProduct.setProductSubtitle(nxtProduct.getProductSubtitle());
-        nxtStructProduct.setProductTags(nxtProduct.getProductTags());
+        nxtStructProduct.setProductTags(nxtProduct.getProductTags() == null ? "" : nxtProduct.getProductTags());
         nxtStructProduct.setProductRatings(nxtProduct.getProductRatings() != null ? nxtProduct.getProductRatings()/10F : null);
-        nxtStructProduct.setExternalUrl(nxtProduct.getExternalUrl());
+        nxtStructProduct.setExternalUrl(nxtProduct.getExternalUrl() == null ? "" : nxtProduct.getExternalUrl());
         nxtStructProduct.setDealQuantityMin(nxtProduct.getDealQuantityMin());
         nxtStructProduct.setDealQuantityMax(nxtProduct.getDealQuantityMax());
         nxtStructProduct.setFreeShipping(nxtProduct.getFreeShipping() != null && nxtProduct.getFreeShipping() > 0);
