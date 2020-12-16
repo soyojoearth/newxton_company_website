@@ -157,3 +157,8 @@ UI设计：Rong Kai
 
 前端开发：soyojo、ieyieyss、阿 Fa、hexiao、Remondcl、yunian
 
+
+
+#### 如需要我们团队进行二次开发，请加微信：
+
+![Wechat-nap](gitbook_resource/Wechat-nap.jpeg)
