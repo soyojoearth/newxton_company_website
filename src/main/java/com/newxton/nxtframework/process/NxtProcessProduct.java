@@ -55,7 +55,7 @@ public class NxtProcessProduct {
         nxtStructProduct.setProductName(nxtProduct.getProductName());
         nxtStructProduct.setProductSubtitle(nxtProduct.getProductSubtitle());
         nxtStructProduct.setProductTags(nxtProduct.getProductTags());
-        nxtStructProduct.setProductRatings(nxtProduct.getProductRatings()/10F);
+        nxtStructProduct.setProductRatings(nxtProduct.getProductRatings() != null ? nxtProduct.getProductRatings()/10F : null);
         nxtStructProduct.setExternalUrl(nxtProduct.getExternalUrl());
         nxtStructProduct.setDealQuantityMin(nxtProduct.getDealQuantityMin());
         nxtStructProduct.setDealQuantityMax(nxtProduct.getDealQuantityMax());
