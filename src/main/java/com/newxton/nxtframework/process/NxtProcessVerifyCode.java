@@ -30,26 +30,6 @@ public class NxtProcessVerifyCode {
      */
     public Long createAndSendPhoneOrEmailVerifyCode(String phoneOrEmail,Integer type) throws NxtException {
 
-        //检查格式
-        if (phoneOrEmail.contains("@")){
-            //检查email格式
-            String regEmail = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";//邮箱校验
-            Pattern pattern = Pattern.compile(regEmail);
-            Matcher matcher = pattern.matcher(phoneOrEmail);
-            if (!matcher.matches()) {
-                throw new NxtException("请输入正确的邮箱");
-            }
-        }
-        else {
-            //检查手机格式
-            String regPhone = "^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\\d{8}$";//手机号校验
-            Pattern pattern = Pattern.compile(regPhone);
-            Matcher matcher = pattern.matcher(phoneOrEmail);
-            if (!matcher.matches()) {
-                throw new NxtException("请输入正确的手机号");
-            }
-        }
-
         //判断频率限制
         NxtUserVerify nxtUserVerifyLast = nxtUserVerifyService.queryLastByPhoneOrEmail(phoneOrEmail);
         if (nxtUserVerifyLast != null){

@@ -9,6 +9,8 @@ import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author soyojo.earth@gmail.com
@@ -39,6 +41,14 @@ public class NxtApiUserEmailUpdateVerifyCodeController {
 
         if (email == null || email.isEmpty()){
             return new NxtStructApiResult(54,"请提供email");
+        }
+
+        //检查email格式
+        String regEmail = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";//邮箱校验
+        Pattern pattern = Pattern.compile(regEmail);
+        Matcher matcher = pattern.matcher(email);
+        if (!matcher.matches()) {
+            return new NxtStructApiResult(54,"请输入正确的email");
         }
 
         //-1：解除绑定 1：绑定账户 2：找回密码 3：提现验证
