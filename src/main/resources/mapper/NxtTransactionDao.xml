@@ -43,6 +43,7 @@
           id, user_id, amount, balance, dateline, type, outer_id
         from nxt_transaction
         where user_id = #{userId}
+        order by id desc
         limit #{offset}, #{limit}
     </select>
 
