@@ -56,6 +56,16 @@ public class NxtApiProductListController {
         Integer requirePages = jsonParam.getInteger("requirePages");
         String searchKeyword = jsonParam.getString("searchKeyword");
 
+        //1按价格从高到低 -1按价格从低到高 2按更新时间从近到远 -2按更新时间从远到近
+        Integer orderType = jsonParam.getInteger("orderType");
+
+        if (searchKeyword != null && searchKeyword.trim().isEmpty()){
+            searchKeyword = null;
+        }
+        if (searchKeyword != null){
+            searchKeyword = "%" + searchKeyword.trim() + "%";
+        }
+
         Map<String, Object> data = new HashMap<>();
 
         if (limit == null || limit < 1){
@@ -95,55 +105,22 @@ public class NxtApiProductListController {
             }
         }
         else {
-            //产品类别
-            List<NxtProductCategory> productCategoryList = nxtProductCategoryService.queryAll(new NxtProductCategory());
-            //全部类别
-            for (NxtProductCategory productCategory :
-                    productCategoryList) {
-                categoryIdList.add(productCategory.getId());
-            }
+            //忽略产品类别
+            categoryIdList = null;
         }
 
-        //仅按分类筛选
-        if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
+        List<NxtProduct> list = this.nxtProductService.searchAllByLimit(offset,limit,categoryIdList,searchKeyword,orderType);
 
-            List<NxtProduct> list;
+        List<Map<String,Object>> listProduct = setProductListWithFirstPicture(list);
 
-            if (categoryIdList.size() > 0) {
-                list = this.nxtProductService.selectByCategoryIdSet(offset, limit, categoryIdList);
-            }
-            else {
-                list = this.nxtProductService.queryAllByLimit(offset, limit);
-            }
+        data.put("productList", listProduct);
 
-            List<Map<String, Object>> productList = setProductListWithFirstPicture(list);
+        if (requirePages != null && requirePages > 0) {
+            //分页统计
+            Long count = nxtProductService.searchAllCount(categoryIdList,searchKeyword);
+            Long pages = (long) Math.ceil((double) count / (double) limit);
 
-            data.put("productList", productList);
-
-            if (requirePages != null && requirePages > 0) {
-                //分页统计
-                Long count = nxtProductService.countByCategoryIdSet(categoryIdList);
-                Long pages = (long) Math.ceil((double)count / (double)limit);
-                data.put("pages", pages);
-            }
-
-        }
-        else {//仅按关键词筛选
-
-            List<NxtProduct> list = this.nxtProductService.searchAllByLimit(offset,limit,"%"+searchKeyword+"%");
-
-            List<Map<String,Object>> listProduct = setProductListWithFirstPicture(list);
-
-            data.put("productList", listProduct);
-
-            if (requirePages != null && requirePages > 0) {
-                //分页统计
-                Long count = nxtProductService.searchAllCount("%" + searchKeyword + "%");
-                Long pages = (long) Math.ceil((double) count / (double) limit);
-
-                data.put("pages", pages);
-            }
-
+            data.put("pages", pages);
         }
 
         return new NxtStructApiResult(data);
@@ -245,6 +222,7 @@ public class NxtApiProductListController {
                 item.put("picUrl","/common/images/empty.png");
                 item.put("picUrlFull",nxtUploadImageComponent.convertImagePathToFullDomainImagePath("/common/images/empty.png"));
             }
+            item.put("salsCount",product.getSalsCount() != null ? product.getSalsCount() : 0);
             resultList.add(item);
         }
 

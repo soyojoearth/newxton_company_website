@@ -44,6 +44,8 @@ public class NxtProductListController {
         jsonParamProductList.put("requirePages", 1);
         jsonParamProductList.put("offset", (page-1)*limit);
         jsonParamProductList.put("limit", limit);
+//        jsonParamProductList.put("orderType", null);//1按价格从高到低 -1按价格从低到高 2按更新时间从近到远 -2按更新时间从远到近
+
         NxtStructApiResult dataProductList = nxtApiProductListController.exec(jsonParamProductList);
 
         //产品分类

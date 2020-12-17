@@ -59,13 +59,26 @@ public interface NxtProductService {
                                            @Param("categoryIdList") List<Long> categoryIdList);
 
     /**
-     * 通过搜索关键字查询数据
-     * @param offset 查询起始位置
-     * @param limit 查询条数
-     * @return 对象列表
+     * 通过搜索关键字、产品分类、排序方式查询数据
+     * @param offset
+     * @param limit
+     * @param categoryIdList
+     * @param keyword
+     * @param orderType
+     * @return
      */
     List<NxtProduct> searchAllByLimit(@Param("offset") int offset, @Param("limit") int limit,
-                                      @Param("keyword") String keyword);
+                                      @Param("categoryIdList") List<Long> categoryIdList,
+                                      @Param("keyword") String keyword, @Param("orderType") Integer orderType);
+
+
+    /**
+     * 通过搜索关键字、产品分类Count
+     * @param categoryIdList
+     * @param keyword
+     * @return
+     */
+    Long searchAllCount(@Param("categoryIdList") List<Long> categoryIdList, @Param("keyword") String keyword);
 
     /**
      * 通过分类id列表作为筛选条件查询Count
@@ -73,11 +86,6 @@ public interface NxtProductService {
      */
     Long countByCategoryIdSet(@Param("categoryIdList") List<Long> categoryIdList);
 
-    /**
-     * 通过搜索关键字查询Count
-     * @return 对象列表
-     */
-    Long searchAllCount(@Param("keyword") String keyword);
 
     /**
      * 通过实体作为筛选条件查询Count

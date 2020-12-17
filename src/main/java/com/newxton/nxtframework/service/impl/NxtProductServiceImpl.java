@@ -85,14 +85,34 @@ public class NxtProductServiceImpl implements NxtProductService {
     }
 
     /**
-     * 通过搜索关键字查询数据
-     * @param offset 查询起始位置
-     * @param limit 查询条数
-     * @return 对象列表
+     * 通过搜索关键字、产品分类、排序方式查询数据
+     * @param offset
+     * @param limit
+     * @param categoryIdList
+     * @param keyword
+     * @param orderType
+     * @return
      */
     public List<NxtProduct> searchAllByLimit(@Param("offset") int offset, @Param("limit") int limit,
-                                             @Param("keyword") String keyword){
-        return this.nxtProductDao.searchAllByLimit(offset, limit, keyword);
+                                             @Param("categoryIdList") List<Long> categoryIdList,
+                                             @Param("keyword") String keyword, @Param("orderType") Integer orderType){
+        if (categoryIdList != null && categoryIdList.size()==0){
+            categoryIdList = null;
+        }
+        return this.nxtProductDao.searchAllByLimit(offset, limit, categoryIdList, keyword, orderType);
+    }
+
+    /**
+     * 通过搜索关键字、产品分类Count
+     * @param categoryIdList
+     * @param keyword
+     * @return
+     */
+    public Long searchAllCount(@Param("categoryIdList") List<Long> categoryIdList, @Param("keyword") String keyword){
+        if (categoryIdList != null && categoryIdList.size()==0){
+            categoryIdList = null;
+        }
+        return this.nxtProductDao.searchAllCount(categoryIdList,keyword);
     }
 
     /**
@@ -104,14 +124,6 @@ public class NxtProductServiceImpl implements NxtProductService {
             return 0L;
         }
         return this.nxtProductDao.countByCategoryIdSet(categoryIdList);
-    }
-
-    /**
-     * 通过搜索关键字查询Count
-     * @return 对象列表
-     */
-    public Long searchAllCount(@Param("keyword") String keyword){
-        return this.nxtProductDao.searchAllCount(keyword);
     }
 
     /**
