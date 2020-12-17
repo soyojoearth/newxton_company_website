@@ -210,9 +210,11 @@ public class NxtApiProductListController {
         for (NxtProduct product : productList) {
             Float priceFinally = 0F;
             if (product.getPrice() != null){
-                priceFinally = product.getPrice()/100F;
                 if (product.getPriceDiscount() != null){
                     priceFinally = product.getPrice() * product.getPriceDiscount() / 100F / 100F;
+                }
+                else {
+                    priceFinally = product.getPrice()/100F;
                 }
             }
             priceFinally = Float.valueOf(decimalFormat.format(priceFinally));
@@ -220,8 +222,8 @@ public class NxtApiProductListController {
             Map<String,Object> item = new HashMap<>();
             item.put("id",product.getId());
             item.put("productName",product.getProductName());
-            item.put("productInitial",product.getPrice() != null ? product.getPrice() : 0F);
-            item.put("productFinally",priceFinally);
+            item.put("priceInitial",product.getPrice() != null ? product.getPrice()/100F : 0F);
+            item.put("priceFinally",priceFinally);
             item.put("productSubtitle",product.getProductSubtitle());
             item.put("productTags",product.getProductTags() != null ? product.getProductTags().split(",") : tags);
             item.put("productRatings", product.getProductRatings() != null ? product.getProductRatings() / 10F : null);
