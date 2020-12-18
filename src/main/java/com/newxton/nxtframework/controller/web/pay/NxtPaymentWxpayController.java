@@ -19,9 +19,8 @@ public class NxtPaymentWxpayController {
     @RequestMapping("/payment/wxpay")
     public ModelAndView index(Device device, ModelAndView model, @RequestParam("serial_num") String serialNum) {
 
-        // TODO
 
-        model.addObject("body","微信付款还在调试对接中...请更换付款方式");
+        model.addObject("body","微信支付功能暂不免费提供，请联系我们进行二次开发。或者自行开发。");
 
         model.setViewName("common/payment_wxpay");
 

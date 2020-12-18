@@ -12,7 +12,7 @@ typora-copy-images-to: ./gitbook_resource
 
 
 
-#### 本项目很快开发完成，感谢关注，敬请期待：
+#### 本项目拥有以下重点功能：
 
 1、ACL权限控制模块（完成）；
 
@@ -23,8 +23,6 @@ typora-copy-images-to: ./gitbook_resource
 4、订单模块（完成）；
 
 5、分销模块（完成）；
-
-6、短信、邮件、支付接口集成与测试（--进行中--）；
 
 
 
@@ -77,7 +75,7 @@ typora-copy-images-to: ./gitbook_resource
 
 
 
-#### 技术架构图：
+#### 技术架构图：（app端、移动h5端请参考api自行开发，或联系我们提供二次开发服务）
 
 ![image-20201124140216583](gitbook_resource/image-20201124140216583.png)
 

@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @address Shenzhen, China
  */
 @RunWith(SpringRunner.class)
-@ActiveProfiles(profiles = "dev")
 @SpringBootTest
 public class SimpleTest {
 
