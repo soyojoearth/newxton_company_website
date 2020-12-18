@@ -9,6 +9,8 @@ import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author soyojo.earth@gmail.com
@@ -41,12 +43,20 @@ public class NxtApiUserEmailUpdateVerifyCodeController {
             return new NxtStructApiResult(54,"请提供email");
         }
 
+        //检查email格式
+        String regEmail = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";//邮箱校验
+        Pattern pattern = Pattern.compile(regEmail);
+        Matcher matcher = pattern.matcher(email);
+        if (!matcher.matches()) {
+            return new NxtStructApiResult(54,"请输入正确的email");
+        }
+
         //-1：解除绑定 1：绑定账户 2：找回密码 3：提现验证
 
         try {
             //发送新email验证码
             Long code = nxtProcessVerifyCode.createAndSendPhoneOrEmailVerifyCode(email,1);
-            return new NxtStructApiResult("开发调试阶段直接告诉你验证码：code:"+code);
+            return new NxtStructApiResult(53,"验证码已存入数据库表【nxt_user_verify】，请到数据库查看。本系统暂不免费提供邮件发送功能，请自行开发或联系我们进行二次开发。");
         }
         catch (NxtException e){
             return new NxtStructApiResult(54,e.getNxtExecptionMessage());

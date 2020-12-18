@@ -47,6 +47,9 @@ public class NxtProcessOrderForm {
     @Resource
     private NxtUploadImageComponent nxtUploadImageComponent;
 
+    @Resource
+    private NxtCommissionService nxtCommissionService;
+
     /**
      * 后台查询订单统计
      * @param isPaid
@@ -501,6 +504,40 @@ public class NxtProcessOrderForm {
         else {
             return "订单付款";
         }
+    }
+
+    /**
+     * 订单确认收货
+     * @param id
+     * @throws NxtException
+     */
+    public void orderFormConfirmReceived(Long id) throws NxtException {
+
+        NxtOrderForm nxtOrderForm = nxtOrderFormService.queryById(id);
+        if (nxtOrderForm == null){
+            throw new NxtException("订单不存在");
+        }
+        if (nxtOrderForm.getDatelineReceived() != null){
+            throw new NxtException("不可重复确认收货");
+        }
+        if (!nxtOrderForm.getStatusDelivery().equals(1)){
+            throw new NxtException("该订单还未发货");
+        }
+
+        //订单确认收货
+        nxtOrderForm.setDatelineReceived(System.currentTimeMillis());
+        nxtOrderFormService.update(nxtOrderForm);
+
+        //查询分销
+        NxtCommission nxtCommissionCondition = new NxtCommission();
+        nxtCommissionCondition.setOrderFormId(nxtOrderForm.getId());
+        List<NxtCommission> nxtCommissionList = nxtCommissionService.queryAll(nxtCommissionCondition);
+        for (NxtCommission nxtCommission : nxtCommissionList) {
+            //分销单记录确认收货时间
+            nxtCommission.setDatelineReceived(nxtOrderForm.getDatelineReceived());
+            nxtCommissionService.update(nxtCommission);
+        }
+
     }
 
 }

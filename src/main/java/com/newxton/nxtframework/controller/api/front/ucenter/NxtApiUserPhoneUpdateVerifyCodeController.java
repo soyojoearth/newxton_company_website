@@ -9,6 +9,8 @@ import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author soyojo.earth@gmail.com
@@ -41,12 +43,20 @@ public class NxtApiUserPhoneUpdateVerifyCodeController {
             return new NxtStructApiResult(54,"请提供手机号");
         }
 
+        //检查手机格式
+        String regPhone = "^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\\d{8}$";//手机号校验
+        Pattern pattern = Pattern.compile(regPhone);
+        Matcher matcher = pattern.matcher(phone);
+        if (!matcher.matches()) {
+            return new NxtStructApiResult(54,"请输入正确的手机号");
+        }
+
         //-1：解除绑定 1：绑定账户 2：找回密码 3：提现验证
 
         try {
             //发送新手机号验证码
             Long code = nxtProcessVerifyCode.createAndSendPhoneOrEmailVerifyCode(phone,1);
-            return new NxtStructApiResult("开发调试阶段直接告诉你验证码：code:"+code);
+            return new NxtStructApiResult(53,"验证码已存入数据库表【nxt_user_verify】，请到数据库查看。本系统暂不免费提供短信发送功能，请自行开发或联系我们进行二次开发。");
         }
         catch (NxtException e){
             return new NxtStructApiResult(54,e.getNxtExecptionMessage());

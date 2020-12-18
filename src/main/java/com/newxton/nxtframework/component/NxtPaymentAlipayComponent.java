@@ -178,7 +178,7 @@ public class NxtPaymentAlipayComponent {
                 nxtStructSettingPayConfig.getAlipayPublicKey() == null || nxtStructSettingPayConfig.getAlipayPublicKey().trim().isEmpty()
 
         ){
-            throw new NxtException("Require:Alipay config");
+            throw new NxtException("商家后台没有配置支付宝！");
         }
 
         Config config = new Config();

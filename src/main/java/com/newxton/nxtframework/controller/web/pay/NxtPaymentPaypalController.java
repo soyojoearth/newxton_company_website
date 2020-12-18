@@ -19,9 +19,7 @@ public class NxtPaymentPaypalController {
     @RequestMapping("/payment/paypal")
     public ModelAndView index(Device device, ModelAndView model, @RequestParam("serial_num") String serialNum) {
 
-        // TODO
-
-        model.addObject("body","Paypal付款还在调试对接中...请更换付款方式");
+        model.addObject("body","paypal支付功能暂不免费提供，请联系我们进行二次开发。或者自行开发。");
 
         model.setViewName("common/payment_paypal");
 

@@ -250,7 +250,7 @@
                     and status_paid = 1
                 </if>
                 <if test="!isPaid">
-                    and (status_paid = 0 or status = -1)
+                    and (status_paid = 0 or status_paid = -1)
                 </if>
             </if>
             <if test="isDelivery != null">

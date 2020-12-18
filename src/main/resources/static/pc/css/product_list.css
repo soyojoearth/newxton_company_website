@@ -284,6 +284,17 @@
     margin-right: 57px;
 }
 
+.product-item .stock{
+    height: 10px;
+    font-size: 8px;
+    font-family: DIN;
+    font-weight: 400;
+    line-height: 10px;
+    color: #5F5F5F;
+    letter-spacing: 1px;
+    opacity: 1;
+}
+
 .product-item .shop-cart img{
     width: 18px;
     height: 18px;

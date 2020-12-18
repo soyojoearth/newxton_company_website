@@ -37,6 +37,16 @@
         limit #{offset}, #{limit}
     </select>
 
+    <!--查询指定行数据-->
+    <select id="queryAllByUserIdLimit" resultMap="NxtTransactionMap">
+        select
+          id, user_id, amount, balance, dateline, type, outer_id
+        from nxt_transaction
+        where user_id = #{userId}
+        order by id desc
+        limit #{offset}, #{limit}
+    </select>
+
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="NxtTransactionMap">
         select

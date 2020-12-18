@@ -205,8 +205,35 @@
         select
           id, category_id, brand_id, product_name, product_subtitle, product_tags, product_ratings, external_url, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
-        where product_name like #{keyword} and is_trash = 0
+        <where>
+            <if test="categoryIdList != null">
+                and category_id IN
+                <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="keyword != null">
+                and product_name like #{keyword}
+            </if>
+            and is_trash = 0
+        </where>
+        <if test="orderType != null">
+            <if test="orderType == 1">
+                order by price desc, is_recommend desc, sort_id desc
+            </if>
+            <if test="orderType == -1">
+                order by price asc, is_recommend desc, sort_id desc
+            </if>
+            <if test="orderType == 2">
+                order by dateline_updated desc, is_recommend desc, sort_id desc
+            </if>
+            <if test="orderType == -2">
+                order by dateline_updated asc, is_recommend desc, sort_id desc
+            </if>
+        </if>
+        <if test="orderType == null">
         order by is_recommend desc, sort_id desc
+        </if>
         limit #{offset}, #{limit}
     </select>
 
@@ -214,7 +241,18 @@
         select
         count(*)
         from nxt_product
-        where product_name like #{keyword} and is_trash = 0
+        <where>
+            <if test="categoryIdList != null">
+                and category_id IN
+                <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="keyword != null">
+                and product_name like #{keyword}
+            </if>
+            and is_trash = 0
+        </where>
     </select>
 
 

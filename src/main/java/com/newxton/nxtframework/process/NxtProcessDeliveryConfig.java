@@ -4,6 +4,7 @@ import com.newxton.nxtframework.entity.NxtDeliveryConfig;
 import com.newxton.nxtframework.entity.NxtDeliveryConfigItem;
 import com.newxton.nxtframework.entity.NxtDeliveryConfigItemRegion;
 import com.newxton.nxtframework.entity.NxtDeliveryRegion;
+import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.struct.NxtStructDeliveryCofnigItemRegion;
 import com.newxton.nxtframework.struct.NxtStructDeliveryConfig;
 import com.newxton.nxtframework.struct.NxtStructDeliveryConfigItem;
@@ -43,7 +44,7 @@ public class NxtProcessDeliveryConfig {
      * @return
      */
     @Transactional(rollbackFor=Exception.class)
-    public Map<String, Object> save(NxtStructDeliveryConfig nxtStructDeliveryConfig) {
+    public Map<String, Object> save(NxtStructDeliveryConfig nxtStructDeliveryConfig) throws NxtException {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
@@ -82,8 +83,16 @@ public class NxtProcessDeliveryConfig {
             //插入全部config item
             nxtStructDeliveryConfigItemListForInsert = nxtStructDeliveryConfig.getItemList();
 
-            for (NxtStructDeliveryConfigItem nxtStructDeliveryConfigItem:
-            nxtStructDeliveryConfigItemListForInsert) {
+            for (NxtStructDeliveryConfigItem nxtStructDeliveryConfigItem: nxtStructDeliveryConfigItemListForInsert) {
+
+                if (nxtStructDeliveryConfigItem.getBillableQuantity() == null || nxtStructDeliveryConfigItem.getBillableQuantity() <= 0){
+                    throw new NxtException("首件数量必须大于0");
+                }
+
+                if (nxtStructDeliveryConfigItem.getAdditionQuantity() == null || nxtStructDeliveryConfigItem.getAdditionQuantity() <= 0){
+                    throw new NxtException("续件数量必须大于0");
+                }
+
                 nxtStructDeliveryConfigItem.setDeliveryConfigId(nxtDeliveryConfig.getId());
             }
 
@@ -101,8 +110,7 @@ public class NxtProcessDeliveryConfig {
 
             //旧的config item id集合
             Set<Long> configItemIdSet = new HashSet<>();
-            for (NxtDeliveryConfigItem nxtDeliveryConfigItem:
-                    nxtDeliveryConfigItemList) {
+            for (NxtDeliveryConfigItem nxtDeliveryConfigItem: nxtDeliveryConfigItemList) {
                 configItemIdSet.add(nxtDeliveryConfigItem.getId());
             }
 
@@ -111,6 +119,13 @@ public class NxtProcessDeliveryConfig {
             for (NxtStructDeliveryConfigItem nxtStructDeliveryConfigItem:
                     nxtStructDeliveryConfigItemList) {
                 nxtStructDeliveryConfigItem.setDeliveryConfigId(nxtDeliveryConfig.getId());
+                if (nxtStructDeliveryConfigItem.getBillableQuantity() == null || nxtStructDeliveryConfigItem.getBillableQuantity() <= 0){
+                    throw new NxtException("首件数量必须大于0");
+                }
+
+                if (nxtStructDeliveryConfigItem.getAdditionQuantity() == null || nxtStructDeliveryConfigItem.getAdditionQuantity() <= 0){
+                    throw new NxtException("续件数量必须大于0");
+                }
                 if (nxtStructDeliveryConfigItem.getId() == null){
                     //需要新增
                     nxtStructDeliveryConfigItemListForInsert.add(nxtStructDeliveryConfigItem);

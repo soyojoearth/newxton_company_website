@@ -71,8 +71,10 @@ public class NxtApiOrderFormPayController {
             try {
                 //支付
                 nxtProcessOrderFormPayByBalance.exec(nxtOrderForm.getSerialNum());
+                Map<String,Object> data = new HashMap<>();
+                data.put("redirectURL", nxtWebUtilComponent.getDomainPath() + "/ucenter/#/payresult?id=" + nxtOrderForm.getId());
                 //支付完成
-                return new NxtStructApiResult(0,"支付完成，请到个人中心查看订单列表");
+                return new NxtStructApiResult(data);
             }
             catch (NxtException e){
                 // 支付错误

@@ -115,7 +115,6 @@ function addShoppingCart(product_id) {
         success: function (data) {
             if (data.status == 0) {
                 $.cookie('guestToken', data.result.guestToken, {path: '/' });
-                alert('添加购物车成功')
                 findUserCart();
             } else {
                 alert(data.message);
