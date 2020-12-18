@@ -26,18 +26,18 @@
             <dl class="cate-type" th:each="p : ${productCategoryList.list}">
                 <dt class="cate-first">
                     <a th:href="${'?categoryId=' + p.category.id}" class="one-level">
-                        <img th:src="@{/pc/img/cate-big.png}" alt="" class="cate-big">
+                        <img th:src="@{/pc/img/icon-cate-01.png}" alt="" class="cate-big">
                         <span class="first-title" th:text="${p.category.categoryName}"></span>
-                        <img th:src="@{/pc/img/cate-down.png}" alt="" class="down-big">
+                        <img th:src="@{/pc/img/icon-down-02.png}" alt="" class="down-big">
                     </a>
                 </dt>
                 <dd class="cate-child">
                     <dl class="cate-level" th:each="c : ${p.sub_category_list}">
                         <dt class="cate-second">
                             <a th:href="${'?categoryId=' + c.category.id}" class="two-level">
-                                <img th:src="@{/pc/img/cate-small.png}" alt="" class="cate-small">
+                                <img th:src="@{/pc/img/icon-cate-02.png}" alt="" class="cate-small">
                                 <span class="second-title" th:text="${c.category.categoryName}"></span>
-                                <img th:src="@{/pc/img/cate-down-small.png}" alt="" class="down-small">
+                                <img th:src="@{/pc/img/icon-down-03.png}" alt="" class="down-small">
                             </a>
                         </dt>
                         <div class="cate-third">
@@ -54,17 +54,39 @@
         <div class="list-title">
             <ul class="list-opt">
                 <li>
-                    <a href="javascript:void(0)" class="opt-wd active">默认排序</a>
+                    <a th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=' }" th:class="${orderType == '' ? 'active opt-wd' : 'opt-wd'}">默认排序</a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" class="opt-wd">按价格从低到高</a>
-                    <img th:src="@{/pc/img/sort-up.png}" alt="" class="sort-up">
-                    <img th:src="@{/pc/img/sort-down.png}" alt="" class="sort-down">
+                    <a th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=-1'}" th:class="${(orderType == -1 || orderType == 1) ? 'active opt-wd' : 'opt-wd'}">按价格从低到高</a>
+                    <a th:if="${orderType == '' || orderType == 2 || orderType == -2 || orderType == -1}" th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=1'}">
+                        <img  th:src="@{/pc/img/icon-up-03.png}" alt="" class="sort-up">
+                    </a>
+                    <a th:if="${orderType == '' || orderType == 2 || orderType == -2 || orderType == 1}" th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=-1'}">
+                        <img th:src="@{/pc/img/icon-down-04.png}" alt="" class="sort-down">
+                    </a>
+                    <a th:if="${orderType == 1}"  th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=1'}">
+                        <img th:src="@{/pc/img/icon-up-02.png}" alt="" class="sort-up">
+                    </a>
+                    <a th:if="${orderType == -1}" th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=-1'}">
+                        <img  th:src="@{/pc/img/icon-down-02.png}" alt="" class="sort-down">
+                    </a>
+
                 </li>
                 <li>
-                    <a href="javascript:void(0)" class="opt-wd">按时间从近到远</a>
-                    <img th:src="@{/pc/img/sort-up.png}" alt="" class="sort-up">
-                    <img th:src="@{/pc/img/sort-down.png}" alt="" class="sort-down">
+                    <a th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=2'}" th:class="${(orderType == -2 || orderType == 2) ? 'active opt-wd' : 'opt-wd'}">按时间从近到远</a>
+                    <a th:if="${orderType == '' || orderType == -1 || orderType == 1 ||  orderType == 2}" th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=-2'}">
+                        <img  th:src="@{/pc/img/icon-up-03.png}" alt="" class="sort-up">
+                    </a>
+                    <a th:if="${orderType == '' || orderType == -1 || orderType == 1 ||  orderType == -2}"  th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=2'}">
+                        <img th:src="@{/pc/img/icon-down-04.png}" alt="" class="sort-down">
+                    </a>
+                    <a  th:if="${orderType == -2}"  th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=-2'}">
+                        <img th:src="@{/pc/img/icon-up-02.png}" alt="" class="sort-up">
+                    </a>
+                    <a th:if="${orderType == 2}" th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=2'}">
+                        <img  th:src="@{/pc/img/icon-down-02.png}" alt="" class="sort-down">
+                    </a>
+
                 </li>
             </ul>
         </div>
@@ -78,11 +100,12 @@
                         <a th:href="${'/product/detail?productId=' + p.id}"  th:text="${p.productName}"></a>
                     </li>
                     <li class="item-price">
-                        <a th:href="${'/product/detail?productId=' + p.id}" class="sell-price">¥89.09</a>
-                        <a th:href="${'/product/detail?productId=' + p.id}" class="orig-price">¥89.09</a>
-                        <a href="javascript:void(0)" th:onclick="|addShoppingCart(${p.id})|" class="shop-cart">
+                        <a th:href="${'/product/detail?productId=' + p.id}" class="sell-price" th:text="${'¥' + p.priceFinally}"></a>
+                        <a th:href="${'/product/detail?productId=' + p.id}" class="orig-price" th:text="${'¥' + p.priceInitial}"></a>
+                        <a th:href="${'/product/detail?productId=' + p.id}" class="stock" th:text="${p.inventoryQuantity}"></a>
+                        <!--<a href="javascript:void(0)" th:onclick="|addShoppingCart(${p.id})|" class="shop-cart">
                             <img th:src="@{/pc/img/buycart-small.png}" alt="" >
-                        </a>
+                        </a>-->
                     </li>
                 </a>
             </ul>
@@ -91,10 +114,10 @@
 
 
         <div class="list-page">
-            <a th:if="${page > 1}" th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&page=' + (page-1)}" class="prev-page">上一页</a>
+            <a th:if="${page > 1}" th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword +'&orderType=' + orderType + '&page=' + (page-1)}" class="prev-page">上一页</a>
             <a th:if="${page <= 1}" href="javascript:void(0)" class="prev-page">上一页</a>
             <span class="page-num" th:text="${page + '/' + productList.pages}"></span>
-            <a th:if="${page <  productList.pages}" th:href="${'?categoryId=' + categoryId + '&searchKeyword='+ searchKeyword + '&page=' + (page+1)}" class="next-page">下一页</a>
+            <a th:if="${page <  productList.pages}" th:href="${'?categoryId=' + categoryId + '&searchKeyword='+ searchKeyword +'&orderType=' + orderType + '&page=' + (page+1)}" class="next-page">下一页</a>
             <a th:if="${page >= productList.pages}" href="javascript:void(0)" class="next-page">下一页</a>
         </div>
     </div>
