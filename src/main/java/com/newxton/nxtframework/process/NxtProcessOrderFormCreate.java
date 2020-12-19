@@ -45,9 +45,6 @@ public class NxtProcessOrderFormCreate {
     private NxtProductPictureService nxtProductPictureService;
 
     @Resource
-    private NxtUploadfileService nxtUploadfileService;
-
-    @Resource
     private NxtProductSkuService nxtProductSkuService;
 
     @Resource
@@ -76,6 +73,9 @@ public class NxtProcessOrderFormCreate {
 
     @Resource
     private NxtProcessShoppingCart nxtProcessShoppingCart;
+
+    @Resource
+    private NxtProcessInventory nxtProcessInventory;
 
     @Transactional(rollbackFor=Exception.class)
     public Long exec(NxtStructOrderFromCreate nxtStructOrderFromCreate, Long userId) throws NxtException{
@@ -125,6 +125,9 @@ public class NxtProcessOrderFormCreate {
         if (countCartProductInEffect.equals(0)){
             throw new NxtException("购物车内没有选中有效的产品");
         }
+
+        //配置
+        NxtStructSettingEcConfig settingEcConfig = nxtGlobalSettingComponent.getNxtStructSettingEcConfig();
 
         //先准备好sku列表数据
         List<NxtProductSku> nxtProductSkuList = nxtProductSkuService.selectByProductIdSet(productIdList);
@@ -222,20 +225,9 @@ public class NxtProcessOrderFormCreate {
             NxtProduct nxtProduct = nxtProductService.queryById(nxtStructShoppingCartProduct.getProductId());
 
             if (nxtProduct != null){
-                //累加销量 & 减库存
+                //累加销量
                 nxtProduct.setSalsCount(nxtProduct.getSalsCount() == null ? 1 : nxtProduct.getSalsCount() + 1);
-                if (nxtProduct.getWithSku() != null && nxtProduct.getWithSku().equals(1)){
-                    //减sku库存
-                    this.reduceProductInventoryQuantityBySku(nxtStructShoppingCartProduct.getSku(),nxtProductSkuList,nxtProductSkuValueList,nxtProductSkuValuePriceEtcList);
-                }
-                else {
-                    if (nxtProduct.getInventoryQuantity() != null && nxtProduct.getInventoryQuantity() > 0){
-                        nxtProduct.setInventoryQuantity(nxtProduct.getInventoryQuantity()-1);
-                    }
-                }
                 nxtProductService.update(nxtProduct);
-
-
 
                 NxtOrderFormProduct nxtOrderFormProduct = new NxtOrderFormProduct();
                 nxtOrderFormProduct.setOrderFormId(nxtOrderForm.getId());
@@ -427,8 +419,18 @@ public class NxtProcessOrderFormCreate {
         nxtOrderForm.setAmountDiscount(amountDiscount);
         nxtOrderForm.setAmountFinally(amountFinally);
         nxtOrderForm.setAmountInitial(amountInitial);
+
+        //满多少包邮
+        if (nxtOrderForm.getAmountFinally()/100 >= settingEcConfig.getFreeShippingAmount()){
+            nxtOrderForm.setManualDeliveryCostDiscount(-nxtOrderForm.getDeliveryCost());
+        }
+
         nxtOrderFormService.update(nxtOrderForm);
 
+        //减库存
+        if (settingEcConfig.getInventoryUpdateType().equals(1)) {//1 下单减库存 2 付款减库存
+            nxtProcessInventory.reduceProductInventoryQuantity(nxtOrderForm,settingEcConfig);
+        }
 
         //最最后，才删除购物车选中的产品
         for (NxtStructShoppingCartProduct nxtStructShoppingCartProduct : nxtStructShoppingCart.getItemList()) {
@@ -508,84 +510,6 @@ public class NxtProcessOrderFormCreate {
         }
 
         return null;
-    }
-
-    /**
-     * 减sku的库存
-     * @param skuList
-     * @param nxtProductSkuList
-     * @param nxtProductSkuValueList
-     * @param nxtProductSkuValuePriceEtcList
-     */
-    private void reduceProductInventoryQuantityBySku(List<NxtStructShoppingCartProductSku> skuList,List<NxtProductSku> nxtProductSkuList, List<NxtProductSkuValue> nxtProductSkuValueList, List<NxtProductSkuValuePriceEtc> nxtProductSkuValuePriceEtcList) throws NxtException{
-
-        Long skuValueId1 = null;
-        Long skuValueId2 = null;
-
-        for (NxtStructShoppingCartProductSku sku :
-                skuList) {
-            for (NxtProductSku productSku : nxtProductSkuList) {
-                if (sku.getSkuKeyName().equals(productSku.getSkuKeyName())){
-                    for (NxtProductSkuValue skuValue : nxtProductSkuValueList){
-                        if (productSku.getId().equals(skuValue.getSkuId()) && skuValue.getSkuValueName().equals(sku.getSkuValueName())){
-                            if (skuValueId1 == null) {
-                                skuValueId1 = skuValue.getId();
-                            }
-                            else if (skuValueId2 == null){
-                                skuValueId2 = skuValue.getId();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (skuValueId1 == null && skuValueId2 == null){
-            throw new NxtException("sku减库存出错");
-        }
-
-        for (NxtProductSkuValuePriceEtc priceEtc : nxtProductSkuValuePriceEtcList){
-            //双sku
-            if (
-                    (
-                            skuValueId1 != null && priceEtc.getSkuValueId1().equals(skuValueId1) &&
-                                    skuValueId2 != null && priceEtc.getSkuValueId2().equals(skuValueId2)
-                    )
-                            ||
-                            (
-                                    skuValueId2 != null && priceEtc.getSkuValueId1().equals(skuValueId2) &&
-                                            skuValueId1 != null && priceEtc.getSkuValueId2().equals(skuValueId1)
-                            )
-            ){
-                if (priceEtc.getSkuValueInventoryQuantity() != null && priceEtc.getSkuValueInventoryQuantity() > 0) {
-                    priceEtc.setSkuValueInventoryQuantity(priceEtc.getSkuValueInventoryQuantity()-1);
-                    nxtProductSkuValuePriceEtcService.update(priceEtc);
-                    return;
-                }
-            }
-        }
-
-        for (NxtProductSkuValuePriceEtc priceEtc : nxtProductSkuValuePriceEtcList){
-            //单sku
-            if (
-                    (
-                            skuValueId1 != null && priceEtc.getSkuValueId1().equals(skuValueId1) ||
-                                    skuValueId2 != null && priceEtc.getSkuValueId2().equals(skuValueId2)
-                    )
-                            ||
-                            (
-                                    skuValueId2 != null && priceEtc.getSkuValueId1().equals(skuValueId2) ||
-                                            skuValueId1 != null && priceEtc.getSkuValueId2().equals(skuValueId1)
-                            )
-            ){
-                if (priceEtc.getSkuValueInventoryQuantity() != null && priceEtc.getSkuValueInventoryQuantity() > 0) {
-                    priceEtc.setSkuValueInventoryQuantity(priceEtc.getSkuValueInventoryQuantity()-1);
-                    nxtProductSkuValuePriceEtcService.update(priceEtc);
-                    return;
-                }
-            }
-        }
-
     }
 
     /**

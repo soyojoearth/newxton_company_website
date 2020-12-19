@@ -31,9 +31,6 @@ public class NxtGlobalSettingComponent {
     @Resource
     private NxtSettingService nxtSettingService;
 
-    @Resource
-    private NxtCronjobService nxtCronjobService;
-
     /**
      * 保存 系统基本设置
      * @param nxtStructSettingNormal
@@ -49,7 +46,7 @@ public class NxtGlobalSettingComponent {
      * 获取 系统基本设置
      * @return
      */
-    @Cacheable("getNxtStructSettingNormal")
+//    @Cacheable("getNxtStructSettingNormal")
     public NxtStructSettingNormal getNxtStructSettingNormal(){
         Gson gson = new Gson();
         String key = "NxtStructSettingNormal";
@@ -81,7 +78,7 @@ public class NxtGlobalSettingComponent {
      * 获取 图片存储配置
      * @return
      */
-    @Cacheable("getNxtStructSettingOssConfig")
+//    @Cacheable("getNxtStructSettingOssConfig")
     public NxtStructSettingOssConfig getNxtStructSettingOssConfig(){
         Gson gson = new Gson();
         String key = "NxtStructSettingOssConfig";
@@ -113,7 +110,7 @@ public class NxtGlobalSettingComponent {
      * 获取 支付配置
      * @return
      */
-    @Cacheable("getNxtStructSettingPayConfig")
+//    @Cacheable("getNxtStructSettingPayConfig")
     public NxtStructSettingPayConfig getNxtStructSettingPayConfig(){
         Gson gson = new Gson();
         String key = "NxtStructSettingPayConfig";
@@ -145,7 +142,7 @@ public class NxtGlobalSettingComponent {
      * 获取 商城配置
      * @return
      */
-    @Cacheable("getNxtStructSettingEcConfig")
+//    @Cacheable("getNxtStructSettingEcConfig")
     public NxtStructSettingEcConfig getNxtStructSettingEcConfig(){
         Gson gson = new Gson();
         String key = "NxtStructSettingEcConfig";
@@ -177,7 +174,7 @@ public class NxtGlobalSettingComponent {
      * 获取 分销配置
      * @return
      */
-    @Cacheable("getNxtStructSettingCommission")
+//    @Cacheable("getNxtStructSettingCommission")
     public NxtStructSettingCommission getNxtStructSettingCommission(){
         Gson gson = new Gson();
         String key = "NxtStructSettingCommission";
@@ -232,16 +229,16 @@ public class NxtGlobalSettingComponent {
     }
 
 
-    @CacheEvict(cacheNames = {
-            "getNxtStructSettingCommission",
-            "getNxtStructSettingNormal",
-            "getNxtStructSettingOssConfig",
-            "getNxtStructSettingPayConfig",
-            "getNxtStructSettingEcConfig"
-    },allEntries = true,beforeInvocation = false)
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void cleanCache() {
-        // 注解 @CacheEvict 就执行了清理，代码块里面什么也不用写
-    }
+//    @CacheEvict(cacheNames = {
+//            "getNxtStructSettingCommission",
+//            "getNxtStructSettingNormal",
+//            "getNxtStructSettingOssConfig",
+//            "getNxtStructSettingPayConfig",
+//            "getNxtStructSettingEcConfig"
+//    },allEntries = true,beforeInvocation = false)
+//    @Transactional(isolation = Isolation.READ_COMMITTED)
+//    public void cleanCache() {
+//        // 注解 @CacheEvict 就执行了清理，代码块里面什么也不用写
+//    }
 
 }

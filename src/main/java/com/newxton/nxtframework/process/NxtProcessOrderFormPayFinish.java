@@ -1,11 +1,13 @@
 package com.newxton.nxtframework.process;
 
+import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
 import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.service.NxtCommissionService;
 import com.newxton.nxtframework.service.NxtOrderFormPayService;
 import com.newxton.nxtframework.service.NxtOrderFormService;
 import com.newxton.nxtframework.service.NxtTransactionService;
+import com.newxton.nxtframework.struct.NxtStructSettingEcConfig;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +22,7 @@ import java.util.List;
  * 使用余额付款
  */
 @Component
-public class NxtProcessOrderFormPayByBalance {
+public class NxtProcessOrderFormPayFinish {
 
     @Resource
     private NxtOrderFormService nxtOrderFormService;
@@ -33,6 +35,12 @@ public class NxtProcessOrderFormPayByBalance {
 
     @Resource
     private NxtCommissionService nxtCommissionService;
+
+    @Resource
+    private NxtGlobalSettingComponent nxtGlobalSettingComponent;
+
+    @Resource
+    private NxtProcessInventory nxtProcessInventory;
 
     /**
      * 执行余额付款
@@ -53,7 +61,7 @@ public class NxtProcessOrderFormPayByBalance {
             amount += nxtOrderForm.getDeliveryCost();
         }
         if (nxtOrderForm.getManualDeliveryCostDiscount() != null){
-            amount += nxtOrderForm.getDeliveryCost();
+            amount += nxtOrderForm.getManualDeliveryCostDiscount();
         }
 
         //查询余额是否充足
@@ -96,6 +104,12 @@ public class NxtProcessOrderFormPayByBalance {
             item.setDatelineEnd(System.currentTimeMillis());
             item.setIsPaid(1);
             nxtCommissionService.update(item);
+        }
+
+        //检查是否设置了付款减库存
+        NxtStructSettingEcConfig settingEcConfig = nxtGlobalSettingComponent.getNxtStructSettingEcConfig();
+        if (settingEcConfig.getInventoryUpdateType().equals(2)) {//1 下单减库存 2 付款减库存
+            nxtProcessInventory.reduceProductInventoryQuantity(nxtOrderForm,settingEcConfig);
         }
 
     }
