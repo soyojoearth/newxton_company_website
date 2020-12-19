@@ -260,39 +260,41 @@
 }
 
 .product-item .sell-price {
-    height: 13px;
+    height: 21px;
     font-size: 11px;
     font-family: DIN;
     font-weight: bold;
-    line-height: 13px;
+    line-height: 21px;
     color: #1B1B1B;
     letter-spacing: 1px;
     opacity: 1;
     margin-right: 6px;
+    float: left;
 }
 
 .product-item .orig-price {
-    height: 10px;
+    height: 21px;
     font-size: 8px;
     font-family: DIN;
     font-weight: 400;
-    line-height: 10px;
+    line-height: 21px;
     color: #5F5F5F;
     letter-spacing: 1px;
     opacity: 1;
     text-decoration: line-through;
-    margin-right: 57px;
+    float: left;
 }
 
 .product-item .stock{
-    height: 10px;
+    height: 21px;
     font-size: 8px;
     font-family: DIN;
     font-weight: 400;
-    line-height: 10px;
+    line-height: 21px;
     color: #5F5F5F;
     letter-spacing: 1px;
     opacity: 1;
+    float: right;
 }
 
 .product-item .shop-cart img{

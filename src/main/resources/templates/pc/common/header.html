@@ -2,14 +2,16 @@
 <div id="header" th:fragment="header">
     <div class="nav-l">
         <ul class="nav-rec">
-            <li class="nav-logo"><a href="/"><img th:src="@{/pc/img/logo.jpg}" alt=""></a></li>
+            <li class="nav-logo">
+                <a href="/">NxtFramework</a>
+            </li>
             <li class="nav-title"><a href="/">首页</a></li>
             <li class="nav-title"><a href="/product/list">产品</a></li>
             <li class="nav-title"><a href="/news">资讯</a></li>
             <li class="nav-bar nav-title">
                 <div>
                     <a href="">关于</a>
-                    <img th:src="@{/pc/img/icon-down.jpg}" alt="">
+                    <img class="bar-pic" th:src="@{/pc/img/icon-down.png}" alt="">
                     <div class="nav-bar-bd"></div>
                 </div>
                 <div class="nav-about">
@@ -25,20 +27,22 @@
     <div class="nav-r">
         <ul class="nav-user-opt">
             <li class="nav-user-buy">
-                <div class="nav-cart-msg">
-                    <a href="/ucenter/#/cart">
-                        <img th:src="@{/pc/img/icon-buycart.jpg}" alt="">
-                        <span class="nav-cart-num">0</span>
-                    </a>
-                </div>
+                <a href="/ucenter/#/cart">
+                    <img class="buy-cart" th:src="@{/pc/img/buycart.png}" alt="">
+                    <span class="nav-cart-num">0</span>
+                </a>
                 <div class="nav-cart-list"></div>
             </li>
-            <li class="nav-user-lr">
-                <a href="/ucenter/#/login" class="visitor">登录/</a>
-                <a href="/ucenter/#/sign"  class="visitor">注册</a>
-                <a href="/ucenter/#/" class="user-line disable">个人中心</a>
+            <li class="nav-user-lr visitor">
+                <a href="/ucenter/#/login">登录/</a><a href="/ucenter/#/sign">注册</a>
             </li>
-            <li class="nav-user-quit user-line disable">
+            <li class="nav-user-lr user-line disable">
+                <a href="/ucenter/#/order" class="">我的订单</a>
+            </li>
+            <li class="nav-user-lr user-line disable">
+                <a href="/ucenter/#/" class="">个人中心</a>
+            </li>
+            <li class="nav-user-lr user-line disable">
                 <a href="javascript:void(0);" onclick="userLoginOut()" >注销</a>
             </li>
         </ul>
