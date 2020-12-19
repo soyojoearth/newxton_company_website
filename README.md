@@ -38,9 +38,11 @@ typora-copy-images-to: ./gitbook_resource
 
 #### Demo：
 
-1、地址：https://demo.nxtframework.com/admin 
+1、前台：https://demo.nxtframework.com
 
-2、用户名：guest 密码：fxxkyou1314 （访客权限，只能看，不能改）
+1、后台：https://demo.nxtframework.com/admin 
+
+2、用户名：guest 密码：（任意） （后台访客权限，只能看，不能改）
 
 
 

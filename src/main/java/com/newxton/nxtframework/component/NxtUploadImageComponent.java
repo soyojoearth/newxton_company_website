@@ -196,6 +196,9 @@ public class NxtUploadImageComponent {
         if (imagePath == null){
             return null;
         }
+        if (imagePath.contains("http")){
+            return imagePath;
+        }
         if (imagePath.contains("/public_pic")){
             return nxtWebUtilComponent.getDomainPath() + imagePath;
         }

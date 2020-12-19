@@ -60,10 +60,13 @@ public class NxtApiAdminLoginController {
         String pwdSalt = password + salt;
         password = DigestUtils.md5Hex(pwdSalt).toLowerCase();
 
-        if (user.getPassword() == null || !user.getPassword().equals(password)) {
-            result.put("status", 42);
-            result.put("message", "密码错误");
-            return result;
+        //guest用户不需要密码【方便演示所用。实际用的时候，不要设置guest或者禁止guest即可】
+        if (!username.toLowerCase().trim().equals("guest")){
+            if (user.getPassword() == null || !user.getPassword().equals(password)) {
+                result.put("status", 42);
+                result.put("message", "密码错误");
+                return result;
+            }
         }
 
         if (user.getStatus().equals(-1)) {

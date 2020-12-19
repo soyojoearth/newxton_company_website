@@ -69,7 +69,8 @@ public class NxtApiUserAvatarUpdateController {
             user.setAvatarId(Long.valueOf(result.get("id").toString()));
             //更新
             nxtUserService.update(user);
-            return new NxtStructApiResult(result.get("url"));
+            String url = nxtUploadImageComponent.convertImagePathToFullDomainImagePath(result.get("url").toString());
+            return new NxtStructApiResult(url);
         }
         else {
             return new NxtStructApiResult(43,"上传失败，请重试");

@@ -80,6 +80,10 @@ public class NxtApiUserPwdResetController {
             return new NxtStructApiResult(53,"验证码无效");
         }
 
+        if (user.getStatus().equals(-1)) {
+            return new NxtStructApiResult(54,"该用户已被加入黑名单");
+        }
+
         //验证成功，修改密码
         //创建salt和密码
         String saltNew = nxtUtilComponent.getRandomString(32);

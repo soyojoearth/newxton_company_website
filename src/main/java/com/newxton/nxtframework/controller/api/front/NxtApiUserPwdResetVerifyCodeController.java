@@ -50,7 +50,7 @@ public class NxtApiUserPwdResetVerifyCodeController {
         //-1：修改绑定 1：绑定账户 2：找回密码 3：提现验证
         try {
             Long code = nxtProcessVerifyCode.createAndSendPhoneOrEmailVerifyCode(phoneOrEmail,2);
-            return new NxtStructApiResult("开发调试阶段直接告诉你验证码："+code);
+            return new NxtStructApiResult(53,"验证码【"+code+"】。本开源系统不提供验证码发送功能，请自行开发或联系我们进行二次开发。");
         }
         catch (NxtException e){
             return new NxtStructApiResult(54,e.getNxtExecptionMessage());
