@@ -107,7 +107,7 @@ public class NxtTaskCheckAndInitDeliveryRegion {
             nxtDeliveryRegion.setSortId(nxtDeliveryRegion.getId());
             nxtDeliveryRegionService.update(nxtDeliveryRegion);
 
-            findRegionListAndInsert(mapRegion,"86",nxtDeliveryRegion.getId());
+            findRegionListAndInsert(mapRegion,"86",nxtDeliveryRegion.getId(),0);
         }
         catch (Exception e){
             throw new NxtException("china_region.json解析JSON出错");
@@ -130,7 +130,10 @@ public class NxtTaskCheckAndInitDeliveryRegion {
      * @param regionCode
      * @param parentId
      */
-    private void findRegionListAndInsert(Map<String,Map<String,String>> mapRegion, String regionCode,Long parentId){
+    private void findRegionListAndInsert(Map<String,Map<String,String>> mapRegion, String regionCode,Long parentId,Integer level){
+        if (level >= 2){//最多导入二级，到城市
+            return;
+        }
         if (!mapRegion.containsKey(regionCode)){
             return;
         }
@@ -145,7 +148,7 @@ public class NxtTaskCheckAndInitDeliveryRegion {
             nxtDeliveryRegionService.insert(nxtDeliveryRegion);
             nxtDeliveryRegion.setSortId(nxtDeliveryRegion.getId());
             nxtDeliveryRegionService.update(nxtDeliveryRegion);
-            findRegionListAndInsert(mapRegion,key,nxtDeliveryRegion.getId());
+            findRegionListAndInsert(mapRegion,key,nxtDeliveryRegion.getId(),level+1);
         }
     }
 
