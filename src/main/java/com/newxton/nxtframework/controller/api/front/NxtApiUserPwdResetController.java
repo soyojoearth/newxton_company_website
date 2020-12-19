@@ -84,6 +84,10 @@ public class NxtApiUserPwdResetController {
             return new NxtStructApiResult(54,"该用户已被加入黑名单");
         }
 
+        if (user.getIsAdmin() != null && user.getIsAdmin().equals(1)){
+            return new NxtStructApiResult(54,"管理员用户不可使用找回密码功能，请超级管理员修改");
+        }
+
         //验证成功，修改密码
         //创建salt和密码
         String saltNew = nxtUtilComponent.getRandomString(32);
