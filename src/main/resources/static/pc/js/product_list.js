@@ -44,7 +44,7 @@ function searchForm(){
 }
 
 function addShoppingCart(product_id){
-    var shopping_cart_token = $.cookie('shoppingCartToken');
+    var shopping_cart_token = $.cookie('shopping_cart_token');
     var user_id = $.cookie('user-id');
     var token = $.cookie('token');
     var param = {
@@ -67,7 +67,7 @@ function addShoppingCart(product_id){
         dataType: "json",
         success: function (data) {
             if (data.status == 0) {
-                $.cookie('shoppingCartToken', data.result.shoppingCartToken, {path: '/' });
+                $.cookie('shopping_cart_token', data.result.shoppingCartToken, {path: '/' });
                 findUserCart();
             } else {
                alert(data.message);

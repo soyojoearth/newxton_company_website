@@ -35,7 +35,7 @@ $(function(){
 function findUserCart(){
     var user_id = $.cookie('user-id');
     var token = $.cookie('token');
-    var shopping_cart_token = $.cookie('shoppingCartToken');
+    var shopping_cart_token = $.cookie('shopping_cart_token');
     var headers = {
         user_id: user_id,
         token: token,
