@@ -95,6 +95,7 @@ public class NxtProcessProductSpider {
 
         nxtStructProduct.setExternalUrl(spiderResult.getExternalUrl());
         nxtStructProduct.setProductName(spiderResult.getProductName());
+        nxtStructProduct.setProductDescription(spiderResult.getProductDescription());
         nxtStructProduct.setPrice(spiderResult.getPrice());
         //批量抓取图片
         for (String imgUrl : spiderResult.getPictureList()) {
@@ -113,6 +114,7 @@ public class NxtProcessProductSpider {
         nxtStructProduct.setSkuList(spiderResult.getSkuList());
         //设置sku价格、库存、折扣
         if (nxtStructProduct.getSkuList().size() == 2) {
+            nxtStructProduct.setWithSku(true);
             for (NxtStructProductSkuValue skuValue1 : nxtStructProduct.getSkuList().get(0).getSkuValueList()) {
                 for (NxtStructProductSkuValue skuValue2 : nxtStructProduct.getSkuList().get(1).getSkuValueList()) {
                     NxtStructProductSkuValuePriceEtc skuValuePriceEtc = new NxtStructProductSkuValuePriceEtc();
@@ -126,6 +128,7 @@ public class NxtProcessProductSpider {
             }
         }
         else if (nxtStructProduct.getSkuList().size() == 1){
+            nxtStructProduct.setWithSku(true);
             for (NxtStructProductSkuValue skuValue1 : nxtStructProduct.getSkuList().get(0).getSkuValueList()) {
                 NxtStructProductSkuValuePriceEtc skuValuePriceEtc = new NxtStructProductSkuValuePriceEtc();
                 skuValuePriceEtc.setSkuValueInventoryQuantity(100L);

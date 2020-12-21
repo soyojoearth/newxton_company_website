@@ -10,6 +10,14 @@ package com.newxton.nxtframework.struct;
  */
 public class NxtStructProductSkuValue {
 
+    public NxtStructProductSkuValue(){
+
+    }
+
+    public NxtStructProductSkuValue(String valueName){
+        this.setSkuValueName(valueName);
+    }
+
     public Long id;
 
     public Long skuId;

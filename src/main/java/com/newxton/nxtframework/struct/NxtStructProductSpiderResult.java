@@ -16,6 +16,7 @@ public class NxtStructProductSpiderResult {
     private Float price;
     private List<String> pictureList = new ArrayList();
     private List<NxtStructProductSku> skuList = new ArrayList<>();
+    private String productDescription;
 
     public String getExternalUrl() {
         return externalUrl;
@@ -57,4 +58,11 @@ public class NxtStructProductSpiderResult {
         this.pictureList = pictureList;
     }
 
+    public String getProductDescription() {
+        return productDescription;
+    }
+
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
+    }
 }

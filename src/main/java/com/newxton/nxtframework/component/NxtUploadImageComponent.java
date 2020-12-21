@@ -140,6 +140,10 @@ public class NxtUploadImageComponent {
      */
     public String checkHtmlAndSavePic(String contentHTML){
 
+        if (contentHTML == null){
+            return contentHTML;
+        }
+
         Matcher m = Pattern.compile("<img.*?src=\"(http.*?)\"").matcher(contentHTML);
         while (m.find()) {
             String imgUrl = m.group(1);
@@ -174,6 +178,9 @@ public class NxtUploadImageComponent {
      * @return
      */
     public String checkHtmlAndReplaceImageUrlForDisplay(String contentHTML){
+        if (contentHTML == null){
+            return contentHTML;
+        }
         contentHTML = contentHTML.replace("http://newxton-image-domain",this.getOssQiniuDomain());
         return contentHTML;
     }

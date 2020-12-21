@@ -3,6 +3,7 @@ package com.newxton.nxtframework.component.spider;
 import com.newxton.nxtframework.component.spider.interfa.NxtComponentInterfaceProductSpider;
 import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.struct.NxtStructProductSku;
+import com.newxton.nxtframework.struct.NxtStructProductSkuValue;
 import com.newxton.nxtframework.struct.NxtStructProductSpiderResult;
 import org.springframework.stereotype.Component;
 
@@ -61,16 +62,54 @@ public class NxtProductSpiderTaobaoComponent implements NxtComponentInterfacePro
         //抓取到所有产品规格
         List<NxtStructProductSku> skuList = new ArrayList<>();
 
-
-        //这里开始，抓取数据，把对应数据赋值给 productName、price，把抓取到的全部主图加入pictureList
-        //写代码......
+        String productDescription = null;
 
 
+        //这里开始，抓取以上所需的5个数据，根据下面的代码那样赋值
+        try {
+            Thread.sleep(3000);//写完后删除这里
+        }
+        catch (Exception e){
 
+        }
 
-        // 把抓取到的全部规格组成若干对象NxtStructProductSku加入skuList
-        // NxtStructProductSku这个对象及子对象里面的id和skuId都不需要set，其它都需要set
-        //写代码......
+        /**
+         * 抓取到的产品名称
+         */
+        productName = "测试抓取产品"+url;
+        /**
+         * 抓取到的价格
+         */
+        price = 168.88F;
+        /**
+         * 抓取到N张主图，有多少加多少
+         */
+        pictureList.add("https://cbu01.alicdn.com/img/ibank/2019/213/591/10721195312_2064661510.jpg");
+        pictureList.add("https://cbu01.alicdn.com/img/ibank/2019/115/171/10721171511_2064661510.jpg");
+        pictureList.add("https://cbu01.alicdn.com/img/ibank/2019/705/628/10720826507_2064661510.jpg");
+        pictureList.add("https://cbu01.alicdn.com/img/ibank/2019/836/808/10720808638_2064661510.jpg");
+
+        /**
+         * 抓取到规格1（如果有）
+         */
+        NxtStructProductSku productSku1 = new NxtStructProductSku("颜色");
+        productSku1.addSkuValue("红色");
+        productSku1.addSkuValue("蓝色");
+        skuList.add(productSku1);
+
+        /**
+         * 抓取到规格2（如果有）
+         */
+        NxtStructProductSku productSku2 = new NxtStructProductSku("内存");
+        productSku2.addSkuValue("128G");
+        productSku2.addSkuValue("256G");
+        skuList.add(productSku2);
+
+        /**
+         * 产品描述(HTML)
+         */
+        productDescription = "这是测试产品的<b>描述</b>.";
+
 
         /**
          * 10秒内要返回结果，否则 throw new NxtException("网络超时，抓取失败");
@@ -80,6 +119,7 @@ public class NxtProductSpiderTaobaoComponent implements NxtComponentInterfacePro
         nxtStructProductSpiderResult.setPrice(price);
         nxtStructProductSpiderResult.setPictureList(pictureList);
         nxtStructProductSpiderResult.setSkuList(skuList);
+        nxtStructProductSpiderResult.setProductDescription(productDescription);
 
 
         return nxtStructProductSpiderResult;

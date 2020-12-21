@@ -13,6 +13,18 @@ import java.util.List;
  */
 public class NxtStructProductSku {
 
+    public NxtStructProductSku(){
+
+    }
+
+    public NxtStructProductSku(String keyName){
+        this.setSkuKeyName(keyName);
+    }
+
+    public void addSkuValue(String valueName){
+        this.skuValueList.add(new NxtStructProductSkuValue(valueName));
+    }
+
     public Long skuId;
     public String skuKeyName;
     public List<NxtStructProductSkuValue> skuValueList = new ArrayList<>();

@@ -254,7 +254,9 @@ public class NxtProcessProduct {
         product.setBrandId(nxtStructProduct.getBrandId());
         product.setProductName(nxtStructProduct.getProductName());
         product.setProductSubtitle(nxtStructProduct.getProductSubtitle());
-        product.setProductTags(nxtStructProduct.getProductTags().replace("，",","));
+        if (nxtStructProduct.getProductTags() != null) {
+            product.setProductTags(nxtStructProduct.getProductTags().replace("，", ","));
+        }
         if (nxtStructProduct.getProductRatings() != null) {
             product.setProductRatings((int) (nxtStructProduct.getProductRatings() * 10));
         }
