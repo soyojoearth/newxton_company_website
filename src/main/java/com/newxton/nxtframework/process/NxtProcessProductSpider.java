@@ -13,7 +13,7 @@ import javax.annotation.Resource;
  * @author soyojo.earth@gmail.com
  * @time 2020/12/19
  * @address Shenzhen, China
- * @github NxtFramework
+ * @copyright NxtFramework
  */
 @Component
 public class NxtProcessProductSpider {

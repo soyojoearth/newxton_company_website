@@ -19,7 +19,7 @@ import java.util.Map;
  * @author soyojo.earth@gmail.com
  * @time 2020/12/19
  * @address Shenzhen, China
- * @github NxtFramework
+ * @copyright NxtFramework
  * 抓取第三方平台商品并创建产品
  */
 @RestController

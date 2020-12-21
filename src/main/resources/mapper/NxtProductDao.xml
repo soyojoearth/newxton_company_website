@@ -215,7 +215,7 @@
             <if test="keyword != null">
                 and product_name like #{keyword}
             </if>
-            and is_trash = 0
+            and is_trash = 0 and is_selling = 1
         </where>
         <if test="orderType != null">
             <if test="orderType == 1">
@@ -251,7 +251,7 @@
             <if test="keyword != null">
                 and product_name like #{keyword}
             </if>
-            and is_trash = 0
+            and is_trash = 0 and is_selling = 1
         </where>
     </select>
 

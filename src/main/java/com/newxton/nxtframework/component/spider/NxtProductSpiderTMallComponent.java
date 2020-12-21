@@ -14,7 +14,7 @@ import java.util.List;
  * @author soyojo.earth@gmail.com
  * @time 2020/12/19
  * @address Shenzhen, China
- * @github NxtFramework
+ * @copyright NxtFramework
  * 抓取天猫商品
  */
 @Component
@@ -48,7 +48,7 @@ public class NxtProductSpiderTMallComponent implements NxtComponentInterfaceProd
         NxtStructProductSpiderResult nxtStructProductSpiderResult = new NxtStructProductSpiderResult();
 
         /**
-         * 以下是基础代码和说明
+         * 以下是基础示例代码和说明
          */
         //抓取到产品名称
         String productName = null;
@@ -84,10 +84,10 @@ public class NxtProductSpiderTMallComponent implements NxtComponentInterfaceProd
         /**
          * 抓取到N张主图，有多少加多少
          */
-        pictureList.add("https://cbu01.alicdn.com/img/ibank/2019/213/591/10721195312_2064661510.jpg");
-        pictureList.add("https://cbu01.alicdn.com/img/ibank/2019/115/171/10721171511_2064661510.jpg");
-        pictureList.add("https://cbu01.alicdn.com/img/ibank/2019/705/628/10720826507_2064661510.jpg");
-        pictureList.add("https://cbu01.alicdn.com/img/ibank/2019/836/808/10720808638_2064661510.jpg");
+        pictureList.add("https://cbu01.alicdn.com/img/ibank/2020/486/146/15432641684_1968605068.jpg");
+        pictureList.add("https://cbu01.alicdn.com/img/ibank/2019/852/428/11335824258_1968605068.jpg");
+        pictureList.add("https://cbu01.alicdn.com/img/ibank/2019/127/197/11335791721_1968605068.jpg");
+        pictureList.add("https://cbu01.alicdn.com/img/ibank/2019/309/797/11335797903_1968605068.jpg");
 
         /**
          * 抓取到规格1（如果有）

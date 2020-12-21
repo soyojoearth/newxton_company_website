@@ -7,7 +7,7 @@ import com.newxton.nxtframework.struct.NxtStructProductSpiderResult;
  * @author soyojo.earth@gmail.com
  * @time 2020/12/19
  * @address Shenzhen, China
- * @github NxtFramework
+ * @copyright NxtFramework
  */
 public interface NxtComponentInterfaceProductSpider {
 
