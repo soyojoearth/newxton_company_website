@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.controller.api.admin;
 
 import com.google.gson.Gson;
+import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.process.NxtProcessProduct;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
 import com.newxton.nxtframework.struct.NxtStructProduct;
@@ -34,7 +35,13 @@ public class NxtApiAdminProductUpdateController {
             if (nxtStructProduct.getDeliveryConfigId() == null){
                 return new NxtStructApiResult(52,"请选择运费模版").toMap();
             }
-            return nxtProcessProduct.saveProductAllDetail(nxtStructProduct);
+            try {
+                NxtStructProduct detail =  nxtProcessProduct.saveProductAllDetail(nxtStructProduct);
+                return new NxtStructApiResult(detail).toMap();
+            }
+            catch (NxtException e){
+                return new NxtStructApiResult(53,e.getNxtExecptionMessage()).toMap();
+            }
         }
         catch (Exception e){
             return new NxtStructApiResult(53,"json解析错误或者缺少参数").toMap();

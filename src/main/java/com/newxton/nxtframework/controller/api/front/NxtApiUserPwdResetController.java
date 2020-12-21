@@ -80,6 +80,14 @@ public class NxtApiUserPwdResetController {
             return new NxtStructApiResult(53,"验证码无效");
         }
 
+        if (user.getStatus().equals(-1)) {
+            return new NxtStructApiResult(54,"该用户已被加入黑名单");
+        }
+
+        if (user.getIsAdmin() != null && user.getIsAdmin().equals(1)){
+            return new NxtStructApiResult(54,"管理员用户不可使用找回密码功能，请超级管理员修改");
+        }
+
         //验证成功，修改密码
         //创建salt和密码
         String saltNew = nxtUtilComponent.getRandomString(32);
@@ -91,10 +99,14 @@ public class NxtApiUserPwdResetController {
         newToken = DigestUtils.md5Hex(newToken).toLowerCase();
 
         user.setPassword(password);
+        user.setSalt(saltNew);
         user.setToken(newToken);
 
         nxtUserService.update(user);
 
+        //验证码标记已使用
+        nxtUserVerify.setStatus(1);
+        nxtUserVerifyService.update(nxtUserVerify);
 
         return new NxtStructApiResult();
 

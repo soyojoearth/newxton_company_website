@@ -102,7 +102,7 @@
                     <li class="item-price">
                         <a th:href="${'/product/detail?productId=' + p.id}" class="sell-price" th:text="${'¥' + p.priceFinally}"></a>
                         <a th:href="${'/product/detail?productId=' + p.id}" class="orig-price" th:text="${'¥' + p.priceInitial}"></a>
-                        <a th:href="${'/product/detail?productId=' + p.id}" class="stock" th:text="${p.inventoryQuantity}"></a>
+                        <a th:href="${'/product/detail?productId=' + p.id}" class="stock" th:text="${'库存：' + p.inventoryQuantity}"></a>
                         <!--<a href="javascript:void(0)" th:onclick="|addShoppingCart(${p.id})|" class="shop-cart">
                             <img th:src="@{/pc/img/buycart-small.png}" alt="" >
                         </a>-->

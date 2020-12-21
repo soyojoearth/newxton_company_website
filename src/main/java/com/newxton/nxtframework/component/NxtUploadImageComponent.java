@@ -2,6 +2,7 @@ package com.newxton.nxtframework.component;
 
 import com.google.gson.Gson;
 import com.newxton.nxtframework.entity.NxtUploadfile;
+import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.service.NxtUploadfileService;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
@@ -61,85 +62,109 @@ public class NxtUploadImageComponent {
     }
 
     /**
-     * 把Html里面的第三方图片抓取过来，存放到自己这里
-     * @param contentHTML
+     * 把第三方图片抓取过来，存放到自己这里
+     * @param imgUrl
      * @return
+     * @throws NxtException
      */
-    public String checkHtmlAndSavePic(String contentHTML){
+    public NxtUploadfile catchPictureAndSave(String imgUrl) throws NxtException {
 
-        Matcher m = Pattern.compile("<img.*?src=\"(http.*?)\"").matcher(contentHTML);
-        while (m.find()) {
-            String imgUrl = m.group(1);
-            if (!imgUrl.contains(this.getOssQiniuDomain())){
-                //抓取图片，上传
-                String uploadResultFilename = null;
-                try {
-                    URL uri = new URL(imgUrl);
-                    InputStream in = uri.openStream();
-                    byte[] fileBytesAll = IOUtils.toByteArray(in);
-                    in.close();
-                    //判断图片类型
-                    String fileExt = null;
-                    if (fileBytesAll[0] == (byte) 0xff && fileBytesAll[1] == (byte) 0xd8 && fileBytesAll[2] == (byte) 0xff){
-                        fileExt = "jpg";
-                    }
-                    else if (fileBytesAll[0] == (byte)0x89 && fileBytesAll[1] == (byte)0x50 && fileBytesAll[2] == (byte)0x4e && fileBytesAll[3] == (byte)0x47){
-                        fileExt = "png";
-                    }
-                    else if (fileBytesAll[0] == (byte)0x47 && fileBytesAll[1] == (byte)0x49 && fileBytesAll[2] == (byte)0x46 && fileBytesAll[3] == (byte)0x38){
-                        fileExt = "gif";
-                    }
+        if (!imgUrl.contains(this.getOssQiniuDomain())) {
+            //抓取图片，上传
+            String uploadResultFilename = null;
+            try {
+                URL uri = new URL(imgUrl);
+                InputStream in = uri.openStream();
+                byte[] fileBytesAll = IOUtils.toByteArray(in);
+                in.close();
+                //判断图片类型
+                String fileExt = null;
+                if (fileBytesAll[0] == (byte) 0xff && fileBytesAll[1] == (byte) 0xd8 && fileBytesAll[2] == (byte) 0xff) {
+                    fileExt = "jpg";
+                } else if (fileBytesAll[0] == (byte) 0x89 && fileBytesAll[1] == (byte) 0x50 && fileBytesAll[2] == (byte) 0x4e && fileBytesAll[3] == (byte) 0x47) {
+                    fileExt = "png";
+                } else if (fileBytesAll[0] == (byte) 0x47 && fileBytesAll[1] == (byte) 0x49 && fileBytesAll[2] == (byte) 0x46 && fileBytesAll[3] == (byte) 0x38) {
+                    fileExt = "gif";
+                }
 //                    else if (fileBytesAll[0] == (byte)0x42 && fileBytesAll[1] == (byte)0x4d){
 //                        fileExt = "bmp";
 //                    }
 //                    else {
 //                        //unknow
 //                    }
-                    if (fileExt != null) {
-                        String urlPath = null;
-                        try {
-                            if (this.getOssLocation().equals("local")){
-                                urlPath = this.saveUploadFileLocal(fileBytesAll, fileExt);
-                            }
-                            else if (this.getOssLocation().equals("qiniu")){
-                                urlPath = this.uploadFileToQiniuYun(fileBytesAll, fileExt);
-                            }
-                        }
-                        catch (Exception e){
-                            System.out.println("Exception: " + e);
-                        }
-
-                        if (urlPath != null){
-                            uploadResultFilename = urlPath.substring(urlPath.lastIndexOf("/") + 1).toLowerCase();
-                        }
-
-                        //文件记录保存数据库
-                        NxtUploadfile nxtUploadfile = new NxtUploadfile();
-                        if (this.getOssLocation().equals("local")){
-                            nxtUploadfile.setFileLocation(3);//本地
-                        }
-                        else if (this.getOssLocation().equals("qiniu")) {
-                            nxtUploadfile.setFileLocation(1);//七牛云
-                        }
-                        nxtUploadfile.setCategoryId(0L);
-                        nxtUploadfile.setDatelineUpdate(System.currentTimeMillis());
-                        nxtUploadfile.setFilenameSaved(uploadResultFilename);
-                        nxtUploadfile.setFilenameSource("ThridPartPic");
-                        nxtUploadfile.setFileExt(fileExt);
-                        nxtUploadfile.setUrlpath(urlPath);
-                        nxtUploadfile.setFilepath(urlPath);
-                        nxtUploadfile.setFilesize((long)fileBytesAll.length);
-                        //增加记录
-                        NxtUploadfile userCreated = nxtUploadfileService.insert(nxtUploadfile);
-                        //替换旧图片
+                if (fileExt != null) {
+                    String urlPath = null;
+                    try {
                         if (this.getOssLocation().equals("local")) {
-                            contentHTML = contentHTML.replace(imgUrl, urlPath);
+                            urlPath = this.saveUploadFileLocal(fileBytesAll, fileExt);
+                        } else if (this.getOssLocation().equals("qiniu")) {
+                            urlPath = this.uploadFileToQiniuYun(fileBytesAll, fileExt);
                         }
-                        else if (this.getOssLocation().equals("qiniu")){
-                            contentHTML = contentHTML.replace(imgUrl, this.getOssQiniuDomain() + urlPath);
-                        }
+                    } catch (Exception e) {
+                        System.out.println("Exception: " + e);
                     }
-                }catch (IOException e){
+
+                    if (urlPath != null) {
+                        uploadResultFilename = urlPath.substring(urlPath.lastIndexOf("/") + 1).toLowerCase();
+                    }
+
+                    //文件记录保存数据库
+                    NxtUploadfile nxtUploadfile = new NxtUploadfile();
+                    if (this.getOssLocation().equals("local")) {
+                        nxtUploadfile.setFileLocation(3);//本地
+                    } else if (this.getOssLocation().equals("qiniu")) {
+                        nxtUploadfile.setFileLocation(1);//七牛云
+                    }
+                    nxtUploadfile.setCategoryId(0L);
+                    nxtUploadfile.setDatelineUpdate(System.currentTimeMillis());
+                    nxtUploadfile.setFilenameSaved(uploadResultFilename);
+                    nxtUploadfile.setFilenameSource("ThridPartPic");
+                    nxtUploadfile.setFileExt(fileExt);
+                    nxtUploadfile.setUrlpath(urlPath);
+                    nxtUploadfile.setFilepath(urlPath);
+                    nxtUploadfile.setFilesize((long) fileBytesAll.length);
+                    //增加记录
+                    return nxtUploadfileService.insert(nxtUploadfile);
+                }
+            } catch (IOException e) {
+                throw new NxtException("抓取图片出错");
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 把Html里面的第三方图片抓取过来，存放到自己这里
+     * @param contentHTML
+     * @return
+     */
+    public String checkHtmlAndSavePic(String contentHTML){
+
+        if (contentHTML == null){
+            return contentHTML;
+        }
+
+        Matcher m = Pattern.compile("<img.*?src=\"(http.*?)\"").matcher(contentHTML);
+        while (m.find()) {
+            String imgUrl = m.group(1);
+            if (!imgUrl.contains(this.getOssQiniuDomain())){
+                //抓取图片，上传
+                try {
+                    NxtUploadfile nxtUploadfile = this.catchPictureAndSave(imgUrl);
+                    if (nxtUploadfile == null){
+                        continue;
+                    }
+
+                    String urlPath = nxtUploadfile.getUrlpath();
+                    //替换旧图片
+                    if (this.getOssLocation().equals("local")) {
+                        contentHTML = contentHTML.replace(imgUrl, urlPath);
+                    }
+                    else if (this.getOssLocation().equals("qiniu")){
+                        contentHTML = contentHTML.replace(imgUrl, this.getOssQiniuDomain() + urlPath);
+                    }
+
+                }catch (NxtException e){
                     System.out.println(e);
                 }
             }
@@ -153,6 +178,9 @@ public class NxtUploadImageComponent {
      * @return
      */
     public String checkHtmlAndReplaceImageUrlForDisplay(String contentHTML){
+        if (contentHTML == null){
+            return contentHTML;
+        }
         contentHTML = contentHTML.replace("http://newxton-image-domain",this.getOssQiniuDomain());
         return contentHTML;
     }
@@ -195,6 +223,9 @@ public class NxtUploadImageComponent {
     public String convertImagePathToFullDomainImagePath(String imagePath){
         if (imagePath == null){
             return null;
+        }
+        if (imagePath.contains("http")){
+            return imagePath;
         }
         if (imagePath.contains("/public_pic")){
             return nxtWebUtilComponent.getDomainPath() + imagePath;

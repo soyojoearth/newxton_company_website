@@ -1,10 +1,16 @@
 $(function(){
     $(".nav-bar").mouseenter(function(){
-        $(".nav-bar-bd").addClass('active');
-        $(".nav-about").addClass('active');
+        /*$(".nav-bar-bd").addClass('active');*/
+        if($('.nav-about').is(':hidden')){
+            $('.bar-pic').attr('src','/pc/img/icon-up.png')
+            $(".nav-about").slideDown('fast');
+        }
     }).mouseleave(function (){
-        $(".nav-bar-bd").removeClass('active');
-        $(".nav-about").removeClass('active');
+       /*$(".nav-bar-bd").removeClass('active');*/
+        if($('.nav-about').is(':visible')){
+            $(".nav-about").slideUp('fast');
+            $('.bar-pic').attr('src','/pc/img/icon-down.png')
+        }
     });
 
     //显示购物车浮动窗口
@@ -29,15 +35,17 @@ $(function(){
 function findUserCart(){
     var user_id = $.cookie('user-id');
     var token = $.cookie('token');
-    var guest_token = $.cookie('guestToken');
-    var param = {
-        guestToken: guest_token
+    var shopping_cart_token = $.cookie('shopping_cart_token');
+    var headers = {
+        user_id: user_id,
+        token: token,
+        shopping_cart_token: shopping_cart_token
     }
     $.ajax({
         type: "post",
-        headers: {user_id: user_id,token: token},
+        headers: headers,
         url: "/api/shopping_cart/info",
-        data: JSON.stringify(param),
+        data: JSON.stringify({}),
         contentType:"application/json;charset=utf-8",
         dataType: "json",
         success: function (data) {
@@ -79,7 +87,7 @@ function userLoginOut(){
     $.ajax({
         type: "post",
         url: "/api/user/logout",
-        headers: {user_id: 0,token: token},
+        headers: {user_id: user_id,token: token},
         contentType:"application/json;charset=utf-8",
         dataType: "json",
         success: function (data) {

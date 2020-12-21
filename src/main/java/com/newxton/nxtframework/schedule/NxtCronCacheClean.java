@@ -31,7 +31,7 @@ public class NxtCronCacheClean {
     @Scheduled(fixedDelay = 15000)
     public void cleanSettingCache() {
         //15秒清理一次Setting缓存
-        nxtGlobalSettingComponent.cleanCache();
+//        nxtGlobalSettingComponent.cleanCache();
     }
 
     @Scheduled(fixedDelay = 15000)

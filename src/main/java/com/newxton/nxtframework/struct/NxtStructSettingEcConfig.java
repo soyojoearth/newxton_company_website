@@ -14,8 +14,8 @@ public class NxtStructSettingEcConfig {
     //1 下单减库存 2 付款减库存
     public Integer inventoryUpdateType = 1;
 
-    //满多少包邮。0表示不包邮
-    public Integer freeShippingAmount = 0;
+    //满多少包邮。(0等于全场包邮)
+    public Integer freeShippingAmount = 100000000;
 
     //发货后多少天自动收货
     public Integer automaticConfirmationOfReceiptTime = 14;

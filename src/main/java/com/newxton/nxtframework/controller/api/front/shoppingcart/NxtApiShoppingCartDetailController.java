@@ -33,9 +33,8 @@ public class NxtApiShoppingCartDetailController {
 
     @RequestMapping("/api/shopping_cart/detail")
     public NxtStructApiResult exec(@RequestHeader(value = "user_id", required = false) Long userId,
-                                   @RequestBody JSONObject jsonParam) {
-
-        String guestToken = jsonParam.getString("guestToken");
+                                   @RequestHeader(value = "shopping_cart_token", required = false) String shoppingCartToken
+    ) {
 
         NxtShoppingCart nxtShoppingCart;
 
@@ -43,9 +42,9 @@ public class NxtApiShoppingCartDetailController {
             //查询已登录用户购物车
             nxtShoppingCart = nxtShoppingCartService.queryByUserId(userId);
             //检查合并购物车
-            if (guestToken != null){
+            if (shoppingCartToken != null){
                 try {
-                    nxtProcessShoppingCart.mergeGuestShoppingCartToUser(guestToken, userId);
+                    nxtProcessShoppingCart.mergeGuestShoppingCartToUser(shoppingCartToken, userId);
                     nxtShoppingCart = nxtShoppingCartService.queryByUserId(userId);
                 }
                 catch (NxtException e) {
@@ -55,9 +54,9 @@ public class NxtApiShoppingCartDetailController {
             }
         } else {
             //查询匿名用户购物车
-            nxtShoppingCart = nxtShoppingCartService.queryByToken(guestToken);
+            nxtShoppingCart = nxtShoppingCartService.queryByToken(shoppingCartToken);
             if (nxtShoppingCart != null && nxtShoppingCart.getUserId() != null){
-                //已有归属的购物车，不能仅靠单独guestToken操作
+                //已有归属的购物车，不能仅靠单独shoppingCartToken操作
                 nxtShoppingCart = null;
             }
         }

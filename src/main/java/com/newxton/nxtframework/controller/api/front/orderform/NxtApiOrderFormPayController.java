@@ -2,13 +2,14 @@ package com.newxton.nxtframework.controller.api.front.orderform;
 
 import com.alibaba.fastjson.JSONObject;
 import com.newxton.nxtframework.entity.NxtRecharge;
-import com.newxton.nxtframework.process.NxtProcessOrderFormPayByBalance;
+import com.newxton.nxtframework.process.NxtProcessOrderFormPayFinish;
 import com.newxton.nxtframework.component.NxtWebUtilComponent;
 import com.newxton.nxtframework.entity.NxtOrderForm;
 import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.service.NxtOrderFormService;
 import com.newxton.nxtframework.service.NxtRechargeService;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
+import com.newxton.nxtframework.struct.NxtStructSettingEcConfig;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,7 @@ public class NxtApiOrderFormPayController {
     private NxtRechargeService nxtRechargeService;
 
     @Resource
-    private NxtProcessOrderFormPayByBalance nxtProcessOrderFormPayByBalance;
+    private NxtProcessOrderFormPayFinish nxtProcessOrderFormPayFinish;
 
     @RequestMapping("/api/order_form/pay")
     public NxtStructApiResult exec(@RequestBody JSONObject jsonParam, @RequestHeader(value = "user_id", required = true) Long userId) {
@@ -70,7 +71,7 @@ public class NxtApiOrderFormPayController {
             //余额付款
             try {
                 //支付
-                nxtProcessOrderFormPayByBalance.exec(nxtOrderForm.getSerialNum());
+                nxtProcessOrderFormPayFinish.exec(nxtOrderForm.getSerialNum());
                 Map<String,Object> data = new HashMap<>();
                 data.put("redirectURL", nxtWebUtilComponent.getDomainPath() + "/ucenter/#/payresult?id=" + nxtOrderForm.getId());
                 //支付完成
@@ -88,7 +89,7 @@ public class NxtApiOrderFormPayController {
                 amount += nxtOrderForm.getDeliveryCost();
             }
             if (nxtOrderForm.getManualDeliveryCostDiscount() != null){
-                amount += nxtOrderForm.getDeliveryCost();
+                amount += nxtOrderForm.getManualDeliveryCostDiscount();
             }
 
             //创建充值&顺带订单支付

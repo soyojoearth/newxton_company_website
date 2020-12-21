@@ -35,7 +35,9 @@ public class NxtApiShoppingCartDeleteController {
 	private NxtShoppingCartProductService nxtShoppingCartProductService;
 
 	@RequestMapping(value = "/api/shopping_cart/del_product", method = RequestMethod.POST)
-	public NxtStructApiResult index(@RequestHeader(value = "user_id", required = false) Long userId, @RequestBody String json) {
+	public NxtStructApiResult index(@RequestHeader(value = "user_id", required = false) Long userId,
+									@RequestHeader(value = "shopping_cart_token", required = false) String shoppingCartToken,
+									@RequestBody String json) {
 
 		Gson gson = new Gson();
 		NxtStructShoppingCartPOST shoppingCartItem;
@@ -47,22 +49,21 @@ public class NxtApiShoppingCartDeleteController {
 			return new NxtStructApiResult(53,"json格式不正确");
 		}
 
-		if (userId == null && (shoppingCartItem.getGuestToken() == null || shoppingCartItem.getGuestToken().isEmpty())) {
-			return new NxtStructApiResult(54,"缺少user_id或guestToken");
+		if (userId == null && (shoppingCartToken == null || shoppingCartToken.isEmpty())) {
+			return new NxtStructApiResult(54,"缺少user_id或shoppingCartToken");
 		}
 
 		NxtShoppingCart shoppingCart;
 
-		// 检查条件user_id有值，还是guestToken有值，如果都有值以user_id为主
+		// 检查条件user_id有值，还是shoppingCartToken有值，如果都有值以user_id为主
 		if (userId != null) {
 			// 已登录用户 购物车
 			shoppingCart = nxtShoppingCartService.queryByUserId(userId);
 		} else {
 			// 匿名用户流程 购物车
-			String token = shoppingCartItem.getGuestToken();
-			shoppingCart = nxtShoppingCartService.queryByToken(token);
+			shoppingCart = nxtShoppingCartService.queryByToken(shoppingCartToken);
 			if (shoppingCart != null && shoppingCart.getUserId() != null){
-				//已有归属的购物车，不能仅靠单独guestToken操作
+				//已有归属的购物车，不能仅靠单独shoppingCartToken操作
 				shoppingCart = null;
 			}
 		}

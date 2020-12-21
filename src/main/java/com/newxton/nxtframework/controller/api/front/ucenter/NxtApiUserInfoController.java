@@ -57,7 +57,7 @@ public class NxtApiUserInfoController {
         }
 
         String inviteUrl = nxtWebUtilComponent.getDomainPath()+"/invite?id="+user.getInviteCode();
-        String inviteQrCodePicUrl = nxtWebUtilComponent.getDomainPath()+"/inviteUrlQrImage_"+user.getInviteCode()+".png";
+        String inviteQrCodePicUrl = nxtWebUtilComponent.getDomainPath()+"/qr_code/invite_code_"+user.getInviteCode()+".png";
 
         NxtStructUserInfo nxtStructUserInfo = new NxtStructUserInfo();
         nxtStructUserInfo.setUsername(user.getUsername());

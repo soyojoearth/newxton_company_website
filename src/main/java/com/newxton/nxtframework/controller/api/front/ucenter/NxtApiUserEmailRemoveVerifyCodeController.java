@@ -41,7 +41,7 @@ public class NxtApiUserEmailRemoveVerifyCodeController {
         try {
             //发送email验证码
             Long code = nxtProcessVerifyCode.createAndSendPhoneOrEmailVerifyCode(email,-1);
-            return new NxtStructApiResult(53,"验证码已存入数据库表【nxt_user_verify】，请到数据库查看。本系统暂不免费提供邮件发送功能，请自行开发或联系我们进行二次开发。");
+            return new NxtStructApiResult(53,"验证码【"+code+"】。本开源系统不提供验证码发送功能，请自行开发或联系我们进行二次开发。");
         }
         catch (NxtException e){
             return new NxtStructApiResult(54,e.getNxtExecptionMessage());

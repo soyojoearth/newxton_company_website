@@ -47,9 +47,13 @@ public class NxtApiShoppingCartAddController {
 
 	@RequestMapping(value = "/api/shopping_cart/add_product", method = RequestMethod.POST)
 	public NxtStructApiResult index(@RequestHeader(value = "user_id", required = false) Long userId,
-									@RequestHeader(value = "token", required = false) String token, @RequestBody String json) {
+									@RequestHeader(value = "token", required = false) String token,
+									@RequestHeader(value = "shopping_cart_token", required = false) String shoppingCartToken,
+									@RequestBody String json
+	) {
 
-		// 检查条件user_id有值，还是guestToken有值，如果都有值以user_id为主
+
+		// 检查条件user_id有值，还是shoppingCartToken有值，如果都有值以user_id为主
 		Gson gson = new Gson();
 		NxtStructShoppingCartPOST shoppingCartPOST;
 		try {
@@ -73,10 +77,10 @@ public class NxtApiShoppingCartAddController {
 
 		} else {
 			// 匿名用户 购物车
-			String guestToken = shoppingCartPOST.getGuestToken();
-			shoppingCart = nxtShoppingCartService.queryByToken(guestToken);
+
+			shoppingCart = nxtShoppingCartService.queryByToken(shoppingCartToken);
 			if (shoppingCart == null ||
-					shoppingCart.getUserId() != null//已有归属的购物车，不能仅靠单独guestToken操作
+					shoppingCart.getUserId() != null//已有归属的购物车，不能仅靠单独shoppingCartToken操作
 			) {
 				NxtShoppingCart newNxtShoppingCart = new NxtShoppingCart();
 				newNxtShoppingCart.setToken(nxtUtilComponent.getRandomString(32));
@@ -90,6 +94,7 @@ public class NxtApiShoppingCartAddController {
 			this.processShoppingCartAddProduct(shoppingCartPOST,shoppingCart);
 			Map<String,Object> data = new HashMap<>();
 			data.put("guestToken",shoppingCart.getToken());
+			data.put("shoppingCartToken",shoppingCart.getToken());//兼容guestToken
 			return new NxtStructApiResult(data);
 		}
 		catch (NxtException e){

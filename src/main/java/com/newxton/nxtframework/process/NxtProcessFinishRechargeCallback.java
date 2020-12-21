@@ -1,10 +1,11 @@
 package com.newxton.nxtframework.process;
 
+import com.newxton.nxtframework.component.NxtGlobalSettingComponent;
 import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.service.*;
+import com.newxton.nxtframework.struct.NxtStructSettingEcConfig;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -27,7 +28,9 @@ public class NxtProcessFinishRechargeCallback {
     private NxtTransactionService nxtTransactionService;
 
     @Resource
-    private NxtProcessOrderFormPayByBalance nxtProcessOrderFormPayByBalance;
+    private NxtProcessOrderFormPayFinish nxtProcessOrderFormPayFinish;
+
+
 
     /**
      * 执行充值成功且检查订单付款
@@ -93,8 +96,8 @@ public class NxtProcessFinishRechargeCallback {
             return;
         }
 
-        //使用余额付款
-        nxtProcessOrderFormPayByBalance.exec(nxtOrderForm.getSerialNum());
+        //最后执行完成付款
+        nxtProcessOrderFormPayFinish.exec(nxtOrderForm.getSerialNum());
 
     }
 }

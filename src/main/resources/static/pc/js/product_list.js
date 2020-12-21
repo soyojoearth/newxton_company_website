@@ -44,26 +44,30 @@ function searchForm(){
 }
 
 function addShoppingCart(product_id){
-    var guest_token = $.cookie('guestToken');
-    var product = {
-        productId:product_id,
-        quantity:1
-    }
+    var shopping_cart_token = $.cookie('shopping_cart_token');
+    var user_id = $.cookie('user-id');
+    var token = $.cookie('token');
     var param = {
-        product: product,
-        guestToken:guest_token
+        product: {
+            productId:product_id,
+            quantity:1
+        }
+    }
+    var headers = {
+        user_id: user_id,
+        token: token,
+        shopping_cart_token: shopping_cart_token
     }
     $.ajax({
         type: "post",
-        /*headers: {user_id: null,token: null},*/
+        headers: headers,
         url: "/api/shopping_cart/add_product",
         data: JSON.stringify(param),
         contentType:"application/json;charset=utf-8",
         dataType: "json",
         success: function (data) {
             if (data.status == 0) {
-                $.cookie('guestToken', data.result.guestToken, {path: '/' });
-                alert('添加购物车成功')
+                $.cookie('shopping_cart_token', data.result.shoppingCartToken, {path: '/' });
                 findUserCart();
             } else {
                alert(data.message);

@@ -29,7 +29,10 @@ public class NxtApiOrderFormDeliveryCostController {
     private NxtShoppingCartService nxtShoppingCartService;
 
     @RequestMapping("/api/order_form/delivery_cost")
-    public NxtStructApiResult exec(@RequestBody JSONObject jsonParam, @RequestHeader(value = "user_id", required = false) Long userId) {
+    public NxtStructApiResult exec(@RequestBody JSONObject jsonParam,
+                                   @RequestHeader(value = "user_id", required = false) Long userId,
+                                   @RequestHeader(value = "shopping_cart_token", required = false) String shoppingCartToken
+    ) {
 
         Long deliveryCountry = jsonParam.getLong("deliveryCountry");
         Long deliveryProvince = jsonParam.getLong("deliveryProvince");
@@ -52,8 +55,7 @@ public class NxtApiOrderFormDeliveryCostController {
             nxtShoppingCart = nxtShoppingCartService.queryByUserId(userId);
         } else {
             //查询匿名用户购物车
-            String guestToken = jsonParam.getString("guestToken");
-            nxtShoppingCart = nxtShoppingCartService.queryByToken(guestToken);
+            nxtShoppingCart = nxtShoppingCartService.queryByToken(shoppingCartToken);
         }
 
         if (nxtShoppingCart == null){
