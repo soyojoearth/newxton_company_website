@@ -7,7 +7,6 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,6 @@ import java.util.HashMap;
 @RestController
 public class NxtImageQRCodeController {
 
-    @Cacheable("NxtImageQRCodeController")
     @RequestMapping("/qr_code/{content}.png")
     public ResponseEntity<InputStreamResource> action(@PathVariable(value = "content",required = false) String content) {
 

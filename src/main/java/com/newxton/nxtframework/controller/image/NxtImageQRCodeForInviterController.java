@@ -8,7 +8,6 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.newxton.nxtframework.component.NxtWebUtilComponent;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +35,6 @@ public class NxtImageQRCodeForInviterController {
     @Resource
     private NxtWebUtilComponent nxtWebUtilComponent;
 
-    @Cacheable("NxtImageQRCodeController")
     @RequestMapping("/qr_code/invite_code_{invite_code}.png")
     public ResponseEntity<InputStreamResource> action(@PathVariable(value = "invite_code",required = true) Long inviteCode) {
 
