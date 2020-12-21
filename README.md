@@ -103,42 +103,50 @@ typora-copy-images-to: ./gitbook_resource
 
 #### 单机部署方式：
 
-##### 1、创建完数据库之后，配置 `wwwroot/docker-compose-quickstart.yml`文件中的数据库连接：
-
-`#不要写127.0.0.1，可写本机或数据库的局域网地址`
-
-![image-20201221163531375](gitbook_resource/image-20201221163531375.png)
-
-##### 2、用IntelliJ IDEA打开项目，进行package打包，然后命令行到项目根目录，执行
+##### 1、用IntelliJ IDEA打开项目，进行package打包，然后命令行到项目根目录，执行
 
 
 ```
 #创建镜像
 docker build --tag nxtframework:0.1.0 .
+```
+
+2、把镜像推到docker仓库；
+
+3、用database里面的nxtframework.sql在创建服务器数据库；
+
+##### 4、配置 `wwwroot/docker-compose-quickstart.yml`文件中的数据库连接：
+
+`#不要写127.0.0.1，可写本机或数据库的局域网地址`
+
+![image-20201221163531375](gitbook_resource/image-20201221163531375.png)
+
+5、把wwwroot目录传到服务器，执行：
+```
 #启动本地测试
 cd wwwroot
 docker-compose -f docker-compose-quickstart.yml up
 ```
 
-**3、然后浏览器打开：`http://127.0.0.1:8686/admin`  用户名：`admin` 密码：`nxtframework.com`**
+6、然后浏览器打开：`http://服务器地址:8686/admin`  用户名：`admin` 密码：`nxtframework.com`**
 
-##### 4、如何启用80端口、部署SSL：
 
-添加以下hosts
 
-`127.0.0.1  test.nxtframework.com`
+##### 如何启用80端口、部署SSL：
 
-打开浏览器访问：http://test.nxtframework.com/admin 和 https://test.nxtframework.com/admin
+##### 1、本机添加以下hosts
 
-**5、如何更换域名、证书：**
+`服务器IP  test.nxtframework.com`
+
+打开浏览器访问：`http://test.nxtframework.com/admin` 和 `https://test.nxtframework.com/admin`
+
+**2、如何更换域名、证书：**
 
 修改`wwwroot/http/nginx.conf`文件，将域名修改成自己的域名；
 
 更换`wwwroot/http/ssl*` 两个证书文件；
 
-**6、其它**
 
-一般不建议用docker部署mysql，正式商用时，还请使用独立的mysql数据库，使用 `docker-compose-quickstart.yml` 启动应用
 
 
 
