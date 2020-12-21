@@ -44,7 +44,7 @@ public class NxtApiUserPwdResetVerifyCodeController {
         }
 
         if (user == null){
-            return new NxtStructApiResult("该用户不存在");
+            return new NxtStructApiResult(53,"该用户不存在");
         }
 
         //-1：修改绑定 1：绑定账户 2：找回密码 3：提现验证

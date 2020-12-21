@@ -99,10 +99,14 @@ public class NxtApiUserPwdResetController {
         newToken = DigestUtils.md5Hex(newToken).toLowerCase();
 
         user.setPassword(password);
+        user.setSalt(saltNew);
         user.setToken(newToken);
 
         nxtUserService.update(user);
 
+        //验证码标记已使用
+        nxtUserVerify.setStatus(1);
+        nxtUserVerifyService.update(nxtUserVerify);
 
         return new NxtStructApiResult();
 
