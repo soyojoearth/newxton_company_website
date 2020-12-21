@@ -33,12 +33,8 @@ public class NxtApiShoppingCartDetailController {
 
     @RequestMapping("/api/shopping_cart/detail")
     public NxtStructApiResult exec(@RequestHeader(value = "user_id", required = false) Long userId,
-                                   @RequestHeader(value = "shopping_cart_token", required = false) String shoppingCartToken,
-                                   @RequestBody JSONObject jsonParam) {
-
-        if (shoppingCartToken == null || shoppingCartToken.isEmpty()){
-            shoppingCartToken = jsonParam.getString("guestToken");
-        }
+                                   @RequestHeader(value = "shopping_cart_token", required = false) String shoppingCartToken
+    ) {
 
         NxtShoppingCart nxtShoppingCart;
 

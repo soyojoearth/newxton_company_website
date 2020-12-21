@@ -49,11 +49,6 @@ public class NxtApiShoppingCartDeleteController {
 			return new NxtStructApiResult(53,"json格式不正确");
 		}
 
-		//兼容guestToken
-		if (shoppingCartToken == null || shoppingCartToken.isEmpty()){
-			shoppingCartToken = shoppingCartItem.getGuestToken();
-		}
-
 		if (userId == null && (shoppingCartToken == null || shoppingCartToken.isEmpty())) {
 			return new NxtStructApiResult(54,"缺少user_id或shoppingCartToken");
 		}

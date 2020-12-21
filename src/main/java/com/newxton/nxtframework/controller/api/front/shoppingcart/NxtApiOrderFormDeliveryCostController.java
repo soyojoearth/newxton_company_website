@@ -34,10 +34,6 @@ public class NxtApiOrderFormDeliveryCostController {
                                    @RequestHeader(value = "shopping_cart_token", required = false) String shoppingCartToken
     ) {
 
-        if (shoppingCartToken == null || shoppingCartToken.isEmpty()){
-            shoppingCartToken = jsonParam.getString("guestToken");
-        }
-
         Long deliveryCountry = jsonParam.getLong("deliveryCountry");
         Long deliveryProvince = jsonParam.getLong("deliveryProvince");
         Long deliveryCity = jsonParam.getLong("deliveryCity");

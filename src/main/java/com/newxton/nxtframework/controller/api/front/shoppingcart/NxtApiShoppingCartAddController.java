@@ -63,11 +63,6 @@ public class NxtApiShoppingCartAddController {
 			return new NxtStructApiResult(53,"json格式不正确");
 		}
 
-		//兼容guestToken
-		if (shoppingCartToken == null || shoppingCartToken.isEmpty()){
-			shoppingCartToken = shoppingCartPOST.getGuestToken();
-		}
-
 		NxtShoppingCart shoppingCart;
 		if (userId != null) {
 			// 已登录用户 购物车
