@@ -103,7 +103,7 @@ typora-copy-images-to: ./gitbook_resource
 
 #### 单机部署方式：
 
-##### 1、用IntelliJ IDEA打开项目，进行package打包，然后命令行到项目根目录，执行
+##### 1、用IntelliJ IDEA打开项目，进行package打包，然后命令行到项目根目录，执行：
 
 
 ```
@@ -111,24 +111,24 @@ typora-copy-images-to: ./gitbook_resource
 docker build --tag nxtframework:0.1.0 .
 ```
 
-2、把镜像推到docker仓库；
+##### 2、把镜像推到docker仓库，并拉到服务器上；
 
-3、用database里面的nxtframework.sql在创建服务器数据库；
+##### 3、用database里面的nxtframework.sql在服务器创建数据库；
 
-##### 4、配置 `wwwroot/docker-compose-quickstart.yml`文件中的数据库连接：
+##### 4、配置 `wwwroot/docker-compose-quickstart.yml`文件中的docker镜像、数据库连接：
 
-`#不要写127.0.0.1，可写本机或数据库的局域网地址`
+`#不要写127.0.0.1，必须写局域网地址（即便是本机数据库）`
 
-![image-20201221163531375](gitbook_resource/image-20201221163531375.png)
+![image-20201221170703085](gitbook_resource/image-20201221170703085.png)
 
-5、把wwwroot目录传到服务器，执行：
+##### 5、把wwwroot目录传到服务器，执行：
+
 ```
-#启动本地测试
 cd wwwroot
 docker-compose -f docker-compose-quickstart.yml up
 ```
 
-6、然后浏览器打开：`http://服务器地址:8686/admin`  用户名：`admin` 密码：`nxtframework.com`**
+##### 6、然后浏览器打开：`http://服务器地址:8686/admin`  用户名：`admin` 密码：`nxtframework.com`
 
 
 
