@@ -83,22 +83,33 @@ typora-copy-images-to: ./gitbook_resource
 
 
 
+#### 本地测试运行：
+
+**1、用database里面的nxtframework.sql在本机创建数据库，并设置：**
+
+```
+数据库名称：nxtframework
+数据库用户名：nxtframework
+数据库密码：12345678
+```
+
+**2、用IntelliJ IDEA打开项目，运行项目**
+
+**3、然后浏览器打开：`http://127.0.0.1:8080/admin`  用户名：`admin` 密码：`nxtframework.com`**
+
+##### 4、前台：`http://127.0.0.1:8080`
+
 
 
 #### 单机部署方式：
 
-**1、clone项目，用docker创建数据库镜像：**
+##### 1、创建完数据库之后，配置 `wwwroot/docker-compose-quickstart.yml`文件中的数据库连接：
 
-```
-git clone https://github.com/soyojoearth/nxtframework.git
-cd nxtframework/wwwroot/db/
-#创建、启动docker数据库（仅供测试）
-docker build --tag nxtmysql:0.1.0 .
-#回到项目目录
-cd ../../
-```
+`#不要写127.0.0.1，可写本机或数据库的局域网地址`
 
-**2、用IntelliJ IDEA打开项目，进行package打包，然后命令行到项目根目录，执行：**
+![image-20201221163531375](gitbook_resource/image-20201221163531375.png)
+
+##### 2、用IntelliJ IDEA打开项目，进行package打包，然后命令行到项目根目录，执行
 
 
 ```
@@ -106,12 +117,12 @@ cd ../../
 docker build --tag nxtframework:0.1.0 .
 #启动本地测试
 cd wwwroot
-docker-compose -f docker-compose-quickstart-with-db.yml up
+docker-compose -f docker-compose-quickstart.yml up
 ```
 
 **3、然后浏览器打开：`http://127.0.0.1:8686/admin`  用户名：`admin` 密码：`nxtframework.com`**
 
-**4、如何启用80端口、部署SSL：**
+##### 4、如何启用80端口、部署SSL：
 
 添加以下hosts
 
