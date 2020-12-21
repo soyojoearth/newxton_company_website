@@ -98,12 +98,10 @@ docker build --tag nxtmysql:0.1.0 .
 cd ../../
 ```
 
-**2、到项目根目录，执行：**
+**2、用IntelliJ IDEA打开项目，进行package打包，然后命令行到项目根目录，执行：**
 
 
 ```
-#打包
-mvn package -Dmaven.test.skip=true
 #创建镜像
 docker build --tag nxtframework:0.1.0 .
 #启动本地测试
