@@ -13,17 +13,17 @@ import org.springframework.web.servlet.ModelAndView;
  * @copyright NxtFramework
  */
 @Controller
-public class NxtInviterController {
+public class NxtInviteController {
     @RequestMapping("/invite")
     public String index(Device device, ModelAndView model , @RequestParam("id") Long inviterCode) {
 
         if (device.isMobile()){
             //H5版本有了，再换掉这里的url
-            return "redirect:/ucenter/#/sign?invite_code="+inviterCode;
+            return "redirect:/ucenter/#/sign?inviter_code="+inviterCode;
         }
         else {
             model.setViewName("pc/index");
-            return "redirect:/ucenter/#/sign?invite_code="+inviterCode;
+            return "redirect:/ucenter/#/sign?inviter_code="+inviterCode;
         }
 
     }
