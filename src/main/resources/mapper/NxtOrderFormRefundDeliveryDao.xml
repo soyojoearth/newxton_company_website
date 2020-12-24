@@ -15,7 +15,7 @@
         select
           id, order_form_refund_id, delivery_company_name, delivery_serial_num
         from nxt_order_form_refund_delivery
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--根据order_form_refund_id查询单个-->
@@ -23,14 +23,14 @@
         select
           id, order_form_refund_id, delivery_company_name, delivery_serial_num
         from nxt_order_form_refund_delivery
-        where order_form_refund_id = #{orderFormRefundId}
+        where @NxtTenantCondition@ and order_form_refund_id = #{orderFormRefundId}
     </select>
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
           id, order_form_refund_id, delivery_company_name, delivery_serial_num
-        from nxt_order_form_refund_delivery
+        from @NxtTenantCondition@ and nxt_order_form_refund_delivery
         limit #{offset}, #{limit}
     </select>
 
@@ -40,6 +40,7 @@
           id, order_form_refund_id, delivery_company_name, delivery_serial_num
         from nxt_order_form_refund_delivery
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -57,8 +58,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_refund_delivery(order_form_refund_id, delivery_company_name, delivery_serial_num)
-        values (#{orderFormRefundId}, #{deliveryCompanyName}, #{deliverySerialNum})
+        insert into nxt_order_form_refund_delivery(@NxtTenantInsertKey@ order_form_refund_id, delivery_company_name, delivery_serial_num)
+        values (@NxtTenantInsertValue@ #{orderFormRefundId}, #{deliveryCompanyName}, #{deliverySerialNum})
     </insert>
 
     <!--通过主键修改数据-->
@@ -75,12 +76,12 @@
                 delivery_serial_num = #{deliverySerialNum},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_order_form_refund_delivery where id = #{id}
+        delete from nxt_order_form_refund_delivery where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 </mapper>

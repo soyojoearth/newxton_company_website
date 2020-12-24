@@ -27,7 +27,7 @@
         select
           id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
         from nxt_commission
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -35,6 +35,7 @@
         select
           id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
         from nxt_commission
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -44,6 +45,7 @@
           id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
         from nxt_commission
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -94,8 +96,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_commission(user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer)
-        values (#{userId}, #{inviterLevel}, #{orderFormId}, #{orderFormProductId}, #{commissionTransferInId}, #{commissionRate}, #{commissionAmount}, #{datelineCreate}, #{datelineReceived}, #{datelineEnd}, #{quantityDeal}, #{quantityRefund}, #{isPaid}, #{isTransfer})
+        insert into nxt_commission(@NxtTenantInsertKey@ user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer)
+        values (@NxtTenantInsertValue@ #{userId}, #{inviterLevel}, #{orderFormId}, #{orderFormProductId}, #{commissionTransferInId}, #{commissionRate}, #{commissionAmount}, #{datelineCreate}, #{datelineReceived}, #{datelineEnd}, #{quantityDeal}, #{quantityRefund}, #{isPaid}, #{isTransfer})
     </insert>
 
     <!--通过主键修改数据-->
@@ -145,12 +147,12 @@
                 is_transfer = #{isTransfer},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_commission where id = #{id}
+        delete from nxt_commission where @NxtTenantCondition@ and id = #{id}
     </delete>
 
     <!--根据userId查询指定行数据-->
@@ -158,7 +160,7 @@
         select
           id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
         from nxt_commission
-        where user_id = #{userId}
+        where @NxtTenantCondition@ and user_id = #{userId}
         order by id desc
         limit #{offset}, #{limit}
     </select>
@@ -168,7 +170,7 @@
         select
           id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
         from nxt_commission
-        where user_id = #{userId} and is_transfer = 0 and is_paid = 1 and dateline_end > 0 and (quantity_deal > quantity_refund)
+        where @NxtTenantCondition@ and user_id = #{userId} and is_transfer = 0 and is_paid = 1 and dateline_end > 0 and (quantity_deal > quantity_refund)
     </select>
 
     <!--根据userId查询所有已付款、等待交易完成的佣金记录-->
@@ -176,7 +178,7 @@
         select
           id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
         from nxt_commission
-        where user_id = #{userId} and is_transfer = 0 and is_paid = 1 and (dateline_end is NULL or dateline_end = 0) and (quantity_deal > quantity_refund)
+        where @NxtTenantCondition@ and user_id = #{userId} and is_transfer = 0 and is_paid = 1 and (dateline_end is NULL or dateline_end = 0) and (quantity_deal > quantity_refund)
     </select>
 
     <!--查询所有已经确认收货，但还没有确认佣金完成，并且时间上可以确认佣金完成的单子-->
@@ -184,7 +186,7 @@
         select
           id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
         from nxt_commission
-        where dateline_received is not null and dateline_end is null and dateline_received &lt; #{datelineReceivedLimit}
+        where @NxtTenantCondition@ and dateline_received is not null and dateline_end is null and dateline_received &lt; #{datelineReceivedLimit}
     </select>
 
 
@@ -194,6 +196,7 @@
           id, user_id, inviter_level, order_form_id, order_form_product_id, commission_transfer_in_id, commission_rate, commission_amount, dateline_create, dateline_received, dateline_end, quantity_deal, quantity_refund, is_paid, is_transfer
         from nxt_commission
         <where>
+                and @NxtTenantCondition@
             <if test="userId != null">
                 and user_id = #{userId}
             </if>
@@ -235,6 +238,7 @@
         count(*)
         from nxt_commission
         <where>
+                and @NxtTenantCondition@
             <if test="userId != null">
                 and user_id = #{userId}
             </if>

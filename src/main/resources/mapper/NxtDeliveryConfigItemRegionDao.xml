@@ -14,7 +14,7 @@
         select
           id, delivery_config_item_id, delivery_region_id
         from nxt_delivery_config_item_region
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -22,6 +22,7 @@
         select
           id, delivery_config_item_id, delivery_region_id
         from nxt_delivery_config_item_region
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -31,6 +32,7 @@
           id, delivery_config_item_id, delivery_region_id
         from nxt_delivery_config_item_region
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -47,7 +49,7 @@
         select
         id, delivery_config_item_id, delivery_region_id
         from nxt_delivery_config_item_region
-        WHERE delivery_config_item_id IN
+        WHERE @NxtTenantCondition@ and delivery_config_item_id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -59,6 +61,7 @@
         count(*)
         from nxt_delivery_config_item_region
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -73,8 +76,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_delivery_config_item_region(delivery_config_item_id, delivery_region_id)
-        values (#{deliveryConfigItemId}, #{deliveryRegionId})
+        insert into nxt_delivery_config_item_region(@NxtTenantInsertKey@ delivery_config_item_id, delivery_region_id)
+        values (@NxtTenantInsertValue@ #{deliveryConfigItemId}, #{deliveryRegionId})
     </insert>
 
     <!--通过主键修改数据-->
@@ -88,17 +91,17 @@
                 delivery_region_id = #{deliveryRegionId},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_delivery_config_item_region where id = #{id}
+        delete from nxt_delivery_config_item_region where @NxtTenantCondition@ and id = #{id}
     </delete>
 
     <delete id="deleteByConfigItemIdSet">
         delete from nxt_delivery_config_item_region
-        WHERE delivery_config_item_id IN
+        WHERE @NxtTenantCondition@ and delivery_config_item_id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -106,7 +109,7 @@
 
     <delete id="deleteByIdSet">
         delete from nxt_delivery_config_item_region
-        WHERE id IN
+        WHERE @NxtTenantCondition@ and id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>

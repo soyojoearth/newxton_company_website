@@ -20,7 +20,7 @@
         select
           id, user_id, order_form_id, reason_type, reasion_description, transaction_id, status, dateline_create, dateline_end
         from nxt_order_form_refund
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -28,6 +28,7 @@
         select
           id, user_id, order_form_id, reason_type, reasion_description, transaction_id, status, dateline_create, dateline_end
         from nxt_order_form_refund
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -37,6 +38,7 @@
           id, user_id, order_form_id, reason_type, reasion_description, transaction_id, status, dateline_create, dateline_end
         from nxt_order_form_refund
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -69,8 +71,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_refund(user_id, order_form_id, reason_type, reasion_description, transaction_id, status, dateline_create, dateline_end)
-        values (#{userId}, #{orderFormId}, #{reasonType}, #{reasionDescription}, #{transactionId}, #{status}, #{datelineCreate}, #{datelineEnd})
+        insert into nxt_order_form_refund(@NxtTenantInsertKey@ user_id, order_form_id, reason_type, reasion_description, transaction_id, status, dateline_create, dateline_end)
+        values (@NxtTenantInsertValue@ #{userId}, #{orderFormId}, #{reasonType}, #{reasionDescription}, #{transactionId}, #{status}, #{datelineCreate}, #{datelineEnd})
     </insert>
 
     <!--通过主键修改数据-->
@@ -102,12 +104,12 @@
                 dateline_end = #{datelineEnd},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_order_form_refund where id = #{id}
+        delete from nxt_order_form_refund where @NxtTenantCondition@ and id = #{id}
     </delete>
 
     <!--查询用户的售后服务单-->
@@ -116,6 +118,7 @@
         id, user_id, order_form_id, reason_type, reasion_description, transaction_id, status, dateline_create, dateline_end
         from nxt_order_form_refund
         <where>
+            and @NxtTenantCondition@
             and user_id = #{userId}
             <if test="isDone != null">
                 <if test="isDone">
@@ -153,6 +156,7 @@
         id, user_id, order_form_id, reason_type, reasion_description, transaction_id, status, dateline_create, dateline_end
         from nxt_order_form_refund
         <where>
+                and @NxtTenantCondition@
             <if test="userId != null">
                 and user_id = #{userId}
             </if>
@@ -173,6 +177,7 @@
         count(*)
         from nxt_order_form_refund
         <where>
+                and @NxtTenantCondition@
             <if test="userId != null">
                 and user_id = #{userId}
             </if>

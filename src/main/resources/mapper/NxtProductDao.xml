@@ -40,7 +40,7 @@
         select
           id, category_id, brand_id, product_name, product_subtitle, product_tags, product_ratings, external_url, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -48,7 +48,7 @@
         select
           id, category_id, brand_id, product_name, product_subtitle, product_tags, product_ratings, external_url, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
-        where and is_trash = 0
+        where @NxtTenantCondition@ and and is_trash = 0
         order by is_recommend desc, sort_id desc
         limit #{offset}, #{limit}
     </select>
@@ -57,7 +57,7 @@
         SELECT
         id, category_id, brand_id, product_name, product_subtitle, product_tags, product_ratings, external_url, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
-        WHERE id IN
+        WHERE @NxtTenantCondition@ and id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -71,7 +71,7 @@
         SELECT
         id, category_id, brand_id, product_name, product_subtitle, product_tags, product_ratings, external_url, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
-        WHERE category_id IN
+        WHERE @NxtTenantCondition@ and category_id IN
         <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -84,7 +84,7 @@
         SELECT
         count(*)
         from nxt_product
-        WHERE category_id IN
+        WHERE @NxtTenantCondition@ and category_id IN
         <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -97,6 +97,7 @@
         id, category_id, brand_id, product_name, product_subtitle, product_tags, product_ratings, external_url, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -190,6 +191,7 @@
         id, category_id, brand_id, product_name, product_subtitle, product_tags, product_ratings, external_url, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         <where>
+            and @NxtTenantCondition@
             <if test="categoryId != null">
                 and category_id = #{categoryId}
             </if>
@@ -206,6 +208,7 @@
           id, category_id, brand_id, product_name, product_subtitle, product_tags, product_ratings, external_url, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         <where>
+                and @NxtTenantCondition@
             <if test="categoryIdList != null">
                 and category_id IN
                 <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
@@ -242,6 +245,7 @@
         count(*)
         from nxt_product
         <where>
+                and @NxtTenantCondition@
             <if test="categoryIdList != null">
                 and category_id IN
                 <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
@@ -262,6 +266,7 @@
         count(*)
         from nxt_product
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -351,8 +356,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_product(category_id, brand_id, product_name, product_subtitle, product_tags, product_ratings, external_url, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count)
-        values (#{categoryId}, #{brandId}, #{productName}, #{productSubtitle}, #{productTags}, #{productRatings}, #{externalUrl}, #{dealQuantityMin}, #{dealQuantityMax}, #{freeShipping}, #{deliveryConfigId}, #{itemNo}, #{withSku}, #{price}, #{priceDiscount}, #{inventoryQuantity}, #{productDescription}, #{datelineCreate}, #{datelineUpdated}, #{isRecommend}, #{isHot}, #{isNew}, #{isSelling}, #{sortId}, #{isTrash}, #{commissionRate}, #{salsCount})
+        insert into nxt_product(@NxtTenantInsertKey@ category_id, brand_id, product_name, product_subtitle, product_tags, product_ratings, external_url, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count)
+        values (@NxtTenantInsertValue@ #{categoryId}, #{brandId}, #{productName}, #{productSubtitle}, #{productTags}, #{productRatings}, #{externalUrl}, #{dealQuantityMin}, #{dealQuantityMax}, #{freeShipping}, #{deliveryConfigId}, #{itemNo}, #{withSku}, #{price}, #{priceDiscount}, #{inventoryQuantity}, #{productDescription}, #{datelineCreate}, #{datelineUpdated}, #{isRecommend}, #{isHot}, #{isNew}, #{isSelling}, #{sortId}, #{isTrash}, #{commissionRate}, #{salsCount})
     </insert>
 
     <!--通过主键修改数据-->
@@ -441,12 +446,12 @@
                 sals_count = #{salsCount},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_product where id = #{id}
+        delete from nxt_product where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 
@@ -456,6 +461,7 @@
         id, category_id, brand_id, product_name, product_subtitle, product_tags, product_ratings, external_url, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -551,6 +557,7 @@
         count(*)
         from nxt_product
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -644,7 +651,7 @@
         select
         id, category_id, brand_id, product_name, product_subtitle, product_tags, product_ratings, external_url, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
-        where is_selling = 1 and is_trash = 0 and is_hot = 1
+        where @NxtTenantCondition@ and is_selling = 1 and is_trash = 0 and is_hot = 1
         order by sort_id desc,dateline_updated desc
         limit 0,#{limit}
     </select>
@@ -654,7 +661,7 @@
         select
         id, category_id, brand_id, product_name, product_subtitle, product_tags, product_ratings, external_url, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
-        where is_selling = 1 and is_trash = 0 and is_recommend = 1
+        where @NxtTenantCondition@ and is_selling = 1 and is_trash = 0 and is_recommend = 1
         order by sort_id desc,dateline_updated desc
         limit 0,#{limit}
     </select>
@@ -664,7 +671,7 @@
         select
         id, category_id, brand_id, product_name, product_subtitle, product_tags, product_ratings, external_url, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
-        where is_selling = 1 and is_trash = 0 and is_new = 1
+        where @NxtTenantCondition@ and is_selling = 1 and is_trash = 0 and is_new = 1
         order by sort_id desc,dateline_updated desc
         limit 0,#{limit}
     </select>
@@ -675,6 +682,7 @@
         id, category_id, brand_id, product_name, product_subtitle, product_tags, product_ratings, external_url, deal_quantity_min, deal_quantity_max, free_shipping, delivery_config_id, item_no, with_sku, price, price_discount, inventory_quantity, product_description, dateline_create, dateline_updated, is_recommend, is_hot, is_new, is_selling, sort_id, is_trash, commission_rate, sals_count
         from nxt_product
         <where>
+                and @NxtTenantCondition@
             <if test="categoryId != null">
                 and category_id = #{categoryId}
             </if>
@@ -732,6 +740,7 @@
         count(*)
         from nxt_product
         <where>
+                and @NxtTenantCondition@
             <if test="categoryId != null">
                 and category_id = #{categoryId}
             </if>
@@ -786,7 +795,7 @@
     select
     count(*)
     from nxt_product
-    where delivery_config_id = #{deliveryConfigId}
+    where @NxtTenantCondition@ and delivery_config_id = #{deliveryConfigId}
     </select>
 
 </mapper>

@@ -15,7 +15,7 @@
         select
           id, action_class, action_name, action_remark
         from nxt_acl_action
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -23,6 +23,7 @@
         select
           id, action_class, action_name, action_remark
         from nxt_acl_action
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -32,6 +33,7 @@
           id, action_class, action_name, action_remark
         from nxt_acl_action
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -49,8 +51,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_acl_action(action_class, action_name, action_remark)
-        values (#{actionClass}, #{actionName}, #{actionRemark})
+        insert into nxt_acl_action(@NxtTenantInsertKey@ action_class, action_name, action_remark)
+        values (@NxtTenantInsertValue@ #{actionClass}, #{actionName}, #{actionRemark})
     </insert>
 
     <!--通过主键修改数据-->
@@ -67,12 +69,12 @@
                 action_remark = #{actionRemark},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_acl_action where id = #{id}
+        delete from nxt_acl_action where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 </mapper>

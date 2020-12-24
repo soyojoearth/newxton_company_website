@@ -25,7 +25,7 @@
         select
           id, order_form_id, product_id, quantity, product_name, product_price, product_price_discount, manual_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
         from nxt_order_form_product
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -33,6 +33,7 @@
         select
           id, order_form_id, product_id, quantity, product_name, product_price, product_price_discount, manual_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
         from nxt_order_form_product
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -42,6 +43,7 @@
           id, order_form_id, product_id, quantity, product_name, product_price, product_price_discount, manual_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
         from nxt_order_form_product
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -89,8 +91,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_product(order_form_id, product_id, quantity, product_name, product_price, product_price_discount, manual_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate)
-        values (#{orderFormId}, #{productId}, #{quantity}, #{productName}, #{productPrice}, #{productPriceDiscount}, #{manualPriceDiscount}, #{levelNum}, #{levelDiscount}, #{productPriceDeal}, #{productSku}, #{quantityRefund}, #{commissionRate})
+        insert into nxt_order_form_product(@NxtTenantInsertKey@ order_form_id, product_id, quantity, product_name, product_price, product_price_discount, manual_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate)
+        values (@NxtTenantInsertValue@ #{orderFormId}, #{productId}, #{quantity}, #{productName}, #{productPrice}, #{productPriceDiscount}, #{manualPriceDiscount}, #{levelNum}, #{levelDiscount}, #{productPriceDeal}, #{productSku}, #{quantityRefund}, #{commissionRate})
     </insert>
 
     <!--通过主键修改数据-->
@@ -137,12 +139,12 @@
                 commission_rate = #{commissionRate},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_order_form_product where id = #{id}
+        delete from nxt_order_form_product where @NxtTenantCondition@ and id = #{id}
     </delete>
 
     <!--根据orderFormId列表查询所有-->
@@ -150,7 +152,7 @@
         select
           id, order_form_id, product_id, quantity, product_name, product_price, product_price_discount, manual_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
         from nxt_order_form_product
-        WHERE order_form_id IN
+        WHERE @NxtTenantCondition@ and order_form_id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -161,7 +163,7 @@
         select
         id, order_form_id, product_id, quantity, product_name, product_price, product_price_discount, manual_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
         from nxt_order_form_product
-        WHERE id IN
+        WHERE @NxtTenantCondition@ and id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -172,7 +174,7 @@
         select
         id, order_form_id, product_id, quantity, product_name, product_price, product_price_discount, manual_price_discount, level_num, level_discount, product_price_deal, product_sku, quantity_refund, commission_rate
         from nxt_order_form_product
-        WHERE product_id = #{productId}
+        WHERE @NxtTenantCondition@ and product_id = #{productId}
         order by id desc
         limit #{offset},#{limit}
     </select>

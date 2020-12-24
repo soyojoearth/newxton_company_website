@@ -23,7 +23,7 @@
         select
           id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd
         from nxt_uploadfile
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -31,6 +31,7 @@
         select
           id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd
         from nxt_uploadfile
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -39,7 +40,7 @@
         select
           id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd
         from nxt_uploadfile
-        where file_location = #{location}
+        where @NxtTenantCondition@ and file_location = #{location}
         limit #{offset}, #{limit}
     </select>
 
@@ -47,7 +48,7 @@
         SELECT
         id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd
         from nxt_uploadfile
-        WHERE id IN
+        WHERE @NxtTenantCondition@ and id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -60,6 +61,7 @@
           id, file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd
         from nxt_uploadfile
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -105,6 +107,7 @@
         count(*)
         from nxt_uploadfile
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -147,8 +150,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_uploadfile(file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd)
-        values (#{fileLocation}, #{categoryId}, #{fileExt}, #{filenameSource}, #{filenameSaved}, #{filepath}, #{urlpath}, #{filesize}, #{datelineUpdate}, #{netdiskUrl}, #{netdiskPwd})
+        insert into nxt_uploadfile(@NxtTenantInsertKey@ file_location, category_id, file_ext, filename_source, filename_saved, filepath, urlpath, filesize, dateline_update, netdisk_url, netdisk_pwd)
+        values (@NxtTenantInsertValue@ #{fileLocation}, #{categoryId}, #{fileExt}, #{filenameSource}, #{filenameSaved}, #{filepath}, #{urlpath}, #{filesize}, #{datelineUpdate}, #{netdiskUrl}, #{netdiskPwd})
     </insert>
 
     <!--通过主键修改数据-->
@@ -189,12 +192,12 @@
                 netdisk_pwd = #{netdiskPwd},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_uploadfile where id = #{id}
+        delete from nxt_uploadfile where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 </mapper>

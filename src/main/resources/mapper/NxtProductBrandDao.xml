@@ -14,7 +14,7 @@
         select
           id, brand_name, uploadfile_id
         from nxt_product_brand
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -22,6 +22,7 @@
         select
           id, brand_name, uploadfile_id
         from nxt_product_brand
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -31,6 +32,7 @@
           id, brand_name, uploadfile_id
         from nxt_product_brand
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -47,13 +49,15 @@
     <select id="queryAllOrderByNameASC" resultMap="BaseResultMap">
         select
         id, brand_name, uploadfile_id
-        from nxt_product_brand order by brand_name asc
+        from nxt_product_brand
+        where @NxtTenantCondition@
+        order by brand_name asc
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_product_brand(brand_name, uploadfile_id)
-        values (#{brandName}, #{uploadfileId})
+        insert into nxt_product_brand(@NxtTenantInsertKey@ brand_name, uploadfile_id)
+        values (@NxtTenantInsertValue@ #{brandName}, #{uploadfileId})
     </insert>
 
     <!--通过主键修改数据-->
@@ -67,12 +71,12 @@
                 uploadfile_id = #{uploadfileId},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_product_brand where id = #{id}
+        delete from nxt_product_brand where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 </mapper>

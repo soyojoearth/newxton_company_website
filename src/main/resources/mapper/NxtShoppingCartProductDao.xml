@@ -17,7 +17,7 @@
         select
           id, shopping_cart_id, product_id, quantity, sku, dateline, selected
         from nxt_shopping_cart_product
-        where shopping_cart_id = #{shoppingCartId} and product_id = #{productId}
+        where @NxtTenantCondition@ and shopping_cart_id = #{shoppingCartId} and product_id = #{productId}
     </select>
 
     <!--查询单个-->
@@ -25,7 +25,7 @@
         select
           id, shopping_cart_id, product_id, quantity, sku, dateline, selected
         from nxt_shopping_cart_product
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定购物车内所有选中的产品-->
@@ -33,7 +33,7 @@
         select
           id, shopping_cart_id, product_id, quantity, sku, dateline, selected
         from nxt_shopping_cart_product
-        where shopping_cart_id = #{shopping_cart_id} and selected = 1
+        where @NxtTenantCondition@ and shopping_cart_id = #{shopping_cart_id} and selected = 1
     </select>
 
     <!--查询指定购物车内所有选中的产品-->
@@ -41,7 +41,7 @@
         select
           id, shopping_cart_id, product_id, quantity, sku, dateline, selected
         from nxt_shopping_cart_product
-        where shopping_cart_id = #{shopping_cart_id}
+        where @NxtTenantCondition@ and shopping_cart_id = #{shopping_cart_id}
     </select>
 
     <!--查询指定行数据-->
@@ -49,6 +49,7 @@
         select
           id, shopping_cart_id, product_id, quantity, sku, dateline, selected
         from nxt_shopping_cart_product
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -58,6 +59,7 @@
         id, shopping_cart_id, product_id, quantity, sku, dateline, selected
         from nxt_shopping_cart_product
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -84,27 +86,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_shopping_cart_product(shopping_cart_id, product_id, quantity, sku, dateline, selected)
-        values (#{shoppingCartId}, #{productId}, #{quantity}, #{sku}, #{dateline}, #{selected})
-    </insert>
-
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_shopping_cart_product(shopping_cart_id, product_id, quantity, sku, dateline, selected)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.shoppingCartId}, #{entity.productId}, #{entity.quantity}, #{entity.sku}, #{entity.dateline}, #{selected})
-        </foreach>
-    </insert>
-
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_shopping_cart_product(shopping_cart_id, product_id, quantity, sku, dateline, selected)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.shoppingCartId}, #{entity.productId}, #{entity.quantity}, #{entity.sku}, #{entity.dateline}, #{selected})
-        </foreach>
-        on duplicate key update
-        shopping_cart_id = values(shopping_cart_id) , product_id = values(product_id) , quantity = values(quantity) ,
-        sku = values(sku) , dateline = values(dateline), selected = values(selected)
+        insert into nxt_shopping_cart_product(@NxtTenantInsertKey@ shopping_cart_id, product_id, quantity, sku, dateline, selected)
+        values (@NxtTenantInsertValue@ #{shoppingCartId}, #{productId}, #{quantity}, #{sku}, #{dateline}, #{selected})
     </insert>
 
     <!--通过主键修改数据-->
@@ -130,12 +113,12 @@
                 selected = #{selected},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_shopping_cart_product where id = #{id}
+        delete from nxt_shopping_cart_product where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 </mapper>

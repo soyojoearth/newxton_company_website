@@ -13,7 +13,7 @@
         select
           id, name
         from nxt_delivery_config
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -21,6 +21,7 @@
         select
           id, name
         from nxt_delivery_config
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -30,6 +31,7 @@
           id, name
         from nxt_delivery_config
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -42,8 +44,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_delivery_config(name)
-        values (#{name})
+        insert into nxt_delivery_config(@NxtTenantInsertKey@ name)
+        values (@NxtTenantInsertValue@ #{name})
     </insert>
 
     <!--通过主键修改数据-->
@@ -54,12 +56,12 @@
                 name = #{name},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_delivery_config where id = #{id}
+        delete from nxt_delivery_config where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 </mapper>

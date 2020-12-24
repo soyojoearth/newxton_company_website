@@ -15,7 +15,7 @@
         select
           id, region_name, region_pid, sort_id
         from nxt_delivery_region
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -23,6 +23,7 @@
         select
           id, region_name, region_pid, sort_id
         from nxt_delivery_region
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -32,6 +33,7 @@
           id, region_name, region_pid, sort_id
         from nxt_delivery_region
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -52,7 +54,7 @@
         select
             id, region_name, region_pid, sort_id
         from nxt_delivery_region
-        WHERE id IN
+        WHERE @NxtTenantCondition@ and id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -61,8 +63,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_delivery_region(region_name, region_pid, sort_id)
-        values (#{regionName}, #{regionPid}, #{sortId})
+        insert into nxt_delivery_region(@NxtTenantInsertKey@ region_name, region_pid, sort_id)
+        values (@NxtTenantInsertValue@ #{regionName}, #{regionPid}, #{sortId})
     </insert>
 
     <!--通过主键修改数据-->
@@ -79,12 +81,12 @@
                 sort_id = #{sortId},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_delivery_region where id = #{id}
+        delete from nxt_delivery_region where @NxtTenantCondition@ and id = #{id}
     </delete>
 
     <!--查询所有地区列表（为tree接口）-->
@@ -92,7 +94,7 @@
         select
         id, region_name, region_pid, sort_id
         from nxt_delivery_region
-        where region_pid is not NULL
+        where @NxtTenantCondition@ and region_pid is not NULL
         order by region_pid asc, sort_id asc
     </select>
 

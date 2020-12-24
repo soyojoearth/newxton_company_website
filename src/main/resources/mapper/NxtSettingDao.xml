@@ -13,7 +13,7 @@
         SELECT
         id, setting_key, setting_value
         from nxt_setting
-        WHERE setting_key IN
+        WHERE @NxtTenantCondition@ and setting_key IN
         <foreach collection="keyList" item="key" index="index" open="(" close=")" separator=",">
             #{key}
         </foreach>
@@ -24,7 +24,7 @@
         select
           id, setting_key, setting_value
         from nxt_setting
-        where setting_key = #{settingKey} limit 1
+        where @NxtTenantCondition@ and setting_key = #{settingKey} limit 1
     </select>
 
     <!--查询单个-->
@@ -32,7 +32,7 @@
         select
           id, setting_key, setting_value
         from nxt_setting
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
 
@@ -42,6 +42,7 @@
         select
           id, setting_key, setting_value
         from nxt_setting
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -51,6 +52,7 @@
           id, setting_key, setting_value
         from nxt_setting
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -65,8 +67,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_setting(setting_key, setting_value)
-        values (#{settingKey}, #{settingValue})
+        insert into nxt_setting(@NxtTenantInsertKey@ setting_key, setting_value)
+        values (@NxtTenantInsertValue@ #{settingKey}, #{settingValue})
     </insert>
 
     <!--通过主键修改数据-->
@@ -80,12 +82,12 @@
                 setting_value = #{settingValue},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_setting where id = #{id}
+        delete from nxt_setting where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 </mapper>

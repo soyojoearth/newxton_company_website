@@ -48,22 +48,6 @@ public interface NxtOrderFormDeliveryDao {
     int insert(NxtOrderFormDelivery nxtOrderFormDelivery);
 
     /**
-     * 批量新增数据（MyBatis原生foreach方法）
-     *
-     * @param entities List<NxtOrderFormDelivery> 实例对象列表
-     * @return 影响行数
-     */
-    int insertBatch(@Param("entities") List<NxtOrderFormDelivery> entities);
-
-    /**
-     * 批量新增或按主键更新数据（MyBatis原生foreach方法）
-     *
-     * @param entities List<NxtOrderFormDelivery> 实例对象列表
-     * @return 影响行数
-     */
-    int insertOrUpdateBatch(@Param("entities") List<NxtOrderFormDelivery> entities);
-
-    /**
      * 修改数据
      *
      * @param nxtOrderFormDelivery 实例对象

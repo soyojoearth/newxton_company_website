@@ -14,7 +14,7 @@
         select
           id, category_name, category_pid
         from nxt_product_category
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询单个-->
@@ -22,7 +22,7 @@
         select
           id, category_name, category_pid
         from nxt_product_category
-        where category_name = #{categoryName}
+        where @NxtTenantCondition@ and category_name = #{categoryName}
     </select>
 
     <!--查询指定行数据-->
@@ -30,6 +30,7 @@
         select
           id, category_name, category_pid
         from nxt_product_category
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -39,6 +40,7 @@
           id, category_name, category_pid
         from nxt_product_category
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -53,8 +55,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_product_category(category_name, category_pid)
-        values (#{categoryName}, #{categoryPid})
+        insert into nxt_product_category(@NxtTenantInsertKey@ category_name, category_pid)
+        values (@NxtTenantInsertValue@ #{categoryName}, #{categoryPid})
     </insert>
 
     <!--通过主键修改数据-->
@@ -68,12 +70,12 @@
                 category_pid = #{categoryPid},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_product_category where id = #{id}
+        delete from nxt_product_category where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 </mapper>

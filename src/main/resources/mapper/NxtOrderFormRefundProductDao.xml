@@ -16,7 +16,7 @@
         select
           id, order_form_product_id, order_form_refund_id, quantity, price_deal, amount_refund
         from nxt_order_form_refund_product
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -24,6 +24,7 @@
         select
           id, order_form_product_id, order_form_refund_id, quantity, price_deal, amount_refund
         from nxt_order_form_refund_product
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -33,6 +34,7 @@
         id, order_form_product_id, order_form_refund_id, quantity, price_deal, amount_refund
         from nxt_order_form_refund_product
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -56,31 +58,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_refund_product(order_form_product_id, order_form_refund_id, quantity, price_deal, amount_refund)
-        values (#{orderFormProductId}, #{orderFormRefundId}, #{quantity}, #{priceDeal}, #{amountRefund})
-    </insert>
-
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_refund_product(order_form_product_id, order_form_refund_id, quantity,
-        price_deal, amount_refund)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.orderFormProductId}, #{entity.orderFormRefundId}, #{entity.quantity}, #{entity.priceDeal},
-            #{entity.amountRefund})
-        </foreach>
-    </insert>
-
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_refund_product(order_form_product_id, order_form_refund_id, quantity,
-        price_deal, amount_refund)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.orderFormProductId}, #{entity.orderFormRefundId}, #{entity.quantity}, #{entity.priceDeal},
-            #{entity.amountRefund})
-        </foreach>
-        on duplicate key update
-        order_form_product_id = values(order_form_product_id) , order_form_refund_id = values(order_form_refund_id) ,
-        quantity = values(quantity) , price_deal = values(price_deal) , amount_refund = values(amount_refund)
+        insert into nxt_order_form_refund_product(@NxtTenantInsertKey@ order_form_product_id, order_form_refund_id, quantity, price_deal, amount_refund)
+        values (@NxtTenantInsertValue@ #{orderFormProductId}, #{orderFormRefundId}, #{quantity}, #{priceDeal}, #{amountRefund})
     </insert>
 
     <!--通过主键修改数据-->
@@ -103,12 +82,12 @@
                 amount_refund = #{amountRefund},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_order_form_refund_product where id = #{id}
+        delete from nxt_order_form_refund_product where @NxtTenantCondition@ and id = #{id}
     </delete>
 
     <!--根据退款服务单id列表查询指定行数据-->
@@ -116,7 +95,7 @@
         select
           id, order_form_product_id, order_form_refund_id, quantity, price_deal, amount_refund
         from nxt_order_form_refund_product
-        WHERE order_form_refund_id IN
+        WHERE @NxtTenantCondition@ and order_form_refund_id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>

@@ -20,7 +20,7 @@
         select
           id, order_form_id, user_id, is_admin, dateline, status_paid, status_delivery, status_refund, log_name, log_remark
         from nxt_order_form_log
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -28,6 +28,7 @@
         select
           id, order_form_id, user_id, is_admin, dateline, status_paid, status_delivery, status_refund, log_name, log_remark
         from nxt_order_form_log
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -38,6 +39,7 @@
         log_remark
         from nxt_order_form_log
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -73,32 +75,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_log(order_form_id, user_id, is_admin, dateline, status_paid, status_delivery, status_refund, log_name, log_remark)
-        values (#{orderFormId}, #{userId}, #{isAdmin}, #{dateline}, #{statusPaid}, #{statusDelivery}, #{statusRefund}, #{logName}, #{logRemark})
-    </insert>
-
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_log(order_form_id, user_id, is_admin, dateline, status_paid,
-        status_delivery, status_refund, log_name, log_remark)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.orderFormId}, #{entity.userId}, #{entity.isAdmin}, #{entity.dateline}, #{entity.statusPaid},
-            #{entity.statusDelivery}, #{entity.statusRefund}, #{entity.logName}, #{entity.logRemark})
-        </foreach>
-    </insert>
-
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_log(order_form_id, user_id, is_admin, dateline, status_paid,
-        status_delivery, status_refund, log_name, log_remark)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.orderFormId}, #{entity.userId}, #{entity.isAdmin}, #{entity.dateline}, #{entity.statusPaid},
-            #{entity.statusDelivery}, #{entity.statusRefund}, #{entity.logName}, #{entity.logRemark})
-        </foreach>
-        on duplicate key update
-        order_form_id = values(order_form_id) , user_id = values(user_id) , is_admin = values(is_admin) , dateline =
-        values(dateline) , status_paid = values(status_paid) , status_delivery = values(status_delivery) , status_refund
-        = values(status_refund) , log_name = values(log_name) , log_remark = values(log_remark)
+        insert into nxt_order_form_log(@NxtTenantInsertKey@ order_form_id, user_id, is_admin, dateline, status_paid, status_delivery, status_refund, log_name, log_remark)
+        values (@NxtTenantInsertValue@ #{orderFormId}, #{userId}, #{isAdmin}, #{dateline}, #{statusPaid}, #{statusDelivery}, #{statusRefund}, #{logName}, #{logRemark})
     </insert>
 
     <!--通过主键修改数据-->
@@ -133,12 +111,12 @@
                 log_remark = #{logRemark},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_order_form_log where id = #{id}
+        delete from nxt_order_form_log where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 </mapper>

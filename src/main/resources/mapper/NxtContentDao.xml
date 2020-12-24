@@ -21,7 +21,7 @@
         select
           id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
         from nxt_content
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -29,6 +29,7 @@
         select
           id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
         from nxt_content
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -38,6 +39,7 @@
           id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
         from nxt_content
         <where>
+                and @NxtTenantCondition@
             <if test="categoryId != null">
                 and category_id = #{categoryId}
             </if>
@@ -50,7 +52,7 @@
         SELECT
         id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
         from nxt_content
-        WHERE category_id IN
+        WHERE @NxtTenantCondition@ and category_id IN
         <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -62,7 +64,7 @@
         SELECT
         count(*)
         from nxt_content
-        WHERE category_id IN
+        WHERE @NxtTenantCondition@ and category_id IN
         <foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -74,6 +76,7 @@
           id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
         from nxt_content
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -108,6 +111,7 @@
         count(*)
         from nxt_content
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -138,8 +142,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_content(category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id)
-        values (#{categoryId}, #{contentTitle}, #{contentDetail}, #{datelineUpdate}, #{datelineCreate}, #{isRecommend}, #{sortId})
+        insert into nxt_content(@NxtTenantInsertKey@ category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id)
+        values (@NxtTenantInsertValue@ #{categoryId}, #{contentTitle}, #{contentDetail}, #{datelineUpdate}, #{datelineCreate}, #{isRecommend}, #{sortId})
     </insert>
 
     <!--通过主键修改数据-->
@@ -168,7 +172,7 @@
                 sort_id = #{sortId},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
@@ -182,6 +186,7 @@
         id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
         from nxt_content
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -217,6 +222,7 @@
         count(*)
         from nxt_content
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -249,7 +255,7 @@
         SELECT
         id, category_id, content_title, content_detail, dateline_update, dateline_create, is_recommend, sort_id
         from nxt_content
-        where is_recommend = 1
+        where @NxtTenantCondition@ and is_recommend = 1
         order by sort_id desc,dateline_update desc
         limit #{offset}, #{limit}
     </select>

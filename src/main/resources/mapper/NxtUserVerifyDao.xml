@@ -17,7 +17,7 @@
         select
           id, type, phone_or_email, code, dateline, status
         from nxt_user_verify
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -25,6 +25,7 @@
         select
           id, type, phone_or_email, code, dateline, status
         from nxt_user_verify
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -34,6 +35,7 @@
           id, type, phone_or_email, code, dateline, status
         from nxt_user_verify
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -57,8 +59,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_user_verify(type, phone_or_email, code, dateline, status)
-        values (#{type}, #{phoneOrEmail}, #{code}, #{dateline}, #{status})
+        insert into nxt_user_verify(@NxtTenantInsertKey@ type, phone_or_email, code, dateline, status)
+        values (@NxtTenantInsertValue@ #{type}, #{phoneOrEmail}, #{code}, #{dateline}, #{status})
     </insert>
 
     <!--通过主键修改数据-->
@@ -81,12 +83,12 @@
                 status = #{status},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_user_verify where id = #{id}
+        delete from nxt_user_verify where @NxtTenantCondition@ and id = #{id}
     </delete>
 
     <!--根据phoneOrEmail查询最近的那个验证码-->
@@ -94,7 +96,7 @@
         select
           id, type, phone_or_email, code, dateline, status
         from nxt_user_verify
-        where phone_or_email = #{phoneOrEmail}
+        where @NxtTenantCondition@ and phone_or_email = #{phoneOrEmail}
         order by id desc limit 1
     </select>
 

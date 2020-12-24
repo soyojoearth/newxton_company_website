@@ -13,7 +13,7 @@
         select
           id, user_id, token
         from nxt_shopping_cart
-        where token = #{token}
+        where @NxtTenantCondition@ and token = #{token}
     </select>
     
     <!--查询单个根据userId-->
@@ -21,7 +21,7 @@
         select
           id, user_id, token
         from nxt_shopping_cart
-        where user_id = #{userId}
+        where @NxtTenantCondition@ and user_id = #{userId}
     </select>
 
     <!--查询单个-->
@@ -29,7 +29,7 @@
         select
           id, user_id, token
         from nxt_shopping_cart
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -37,6 +37,7 @@
         select
           id, user_id, token
         from nxt_shopping_cart
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -46,6 +47,7 @@
         id, user_id, token
         from nxt_shopping_cart
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -60,26 +62,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_shopping_cart(user_id, token)
-        values (#{userId}, #{token})
-    </insert>
-
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_shopping_cart(user_id, token)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userId}, #{entity.token})
-        </foreach>
-    </insert>
-
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_shopping_cart(user_id, token)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userId}, #{entity.token})
-        </foreach>
-        on duplicate key update
-        user_id = values(user_id) , token = values(token)
+        insert into nxt_shopping_cart(@NxtTenantInsertKey@ user_id, token)
+        values (@NxtTenantInsertValue@ #{userId}, #{token})
     </insert>
 
     <!--通过主键修改数据-->
@@ -93,12 +77,12 @@
                 token = #{token},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_shopping_cart where id = #{id}
+        delete from nxt_shopping_cart where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 </mapper>
