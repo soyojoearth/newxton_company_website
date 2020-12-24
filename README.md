@@ -110,7 +110,7 @@ typora-copy-images-to: ./gitbook_resource
 
 ```
 #创建镜像
-docker build --tag nxtframework:0.1.0 .
+docker build --tag nxtframework:0.2.0 .
 ```
 
 ##### 2、把镜像推到docker仓库，并拉到服务器上；
