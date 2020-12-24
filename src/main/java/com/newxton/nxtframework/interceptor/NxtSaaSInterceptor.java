@@ -40,14 +40,23 @@ public class NxtSaaSInterceptor implements Interceptor {
 //            logger.info("线程："+Thread.currentThread().getName()+" 线程池不分割租户空间");
             NxtTenantCondition = "100 = 100";
             NxtTenantInsertKey = "";
-            NxtTenantInsertValue = "";
+            NxtTenantInsertValue = "";//线程池是不可以插进任何东西的，tenant_id字段不得null
         }
         else {
             //非线程池，分割租户空间
             Long tenantId = nxtSaaSCoreComponent.findTenantId();
-            NxtTenantCondition = "tenant_id = "+tenantId;
-            NxtTenantInsertKey = "tenant_id,";
-            NxtTenantInsertValue = tenantId+",";
+            if (tenantId == null){
+                //找不到租户id时，什么也不要查出来
+                NxtTenantCondition = "1 = 2";
+                //tenant_id字段不得null,故意插不进
+                NxtTenantInsertKey = "";
+                NxtTenantInsertValue = "";
+            }
+            else {
+                NxtTenantCondition = "tenant_id = " + tenantId;
+                NxtTenantInsertKey = "tenant_id,";
+                NxtTenantInsertValue = tenantId + ",";
+            }
         }
 
         StatementHandler statementHandler = (StatementHandler) invocation.getTarget();

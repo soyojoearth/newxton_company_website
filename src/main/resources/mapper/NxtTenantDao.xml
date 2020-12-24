@@ -14,7 +14,7 @@
     <select id="queryById" resultMap="BaseResultMap">
         select
           id, domains, tenant_name, remark
-        from nxtframework.nxt_tenant
+        from nxt_tenant
         where id = #{id}
     </select>
 
@@ -22,7 +22,7 @@
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
           id, domains, tenant_name, remark
-        from nxtframework.nxt_tenant
+        from nxt_tenant
         limit #{offset}, #{limit}
     </select>
 
@@ -30,7 +30,7 @@
     <select id="queryAll" resultMap="BaseResultMap">
         select
           id, domains, tenant_name, remark
-        from nxtframework.nxt_tenant
+        from nxt_tenant
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -49,13 +49,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxtframework.nxt_tenant(domains, tenant_name, remark)
+        insert into nxt_tenant(domains, tenant_name, remark)
         values (#{domains}, #{tenantName}, #{remark})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update nxtframework.nxt_tenant
+        update nxt_tenant
         <set>
             <if test="domains != null and domains != ''">
                 domains = #{domains},
@@ -72,7 +72,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxtframework.nxt_tenant where id = #{id}
+        delete from nxt_tenant where id = #{id}
     </delete>
 
 </mapper>

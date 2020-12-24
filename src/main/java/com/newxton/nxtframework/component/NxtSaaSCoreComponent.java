@@ -1,5 +1,8 @@
 package com.newxton.nxtframework.component;
 
+import com.newxton.nxtframework.schedule.NxtCronJobSaaSCore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -15,6 +18,8 @@ import java.util.Map;
  */
 @Component
 public class NxtSaaSCoreComponent {
+
+    private Logger logger = LoggerFactory.getLogger(NxtCronJobSaaSCore.class);
 
     private Map<String,Long> mapDomainToTenantId = new HashMap<>();
 
