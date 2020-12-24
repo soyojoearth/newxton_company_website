@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -19,6 +20,9 @@ import java.util.List;
 public class NxtCommissionServiceImpl implements NxtCommissionService {
     @Resource
     private NxtCommissionDao nxtCommissionDao;
+
+    @Resource
+    private HttpServletRequest request;
 
     /**
      * 通过ID查询单条数据

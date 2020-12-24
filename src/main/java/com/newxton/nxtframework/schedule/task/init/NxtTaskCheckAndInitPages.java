@@ -1,8 +1,6 @@
 package com.newxton.nxtframework.schedule.task.init;
 
-import com.newxton.nxtframework.entity.NxtCronjob;
 import com.newxton.nxtframework.entity.NxtWebPage;
-import com.newxton.nxtframework.service.NxtCronjobService;
 import com.newxton.nxtframework.service.NxtWebPageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,52 +24,12 @@ public class NxtTaskCheckAndInitPages {
     @Resource
     private NxtWebPageService nxtWebPageService;
 
-    @Resource
-    private NxtCronjobService nxtCronjobService;
-
     /**
      * 检查&初始化页面数据
      * (web_key字段unique，集群情况下不用担心多实例同时insert)
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void exec(){
-
-        NxtCronjob nxtCronjob = nxtCronjobService.queryByKey("NxtTaskCheckAndInitPages");
-
-        if (nxtCronjob == null){
-            //任务没有执行过
-            NxtCronjob nxtCronjobNew = new NxtCronjob();
-            nxtCronjobNew.setJobName("NxtTaskCheckAndInitPages");
-            nxtCronjobNew.setJobKey("NxtTaskCheckAndInitPages");
-            nxtCronjobNew.setJobStatus(1);//0:off(任务未开启) 1:on(任务等待执行)
-            try {
-                nxtCronjobService.insert(nxtCronjobNew);
-            }
-            catch (Exception e){
-                logger.info("没成功insert，可能其它实际例子已经insert");
-            }
-        }
-        else {
-            if (!nxtCronjob.getJobStatus().equals(1)){
-                //任务已经执行过
-                logger.info("初始化[默认页面]数据任务已经执行过，跳过执行");
-                return;
-            }
-            else {
-                //再次执行任务
-                logger.info("初始化[默认页面]数据任务，需再次执行，开始执行");
-            }
-        }
-
-        /**
-         * 防止集群多个实例并发执行，只需要一个实例在执行即可
-         */
-        nxtCronjob = nxtCronjobService.queryByKeyForUpdate("NxtTaskCheckAndInitPages");
-
-        if (!nxtCronjob.getJobStatus().equals(1)) {
-            logger.info("初始化[默认页面]任务，任务未开启，放弃执行");
-            return;//0:off(任务未开启) 1:on(任务等待执行)
-        }
 
         //*************************任务代码**开始************************************************
 
@@ -131,13 +89,6 @@ public class NxtTaskCheckAndInitPages {
         }
 
         //*************************任务代码**结束************************************************
-
-        //任务执行完毕
-        nxtCronjob.setJobStatus(0);
-        nxtCronjob.setJobStatusDateline(System.currentTimeMillis());
-        nxtCronjobService.update(nxtCronjob);
-
-        logger.info("初始化[默认页面]任务，成功执行完毕");
 
     }
 

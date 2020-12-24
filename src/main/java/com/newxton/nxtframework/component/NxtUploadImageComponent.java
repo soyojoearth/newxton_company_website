@@ -40,25 +40,42 @@ public class NxtUploadImageComponent {
     @Value("${newxton.config.oss.localPath}")
     private String ossLocalPath;
 
+    @Value("${newxton.config.oss.location}")
+    private String ossLocation;
+
+    @Value("${newxton.config.oss.domain}")
+    private String ossDomain;
+
+    @Value("${newxton.config.oss.qiniuAccessKey}")
+    private String ossQiniuAccessKey;
+
+    @Value("${newxton.config.oss.qiniuSecretKey}")
+    private String ossQiniuSecretKey;
+
+    @Value("${newxton.config.oss.qiniuBucket}")
+    private String ossQiniuBucket;
+
     @Resource
     private NxtUploadfileService nxtUploadfileService;
 
-    @Resource
-    private NxtGlobalSettingComponent nxtGlobalSettingComponent;
-
-    @Resource
-    private HttpServletRequest request;
+//    @Resource
+//    private NxtGlobalSettingComponent nxtGlobalSettingComponent;
+//
+//    @Resource
+//    private HttpServletRequest request;
 
     @Resource
     private NxtWebUtilComponent nxtWebUtilComponent;
 
     private String getOssLocation(){
-        String ossLocation = nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssLocation();
-        return ossLocation;
+        return this.ossLocation;
+//        String ossLocation = nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssLocation();
+//        return ossLocation;
     }
 
-    private String getOssQiniuDomain(){
-        return nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssQiniuDomain();
+    private String getOssDomain(){
+        return this.ossDomain;
+//        return nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssDomain();
     }
 
     /**
@@ -69,7 +86,7 @@ public class NxtUploadImageComponent {
      */
     public NxtUploadfile catchPictureAndSave(String imgUrl) throws NxtException {
 
-        if (!imgUrl.contains(this.getOssQiniuDomain())) {
+        if (!imgUrl.contains(this.getOssDomain())) {
             //抓取图片，上传
             String uploadResultFilename = null;
             try {
@@ -147,7 +164,7 @@ public class NxtUploadImageComponent {
         Matcher m = Pattern.compile("<img.*?src=\"(http.*?)\"").matcher(contentHTML);
         while (m.find()) {
             String imgUrl = m.group(1);
-            if (!imgUrl.contains(this.getOssQiniuDomain())){
+            if (!imgUrl.contains(this.getOssDomain())){
                 //抓取图片，上传
                 try {
                     NxtUploadfile nxtUploadfile = this.catchPictureAndSave(imgUrl);
@@ -161,7 +178,7 @@ public class NxtUploadImageComponent {
                         contentHTML = contentHTML.replace(imgUrl, urlPath);
                     }
                     else if (this.getOssLocation().equals("qiniu")){
-                        contentHTML = contentHTML.replace(imgUrl, this.getOssQiniuDomain() + urlPath);
+                        contentHTML = contentHTML.replace(imgUrl, this.getOssDomain() + urlPath);
                     }
 
                 }catch (NxtException e){
@@ -181,7 +198,10 @@ public class NxtUploadImageComponent {
         if (contentHTML == null){
             return contentHTML;
         }
-        contentHTML = contentHTML.replace("http://newxton-image-domain",this.getOssQiniuDomain());
+        if (this.getOssDomain() == null || this.getOssDomain().isEmpty()) {
+            return contentHTML;
+        }
+        contentHTML = contentHTML.replace("http://newxton-image-domain",this.getOssDomain());
         return contentHTML;
     }
 
@@ -194,7 +214,10 @@ public class NxtUploadImageComponent {
         if (contentHTML == null){
             return contentHTML;
         }
-        contentHTML = contentHTML.replace(this.getOssQiniuDomain(),"http://newxton-image-domain");
+        if (this.getOssDomain() == null || this.getOssDomain().isEmpty()) {
+            return contentHTML;
+        }
+        contentHTML = contentHTML.replace(this.getOssDomain(), "http://newxton-image-domain");
         return contentHTML;
     }
 
@@ -211,7 +234,7 @@ public class NxtUploadImageComponent {
             return imagePath;
         }
         else {
-            return this.getOssQiniuDomain() + imagePath;
+            return this.getOssDomain() + imagePath;
         }
     }
 
@@ -231,7 +254,7 @@ public class NxtUploadImageComponent {
             return nxtWebUtilComponent.getDomainPath() + imagePath;
         }
         else {
-            return this.getOssQiniuDomain() + imagePath;
+            return this.getOssDomain() + imagePath;
         }
     }
 
@@ -300,7 +323,7 @@ public class NxtUploadImageComponent {
             }
             else {
                 if (this.getOssLocation().equals("qiniu")) {
-                    result.put("url", this.getOssQiniuDomain() + url_path);
+                    result.put("url", this.getOssDomain() + url_path);
                 }
                 else {
                     result.put("url", url_path);
@@ -377,7 +400,7 @@ public class NxtUploadImageComponent {
             }
             else {
                 if (this.getOssLocation().equals("qiniu")) {
-                    result.put("url", this.getOssQiniuDomain() + url_path);
+                    result.put("url", this.getOssDomain() + url_path);
                 }
                 else {
                     result.put("url", url_path);
@@ -486,9 +509,13 @@ public class NxtUploadImageComponent {
         Configuration cfg = new Configuration(Region.autoRegion());
         UploadManager uploadManager = new UploadManager(cfg);
 
-        String accessKey = nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssQiniuAccessKey();
-        String secretKey = nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssQiniuSecretKey();
-        String bucket = nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssQiniuBucket();
+//        String accessKey = nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssQiniuAccessKey();
+//        String secretKey = nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssQiniuSecretKey();
+//        String bucket = nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssQiniuBucket();
+
+        String accessKey = this.ossQiniuAccessKey;
+        String secretKey = this.ossQiniuSecretKey;
+        String bucket = this.ossQiniuBucket;
 
         String suffix = fileExt;
         String yunPath = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));

@@ -4,11 +4,7 @@ import com.newxton.nxtframework.entity.*;
 import com.newxton.nxtframework.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -28,23 +24,9 @@ public class NxtAclComponent {
     private NxtAclActionService nxtAclActionService;
 
     /**
-     * 直接清理本实例Acl缓存
-     */
-    @CacheEvict(cacheNames = {
-            "getUserRoleGroupActionIdSet",
-            "getUserActionIdSet",
-            "getMapClassNameToActionId"
-    },allEntries = true,beforeInvocation = false)
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void cleanCache() {
-        // 注解 @CacheEvict 就执行了清理，代码块里面什么也不用写
-    }
-
-    /**
      * ClassName -> ActionId 映射表
      * @return
      */
-    @Cacheable("getMapClassNameToActionId")
     public Map<String,Long> getMapClassNameToActionId(){
         List<NxtAclAction> list = nxtAclActionService.queryAll(new NxtAclAction());
         Map<String,Long> mapClassNameToActionId = new HashMap<>();
@@ -63,7 +45,6 @@ public class NxtAclComponent {
      * @param userId
      * @return
      */
-    @Cacheable("getUserActionIdSet")
     public Set<Long> getUserActionIdSet(Long userId){
         Set<Long> userActionSet = new HashSet<>();
         NxtAclUserAction nxtAclUserAction = new NxtAclUserAction();
@@ -84,7 +65,6 @@ public class NxtAclComponent {
      * @param userId
      * @return
      */
-    @Cacheable("getUserRoleGroupActionIdSet")
     public Set<Long> getUserRoleGroupActionIdSet(Long userId){
         Set<Long> userActionSet = new HashSet<>();
         /*再间接通过角色、权限组查询用户拥有的权限*/

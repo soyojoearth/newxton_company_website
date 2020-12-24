@@ -1,25 +1,27 @@
-package com.newxton.nxtframework.schedule;
+package com.newxton.nxtframework.controller.web.install;
 
 import com.newxton.nxtframework.schedule.task.init.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.mobile.device.Device;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 
-
 /**
  * @author soyojo.earth@gmail.com
- * @time 2020/10/8
+ * @time 2020/12/23
  * @address Shenzhen, China
- * @copyright NxtFramework
- * Cronjob 系统初始化，检查默认配置
  */
-@Component
-public class NxtCronInitConfigAndData {
+@Controller
+public class NxtInstallController {
 
-    private Logger logger = LoggerFactory.getLogger(NxtCronInitConfigAndData.class);
+    @RequestMapping("/install")
+    public ModelAndView index(Device device, ModelAndView model) throws Exception {
+        this.processInitConfigAndData();
+        model.setViewName("install");
+        return model;
+    }
 
     @Resource
     private NxtTaskCheckAndInitPages nxtTaskCheckAndInitPages;
@@ -46,11 +48,10 @@ public class NxtCronInitConfigAndData {
     private NxtTaskCheckAndInitUserLevel nxtTaskCheckAndInitUserLevel;
 
     /**
-     * 启动时，仅执行一次
+     * 系统刚部署的时候，检查初始化数据
      * @throws Exception
      */
-    @Scheduled(initialDelay = 1000, fixedRate = Long.MAX_VALUE)
-    public void exec() throws Exception {
+    public void processInitConfigAndData() throws Exception {
 
         //检查&初始化acl_action
         nxtTaskCheckAndInitAclAction.exec();
