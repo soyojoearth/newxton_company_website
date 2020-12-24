@@ -62,4 +62,5 @@ public class NxtStructSettingOssConfig {
     public void setOssQiniuDomain(String ossQiniuDomain) {
         this.ossQiniuDomain = ossQiniuDomain;
     }
+
 }

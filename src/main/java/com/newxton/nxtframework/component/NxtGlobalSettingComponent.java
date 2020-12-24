@@ -3,15 +3,10 @@ package com.newxton.nxtframework.component;
 import com.google.gson.Gson;
 import com.newxton.nxtframework.entity.NxtSetting;
 import com.newxton.nxtframework.struct.*;
-import com.newxton.nxtframework.service.NxtCronjobService;
 import com.newxton.nxtframework.service.NxtSettingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -60,38 +55,6 @@ public class NxtGlobalSettingComponent {
         }
         catch (Exception e){
             return new NxtStructSettingNormal();
-        }
-    }
-
-    /**
-     * 保存 图片存储配置
-     * @param nxtStructSettingOssConfig
-     */
-    public void saveNxtStructSettingOssConfig(NxtStructSettingOssConfig nxtStructSettingOssConfig){
-        Gson gson = new Gson();
-        String json = gson.toJson(nxtStructSettingOssConfig);
-        String key = "NxtStructSettingOssConfig";
-        this.saveSettingsValueByKey(key,json);
-    }
-
-    /**
-     * 获取 图片存储配置
-     * @return
-     */
-//    @Cacheable("getNxtStructSettingOssConfig")
-    public NxtStructSettingOssConfig getNxtStructSettingOssConfig(){
-        Gson gson = new Gson();
-        String key = "NxtStructSettingOssConfig";
-        String json = this.getSettingsValueByKey(key);
-        if (json == null){
-            return new NxtStructSettingOssConfig();
-        }
-        try {
-            NxtStructSettingOssConfig nxtStructSettingOssConfig = gson.fromJson(json,NxtStructSettingOssConfig.class);
-            return nxtStructSettingOssConfig;
-        }
-        catch (Exception e){
-            return new NxtStructSettingOssConfig();
         }
     }
 

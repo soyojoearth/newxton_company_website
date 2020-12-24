@@ -40,9 +40,9 @@ typora-copy-images-to: ./gitbook_resource
 
 1、前台：https://demo.nxtframework.com
 
-1、后台：https://demo.nxtframework.com/admin 
+2、后台：https://demo.nxtframework.com/admin 
 
-2、用户名：guest 密码：（任意） （后台访客权限，只能看，不能改）
+3、用户名：guest 密码：（任意） （后台访客权限，只能看，不能改）
 
 
 
@@ -61,7 +61,7 @@ typora-copy-images-to: ./gitbook_resource
 
 #### **特性：**
 
-1、图片可以保存在服务器本地，也可以选择保存在七牛云，并且中途可以一键搬运到本地或搬运到七牛云；
+1、图片可以保存在服务器本地，也可以选择保存在七牛云；
 
 2、上传保存在本地的图片也支持自动生成缩略图（仿七牛云）；
 
@@ -95,9 +95,11 @@ typora-copy-images-to: ./gitbook_resource
 
 **2、用IntelliJ IDEA打开项目，运行项目**
 
-**3、然后浏览器打开：`http://127.0.0.1:8080/admin`  用户名：`admin` 密码：`nxtframework.com`**
+##### 3、浏览器输入：`http://127.0.0.1:8080/install`提示安装成功  
 
-##### 4、前台：`http://127.0.0.1:8080`
+**4、然后浏览器打开：`http://127.0.0.1:8080/admin`  用户名：`admin` 密码：`nxtframework.com`**
+
+##### 5、前台：`http://127.0.0.1:8080`
 
 
 
@@ -128,7 +130,9 @@ cd wwwroot
 docker-compose -f docker-compose-quickstart.yml up
 ```
 
-##### 6、然后浏览器打开：`http://服务器地址:8686/admin`  用户名：`admin` 密码：`nxtframework.com`
+##### 6、浏览器输入：`http://服务器地址:8080/install`提示安装成功
+
+##### 7、然后浏览器打开：`http://服务器地址:8686/admin`  用户名：`admin` 密码：`nxtframework.com`
 
 
 
@@ -154,7 +158,9 @@ docker-compose -f docker-compose-quickstart.yml up
 
 1、使用k8s部署；
 
-2、部署完成^_^。
+2、浏览器输入：`http://服务器地址/install`提示安装成功；
+
+3、部署完成^_^。
 
 本项目已经充分考虑过集群多实例部署的情况，已针对性优化过。
 
