@@ -64,22 +64,6 @@ public interface NxtShoppingCartDao {
     int insert(NxtShoppingCart nxtShoppingCart);
 
     /**
-     * 批量新增数据（MyBatis原生foreach方法）
-     *
-     * @param entities List<NxtShoppingCart> 实例对象列表
-     * @return 影响行数
-     */
-    int insertBatch(@Param("entities") List<NxtShoppingCart> entities);
-
-    /**
-     * 批量新增或按主键更新数据（MyBatis原生foreach方法）
-     *
-     * @param entities List<NxtShoppingCart> 实例对象列表
-     * @return 影响行数
-     */
-    int insertOrUpdateBatch(@Param("entities") List<NxtShoppingCart> entities);
-
-    /**
      * 修改数据
      *
      * @param nxtShoppingCart 实例对象

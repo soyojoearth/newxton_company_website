@@ -48,22 +48,6 @@ public interface NxtCommissionTransferInDao {
     int insert(NxtCommissionTransferIn nxtCommissionTransferIn);
 
     /**
-     * 批量新增数据（MyBatis原生foreach方法）
-     *
-     * @param entities List<NxtCommissionTransferIn> 实例对象列表
-     * @return 影响行数
-     */
-    int insertBatch(@Param("entities") List<NxtCommissionTransferIn> entities);
-
-    /**
-     * 批量新增或按主键更新数据（MyBatis原生foreach方法）
-     *
-     * @param entities List<NxtCommissionTransferIn> 实例对象列表
-     * @return 影响行数
-     */
-    int insertOrUpdateBatch(@Param("entities") List<NxtCommissionTransferIn> entities);
-
-    /**
      * 修改数据
      *
      * @param nxtCommissionTransferIn 实例对象

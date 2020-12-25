@@ -29,7 +29,7 @@
         select
           id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
-        where phone = #{phone} limit 1
+        where @NxtTenantCondition@ and phone = #{phone} limit 1
     </select>
 
     <!--通过email查询单个-->
@@ -37,7 +37,7 @@
         select
           id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
-        where email = #{email} limit 1
+        where @NxtTenantCondition@ and email = #{email} limit 1
     </select>
 
     <!--通过username查询单个-->
@@ -45,7 +45,7 @@
         select
           id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
-        where username = #{username} limit 1
+        where @NxtTenantCondition@ and username = #{username} limit 1
     </select>
 
     <!--查询单个-->
@@ -53,7 +53,7 @@
         select
           id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -61,6 +61,7 @@
         select
           id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -69,7 +70,7 @@
         select
           id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
-        where is_admin is not NULL and is_admin = 1
+        where @NxtTenantCondition@ and is_admin is not NULL and is_admin = 1
         limit #{offset}, #{limit}
     </select>
 
@@ -80,6 +81,7 @@
         dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -139,21 +141,10 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_user(username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code)
-        values (#{username}, #{password}, #{salt}, #{token}, #{phone}, #{email}, #{avatarId}, #{gender}, #{levelNum}, #{moneyBalance}, #{status}, #{isAdmin}, #{datelineCreate}, #{inviterUserId}, #{canInvite}, #{inviteesCount}, #{inviteCode})
+        insert into nxt_user(@NxtTenantInsertKey@ username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code)
+        values (@NxtTenantInsertValue@ @NxtTenantInsertValue@ #{username}, #{password}, #{salt}, #{token}, #{phone}, #{email}, #{avatarId}, #{gender}, #{levelNum}, #{moneyBalance}, #{status}, #{isAdmin}, #{datelineCreate}, #{inviterUserId}, #{canInvite}, #{inviteesCount}, #{inviteCode})
     </insert>
 
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_user(username, password, salt, token, phone, email, avatar_id, gender, level_num,
-        money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.username}, #{entity.password}, #{entity.salt}, #{entity.token}, #{entity.phone}, #{entity.email},
-            #{entity.avatarId}, #{entity.gender}, #{entity.levelNum}, #{entity.moneyBalance}, #{entity.status}, #{entity.isAdmin},
-            #{entity.datelineCreate}, #{entity.inviterUserId}, #{entity.canInvite}, #{entity.inviteesCount},
-            #{entity.inviteCode})
-        </foreach>
-    </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
@@ -211,12 +202,12 @@
                 invite_code = #{inviteCode},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_user where id = #{id}
+        delete from nxt_user where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 
@@ -225,7 +216,7 @@
         select
           id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
-        where invite_code = #{inviteCode}
+        where @NxtTenantCondition@ and invite_code = #{inviteCode}
     </select>
 
     <!--根据userId列表批量查询user-->
@@ -233,7 +224,7 @@
         SELECT
         id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
-        WHERE id IN
+        WHERE @NxtTenantCondition@ and id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -245,7 +236,7 @@
         select
           id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
-        where inviter_user_id = #{inviterUserId}
+        where @NxtTenantCondition@ and inviter_user_id = #{inviterUserId}
         limit #{offset}, #{limit}
     </select>
 
@@ -254,7 +245,7 @@
         select
           id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
-        where inviter_user_id IN (select id from nxt_user where inviter_user_id = #{inviterUserId})
+        where @NxtTenantCondition@ and inviter_user_id IN (select id from nxt_user where @NxtTenantCondition@ and inviter_user_id = #{inviterUserId})
         limit #{offset}, #{limit}
     </select>
 
@@ -263,20 +254,20 @@
         select
           id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
-        where inviter_user_id IN (select id from nxt_user where inviter_user_id IN (select id from nxt_user where inviter_user_id = #{inviterUserId}))
+        where @NxtTenantCondition@ and inviter_user_id IN (select id from nxt_user where @NxtTenantCondition@ and inviter_user_id IN (select id from nxt_user where @NxtTenantCondition@ and inviter_user_id = #{inviterUserId}))
         limit #{offset}, #{limit}
     </select>
 
     <!--解绑手机号-->
     <update id="removePhoneById">
         update nxt_user set phone = null
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--解绑Email-->
     <update id="removeEmailById">
         update nxt_user set email = null
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--获取会员列表-->
@@ -285,6 +276,7 @@
           id, username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code
         from nxt_user
         <where>
+                and @NxtTenantCondition@
             <if test="userId != null">
                 and id = #{userId}
             </if>
@@ -312,6 +304,7 @@
         count(*)
         from nxt_user
         <where>
+                and @NxtTenantCondition@
             <if test="userId != null">
                 and id = #{userId}
             </if>

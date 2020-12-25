@@ -21,7 +21,7 @@
         select
           id, user_id, region_country, region_province, region_city, delivery_address, delivery_person, delivery_phone, delivery_postcode, is_default
         from nxt_user_address
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -29,6 +29,7 @@
         select
           id, user_id, region_country, region_province, region_city, delivery_address, delivery_person, delivery_phone, delivery_postcode, is_default
         from nxt_user_address
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -38,6 +39,7 @@
           id, user_id, region_country, region_province, region_city, delivery_address, delivery_person, delivery_phone, delivery_postcode, is_default
         from nxt_user_address
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -73,8 +75,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_user_address(user_id, region_country, region_province, region_city, delivery_address, delivery_person, delivery_phone, delivery_postcode, is_default)
-        values (#{userId}, #{regionCountry}, #{regionProvince}, #{regionCity}, #{deliveryAddress}, #{deliveryPerson}, #{deliveryPhone}, #{deliveryPostcode}, #{isDefault})
+        insert into nxt_user_address(@NxtTenantInsertKey@ user_id, region_country, region_province, region_city, delivery_address, delivery_person, delivery_phone, delivery_postcode, is_default)
+        values (@NxtTenantInsertValue@ #{userId}, #{regionCountry}, #{regionProvince}, #{regionCity}, #{deliveryAddress}, #{deliveryPerson}, #{deliveryPhone}, #{deliveryPostcode}, #{isDefault})
     </insert>
 
     <!--通过主键修改数据-->
@@ -109,12 +111,12 @@
                 is_default = #{isDefault},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_user_address where id = #{id}
+        delete from nxt_user_address where @NxtTenantCondition@ and id = #{id}
     </delete>
 
     <!--根据UserId查询指定行数据-->
@@ -122,7 +124,7 @@
         select
           id, user_id, region_country, region_province, region_city, delivery_address, delivery_person, delivery_phone, delivery_postcode, is_default
         from nxt_user_address
-        where user_id = #{userId}
+        where @NxtTenantCondition@ and user_id = #{userId}
         order by is_default desc , id desc
         limit #{offset}, #{limit}
     </select>

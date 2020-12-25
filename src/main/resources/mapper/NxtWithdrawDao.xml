@@ -24,7 +24,7 @@
         select
           id, user_id, transaction_id, status, amount, dateline_create, dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin
         from nxt_withdraw
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -32,6 +32,7 @@
         select
           id, user_id, transaction_id, status, amount, dateline_create, dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin
         from nxt_withdraw
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -41,6 +42,7 @@
           id, user_id, transaction_id, status, amount, dateline_create, dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin
         from nxt_withdraw
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -85,8 +87,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_withdraw(user_id, transaction_id, status, amount, dateline_create, dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin)
-        values (#{userId}, #{transactionId}, #{status}, #{amount}, #{datelineCreate}, #{datelineEnd}, #{platform}, #{platformPerson}, #{platformAccount}, #{platformSerialNum}, #{remarkUser}, #{remarkAdmin})
+        insert into nxt_withdraw(@NxtTenantInsertKey@ user_id, transaction_id, status, amount, dateline_create, dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin)
+        values (@NxtTenantInsertValue@ #{userId}, #{transactionId}, #{status}, #{amount}, #{datelineCreate}, #{datelineEnd}, #{platform}, #{platformPerson}, #{platformAccount}, #{platformSerialNum}, #{remarkUser}, #{remarkAdmin})
     </insert>
 
     <!--通过主键修改数据-->
@@ -130,12 +132,12 @@
                 remark_admin = #{remarkAdmin},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_withdraw where id = #{id}
+        delete from nxt_withdraw where @NxtTenantCondition@ and id = #{id}
     </delete>
 
     <!--查询某用户已经提现成功的总额-->
@@ -143,7 +145,7 @@
         select
             sum(amount)
         from nxt_withdraw
-        where user_id = #{userId} and status = 3
+        where @NxtTenantCondition@ and user_id = #{userId} and status = 3
     </select>
 
     <!--查询某用户已经提现成功的总额-->
@@ -151,7 +153,7 @@
         select
             sum(amount)
         from nxt_withdraw
-        where user_id = #{userId} and (status = 0 or status = 1)
+        where @NxtTenantCondition@ and user_id = #{userId} and (status = 0 or status = 1)
     </select>
 
     <!--查询某用户被拒绝提现成功的总额-->
@@ -159,7 +161,7 @@
         select
             sum(amount)
         from nxt_withdraw
-        where user_id = #{userId} and status = 2
+        where @NxtTenantCondition@ and user_id = #{userId} and status = 2
     </select>
 
     <!--后台查询列表-->
@@ -168,6 +170,7 @@
         id, user_id, transaction_id, status, amount, dateline_create, dateline_end, platform, platform_person, platform_account, platform_serial_num, remark_user, remark_admin
         from nxt_withdraw
         <where>
+                and @NxtTenantCondition@
             <if test="userId != null">
                 and user_id = #{userId}
             </if>
@@ -185,6 +188,7 @@
         count(*)
         from nxt_withdraw
         <where>
+                and @NxtTenantCondition@
             <if test="userId != null">
                 and user_id = #{userId}
             </if>

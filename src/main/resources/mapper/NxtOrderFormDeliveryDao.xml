@@ -15,7 +15,7 @@
         select
           id, order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num
         from nxt_order_form_delivery
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -23,6 +23,7 @@
         select
           id, order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num
         from nxt_order_form_delivery
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -32,6 +33,7 @@
         id, order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num
         from nxt_order_form_delivery
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -52,31 +54,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_delivery(order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num)
-        values (#{orderFormId}, #{deliveryCompanyId}, #{deliveryCompanyName}, #{deliverySerialNum})
-    </insert>
-
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_delivery(order_form_id, delivery_company_id,
-        delivery_company_name, delivery_serial_num)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.orderFormId}, #{entity.deliveryCompanyId}, #{entity.deliveryCompanyName},
-            #{entity.deliverySerialNum})
-        </foreach>
-    </insert>
-
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_delivery(order_form_id, delivery_company_id,
-        delivery_company_name, delivery_serial_num)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.orderFormId}, #{entity.deliveryCompanyId}, #{entity.deliveryCompanyName},
-            #{entity.deliverySerialNum})
-        </foreach>
-        on duplicate key update
-        order_form_id = values(order_form_id) , delivery_company_id = values(delivery_company_id)
-        , delivery_company_name = values(delivery_company_name) , delivery_serial_num = values(delivery_serial_num)
+        insert into nxt_order_form_delivery(@NxtTenantInsertKey@ order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num)
+        values (@NxtTenantInsertValue@ #{orderFormId}, #{deliveryCompanyId}, #{deliveryCompanyName}, #{deliverySerialNum})
     </insert>
 
     <!--通过主键修改数据-->
@@ -96,12 +75,12 @@
                 delivery_serial_num = #{deliverySerialNum},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_order_form_delivery where id = #{id}
+        delete from nxt_order_form_delivery where @NxtTenantCondition@ and id = #{id}
     </delete>
 
     <!--根据orderFromId查询单个发货物流信息-->
@@ -109,7 +88,7 @@
         select
           id, order_form_id, delivery_company_id, delivery_company_name, delivery_serial_num
         from nxt_order_form_delivery
-        where order_form_id = #{orderFormId}
+        where @NxtTenantCondition@ and order_form_id = #{orderFormId}
         order by id desc
         limit 1
     </select>

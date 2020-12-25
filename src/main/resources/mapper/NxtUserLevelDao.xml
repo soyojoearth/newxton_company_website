@@ -15,7 +15,7 @@
         select
           id, num, name, cost, discount
         from nxt_user_level
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询单个-->
@@ -23,7 +23,7 @@
         select
           id, num, name, cost, discount
         from nxt_user_level
-        where num = #{num}
+        where @NxtTenantCondition@ and num = #{num}
     </select>
 
     <!--查询最大的那个levelNum-->
@@ -31,6 +31,7 @@
         select
           id, num, name, cost, discount
         from nxt_user_level
+        where @NxtTenantCondition@
         order by num desc limit 1
     </select>
 
@@ -39,6 +40,7 @@
         select
           id, num, name, cost, discount
         from nxt_user_level
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -48,6 +50,7 @@
         id, num, name, cost, discount
         from nxt_user_level
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -68,26 +71,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_user_level(num, name, cost, discount)
-        values (#{num}, #{name}, #{cost}, #{discount})
-    </insert>
-
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_user_level(num, name, cost, discount)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.num}, #{entity.name}, #{entity.cost}, #{entity.discount})
-        </foreach>
-    </insert>
-
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_user_level(num, name, cost, discount)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.num}, #{entity.name}, #{entity.cost}, #{entity.discount})
-        </foreach>
-        on duplicate key update
-        num = values(num) , name = values(name) , cost = values(cost) , discount = values(discount)
+        insert into nxt_user_level(@NxtTenantInsertKey@ num, name, cost, discount)
+        values (@NxtTenantInsertValue@ #{num}, #{name}, #{cost}, #{discount})
     </insert>
 
     <!--通过主键修改数据-->
@@ -107,12 +92,12 @@
                 discount = #{discount},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_user_level where id = #{id}
+        delete from nxt_user_level where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 </mapper>

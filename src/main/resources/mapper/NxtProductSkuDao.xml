@@ -14,7 +14,7 @@
         select
           id, product_id, sku_key_name
         from nxt_product_sku
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -22,6 +22,7 @@
         select
           id, product_id, sku_key_name
         from nxt_product_sku
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -31,6 +32,7 @@
           id, product_id, sku_key_name
         from nxt_product_sku
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -45,8 +47,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_product_sku(product_id, sku_key_name)
-        values (#{productId}, #{skuKeyName})
+        insert into nxt_product_sku(@NxtTenantInsertKey@ product_id, sku_key_name)
+        values (@NxtTenantInsertValue@ #{productId}, #{skuKeyName})
     </insert>
 
     <!--通过主键修改数据-->
@@ -60,12 +62,12 @@
                 sku_key_name = #{skuKeyName},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_product_sku where id = #{id}
+        delete from nxt_product_sku where @NxtTenantCondition@ and id = #{id}
     </delete>
 
     <!--根据产品id集合查询-->
@@ -73,7 +75,7 @@
         select
           id, product_id, sku_key_name
         from nxt_product_sku
-        where product_id IN
+        where @NxtTenantCondition@ and product_id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>

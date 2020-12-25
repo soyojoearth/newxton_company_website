@@ -18,7 +18,7 @@
         select
           id, web_key, web_title, content_title, content_detail, seo_keyword, dateline_update
         from nxt_web_page
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询单个-->
@@ -26,7 +26,7 @@
         select
           id, web_key, web_title, content_title, content_detail, seo_keyword, dateline_update
         from nxt_web_page
-        where web_key = #{webKey}
+        where @NxtTenantCondition@ and web_key = #{webKey}
     </select>
 
     <!--查询指定行数据-->
@@ -34,6 +34,7 @@
         select
           id, web_key, web_title, content_title, content_detail, seo_keyword, dateline_update
         from nxt_web_page
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -43,6 +44,7 @@
           id, web_key, web_title, content_title, content_detail, seo_keyword, dateline_update
         from nxt_web_page
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -69,8 +71,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_web_page(web_key, web_title, content_title, content_detail, seo_keyword, dateline_update)
-        values (#{webKey}, #{webTitle}, #{contentTitle}, #{contentDetail}, #{seoKeyword}, #{datelineUpdate})
+        insert into nxt_web_page(@NxtTenantInsertKey@ web_key, web_title, content_title, content_detail, seo_keyword, dateline_update)
+        values (@NxtTenantInsertValue@ #{webKey}, #{webTitle}, #{contentTitle}, #{contentDetail}, #{seoKeyword}, #{datelineUpdate})
     </insert>
 
     <!--通过主键修改数据-->
@@ -96,12 +98,12 @@
                 dateline_update = #{datelineUpdate},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_web_page where id = #{id}
+        delete from nxt_web_page where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 </mapper>

@@ -14,7 +14,7 @@
         select
           id, user_id, role_id
         from nxt_acl_user_role
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询单个-->
@@ -22,7 +22,7 @@
         select
           id, user_id, role_id
         from nxt_acl_user_role
-        where user_id = #{userId}
+        where @NxtTenantCondition@ and user_id = #{userId}
     </select>
 
     <!--查询指定行数据-->
@@ -30,6 +30,7 @@
         select
           id, user_id, role_id
         from nxt_acl_user_role
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -39,6 +40,7 @@
           id, user_id, role_id
         from nxt_acl_user_role
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -53,8 +55,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_acl_user_role(user_id, role_id)
-        values (#{userId}, #{roleId})
+        insert into nxt_acl_user_role(@NxtTenantInsertKey@ user_id, role_id)
+        values (@NxtTenantInsertValue@ #{userId}, #{roleId})
     </insert>
 
     <!--通过主键修改数据-->
@@ -68,12 +70,12 @@
                 role_id = #{roleId},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_acl_user_role where id = #{id}
+        delete from nxt_acl_user_role where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 </mapper>

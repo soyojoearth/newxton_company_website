@@ -17,7 +17,7 @@
         select
           id, user_id, transaction_id, amount, dateline_create, dateline_end, status
         from nxt_commission_transfer_in
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -25,6 +25,7 @@
         select
           id, user_id, transaction_id, amount, dateline_create, dateline_end, status
         from nxt_commission_transfer_in
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -34,6 +35,7 @@
         id, user_id, transaction_id, amount, dateline_create, dateline_end, status
         from nxt_commission_transfer_in
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -60,31 +62,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_commission_transfer_in(user_id, transaction_id, amount, dateline_create, dateline_end, status)
-        values (#{userId}, #{transactionId}, #{amount}, #{datelineCreate}, #{datelineEnd}, #{status})
-    </insert>
-
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_commission_transfer_in(user_id, transaction_id, amount, dateline_create,
-        dateline_end, status)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userId}, #{entity.transactionId}, #{entity.amount}, #{entity.datelineCreate},
-            #{entity.datelineEnd}, #{entity.status})
-        </foreach>
-    </insert>
-
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_commission_transfer_in(user_id, transaction_id, amount, dateline_create,
-        dateline_end, status)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userId}, #{entity.transactionId}, #{entity.amount}, #{entity.datelineCreate},
-            #{entity.datelineEnd}, #{entity.status})
-        </foreach>
-        on duplicate key update
-        user_id = values(user_id) , transaction_id = values(transaction_id) , amount = values(amount) , dateline_create
-        = values(dateline_create) , dateline_end = values(dateline_end) , status = values(status)
+        insert into nxt_commission_transfer_in(@NxtTenantInsertKey@ user_id, transaction_id, amount, dateline_create, dateline_end, status)
+        values (@NxtTenantInsertValue@ #{userId}, #{transactionId}, #{amount}, #{datelineCreate}, #{datelineEnd}, #{status})
     </insert>
 
     <!--通过主键修改数据-->
@@ -110,12 +89,12 @@
                 status = #{status},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_commission_transfer_in where id = #{id}
+        delete from nxt_commission_transfer_in where @NxtTenantCondition@ and id = #{id}
     </delete>
 
     <!--根据UserId查询结转中的收益统计（已提交结转申请，等待审核）-->
@@ -123,7 +102,7 @@
         select
           sum(amount)
         from nxt_commission_transfer_in
-        where user_id = #{userId} and status = 0
+        where @NxtTenantCondition@ and user_id = #{userId} and status = 0
     </select>
 
     <!--根据UserId查询结转被拒绝的的收益统计（已提交结转申请，审核被拒绝）-->
@@ -131,7 +110,7 @@
         select
           sum(amount)
         from nxt_commission_transfer_in
-        where user_id = #{userId} and status = -1
+        where @NxtTenantCondition@ and user_id = #{userId} and status = -1
     </select>
 
 </mapper>

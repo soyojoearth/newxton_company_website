@@ -14,7 +14,7 @@
         select
           id, order_form_id, price_deal, transaction_id
         from nxt_order_form_pay
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -22,6 +22,7 @@
         select
           id, order_form_id, price_deal, transaction_id
         from nxt_order_form_pay
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -31,6 +32,7 @@
         id, order_form_id, price_deal, transaction_id
         from nxt_order_form_pay
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -48,27 +50,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_pay(order_form_id, price_deal, transaction_id)
-        values (#{orderFormId}, #{priceDeal}, #{transactionId})
-    </insert>
-
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_pay(order_form_id, price_deal, transaction_id)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.orderFormId}, #{entity.priceDeal}, #{entity.transactionId})
-        </foreach>
-    </insert>
-
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_order_form_pay(order_form_id, price_deal, transaction_id)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.orderFormId}, #{entity.priceDeal}, #{entity.transactionId})
-        </foreach>
-        on duplicate key update
-        order_form_id = values(order_form_id) , price_deal = values(price_deal) , transaction_id =
-        values(transaction_id)
+        insert into nxt_order_form_pay(@NxtTenantInsertKey@ order_form_id, price_deal, transaction_id)
+        values (@NxtTenantInsertValue@ #{orderFormId}, #{priceDeal}, #{transactionId})
     </insert>
 
     <!--通过主键修改数据-->
@@ -85,12 +68,12 @@
                 transaction_id = #{transactionId},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_order_form_pay where id = #{id}
+        delete from nxt_order_form_pay where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 </mapper>

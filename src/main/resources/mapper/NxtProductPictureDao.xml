@@ -15,7 +15,7 @@
         select
           id, product_id, uploadfile_id, sort_id
         from nxt_product_picture
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -23,6 +23,7 @@
         select
           id, product_id, uploadfile_id, sort_id
         from nxt_product_picture
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -30,7 +31,7 @@
         SELECT
         id, product_id, uploadfile_id, sort_id
         from nxt_product_picture
-        WHERE product_id IN
+        WHERE @NxtTenantCondition@ and product_id IN
         <foreach collection="productIdList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -43,6 +44,7 @@
           id, product_id, uploadfile_id, sort_id
         from nxt_product_picture
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -60,8 +62,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_product_picture(product_id, uploadfile_id, sort_id)
-        values (#{productId}, #{uploadfileId}, #{sortId})
+        insert into nxt_product_picture(@NxtTenantInsertKey@ product_id, uploadfile_id, sort_id)
+        values (@NxtTenantInsertValue@ #{productId}, #{uploadfileId}, #{sortId})
     </insert>
 
     <!--通过主键修改数据-->
@@ -78,12 +80,12 @@
                 sort_id = #{sortId},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_product_picture where id = #{id}
+        delete from nxt_product_picture where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 </mapper>

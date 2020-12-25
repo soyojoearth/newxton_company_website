@@ -22,7 +22,7 @@
         select
           id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
         from nxt_reviews
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -30,6 +30,7 @@
         select
           id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
         from nxt_reviews
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -39,6 +40,7 @@
           id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
         from nxt_reviews
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -77,8 +79,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_reviews(origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden)
-        values (#{originType}, #{userId}, #{productId}, #{orderFormId}, #{orderFormProductId}, #{dateline}, #{content}, #{parentId}, #{isRecommend}, #{isHidden})
+        insert into nxt_reviews(@NxtTenantInsertKey@ origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden)
+        values (@NxtTenantInsertValue@ #{originType}, #{userId}, #{productId}, #{orderFormId}, #{orderFormProductId}, #{dateline}, #{content}, #{parentId}, #{isRecommend}, #{isHidden})
     </insert>
 
     <!--通过主键修改数据-->
@@ -116,12 +118,12 @@
                 is_hidden = #{isHidden},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_reviews where id = #{id}
+        delete from nxt_reviews where @NxtTenantCondition@ and id = #{id}
     </delete>
 
     <!--查询指定产品的所有用户评论列表(不含回复)-按推荐倒序、时间倒序-->
@@ -129,7 +131,7 @@
         select
           id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
         from nxt_reviews
-        where product_id = #{productId} and origin_type = 0 and parent_id = 0 and is_hidden = 0
+        where @NxtTenantCondition@ and product_id = #{productId} and origin_type = 0 and parent_id = 0 and is_hidden = 0
         order by is_recommend desc, dateline desc
         limit #{offset}, #{limit}
     </select>
@@ -139,7 +141,7 @@
         select
           count(*)
         from nxt_reviews
-        where product_id = #{productId} and origin_type = 0 and parent_id = 0
+        where @NxtTenantCondition@ and product_id = #{productId} and origin_type = 0 and parent_id = 0
         order by dateline desc
     </select>
 
@@ -148,7 +150,7 @@
         select
           id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
         from nxt_reviews
-        WHERE parent_id IN
+        WHERE @NxtTenantCondition@ and parent_id IN
         <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -160,7 +162,7 @@
         select
           id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
         from nxt_reviews
-        where order_form_id = #{orderFormId} and origin_type = 0 and parent_id = 0
+        where @NxtTenantCondition@ and order_form_id = #{orderFormId} and origin_type = 0 and parent_id = 0
         order by dateline desc
     </select>
 
@@ -169,7 +171,7 @@
         select
           id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
         from nxt_reviews
-        where order_form_product_id = #{orderFormProductId} and origin_type = 0 and parent_id = 0
+        where @NxtTenantCondition@ and order_form_product_id = #{orderFormProductId} and origin_type = 0 and parent_id = 0
         order by id limit 1
     </select>
 
@@ -180,6 +182,7 @@
           id, origin_type, user_id, product_id, order_form_id, order_form_product_id, dateline, content, parent_id, is_recommend, is_hidden
         from nxt_reviews
         <where>
+                and @NxtTenantCondition@
             <if test="productId != null">
                 and product_id = #{productId}
             </if>
@@ -195,6 +198,7 @@
         count(*)
         from nxt_reviews
         <where>
+                and @NxtTenantCondition@
             <if test="productId != null">
                 and product_id = #{productId}
             </if>

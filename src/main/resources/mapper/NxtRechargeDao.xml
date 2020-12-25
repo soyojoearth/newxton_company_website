@@ -24,7 +24,7 @@
         select
           id, serial_num, user_id, transaction_id, order_form_id, status, platform, dateline, amount, notify_dateline, notify_serial_num, notify_data, remark
         from nxt_recharge
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--根据serialNum查询单个-->
@@ -32,7 +32,7 @@
         select
           id, serial_num, user_id, transaction_id, order_form_id, status, platform, dateline, amount, notify_dateline, notify_serial_num, notify_data, remark
         from nxt_recharge
-        where serial_num = #{serialNum}
+        where @NxtTenantCondition@ and serial_num = #{serialNum}
         order by id desc limit 1
     </select>
 
@@ -41,6 +41,7 @@
         select
           id, serial_num, user_id, transaction_id, order_form_id, status, platform, dateline, amount, notify_dateline, notify_serial_num, notify_data, remark
         from nxt_recharge
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -50,6 +51,7 @@
           id, serial_num, user_id, transaction_id, order_form_id, status, platform, dateline, amount, notify_dateline, notify_serial_num, notify_data, remark
         from nxt_recharge
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -94,8 +96,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_recharge(serial_num, user_id, transaction_id, order_form_id, status, platform, dateline, amount, notify_dateline, notify_serial_num, notify_data, remark)
-        values (#{serialNum}, #{userId}, #{transactionId}, #{orderFormId}, #{status}, #{platform}, #{dateline}, #{amount}, #{notifyDateline}, #{notifySerialNum}, #{notifyData}, #{remark})
+        insert into nxt_recharge(@NxtTenantInsertKey@ serial_num, user_id, transaction_id, order_form_id, status, platform, dateline, amount, notify_dateline, notify_serial_num, notify_data, remark)
+        values (@NxtTenantInsertValue@ #{serialNum}, #{userId}, #{transactionId}, #{orderFormId}, #{status}, #{platform}, #{dateline}, #{amount}, #{notifyDateline}, #{notifySerialNum}, #{notifyData}, #{remark})
     </insert>
 
     <!--通过主键修改数据-->
@@ -139,12 +141,12 @@
                 remark = #{remark},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_recharge where id = #{id}
+        delete from nxt_recharge where @NxtTenantCondition@ and id = #{id}
     </delete>
 
     <!--查询某用户充值成功的总额-->
@@ -152,7 +154,7 @@
         select
             sum(amount)
         from nxt_recharge
-        where user_id = #{userId} and status = 1
+        where @NxtTenantCondition@ and user_id = #{userId} and status = 1
     </select>
 
 </mapper>

@@ -1,5 +1,7 @@
 package com.newxton.nxtframework;
 
+import com.newxton.nxtframework.interceptor.NxtSaaSInterceptor;
+import org.apache.ibatis.plugin.Interceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mobile.device.DeviceHandlerMethodArgumentResolver;
@@ -47,6 +49,11 @@ public class NxtWebConfig implements WebMvcConfigurer {
     public void addArgumentResolvers(
             List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(deviceHandlerMethodArgumentResolver());
+    }
+
+    @Bean
+    public Interceptor getInterceptor(){
+        return new NxtSaaSInterceptor();
     }
 
 }

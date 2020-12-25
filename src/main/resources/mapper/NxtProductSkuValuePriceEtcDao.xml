@@ -17,7 +17,7 @@
         select
           id, sku_value_id_1, sku_value_id_2, sku_value_inventory_quantity, sku_value_price, sku_value_price_discount
         from nxt_product_sku_value_price_etc
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -25,6 +25,7 @@
         select
           id, sku_value_id_1, sku_value_id_2, sku_value_inventory_quantity, sku_value_price, sku_value_price_discount
         from nxt_product_sku_value_price_etc
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -34,6 +35,7 @@
           id, sku_value_id_1, sku_value_id_2, sku_value_inventory_quantity, sku_value_price, sku_value_price_discount
         from nxt_product_sku_value_price_etc
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -59,7 +61,7 @@
         select
         id, sku_value_id_1, sku_value_id_2, sku_value_inventory_quantity, sku_value_price, sku_value_price_discount
         from nxt_product_sku_value_price_etc
-        WHERE sku_value_id_1 IN
+        WHERE @NxtTenantCondition@ and sku_value_id_1 IN
         <foreach collection="valueIdList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -72,8 +74,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_product_sku_value_price_etc(sku_value_id_1, sku_value_id_2, sku_value_inventory_quantity, sku_value_price, sku_value_price_discount)
-        values (#{skuValueId1}, #{skuValueId2}, #{skuValueInventoryQuantity}, #{skuValuePrice}, #{skuValuePriceDiscount})
+        insert into nxt_product_sku_value_price_etc(@NxtTenantInsertKey@ sku_value_id_1, sku_value_id_2, sku_value_inventory_quantity, sku_value_price, sku_value_price_discount)
+        values (@NxtTenantInsertValue@ #{skuValueId1}, #{skuValueId2}, #{skuValueInventoryQuantity}, #{skuValuePrice}, #{skuValuePriceDiscount})
     </insert>
 
     <!--通过主键修改数据-->
@@ -96,17 +98,17 @@
                 sku_value_price_discount = #{skuValuePriceDiscount},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_product_sku_value_price_etc where id = #{id}
+        delete from nxt_product_sku_value_price_etc where @NxtTenantCondition@ and id = #{id}
     </delete>
 
     <select id="deleteByValueIdSet">
         delete from nxt_product_sku_value_price_etc
-        WHERE sku_value_id_1 IN
+        WHERE @NxtTenantCondition@ and sku_value_id_1 IN
         <foreach collection="valueIdList" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>

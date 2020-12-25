@@ -47,21 +47,6 @@ public interface NxtWithdrawDao {
      */
     int insert(NxtWithdraw nxtWithdraw);
 
-    /**
-     * 批量新增数据（MyBatis原生foreach方法）
-     *
-     * @param entities List<NxtWithdraw> 实例对象列表
-     * @return 影响行数
-     */
-    int insertBatch(@Param("entities") List<NxtWithdraw> entities);
-
-    /**
-     * 批量新增或按主键更新数据（MyBatis原生foreach方法）
-     *
-     * @param entities List<NxtWithdraw> 实例对象列表
-     * @return 影响行数
-     */
-    int insertOrUpdateBatch(@Param("entities") List<NxtWithdraw> entities);
 
     /**
      * 修改数据

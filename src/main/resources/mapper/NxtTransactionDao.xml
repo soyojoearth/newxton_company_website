@@ -17,7 +17,7 @@
         select
           id, user_id, amount, balance, dateline, type, outer_id
         from nxt_transaction
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--根据type、outId查询单个-->
@@ -25,7 +25,7 @@
         select
           id, user_id, amount, balance, dateline, type, outer_id
         from nxt_transaction
-        where type = #{type} and outer_id = #{outerId}
+        where @NxtTenantCondition@ and type = #{type} and outer_id = #{outerId}
         limit 1
     </select>
 
@@ -34,6 +34,7 @@
         select
           id, user_id, amount, balance, dateline, type, outer_id
         from nxt_transaction
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -42,7 +43,7 @@
         select
           id, user_id, amount, balance, dateline, type, outer_id
         from nxt_transaction
-        where user_id = #{userId}
+        where @NxtTenantCondition@ and user_id = #{userId}
         order by id desc
         limit #{offset}, #{limit}
     </select>
@@ -53,6 +54,7 @@
         id, user_id, amount, balance, dateline, type, outer_id
         from nxt_transaction
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -79,27 +81,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_transaction(user_id, amount, balance, dateline, type, outer_id)
-        values (#{userId}, #{amount}, #{balance}, #{dateline}, #{type}, #{outerId})
-    </insert>
-
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_transaction(user_id, amount, balance, dateline, type, outer_id)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userId}, #{entity.amount}, #{entity.balance}, #{entity.dateline}, #{entity.type}, #{entity.outerId})
-        </foreach>
-    </insert>
-
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_transaction(user_id, amount, balance, dateline, type, outer_id)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.userId}, #{entity.amount}, #{entity.balance}, #{entity.dateline}, #{entity.type}, #{entity.outerId})
-        </foreach>
-        on duplicate key update
-        user_id = values(user_id) , amount = values(amount) , balance = values(balance) , dateline = values(dateline) , type = values(type) ,
-        outer_id = values(outer_id)
+        insert into nxt_transaction(@NxtTenantInsertKey@ user_id, amount, balance, dateline, type, outer_id)
+        values (@NxtTenantInsertValue@ #{userId}, #{amount}, #{balance}, #{dateline}, #{type}, #{outerId})
     </insert>
 
     <!--通过主键修改数据-->
@@ -125,12 +108,12 @@
                 outer_id = #{outerId},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_transaction where id = #{id}
+        delete from nxt_transaction where @NxtTenantCondition@ and id = #{id}
     </delete>
 
     <!--查询单个用户的余额-->
@@ -138,7 +121,7 @@
         select
           sum(amount)
         from nxt_transaction
-        where user_id = #{userId}
+        where @NxtTenantCondition@ and user_id = #{userId}
     </select>
 
     <!--后台查询资金log列表-->
@@ -147,6 +130,7 @@
           id, user_id, amount, balance, dateline, type, outer_id
         from nxt_transaction
         <where>
+                and @NxtTenantCondition@
             <if test="userId != null">
                 and user_id = #{userId}
             </if>
@@ -164,6 +148,7 @@
         count(*)
         from nxt_transaction
         <where>
+                and @NxtTenantCondition@
             <if test="userId != null">
                 and user_id = #{userId}
             </if>

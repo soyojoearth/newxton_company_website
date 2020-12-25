@@ -14,7 +14,7 @@
         select
           id, group_name, group_remark
         from nxt_acl_group
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -22,6 +22,7 @@
         select
           id, group_name, group_remark
         from nxt_acl_group
+        where @NxtTenantCondition@
         limit #{offset}, #{limit}
     </select>
 
@@ -31,6 +32,7 @@
           id, group_name, group_remark
         from nxt_acl_group
         <where>
+                and @NxtTenantCondition@
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -45,8 +47,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into nxt_acl_group(group_name, group_remark)
-        values (#{groupName}, #{groupRemark})
+        insert into nxt_acl_group(@NxtTenantInsertKey@ group_name, group_remark)
+        values (@NxtTenantInsertValue@ #{groupName}, #{groupRemark})
     </insert>
 
     <!--通过主键修改数据-->
@@ -60,12 +62,12 @@
                 group_remark = #{groupRemark},
             </if>
         </set>
-        where id = #{id}
+        where @NxtTenantCondition@ and id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from nxt_acl_group where id = #{id}
+        delete from nxt_acl_group where @NxtTenantCondition@ and id = #{id}
     </delete>
 
 </mapper>
