@@ -2,7 +2,7 @@
 typora-copy-images-to: ./gitbook_resource
 ---
 
-一个开源电商系统，可以既作为B2C单商户使用，又可以作为SAAS系统多商户使用。
+一个开源电商系统，可以既作为B2C单商户使用，又可以作为SAAS系统多商户使用，还可以二开做B2B2C。
 
 支持分销功能。
 
@@ -120,9 +120,7 @@ cd wwwroot
 docker-compose -f docker-compose-quickstart.yml up
 ```
 
-##### 6、浏览器输入：`http://商户域名:8080/install`提示安装成功【每个租户都要独立运行该install一次】
-
-##### 7、然后浏览器打开：`http://商户域名:8686/admin`  用户名：`admin` 密码：`nxtframework.com`
+##### 6、部署完成，使用已绑定和解析的商户域名即可访问，底层逻辑分割租户数据，所有页面功能、接口就像使用普通B2C系统那样简单，二次开发也像B2C系统那样简单。
 
 
 
