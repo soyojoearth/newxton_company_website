@@ -2,9 +2,11 @@
 typora-copy-images-to: ./gitbook_resource
 ---
 
-这是一个开源但是不免费的**电商**系统，可以既做B2C单商户使用，也可以作为SAAS系统多商户使用。
+这是一个开源但是不免费的**电商**系统，可以既作为B2C单商户使用，又可以作为SAAS系统多商户使用。
 
-支持分销功能。基于Java Springboot开发，Api文档、数据库文档齐全。
+支持分销功能。
+
+基于Java Springboot开发，Api文档、数据库文档齐全。
 
 
 
@@ -75,13 +77,19 @@ typora-copy-images-to: ./gitbook_resource
 数据库密码：12345678
 ```
 
-**2、用IntelliJ IDEA打开项目，运行项目**
+##### 2、给nxt_tenant插入以下记录（一条记录表示一个商户，只加一条就是单商户；加多条就是多商户SaaS系统；每个商户可以按domains字段的格式绑定多个域名）
 
-##### 3、浏览器输入：`http://127.0.0.1:8080/install`提示安装成功  
+![image-20201225101841432](gitbook_resource/image-20201225101841432.png)
 
-**4、然后浏览器打开：`http://127.0.0.1:8080/admin`  用户名：`admin` 密码：`nxtframework.com`**
+**3、用IntelliJ IDEA打开项目，运行项目**
 
-##### 5、前台：`http://127.0.0.1:8080`
+##### 4、浏览器输入：`http://127.0.0.1:8080/install`提示安装成功【每个租户都要独立运行该install一次】  
+
+**5、然后浏览器打开：`http://127.0.0.1:8080/admin`  用户名：`admin` 密码：`nxtframework.com`**
+
+##### 6、前台：`http://127.0.0.1:8080`
+
+##### 7、不同商户的数据完全从底层逻辑分割，所有install完成的商户，默认后台都是初始密码和初始数据
 
 
 
@@ -97,7 +105,7 @@ docker build --tag nxtframework:0.2.0 .
 
 ##### 2、把镜像推到docker仓库，并拉到服务器上；
 
-##### 3、用database里面的nxtframework.sql在服务器创建数据库；
+##### 3、把「本地测试运行」合格的数据库，部署到服务器；
 
 ##### 4、配置 `wwwroot/docker-compose-quickstart.yml`文件中的docker镜像、数据库连接：
 
@@ -112,9 +120,9 @@ cd wwwroot
 docker-compose -f docker-compose-quickstart.yml up
 ```
 
-##### 6、浏览器输入：`http://服务器地址:8080/install`提示安装成功
+##### 6、浏览器输入：`http://商户域名:8080/install`提示安装成功【每个租户都要独立运行该install一次】
 
-##### 7、然后浏览器打开：`http://服务器地址:8686/admin`  用户名：`admin` 密码：`nxtframework.com`
+##### 7、然后浏览器打开：`http://商户域名:8686/admin`  用户名：`admin` 密码：`nxtframework.com`
 
 
 
@@ -134,15 +142,21 @@ docker-compose -f docker-compose-quickstart.yml up
 
 
 
+##### 添加商户（租户）：
+
+1、每次添加商户，都到后台数据库表nxt_tenant里面手动添加；
+
+2、把新加商户的域名加入Nginx；
+
+3、把新加商户的ssl证书加入Nginx；
+
 
 
 #### 集群部署方式：
 
-1、使用k8s部署；
+1、建议用使用k8s部署；
 
-2、浏览器输入：`http://服务器地址/install`提示安装成功；
-
-3、部署完成^_^。
+2、部署完成^_^。
 
 本项目已经充分考虑过集群多实例部署的情况，已针对性优化过。
 
@@ -164,9 +178,9 @@ UI设计：Rong Kai
 
 
 
-**本系统0.2.2及以前版本是Apache协议，之后的版本已去掉Apache协议。**
+##### 本系统0.2.2及以前版本不含SaaS功能，开源且免费（Apache协议）；
 
-**我们继续开源，可免费供个人学习和研究使用，但是，商业使用需要收取授权费。**
+##### 0.2.2之后的版本已升级SaaS功能，且去掉了Apache协议，仍然开源，但是不免费，要收取授权费。
 
 
 

@@ -37,8 +37,7 @@ public class NxtCronJobSaaSCore {
      * 5分钟更新一次全部商户域名数据
      */
     @Scheduled(fixedDelay = 300000)
-    public void readme() {
-
+    public void syncTenantList() {
         List<NxtTenant> nxtTenantList = nxtTenantService.queryAllByLimit(0,Integer.MAX_VALUE);
         Map<String,Long> mapDomainToTenantId = new HashMap<>();
         for (NxtTenant nxtTenant : nxtTenantList) {
