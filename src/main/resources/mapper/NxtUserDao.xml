@@ -142,7 +142,7 @@
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into nxt_user(@NxtTenantInsertKey@ username, password, salt, token, phone, email, avatar_id, gender, level_num, money_balance, status, is_admin, dateline_create, inviter_user_id, can_invite, invitees_count, invite_code)
-        values (@NxtTenantInsertValue@ @NxtTenantInsertValue@ #{username}, #{password}, #{salt}, #{token}, #{phone}, #{email}, #{avatarId}, #{gender}, #{levelNum}, #{moneyBalance}, #{status}, #{isAdmin}, #{datelineCreate}, #{inviterUserId}, #{canInvite}, #{inviteesCount}, #{inviteCode})
+        values (@NxtTenantInsertValue@ #{username}, #{password}, #{salt}, #{token}, #{phone}, #{email}, #{avatarId}, #{gender}, #{levelNum}, #{moneyBalance}, #{status}, #{isAdmin}, #{datelineCreate}, #{inviterUserId}, #{canInvite}, #{inviteesCount}, #{inviteCode})
     </insert>
 
 
