@@ -178,12 +178,6 @@ UI设计：Rong Kai
 
 
 
-##### 本系统0.2.2及以前版本不含SaaS功能，开源且免费（Apache协议）；
-
-##### 0.2.2之后的版本已升级SaaS功能，且去掉了Apache协议，仍然开源，但是不免费，要收取授权费。
-
-
-
 #### 如需要我们团队进行二次开发或者洽谈商业授权事宜，请加微信：
 
 ![Wechat-nap](gitbook_resource/Wechat-nap.jpeg)
