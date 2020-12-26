@@ -86,6 +86,7 @@ public class NxtProductSpider1688Component implements NxtComponentInterfaceProdu
         //抓取到所有产品规格
         skuList = new ArrayList<>();
 
+        //抓取到所有产品详情
         productDescription = null;
 
         //假数据 赋值【仅供参考数据格式】
