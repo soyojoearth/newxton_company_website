@@ -58,24 +58,15 @@ public class NxtUploadImageComponent {
     @Resource
     private NxtUploadfileService nxtUploadfileService;
 
-//    @Resource
-//    private NxtGlobalSettingComponent nxtGlobalSettingComponent;
-//
-//    @Resource
-//    private HttpServletRequest request;
-
     @Resource
     private NxtWebUtilComponent nxtWebUtilComponent;
 
     private String getOssLocation(){
         return this.ossLocation;
-//        String ossLocation = nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssLocation();
-//        return ossLocation;
     }
 
     private String getOssDomain(){
         return this.ossDomain;
-//        return nxtGlobalSettingComponent.getNxtStructSettingOssConfig().getOssDomain();
     }
 
     /**
@@ -86,7 +77,7 @@ public class NxtUploadImageComponent {
      */
     public NxtUploadfile catchPictureAndSave(String imgUrl) throws NxtException {
 
-        if (!imgUrl.contains(this.getOssDomain())) {
+        if (this.getOssDomain() == null || this.getOssDomain().trim().isEmpty() || !imgUrl.contains(this.getOssDomain())) {
             //抓取图片，上传
             String uploadResultFilename = null;
             try {
@@ -164,7 +155,7 @@ public class NxtUploadImageComponent {
         Matcher m = Pattern.compile("<img.*?src=\"(http.*?)\"").matcher(contentHTML);
         while (m.find()) {
             String imgUrl = m.group(1);
-            if (!imgUrl.contains(this.getOssDomain())){
+            if (this.getOssDomain() == null || this.getOssDomain().trim().isEmpty() || !imgUrl.contains(this.getOssDomain())){
                 //抓取图片，上传
                 try {
                     NxtUploadfile nxtUploadfile = this.catchPictureAndSave(imgUrl);

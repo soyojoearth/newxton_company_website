@@ -55,26 +55,29 @@ public class NxtProcessProductSpider {
         else if (nxtProductSpiderTMallComponent.isMatchUrl(externalUrl)){
             nxtStructProductSpiderResult = nxtProductSpiderTMallComponent.catchProductFromUrl(externalUrl);
         }
-        else if (nxtProductSpiderJDComponent.isMatchUrl(externalUrl)){
-            nxtStructProductSpiderResult = nxtProductSpiderJDComponent.catchProductFromUrl(externalUrl);
-        }
         else if (nxtProductSpiderAmazonComponent.isMatchUrl(externalUrl)){
             nxtStructProductSpiderResult = nxtProductSpiderAmazonComponent.catchProductFromUrl(externalUrl);
+        }
+        else if (nxtProductSpiderJDComponent.isMatchUrl(externalUrl)){
+            nxtStructProductSpiderResult = nxtProductSpiderJDComponent.catchProductFromUrl(externalUrl);
         }
         else if (nxtProductSpider1688Component.isMatchUrl(externalUrl)){
             nxtStructProductSpiderResult = nxtProductSpider1688Component.catchProductFromUrl(externalUrl);
         }
         else {
-            throw new NxtException("暂不支持这个第三方商品链接");
+            throw new NxtException("暂不支持这个第三方商品链接，可联系我们进行二次开发");
         }
 
         if (nxtStructProductSpiderResult != null &&
                 nxtStructProductSpiderResult.getProductName() != null &&
-                nxtStructProductSpiderResult.getPrice() != null &&
+//                nxtStructProductSpiderResult.getPrice() != null &&
                 nxtStructProductSpiderResult.getPictureList() != null &&
                 nxtStructProductSpiderResult.getPictureList().size() > 0
         ){
             nxtStructProductSpiderResult.setExternalUrl(externalUrl);
+            if (nxtStructProductSpiderResult.getPrice() == null){
+                nxtStructProductSpiderResult.setPrice(0F);
+            }
             return this.assemblyNxtStructProductFromSpider(nxtStructProductSpiderResult);
         }
         else {

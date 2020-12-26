@@ -1,10 +1,15 @@
 package com.newxton.nxtframework.component.spider;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.newxton.nxtframework.component.spider.interfa.NxtComponentInterfaceProductSpider;
 import com.newxton.nxtframework.exception.NxtException;
 import com.newxton.nxtframework.struct.NxtStructProductSku;
-import com.newxton.nxtframework.struct.NxtStructProductSkuValue;
 import com.newxton.nxtframework.struct.NxtStructProductSpiderResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,6 +25,8 @@ import java.util.List;
 @Component
 public class NxtProductSpiderTMallComponent implements NxtComponentInterfaceProductSpider {
 
+    private Logger logger = LoggerFactory.getLogger(NxtProductSpiderTMallComponent.class);
+
     /**
      * 判断url是不是本Spider负责的类型
      * @param url
@@ -33,6 +40,20 @@ public class NxtProductSpiderTMallComponent implements NxtComponentInterfaceProd
         return false;
     }
 
+    //抓取到产品名称
+    private String productName = null;
+
+    //抓取到的产品价格
+    private Float price = null;
+
+    //抓取到全部n张产品主图
+    private List<String> pictureList = new ArrayList<>();
+
+    //抓取到所有产品规格
+    private List<NxtStructProductSku> skuList = new ArrayList<>();
+
+    private String productDescription = null;
+
     /**
      * 抓取第三方平台商品，并返回NxtStructProductSpiderResult对象
      * @param url
@@ -41,6 +62,10 @@ public class NxtProductSpiderTMallComponent implements NxtComponentInterfaceProd
      */
     @Override
     public NxtStructProductSpiderResult catchProductFromUrl(String url) throws NxtException {
+
+        if (true) {
+            throw new NxtException("该链接类型抓取，需联系我们二次开发");
+        }
 
         /**
          * 在这里编写代码抓取商品，然后返回NxtStructProductSpiderResult对象
@@ -51,23 +76,56 @@ public class NxtProductSpiderTMallComponent implements NxtComponentInterfaceProd
          * 以下是基础示例代码和说明
          */
         //抓取到产品名称
-        String productName = null;
+        productName = null;
 
         //抓取到的产品价格
-        Float price = null;
+        price = null;
 
         //抓取到全部n张产品主图
-        List<String> pictureList = new ArrayList<>();
+        pictureList = new ArrayList<>();
 
         //抓取到所有产品规格
-        List<NxtStructProductSku> skuList = new ArrayList<>();
+        skuList = new ArrayList<>();
 
-        String productDescription = null;
+        productDescription = null;
+
+        //假数据 赋值【仅供参考数据格式】
+        this.processFake(url);
+
+        //真正抓取过程，请写入这个方法里面
+//        this.processWork(url);
+
+        /**
+         * 10秒内要返回结果，否则 throw new NxtException("网络超时，抓取失败");
+         */
+
+        nxtStructProductSpiderResult.setProductName(productName);
+        nxtStructProductSpiderResult.setPrice(price);
+        nxtStructProductSpiderResult.setPictureList(pictureList);
+        nxtStructProductSpiderResult.setSkuList(skuList);
+        nxtStructProductSpiderResult.setProductDescription(productDescription);
 
 
-        //这里开始，抓取以上所需的5个数据，根据下面的代码那样赋值
+        return nxtStructProductSpiderResult;
+
+    }
+
+    /**
+     * 所有要用到到函数、方法都写到这个class里面，
+     * pom.xml已经 配置 htmlunit、jsoup两个组件，
+     * htmlunit可以解析动态javascript结果，jsoup很方便解析抓取html文件
+     * 10秒内要返回结果，否则 throw new NxtException("网络超时，抓取失败");
+     */
+
+    /**
+     * 假数据 赋值【仅供参考数据格式】
+     * @param url
+     * @throws NxtException
+     */
+    private void processFake(String url) throws NxtException{
+
         try {
-            Thread.sleep(3000);//写完后删除这里
+            Thread.sleep(3000);
         }
         catch (Exception e){
 
@@ -110,30 +168,43 @@ public class NxtProductSpiderTMallComponent implements NxtComponentInterfaceProd
          */
         productDescription = "这是测试产品的<b>描述</b>.";
 
-
-        /**
-         * 10秒内要返回结果，否则 throw new NxtException("网络超时，抓取失败");
-         */
-
-        nxtStructProductSpiderResult.setProductName(productName);
-        nxtStructProductSpiderResult.setPrice(price);
-        nxtStructProductSpiderResult.setPictureList(pictureList);
-        nxtStructProductSpiderResult.setSkuList(skuList);
-        nxtStructProductSpiderResult.setProductDescription(productDescription);
-
-
-        return nxtStructProductSpiderResult;
-
     }
 
     /**
-     * 所有要用到到函数、方法都写到这个class里面，
-     * pom.xml已经 配置 htmlunit、jsoup两个组件，
-     * htmlunit可以解析动态javascript结果，jsoup很方便解析抓取html文件
-     * 10秒内要返回结果，否则 throw new NxtException("网络超时，抓取失败");
+     * 抓取页面与元素分析
+     * @param url
+     * @throws NxtException
      */
+    private void processWork(String url) throws NxtException{
 
-    //写代码......
+        /**
+         * 使用html unit进行抓取，可以配合jsoup分析数据
+         */
+
+        WebClient webClient=new WebClient(BrowserVersion.CHROME); // 实例化Web客户端端
+        webClient.getOptions().setCssEnabled(false); // 取消css支持
+        webClient.getOptions().setJavaScriptEnabled(true);
+        webClient.getOptions().setThrowExceptionOnScriptError(false);
+        webClient.setAjaxController(new NicelyResynchronizingAjaxController());
+        webClient.getOptions().setScreenWidth(1920);
+        webClient.getOptions().setScreenHeight(5000);//超高的模拟屏幕，直接触发下拉加载
+        try {
+
+            HtmlPage page = webClient.getPage(url); // 解析获取页面
+            webClient.waitForBackgroundJavaScript(10000);
+
+            //此处开始分析页面数据、赋值
+
+
+        }
+        catch (Exception e){
+            logger.warn("Spider抓取url错误:"+e.getMessage());
+        }
+        finally {
+            webClient.close();
+        }
+
+    }
 
 
 }
