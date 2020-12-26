@@ -52,6 +52,7 @@ public class NxtProductSpiderTaobaoComponent implements NxtComponentInterfacePro
     //抓取到所有产品规格
     private List<NxtStructProductSku> skuList = new ArrayList<>();
 
+    //抓取到所有产品详情
     private String productDescription = null;
 
     /**
@@ -87,6 +88,7 @@ public class NxtProductSpiderTaobaoComponent implements NxtComponentInterfacePro
         //抓取到所有产品规格
         skuList = new ArrayList<>();
 
+        //抓取到所有产品详情
         productDescription = null;
 
         //假数据 赋值【仅供参考数据格式】
