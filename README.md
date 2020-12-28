@@ -6,7 +6,11 @@ typora-copy-images-to: ./gitbook_resource
 
 支持分销功能。
 
-基于Java Springboot开发，Api文档、数据库文档齐全。
+使用Java Springboot开发，Api文档、数据库文档齐全。
+
+
+
+#### **基于本项目做二开，在成本、效率、规范性上可超越”世界上最好的语言“。**
 
 
 
@@ -176,6 +180,6 @@ UI设计：Rong Kai
 
 
 
-#### 如需要我们团队进行二次开发或者洽谈商业授权事宜，请加微信：
+#### 大佬微信：（技术交流，或者，二次开发合作）
 
 ![Wechat-nap](gitbook_resource/Wechat-nap.jpeg)
