@@ -18,9 +18,11 @@ typora-copy-images-to: ./gitbook_resource
 
 1、Vue-Element-Admin后台源码：https://github.com/soyojoearth/nxtframework_admin
 
-2、Api接口文档：请clone项目后打开 document/nxtframework_api.html
+2、PC端用户中心源码：https://github.com/soyojoearth/nxtframework_ucenter
 
-3、数据库结构模型：请clone项目后打开document/nxtframework_db_model.mwb（使用Mysql Workbench 8.0打开）
+3、Api接口文档：请clone项目后打开 document/nxtframework_api.html
+
+4、数据库结构模型：请clone项目后打开document/nxtframework_db_model.mwb（使用Mysql Workbench 8.0打开）
 
 
 
