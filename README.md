@@ -2,7 +2,7 @@
 typora-copy-images-to: ./gitbook_resource
 ---
 
-一个开源电商系统，可以既作为B2C单商户使用，又可以作为SAAS系统多商户使用，还可以二开做B2B2C。
+一个开源电商系统，可以既作为B2C单商户使用，又可以作为SAAS系统多商户使用，还可以二开做B2B2C和O2O应用。
 
 支持分销功能。
 
