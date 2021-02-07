@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.controller.web;
 
 import com.alibaba.fastjson.JSONObject;
+import com.newxton.nxtframework.component.NxtSaaSCoreComponent;
 import com.newxton.nxtframework.controller.api.front.cms.NxtApiWebPageDetailController;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
 import org.slf4j.Logger;
@@ -24,19 +25,22 @@ public class NxtPrivacyPolicyController {
     private Logger logger = LoggerFactory.getLogger(NxtPrivacyPolicyController.class);
 
     @Resource
+    NxtSaaSCoreComponent nxtSaaSCoreComponent;
+
+    @Resource
     NxtApiWebPageDetailController nxtApiWebPageDetailController;
 
     @RequestMapping("/privacy_policy")
     public ModelAndView index(Device device,ModelAndView model) {
 
-        if (device.isMobile()){
-            model.setViewName("mobile/index");
-//            logger.info("移动端访客");
-        }
-        else {
-            model.setViewName("pc/privacy_policy");
+//        if (device.isMobile()){
+//            model.setViewName("mobile/"+nxtSaaSCoreComponent.findTenantTempleteMobile()+"/privacy_policy");
+////            logger.info("移动端访客");
+//        }
+//        else {
+            model.setViewName("pc/"+nxtSaaSCoreComponent.findTenantTempletePc()+"/privacy_policy");
 //            logger.info("PC端访客");
-        }
+//        }
 
         //隐私政策
         JSONObject jsonParam = new JSONObject();

@@ -4,12 +4,12 @@
     <meta charset="utf-8"  name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>产品列表</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/product_list.css}">
-    <script th:src="@{/pc/js/jquery-1.8.2.min.js}"></script>
-    <script th:src="@{/pc/js/product_list.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/pc/default/css/product_list.css}">
+    <script th:src="@{/pc/default/js/jquery-1.8.2.min.js}"></script>
+    <script th:src="@{/pc/default/js/product_list.js}"></script>
 </head>
 <body>
-<div th:replace="pc/common/header :: header"></div>
+<div th:replace="pc/default/common/header :: header"></div>
 <div id="content">
     <div class="list-left">
         <div class="cate-item">
@@ -21,23 +21,23 @@
                 <form action="/product/list" id="search-form" method="get">
                     <input type="text" class="search-val"  name="searchKeyword" placeholder="搜索产品">
                 </form>
-                <a href="javascript:void(0)" onclick="searchForm()"><img th:src="@{/pc/img/search.png}" alt="" class="search-pic"></a>
+                <a href="javascript:void(0)" onclick="searchForm()"><img th:src="@{/pc/default/img/search.png}" alt="" class="search-pic"></a>
             </div>
             <dl class="cate-type" th:each="p : ${productCategoryList.list}">
                 <dt class="cate-first">
                     <a th:href="${'?categoryId=' + p.category.id}" class="one-level">
-                        <img th:src="@{/pc/img/icon-cate-01.png}" alt="" class="cate-big">
+                        <img th:src="@{/pc/default/img/icon-cate-01.png}" alt="" class="cate-big">
                         <span class="first-title" th:text="${p.category.categoryName}"></span>
-                        <img th:src="@{/pc/img/icon-down-02.png}" alt="" class="down-big">
+                        <img th:src="@{/pc/default/img/icon-down-02.png}" alt="" class="down-big">
                     </a>
                 </dt>
                 <dd class="cate-child">
                     <dl class="cate-level" th:each="c : ${p.sub_category_list}">
                         <dt class="cate-second">
                             <a th:href="${'?categoryId=' + c.category.id}" class="two-level">
-                                <img th:src="@{/pc/img/icon-cate-02.png}" alt="" class="cate-small">
+                                <img th:src="@{/pc/default/img/icon-cate-02.png}" alt="" class="cate-small">
                                 <span class="second-title" th:text="${c.category.categoryName}"></span>
-                                <img th:src="@{/pc/img/icon-down-03.png}" alt="" class="down-small">
+                                <img th:src="@{/pc/default/img/icon-down-03.png}" alt="" class="down-small">
                             </a>
                         </dt>
                         <div class="cate-third">
@@ -59,32 +59,32 @@
                 <li>
                     <a th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=-1'}" th:class="${(orderType == -1 || orderType == 1) ? 'active opt-wd' : 'opt-wd'}">按价格从低到高</a>
                     <a th:if="${orderType == '' || orderType == 2 || orderType == -2 || orderType == -1}" th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=1'}">
-                        <img  th:src="@{/pc/img/icon-up-03.png}" alt="" class="sort-up">
+                        <img  th:src="@{/pc/default/img/icon-up-03.png}" alt="" class="sort-up">
                     </a>
                     <a th:if="${orderType == '' || orderType == 2 || orderType == -2 || orderType == 1}" th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=-1'}">
-                        <img th:src="@{/pc/img/icon-down-04.png}" alt="" class="sort-down">
+                        <img th:src="@{/pc/default/img/icon-down-04.png}" alt="" class="sort-down">
                     </a>
                     <a th:if="${orderType == 1}"  th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=1'}">
-                        <img th:src="@{/pc/img/icon-up-02.png}" alt="" class="sort-up">
+                        <img th:src="@{/pc/default/img/icon-up-02.png}" alt="" class="sort-up">
                     </a>
                     <a th:if="${orderType == -1}" th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=-1'}">
-                        <img  th:src="@{/pc/img/icon-down-02.png}" alt="" class="sort-down">
+                        <img  th:src="@{/pc/default/img/icon-down-02.png}" alt="" class="sort-down">
                     </a>
 
                 </li>
                 <li>
                     <a th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=2'}" th:class="${(orderType == -2 || orderType == 2) ? 'active opt-wd' : 'opt-wd'}">按时间从近到远</a>
                     <a th:if="${orderType == '' || orderType == -1 || orderType == 1 ||  orderType == 2}" th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=-2'}">
-                        <img  th:src="@{/pc/img/icon-up-03.png}" alt="" class="sort-up">
+                        <img  th:src="@{/pc/default/img/icon-up-03.png}" alt="" class="sort-up">
                     </a>
                     <a th:if="${orderType == '' || orderType == -1 || orderType == 1 ||  orderType == -2}"  th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=2'}">
-                        <img th:src="@{/pc/img/icon-down-04.png}" alt="" class="sort-down">
+                        <img th:src="@{/pc/default/img/icon-down-04.png}" alt="" class="sort-down">
                     </a>
                     <a  th:if="${orderType == -2}"  th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=-2'}">
-                        <img th:src="@{/pc/img/icon-up-02.png}" alt="" class="sort-up">
+                        <img th:src="@{/pc/default/img/icon-up-02.png}" alt="" class="sort-up">
                     </a>
                     <a th:if="${orderType == 2}" th:href="${'?categoryId=' + categoryId + '&searchKeyword=' + searchKeyword + '&orderType=2'}">
-                        <img  th:src="@{/pc/img/icon-down-02.png}" alt="" class="sort-down">
+                        <img  th:src="@{/pc/default/img/icon-down-02.png}" alt="" class="sort-down">
                     </a>
 
                 </li>
@@ -104,7 +104,7 @@
                         <a th:href="${'/product/detail?productId=' + p.id}" class="orig-price" th:text="${'¥' + p.priceInitial}"></a>
                         <a th:href="${'/product/detail?productId=' + p.id}" class="stock" th:text="${'库存：' + p.inventoryQuantity}"></a>
                         <!--<a href="javascript:void(0)" th:onclick="|addShoppingCart(${p.id})|" class="shop-cart">
-                            <img th:src="@{/pc/img/buycart-small.png}" alt="" >
+                            <img th:src="@{/pc/default/img/buycart-small.png}" alt="" >
                         </a>-->
                     </li>
                 </a>
@@ -122,6 +122,6 @@
         </div>
     </div>
 </div>
-<div th:replace="pc/common/footer :: footer"></div>
+<div th:replace="pc/default/common/footer :: footer"></div>
 </body>
 </html>

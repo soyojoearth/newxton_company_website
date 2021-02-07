@@ -4,11 +4,11 @@
     <meta charset="utf-8"  name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>资讯详情</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/news_detail.css}">
-    <script th:src="@{/pc/js/jquery-1.8.2.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/pc/default/css/news_detail.css}">
+    <script th:src="@{/pc/default/js/jquery-1.8.2.min.js}"></script>
 </head>
 <body>
-<div th:replace="pc/common/header :: header"></div>
+<div th:replace="pc/default/common/header :: header"></div>
 <div id="content">
     <div class="news-detail">
         <div class="news-title">
@@ -20,7 +20,7 @@
                 <i class="time" th:text="${#dates.format(newsDetail.datelineCreate,'yyyy-MM-dd HH:mm')}"></i>
             </span>
             <span class="news-share">
-                <img th:src="@{/pc/img/icon-share.png}" alt="">
+                <img th:src="@{/pc/default/img/icon-share.png}" alt="">
                 <i class="share">分享资讯</i>
             </span>
         </div>
@@ -28,7 +28,7 @@
     </div>
     <div class="rcm-product">
         <div class="head-title">
-            <img th:src="@{/pc/img/rcm-pro.png}" alt="">
+            <img th:src="@{/pc/default/img/rcm-pro.png}" alt="">
             <span class="title-wd">推荐产品</span>
             <span class="title-bar"></span>
         </div>
@@ -48,6 +48,6 @@
         </div>
     </div>
 </div>
-<div th:replace="pc/common/footer :: footer"></div>
+<div th:replace="pc/default/common/footer :: footer"></div>
 </body>
 </html>

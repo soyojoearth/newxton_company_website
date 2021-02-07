@@ -42,9 +42,6 @@ public class NxtImageController {
     @Resource
     private HttpServletRequest request;
 
-    @Value("${newxton.config.oss.localPath}")
-    private String ossLocalPath;
-
     @Resource
     private NxtAutoThumbnailComponent nxtAutoThumbnailComponent;
 

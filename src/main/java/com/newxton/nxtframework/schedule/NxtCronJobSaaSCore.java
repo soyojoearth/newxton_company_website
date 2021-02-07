@@ -40,11 +40,19 @@ public class NxtCronJobSaaSCore {
     public void syncTenantList() {
         List<NxtTenant> nxtTenantList = nxtTenantService.queryAllByLimit(0,Integer.MAX_VALUE);
         Map<String,Long> mapDomainToTenantId = new HashMap<>();
+        Map<String,String> mapDomainToTempletePc = new HashMap<>();
+        Map<String,String> mapDomainToTempleteMobile = new HashMap<>();
         for (NxtTenant nxtTenant : nxtTenantList) {
             try {
                 List<String> domainList = new Gson().fromJson(nxtTenant.getDomains(),new TypeToken<List<String>>(){}.getType());
                 for (String domain : domainList) {
                     mapDomainToTenantId.put(domain, nxtTenant.getId());
+                    if (nxtTenant.getTempletePc() != null) {
+                        mapDomainToTempletePc.put(domain, nxtTenant.getTempletePc());
+                    }
+                    if (nxtTenant.getTempleteMobile() != null) {
+                        mapDomainToTempleteMobile.put(domain, nxtTenant.getTempleteMobile());
+                    }
                 }
             }
             catch (Exception e){
@@ -52,6 +60,8 @@ public class NxtCronJobSaaSCore {
             }
         }
         nxtSaaSCoreComponent.setMapDomainToTenantId(mapDomainToTenantId);
+        nxtSaaSCoreComponent.setMapDomainToTempletePc(mapDomainToTempletePc);
+        nxtSaaSCoreComponent.setMapDomainToTempleteMobile(mapDomainToTempleteMobile);
     }
 
 }

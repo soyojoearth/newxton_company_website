@@ -4,14 +4,14 @@
     <meta charset="utf-8"  name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>产品详情</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/product_detail.css}">
-    <script  th:src="@{/pc/js/jquery-1.8.2.min.js}" ></script>
-    <script  th:src="@{/pc/js/zoom.js}" ></script>
-    <script  th:src="@{/pc/js/slide.js}" ></script>
-    <script  th:src="@{/pc/js/product_detail.js}" ></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/pc/default/css/product_detail.css}">
+    <script  th:src="@{/pc/default/js/jquery-1.8.2.min.js}" ></script>
+    <script  th:src="@{/pc/default/js/zoom.js}" ></script>
+    <script  th:src="@{/pc/default/js/slide.js}" ></script>
+    <script  th:src="@{/pc/default/js/product_detail.js}" ></script>
 </head>
 <body>
-    <div th:replace="pc/common/header :: header"></div>
+    <div th:replace="pc/default/common/header :: header"></div>
     <div id="content">
         <div class="product-property">
             <div class="product-gallery">
@@ -26,13 +26,13 @@
                 </div>
                 <div class="product-thumb">
                     <a href="javascript:void(0)" class="thumb-left prev">
-                        <img th:src="@{/pc/img/icon-left.png}"  alt="">
+                        <img th:src="@{/pc/default/img/icon-left.png}"  alt="">
                     </a>
                     <ul class="thumb-pic">
                         <li th:each="p : ${productDetail.pictureList}"><img th:src="${p.url + '?imageView2/1/w/40/h/40/q/75'}" th:data-url="${p.url+'?imageView2/1/w/512/h/512/q/75'}" alt=""></li>
                     </ul>
                     <a href="javascript:void(0)" class="thumb-right next">
-                        <img th:src="@{/pc/img/icon-right.png}"  alt="">
+                        <img th:src="@{/pc/default/img/icon-right.png}"  alt="">
                     </a>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                         <dd class="spec-frame">
                             <ul class="spec-attr">
                                 <li th:each="c : ${s.skuValueList}">
-                                    <!--<img th:src="@{/pc/img/product.jpg}" alt="" class="attr-pic">-->
+                                    <!--<img th:src="@{/pc/default/img/product.jpg}" alt="" class="attr-pic">-->
                                     <span class="attr-name" th:text="${c.skuValueName}"></span>
                                 </li>
                             </ul>
@@ -78,11 +78,11 @@
                         <dt class="num-title">数量</dt>
                         <dd class="num-btn">
                             <a href="javascript:void(0)" class="reduce-num">
-                                <img th:src="@{/pc/img/icon-reduce.png}" alt="">
+                                <img th:src="@{/pc/default/img/icon-reduce.png}" alt="">
                             </a>
                             <input type="text" class="num-value" th:value="${productDetail.dealQuantityMin}" th:min-num="${productDetail.dealQuantityMin}" th:max-num="${productDetail.dealQuantityMax}">
                             <a href="javascript:void(0)" class="add-num">
-                                <img th:src="@{/pc/img/icon-add.png}" alt="">
+                                <img th:src="@{/pc/default/img/icon-add.png}" alt="">
                             </a>
                         </dd>
                     </dl>
@@ -99,26 +99,26 @@
                        <ul class="type-info">
                            <li class="intro-item">
                                <a href="#info">
-                                   <img th:src="@{/pc/img/pro-intro.png}" alt="">
+                                   <img th:src="@{/pc/default/img/pro-intro.png}" alt="">
                                    <span class="title-wd">产品介绍</span>
                                    <span class="title-bar"></span>
                                </a>
                            </li>
                            <li>
                                <a href="#spec">
-                                   <img th:src="@{/pc/img/spec-pack.png}" alt="">
+                                   <img th:src="@{/pc/default/img/spec-pack.png}" alt="">
                                    <span>规格与包装</span>
                                </a>
                            </li>
                            <li>
                                <a href="#safe">
-                                   <img th:src="@{/pc/img/sale-secu.png}" alt="">
+                                   <img th:src="@{/pc/default/img/sale-secu.png}" alt="">
                                    <span>售后保障</span>
                                </a>
                            </li>
                            <li>
                                <a href="#comment">
-                                   <img th:src="@{/pc/img/pro-com.png}" alt="">
+                                   <img th:src="@{/pc/default/img/pro-com.png}" alt="">
                                    <span>商品评价</span>
                                </a>
                            </li>
@@ -129,7 +129,7 @@
 
                <div class="spec-desc" id="spec">
                    <div class="head-title">
-                       <img th:src="@{/pc/img/spec-pack-active.png}" alt="">
+                       <img th:src="@{/pc/default/img/spec-pack-active.png}" alt="">
                        <span class="title-wd">规格与包装</span>
                        <span class="title-bar"></span>
                    </div>
@@ -139,7 +139,7 @@
                </div>
                <div class="safe-desc" id="safe">
                    <div class="head-title">
-                       <img th:src="@{/pc/img/sale-secu-active.png}" alt="">
+                       <img th:src="@{/pc/default/img/sale-secu-active.png}" alt="">
                        <span class="title-wd">售后保障</span>
                        <span class="title-bar"></span>
                    </div>
@@ -150,7 +150,7 @@
                <div class="comment-desc" id="comment">
                     <div>
                         <div class="head-title">
-                            <img th:src="@{/pc/img/pro-com-active.png}" alt="">
+                            <img th:src="@{/pc/default/img/pro-com-active.png}" alt="">
                             <span class="title-wd">评价</span>
                             <span class="title-bar"></span>
                         </div>
@@ -206,7 +206,7 @@
            <div class="detail-right">
                <div class="rcm-info">
                    <div class="head-title">
-                       <img th:src="@{/pc/img/rcm-pro.png}" alt="">
+                       <img th:src="@{/pc/default/img/rcm-pro.png}" alt="">
                        <span class="title-wd">推荐产品</span>
                        <span class="title-bar"></span>
                    </div>
@@ -227,7 +227,7 @@
                </div>
                <div class="new-info">
                    <div class="head-title">
-                       <img th:src="@{/pc/img/new-pro.jpg}" alt="">
+                       <img th:src="@{/pc/default/img/new-pro.jpg}" alt="">
                        <span class="title-wd">最新上架</span>
                        <span class="title-bar"></span>
                    </div>
@@ -251,25 +251,25 @@
         <div class="product-service">
             <ul class="service-item">
                 <li class="service-pic">
-                    <img th:src="@{/pc/img/icon-logistic.png}" alt="">
+                    <img th:src="@{/pc/default/img/icon-logistic.png}" alt="">
                 </li>
                 <li class="service-title">多仓直发，极速配送</li>
             </ul>
             <ul class="service-item">
                 <li class="service-pic">
-                    <img th:src="@{/pc/img/icon-assure.png}" alt="">
+                    <img th:src="@{/pc/default/img/icon-assure.png}" alt="">
                 </li>
                 <li class="service-title">正品低价，质量保证</li>
             </ul>
             <ul class="service-item">
                 <li class="service-pic">
-                    <img th:src="@{/pc/img/icon-sale.png}" alt="">
+                    <img th:src="@{/pc/default/img/icon-sale.png}" alt="">
                 </li>
                 <li class="service-title">优质售后，放心下单</li>
             </ul>
         </div>
     </div>
-    <div th:replace="pc/common/footer :: footer"></div>
+    <div th:replace="pc/default/common/footer :: footer"></div>
     <script th:inline="javascript">
        var product_id = [[${productDetail.id}]];
        var page_no = 1;

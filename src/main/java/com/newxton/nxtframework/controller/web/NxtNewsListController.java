@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.controller.web;
 
 import com.alibaba.fastjson.JSONObject;
+import com.newxton.nxtframework.component.NxtSaaSCoreComponent;
 import com.newxton.nxtframework.controller.api.front.cms.NxtApiNewsCategoryListController;
 import com.newxton.nxtframework.controller.api.front.cms.NxtApiNormalNewsListController;
 import com.newxton.nxtframework.controller.api.front.cms.NxtApiRecommandNewsListController;
@@ -31,6 +32,9 @@ public class NxtNewsListController {
     private Logger logger = LoggerFactory.getLogger(NxtNewsListController.class);
 
     @Resource
+    NxtSaaSCoreComponent nxtSaaSCoreComponent;
+
+    @Resource
     NxtApiNormalNewsListController nxtApiNormalNewsListController;
 
     @Resource
@@ -42,13 +46,13 @@ public class NxtNewsListController {
     @RequestMapping("/news")
     public ModelAndView index(Device device, ModelAndView model, @Param("page") Long page,@Param("categoryId") Long categoryId) {
 
-        if (device.isMobile()) {
-            model.setViewName("mobile/index");
-            logger.info("移动端访客");
-        } else {
-            model.setViewName("pc/news_list");
-            logger.info("PC端访客");
-        }
+//        if (device.isMobile()) {
+//            model.setViewName("mobile/"+nxtSaaSCoreComponent.findTenantTempleteMobile()+"/news_list");
+//            logger.info("移动端访客");
+//        } else {
+            model.setViewName("pc/"+nxtSaaSCoreComponent.findTenantTempletePc()+"/news_list");
+//            logger.info("PC端访客");
+//        }
 
         //资讯分类
         NxtStructApiResult newsCategoryData = nxtApiNewsCategoryListController.index();

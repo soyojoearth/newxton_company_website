@@ -4,13 +4,13 @@
     <meta charset="utf-8"  name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/main.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/pc/css/index.css}">
-    <script  th:src="@{/pc/js/jquery-1.8.2.min.js}" ></script>
-    <script  th:src="@{/pc/js/index.js}" ></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/pc/default/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/pc/default/css/index.css}">
+    <script  th:src="@{/pc/default/js/jquery-1.8.2.min.js}" ></script>
+    <script  th:src="@{/pc/default/js/index.js}" ></script>
 </head>
 <body>
-    <div th:replace="pc/common/header :: header"></div>
+    <div th:replace="pc/default/common/header :: header"></div>
     <div id="content">
         <div class="slider-banner">
             <div class="slider-banner-pic">
@@ -40,8 +40,8 @@
         </div>
         <div class="about-us">
             <div class="about-pic">
-                <p class="about-pic-up"><img th:src="@{/pc/img/about.jpg}" alt=""></p>
-                <p class="about-pic-down"><img th:src="@{/pc/img/product.jpg}" alt=""></p>
+                <p class="about-pic-up"><img th:src="@{/pc/default/img/about.jpg}" alt=""></p>
+                <p class="about-pic-down"><img th:src="@{/pc/default/img/product.jpg}" alt=""></p>
             </div>
             <div class="about-desc">
                 <p class="about-desc-bar"></p>
@@ -60,24 +60,24 @@
                     <li class="product-item-price">
                         <a th:href="${'/product/detail?productId=' + p.id}"><span href="" class="sell-price">¥89.09</span></a>
                         <a th:href="${'/product/detail?productId=' + p.id}"><span href="" class="orig-price">¥89.09</span></a>
-                        <a href="" class="shop-cart"><img th:src="@{/pc/img/buycart-small.png}" alt="" class="shop-cart"></a>
+                        <a href="" class="shop-cart"><img th:src="@{/pc/default/img/buycart-small.png}" alt="" class="shop-cart"></a>
                     </li>
                 </ul>
             </div>
             <div th:if="${not #lists.isEmpty(productListRecommend)}" class="product-view"><a href="/product/list" class="product-view-more">查看更多</a></div>
             <div class="helper">
                 <ul class="helper-pt">
-                    <li class="helper-pic"><img th:src="@{/pc/img/inno-icon.png}" alt=""></li>
+                    <li class="helper-pic"><img th:src="@{/pc/default/img/inno-icon.png}" alt=""></li>
                     <li class="helper-title">创新设计</li>
                     <li class="helper-desc">创新设计创新设计创新设计创新设计创新设计创新设计</li>
                 </ul>
                 <ul class="helper-pt">
-                    <li class="helper-pic"><img th:src="@{/pc/img/inde-fact-icon.png}" alt=""></li>
+                    <li class="helper-pic"><img th:src="@{/pc/default/img/inde-fact-icon.png}" alt=""></li>
                     <li class="helper-title">独立工厂</li>
                     <li class="helper-desc">独立工厂独立工厂独立工厂独立工厂独立工厂独立工厂</li>
                 </ul>
                 <ul class="helper-pt">
-                    <li class="helper-pic"><img th:src="@{/pc/img/sale-icon.png}" alt=""></li>
+                    <li class="helper-pic"><img th:src="@{/pc/default/img/sale-icon.png}" alt=""></li>
                     <li class="helper-title">放心售后</li>
                     <li class="helper-desc">放心售后放心售后放心售后放心售后放心售后放心售后</li>
                 </ul>
@@ -99,7 +99,7 @@
 
         </div>
     </div>
-    <div th:replace="pc/common/footer :: footer"></div>
+    <div th:replace="pc/default/common/footer :: footer"></div>
 
 
 </body>

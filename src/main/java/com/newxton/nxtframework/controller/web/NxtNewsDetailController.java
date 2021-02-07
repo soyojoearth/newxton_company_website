@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.controller.web;
 
 import com.alibaba.fastjson.JSONObject;
+import com.newxton.nxtframework.component.NxtSaaSCoreComponent;
 import com.newxton.nxtframework.controller.api.front.cms.NxtApiNewsDetailController;
 import com.newxton.nxtframework.controller.api.front.product.NxtApiProductListRecommendController;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
@@ -26,6 +27,9 @@ public class NxtNewsDetailController {
     private Logger logger = LoggerFactory.getLogger(NxtNewsDetailController.class);
 
     @Resource
+    NxtSaaSCoreComponent nxtSaaSCoreComponent;
+
+    @Resource
     NxtApiNewsDetailController nxtApiNewsDetailController;
 
     @Resource
@@ -34,14 +38,14 @@ public class NxtNewsDetailController {
     @RequestMapping(value = "/news/detail" )
     public ModelAndView index(Device device, ModelAndView model, @Param("id") Long id) {
 
-        if (device.isMobile()){
-            model.setViewName("mobile/index");
-//            logger.info("移动端访客");
-        }
-        else {
-            model.setViewName("pc/news_detail");
+//        if (device.isMobile()){
+//            model.setViewName("mobile/"+nxtSaaSCoreComponent.findTenantTempleteMobile()+"/news_detail");
+////            logger.info("移动端访客");
+//        }
+//        else {
+            model.setViewName("pc/"+nxtSaaSCoreComponent.findTenantTempletePc()+"/news_detail");
 //            logger.info("PC端访客");
-        }
+//        }
 
         //资讯详情
         JSONObject jsonParamDetail = new JSONObject();

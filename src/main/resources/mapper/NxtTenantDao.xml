@@ -7,13 +7,15 @@
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="domains" column="domains" jdbcType="VARCHAR"/>
         <result property="tenantName" column="tenant_name" jdbcType="VARCHAR"/>
+        <result property="templetePc" column="templete_pc" jdbcType="VARCHAR"/>
+        <result property="templeteMobile" column="templete_mobile" jdbcType="VARCHAR"/>
         <result property="remark" column="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, domains, tenant_name, remark
+          id, domains, tenant_name, templete_pc, templete_mobile, remark
         from nxt_tenant
         where id = #{id}
     </select>
@@ -21,7 +23,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, domains, tenant_name, remark
+          id, domains, tenant_name, templete_pc, templete_mobile, remark
         from nxt_tenant
         limit #{offset}, #{limit}
     </select>
@@ -29,7 +31,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, domains, tenant_name, remark
+          id, domains, tenant_name, templete_pc, templete_mobile, remark
         from nxt_tenant
         <where>
             <if test="id != null">
@@ -40,6 +42,12 @@
             </if>
             <if test="tenantName != null and tenantName != ''">
                 and tenant_name = #{tenantName}
+            </if>
+            <if test="templetePc != null and templetePc != ''">
+                and template_pc = #{templetePc}
+            </if>
+            <if test="templeteMobile != null and templeteMobile != ''">
+                and template_mobile = #{templeteMobile}
             </if>
             <if test="remark != null and remark != ''">
                 and remark = #{remark}
@@ -62,6 +70,12 @@
             </if>
             <if test="tenantName != null and tenantName != ''">
                 tenant_name = #{tenantName},
+            </if>
+            <if test="templetePc != null and templetePc != ''">
+                template_pc = #{templetePc},
+            </if>
+            <if test="templeteMobile != null and templeteMobile != ''">
+                template_mobile = #{templeteMobile},
             </if>
             <if test="remark != null and remark != ''">
                 remark = #{remark},

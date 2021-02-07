@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.controller.web;
 
 import com.alibaba.fastjson.JSONObject;
+import com.newxton.nxtframework.component.NxtSaaSCoreComponent;
 import com.newxton.nxtframework.controller.api.front.product.NxtApiProductDetailController;
 import com.newxton.nxtframework.controller.api.front.product.NxtApiProductListNewController;
 import com.newxton.nxtframework.controller.api.front.product.NxtApiProductListRecommendController;
@@ -25,8 +26,10 @@ import javax.annotation.Resource;
 @Controller
 public class NxtProductDetailController {
 
-
     private Logger logger = LoggerFactory.getLogger(NxtProductDetailController.class);
+
+    @Resource
+    NxtSaaSCoreComponent nxtSaaSCoreComponent;
 
     @Resource
     NxtApiProductDetailController nxtApiProductDetailController;
@@ -60,13 +63,13 @@ public class NxtProductDetailController {
         model.addObject("productListNew", dataNewProduct.getResult());
         model.addObject("page",page);
 
-        if (device.isMobile()) {
-            model.setViewName("mobile/product_list");
-            logger.info("移动端访客");
-        } else {
-            model.setViewName("pc/product_detail");
-            logger.info("PC端访客");
-        }
+//        if (device.isMobile()) {
+//            model.setViewName("mobile/"+nxtSaaSCoreComponent.findTenantTempleteMobile()+"/product_detail");
+//            logger.info("移动端访客");
+//        } else {
+            model.setViewName("pc/"+nxtSaaSCoreComponent.findTenantTempletePc()+"/product_detail");
+//            logger.info("PC端访客");
+//        }
 
 
         return model;

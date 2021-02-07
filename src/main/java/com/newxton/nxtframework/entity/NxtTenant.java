@@ -6,16 +6,20 @@ import java.io.Serializable;
  * (NxtTenant)实体类
  *
  * @author makejava
- * @since 2020-12-24 13:13:19
+ * @since 2021-02-07 15:39:23
  */
 public class NxtTenant implements Serializable {
-    private static final long serialVersionUID = -87341733081593067L;
+    private static final long serialVersionUID = 772631586365327909L;
     
     private Long id;
     
     private String domains;
     
     private String tenantName;
+    
+    private String templetePc;
+    
+    private String templeteMobile;
     
     private String remark;
 
@@ -42,6 +46,22 @@ public class NxtTenant implements Serializable {
 
     public void setTenantName(String tenantName) {
         this.tenantName = tenantName;
+    }
+
+    public String getTempletePc() {
+        return templetePc;
+    }
+
+    public void setTempletePc(String templetePc) {
+        this.templetePc = templetePc;
+    }
+
+    public String getTempleteMobile() {
+        return templeteMobile;
+    }
+
+    public void setTempleteMobile(String templeteMobile) {
+        this.templeteMobile = templeteMobile;
     }
 
     public String getRemark() {

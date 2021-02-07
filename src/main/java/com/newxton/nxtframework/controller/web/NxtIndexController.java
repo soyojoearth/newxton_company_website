@@ -1,6 +1,7 @@
 package com.newxton.nxtframework.controller.web;
 
 import com.alibaba.fastjson.JSONObject;
+import com.newxton.nxtframework.component.NxtSaaSCoreComponent;
 import com.newxton.nxtframework.controller.api.front.cms.NxtApiBannerListController;
 import com.newxton.nxtframework.controller.api.front.product.NxtApiProductListRecommendController;
 import com.newxton.nxtframework.struct.NxtStructApiResult;
@@ -25,6 +26,9 @@ public class NxtIndexController {
     private Logger logger = LoggerFactory.getLogger(NxtIndexController.class);
 
     @Resource
+    NxtSaaSCoreComponent nxtSaaSCoreComponent;
+
+    @Resource
     NxtApiBannerListController nxtApiBannerListController;
 
     @Resource
@@ -35,15 +39,15 @@ public class NxtIndexController {
     public ModelAndView index(Device device,ModelAndView model) {
 
 //        if (device.isMobile()){
-//            model.setViewName("mobile/index");
+//            model.setViewName("mobile/"+nxtSaaSCoreComponent.findTenantTempleteMobile()+"/index");
 //            logger.info("移动端访客");
 //        }
 //        else {
-//            model.setViewName("pc/index");
+              model.setViewName("pc/"+nxtSaaSCoreComponent.findTenantTempletePc()+"/index");
 //            logger.info("PC端访客");
 //        }
 
-        model.setViewName("pc/index");
+        model.setViewName("pc/"+nxtSaaSCoreComponent.findTenantTempletePc()+"/index");
 
 
         /**
