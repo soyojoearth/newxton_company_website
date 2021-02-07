@@ -64,13 +64,13 @@ public class NxtProductListController {
         model.addObject("productList", dataProductList.getResult());
         model.addObject("productCategoryList", dataProductCategoryList.getResult());
 
-        if (device.isMobile()) {
+//        if (device.isMobile()) {
 //            model.setViewName("mobile/"+nxtSaaSCoreComponent.findTenantTempleteMobile()+"/product_list");
-            logger.info("移动端访客");
-        } else {
+//            logger.info("移动端访客");
+//        } else {
             model.setViewName("pc/"+nxtSaaSCoreComponent.findTenantTempletePc()+"/product_list");
-            logger.info("PC端访客");
-        }
+//            logger.info("PC端访客");
+//        }
 
 
         return model;
