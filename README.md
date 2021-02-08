@@ -69,9 +69,7 @@ typora-copy-images-to: ./gitbook_resource
 
 #### 技术架构图：（如想要Pro版的功能扩展，请联系微信：soyojoearth）
 
-![image-20210208103349513](gitbook_resource/image-20210208103349513.png)
-
-
+![image-20210208104514428](gitbook_resource/image-20210208104514428.png)
 
 #### 本地测试运行：
 
