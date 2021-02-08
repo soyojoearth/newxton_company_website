@@ -2,7 +2,7 @@
 typora-copy-images-to: ./gitbook_resource
 ---
 
-一个开源电商系统，可以既作为B2C单商户使用，又可以作为SAAS系统多商户使用，还可以二开做B2B2C和O2O应用。
+一个开源电商SaaS系统，可以既作为SAAS系统多租户使用，又可以当作B2C独立站；通用多种行业，即便是仅仅做普通企业官网都可以。
 
 支持分销功能。
 
@@ -67,9 +67,9 @@ typora-copy-images-to: ./gitbook_resource
 
 
 
-#### 技术架构图：（app端、移动h5端请参考api自行开发，或联系我们提供二次开发服务）
+#### 技术架构图：（如想要Pro版的功能扩展，请联系微信：soyojoearth）
 
-![image-20201124140216583](gitbook_resource/image-20201124140216583.png)
+![image-20210208103349513](gitbook_resource/image-20210208103349513.png)
 
 
 
@@ -179,9 +179,3 @@ UI设计：Rong Kai
 后端开发：soyojo、hexiao、yunian
 
 前端开发：soyojo、ieyieyss、阿 Fa、hexiao、Remondcl、yunian
-
-
-
-#### 大佬微信：（技术交流&参与贡献代码，或者，二次开发合作；若坐标深圳，可面基）
-
-![Wechat-nap](gitbook_resource/Wechat-nap.jpeg)
