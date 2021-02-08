@@ -34,7 +34,7 @@ public class NxtCronJobSaaSCore {
     private NxtSaaSCoreComponent nxtSaaSCoreComponent;
 
     /**
-     * 5分钟更新一次全部商户域名数据
+     * 5分钟更新一次全部租户的域名、配置数据
      */
     @Scheduled(fixedDelay = 300000)
     public void syncTenantList() {
@@ -56,7 +56,7 @@ public class NxtCronJobSaaSCore {
                 }
             }
             catch (Exception e){
-                logger.info("有Tenant域名数据解析错误");
+                logger.error("有Tenant域名数据解析错误");
             }
         }
         nxtSaaSCoreComponent.setMapDomainToTenantId(mapDomainToTenantId);
