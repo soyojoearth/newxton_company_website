@@ -25,18 +25,6 @@ typora-copy-images-to: ./gitbook_resource
 4、数据库结构模型：请clone项目后打开document/nxtframework_db_model.mwb（使用Mysql Workbench 8.0打开）
 
 
-
-#### Demo：
-
-1、前台：https://demo.nxtframework.com
-
-2、后台：https://demo.nxtframework.com/admin 
-
-3、用户名：guest 密码：（任意） （后台访客权限，只能看，不能改）
-
-
-
-
 #### 主要涉及到的技术：
 
 1、MySQL 8.0
